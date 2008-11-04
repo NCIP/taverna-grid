@@ -28,6 +28,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
@@ -41,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -57,6 +59,7 @@ import net.sf.taverna.t2.facade.WorkflowInstanceFacade;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.workbench.reference.config.ReferenceConfiguration;
+import net.sf.taverna.t2.workbench.run.DataflowRun;
 
 import net.sf.taverna.t2.workbench.ui.zaria.UIComponentSPI;
 import net.sf.taverna.t2.workflowmodel.DataflowInputPort;
@@ -98,7 +101,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
       
       private JSplitPane resultPanel;
       private JPanel runListPanel;
-      private JTabbedPane outputPanel;
+      private JPanel outputPanel;
 	
 	private CaGridComponent() {
 		  super(new GridBagLayout());
@@ -109,8 +112,10 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
           addRefreshButton();
           checkButtons();
           addResultPanel();
+          
         //force reference service to be constructed now rather than at first workflow run
   		getReferenceService();
+  		
 		
 	}
 	   private void addResultPanel() {
@@ -140,12 +145,32 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			
 			JScrollPane scrollPane = new JScrollPane(runList);
 			scrollPane.setBorder(null);
-			runListPanel.add(scrollPane, BorderLayout.CENTER);		
+			runListPanel.add(scrollPane, BorderLayout.CENTER);
+			runList.addListSelectionListener(new ListSelectionListener() {
+				public void valueChanged(ListSelectionEvent e) {
+					if (!e.getValueIsAdjusting()) {
+						Object selection = runList.getSelectedValue();
+						if (selection instanceof CaGridRun) {
+							CaGridRun dataflowRun = (CaGridRun) selection;
+							//TODO refresh outputPanel
+							if(dataflowRun.status.equals("completed")){
+							JTextArea resultText = new JTextArea(String.valueOf(dataflowRun.workflowid) + ": "+ dataflowRun.outputMap.get("output"));
+							outputPanel.removeAll();
+							outputPanel.add(resultText, BorderLayout.CENTER);
+							outputPanel.revalidate();
+							revalidate();	
+							}
+							
+						}
+					}
+				}
+			});
 
 			resultPanel.setTopComponent(runListPanel);
+			
 			//TODO outputPanel should be a tabbed pane?
 			//each output should be a (xml) string
-			outputPanel = new JTabbedPane();
+			outputPanel = new JPanel();
 			
 			//outputPanel = new JPanel(new BorderLayout());
 			outputPanel.setBorder(LineBorder.createGrayLineBorder());
@@ -265,8 +290,23 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
          DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(0);
 		
 		System.out.println(op.getName());
-		T2Reference inputRef = (T2Reference) inputs.get("i");
-		System.out.println(inputRef.toString());
+		//T2Reference inputRef = (T2Reference) inputs.get("i");
+		//System.out.println(inputRef.toString());
+		
+		//TODO get a list of xml strings,add to output panel
+		Map<String, String> outputMap = new HashMap <String, String>();
+		outputMap.put("output", "<output>four projects here!</output>");
+		runComponent.outputMap = outputMap;
+		//show the outputMap in resultPanel
+		//traverse the outputMap
+		JTextArea resultText = new JTextArea(String.valueOf(runComponent.workflowid) + ": " + runComponent.outputMap.get("output"));
+		runComponent.status = "completed";
+		outputPanel.removeAll();
+		outputPanel.add(resultText, BorderLayout.CENTER);
+		outputPanel.revalidate();
+		revalidate();
+		
+		//CaGridComponent.getInstance()
 		
 	}
 	public static CaGridComponent getInstance() {
