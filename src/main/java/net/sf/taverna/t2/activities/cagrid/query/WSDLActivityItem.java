@@ -70,14 +70,14 @@ public class WSDLActivityItem extends AbstractActivityItem {
 		return new ImageIcon(WSDLActivityItem.class.getResource("/caGrid.png"));
 	}
 	
-	protected Object getConfigBean() {
+	public Object getConfigBean() {
 		WSDLActivityConfigurationBean bean = new WSDLActivityConfigurationBean();
 		bean.setWsdl(getUrl());
 		bean.setOperation(getOperation());
 		return bean;
 	}
 	
-	protected Activity<?> getUnconfiguredActivity() {
+	public Activity<?> getUnconfiguredActivity() {
 		return new WSDLActivity();
 	}
 
