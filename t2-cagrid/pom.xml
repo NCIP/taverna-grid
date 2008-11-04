@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.sf.taverna.t2</groupId>
+	<artifactId>t2-cagrid</artifactId>
+	<packaging>pom</packaging>
+	<name>Taverna 2 caGrid integration</name>
+	<version>0.1-SNAPSHOT</version>
+	<description>The caGrid integration plug-in for Taverna 2</description>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/licenses/lgpl.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<properties>
+		<t2.workbench.version>0.1</t2.workbench.version>
+		<t2.core.version>0.3</t2.core.version>
+		<t2.ui.version>0.3</t2.ui.version>
+		<t2.workbench.perspective.version>1.8</t2.workbench.perspective.version>
+		<t2.workbench.views.version>0.0.1</t2.workbench.views.version>
+
+		<t2.platform.version>0.1</t2.platform.version>
+		<t2.reference.version>0.1</t2.reference.version>
+		<t2.spidiscovery.version>0.3</t2.spidiscovery.version>
+		<raven.version>1.8</raven.version>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<modules>
+		<module>perspective-cagrid</module>
+		<module>cagrid-ui</module>
+
+	</modules>
+	<repositories>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>mygrid-repository</id>
+			<name>myGrid Repository</name>
+			<url>http://www.mygrid.org.uk/maven/repository</url>
+		</repository>
+		<repository>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots />
+			<id>mygrid-snapshot-repository</id>
+			<name>myGrid Snapshot Repository</name>
+			<url>
+				http://www.mygrid.org.uk/maven/snapshot-repository
+			</url>
+		</repository>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>restlet</id>
+			<name>Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+		</repository>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>mygrid-mirror</id>
+			<name>myGrid maven proxy server</name>
+			<url>http://www.mygrid.org.uk/maven/proxy/repository</url>
+		</repository>
+	</repositories>
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<configLocation>
+						${basedir}/../checkstyle.xml
+					</configLocation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clover-plugin</artifactId>
+				<configuration>
+					<generatePdf>true</generatePdf>
+					<generateXml>true</generateXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<minmemory>128m</minmemory>
+					<maxmemory>512</maxmemory>
+					<aggregate>true</aggregate>
+					<links>
+						<link>
+							http://www.mygrid.org.uk/taverna/api/
+						</link>
+						<link>
+							http://java.sun.com/j2se/1.5.0/docs/api/
+						</link>
+					</links>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>java.awt.headless</name>
+							<value>true</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jxr-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.4</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.13</version>
+			</dependency>
+			<dependency>
+				<groupId>jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>
