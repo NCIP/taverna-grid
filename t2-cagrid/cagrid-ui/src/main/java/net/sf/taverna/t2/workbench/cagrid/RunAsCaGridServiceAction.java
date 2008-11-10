@@ -1,5 +1,7 @@
 /*******************************************************************************
- * Copyright (C) 2007 The University of Manchester   
+ * Copyright (C) 2007 -2008 The University of Manchester   
+ * Copyright (C) 2007 The University of Chicago
+ * @author Wei Tan  
  * 
  *  Modifications to the initial code base are copyright of their
  *  respective authors, or their employers as appropriate.
@@ -158,8 +160,10 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 				List<? extends DataflowInputPort> inputPorts = dataflowCopy
 						.getInputPorts();
 				if (!inputPorts.isEmpty()) {
+					//TODO retrieve Map<String, T2Reference>
 					showInputDialog(facade, referenceContext);
 				} else {
+					//no input ports
 					
 					runComponent.runWorkflow(facade, (Map) null);
 				}
@@ -215,6 +219,7 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 			public void handleLaunch(Map<String, T2Reference> workflowInputs) {
 				//switchToResultsPerspective();
 				runComponent = CaGridComponent.getInstance();
+				System.out.println("workflow is being invoked.");
 				runComponent.runWorkflow(facade, workflowInputs);
 				frame.dispose();
 			

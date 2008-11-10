@@ -1,5 +1,7 @@
 /*******************************************************************************
- * Copyright (C) 2007 The University of Manchester   
+ * Copyright (C) 2007-2008 The University of Manchester   
+ * Copyright (C) 2008 The University of Chicago
+ * @author Wei Tan
  * 
  *  Modifications to the initial code base are copyright of their
  *  respective authors, or their employers as appropriate.
@@ -27,6 +29,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +53,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
 
 import org.springframework.context.ApplicationContext;
 
@@ -62,9 +67,13 @@ import net.sf.taverna.t2.workbench.reference.config.ReferenceConfiguration;
 import net.sf.taverna.t2.workbench.run.DataflowRun;
 
 import net.sf.taverna.t2.workbench.ui.zaria.UIComponentSPI;
+import net.sf.taverna.t2.workflowmodel.Dataflow;
 import net.sf.taverna.t2.workflowmodel.DataflowInputPort;
 import net.sf.taverna.t2.workflowmodel.DataflowOutputPort;
 import net.sf.taverna.t2.workflowmodel.InvalidDataflowException;
+import net.sf.taverna.t2.workflowmodel.serialization.SerializationException;
+import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializer;
+import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializerImpl;
 import net.sf.taverna.t2.workbench.icons.WorkbenchIcons;
 
 public class CaGridComponent extends JPanel implements UIComponentSPI, ActionListener {
@@ -287,11 +296,31 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		DataflowInputPort ip = facade.getDataflow().getInputPorts().get(0);
 		
 		System.out.println(ip.getName());
-         DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(0);
-		
-		System.out.println(op.getName());
-		//T2Reference inputRef = (T2Reference) inputs.get("i");
+		T2Reference inputRef = (T2Reference) inputs.get(ip.getName());
 		//System.out.println(inputRef.toString());
+		
+		String inputString = (String) facade.getContext().getReferenceService().renderIdentifier(inputRef,
+				String.class, null);
+		System.out.println("Input of the workflow is: " + inputString);
+        
+         Dataflow dataflow = facade.getDataflow();
+		XMLSerializer serialiser = new XMLSerializerImpl();
+		try {
+			Element workflowDef = serialiser.serializeDataflow(dataflow);
+			XMLOutputter outputter = new XMLOutputter();
+			outputter.output(workflowDef, System.out);
+			
+		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		 DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(0);
+		System.out.println(op.getName());
 		
 		//TODO get a list of xml strings,add to output panel
 		Map<String, String> outputMap = new HashMap <String, String>();
