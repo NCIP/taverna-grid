@@ -308,17 +308,19 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		try {
 			Element workflowDef = serialiser.serializeDataflow(dataflow);
 			XMLOutputter outputter = new XMLOutputter();
-			outputter.output(workflowDef, System.out);
+			
+			//outputter.output(workflowDef, System.out);
+			System.out.println("----------------Workflow Definition----------------------");
+			String workflowDefString = outputter.outputString(workflowDef);
+			System.out.println(workflowDefString);
+			System.out.println("----------------End of Workflow Definition---------------");
+			
 			
 		} catch (SerializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+		 
 		 DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(0);
 		System.out.println(op.getName());
 		
@@ -352,6 +354,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 	        	      	
 	        }
 	    }
+	 //return the ReferenceService -- used to manipulate data
 		public ReferenceService getReferenceService() {
 			String context = ReferenceConfiguration.getInstance().getProperty(
 					ReferenceConfiguration.REFERENCE_SERVICE_CONTEXT);
