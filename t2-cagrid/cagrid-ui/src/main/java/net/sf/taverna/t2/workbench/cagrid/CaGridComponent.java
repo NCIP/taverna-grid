@@ -22,6 +22,10 @@
  ******************************************************************************/
 package net.sf.taverna.t2.workbench.cagrid;
 
+import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
+import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.workflow.factory.client.TavernaWorkflowServiceClient;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,7 +36,14 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import java.io.File;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.commons.io.FileUtils;
+
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -57,6 +68,9 @@ import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 
 import org.springframework.context.ApplicationContext;
+
+import workflowmanagementfactoryservice.WorkflowOutputType;
+import workflowmanagementfactoryservice.WorkflowStatusType;
 
 import net.sf.taverna.platform.spring.RavenAwareClassPathXmlApplicationContext;
 
@@ -163,8 +177,16 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 							CaGridRun dataflowRun = (CaGridRun) selection;
 							//TODO refresh outputPanel
 							if(dataflowRun.status.equals("completed")){
-							JTextArea resultText = new JTextArea(String.valueOf(dataflowRun.workflowid) + ": "+ dataflowRun.outputMap.get("output"));
+								String resultDisplayString = "";
+								for(Iterator it = dataflowRun.outputMap.entrySet().iterator(); it.hasNext();) {
+								    Map.Entry entry = (Map.Entry) it.next();
+								    Object key = entry.getKey();
+								    Object value = entry.getValue();
+								    resultDisplayString  = resultDisplayString + (String) key + ":--" +(String) value + "\n";
+								}
+								JTextArea resultText = new JTextArea(resultDisplayString);
 							outputPanel.removeAll();
+							outputPanel.revalidate();
 							outputPanel.add(resultText, BorderLayout.CENTER);
 							outputPanel.revalidate();
 							revalidate();	
@@ -216,7 +238,9 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
            c.gridx = GridBagConstraints.RELATIVE;
            
            services = new JComboBox();
-           services.addItem("http://test.cagrid.org/service");
+           services.addItem("http://128.135.125.17:51000/wsrf/services/cagrid/TavernaWorkflowService");
+           services.addItem("http://test.cagrid.org//wsrf/services/cagrid/TavernaWorkflowService");
+           services.setSelectedIndex(0);
            //set the list of available caGrid workflow services here
            //services.addActionListener(new ServiceSelectionListener());
            services.setEditable(true);
@@ -293,30 +317,113 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		runList.setSelectedIndex(0);	
 		//TODO print out the information of the workflow
 		System.out.println("Workflow is running.");
-		DataflowInputPort ip = facade.getDataflow().getInputPorts().get(0);
-		
-		System.out.println(ip.getName());
-		T2Reference inputRef = (T2Reference) inputs.get(ip.getName());
-		//System.out.println(inputRef.toString());
-		
-		String inputString = (String) facade.getContext().getReferenceService().renderIdentifier(inputRef,
-				String.class, null);
-		System.out.println("Input of the workflow is: " + inputString);
+		//TODO traverse inputports, get all strings and combine to a String[]
+		Map<String, String> inputMap = new HashMap <String, String>();
+		for (int i=0;i<facade.getDataflow().getInputPorts().size();i++){
+			//TODO: sequence will mess up!
+			DataflowInputPort ip = facade.getDataflow().getInputPorts().get(i);
+			T2Reference inputRef = (T2Reference) inputs.get(ip.getName());
+			//System.out.println(inputRef.toString());
+			
+			String inputString = (String) facade.getContext().getReferenceService().renderIdentifier(inputRef,
+					String.class, null);
+			inputMap.put(ip.getName(),inputString);
+			
+		}
+		//traverse the inputMap
+		String inputDisplayString = "The input of this workflow is as follows:\n";
+		for(Iterator it = inputMap.entrySet().iterator(); it.hasNext();) {
+		    Map.Entry entry = (Map.Entry) it.next();
+		    Object key = entry.getKey();
+		    Object value = entry.getValue();
+		    inputDisplayString  = inputDisplayString + (String) key + "---: " +(String) value + "\n";
+		}
+		System.out.println("Input of the workflow is: " + inputDisplayString);
         
          Dataflow dataflow = facade.getDataflow();
 		XMLSerializer serialiser = new XMLSerializerImpl();
+		String[] outputs = null;
 		try {
 			Element workflowDef = serialiser.serializeDataflow(dataflow);
 			XMLOutputter outputter = new XMLOutputter();
 			
 			//outputter.output(workflowDef, System.out);
-			System.out.println("----------------Workflow Definition----------------------");
+			
 			String workflowDefString = outputter.outputString(workflowDef);
+			//TODO write this string into a file to be consumed by Dina's service
+			 File file = new File(dataflow.getLocalName());
+		      FileUtils.writeStringToFile(file, workflowDefString);	
+		      System.out.println("File name: " + file.getAbsolutePath());
+		    System.out.println("----------------Workflow Definition----------------------");
 			System.out.println(workflowDefString);
 			System.out.println("----------------End of Workflow Definition---------------");
+			//String url = "http://128.135.125.17:51000/wsrf/services/cagrid/TavernaWorkflowService";
+			String url =  (String) services.getSelectedItem();
+			TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
+			String workflowName = "Test1";
+			System.out.println("\n1. Running createWorkflow ..");
+
+			//WMSOutputType wMSOutputElement =  client.createWorkflow(input);
+			EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(url, file.getAbsolutePath(), workflowName);
+			// 2. Start Workflow Operations Invoked.
+			//
+
+			String[] inputArgs = new String[inputMap.size()];
+			int i = 0;
+			for(Iterator it = inputMap.entrySet().iterator(); it.hasNext();) {
+			    Map.Entry entry = (Map.Entry) it.next();
+			    Object key = entry.getKey();
+			    Object value = entry.getValue();
+			    inputArgs[i++] =  (String) value;
+			}
 			
+			//String[] inputArgs = {"caCore"}; 
 			
+			System.out.println("\n2. Now starting the workflow ..");
+			
+
+			//This method runs the workflow with the resource represented by the EPR.
+			// If there is no inputFile for the workflow, give "null"
+			WorkflowStatusType workflowStatusElement =  TavernaWorkflowServiceClient.startWorkflow(inputArgs, resourceEPR);
+			
+			//TODO should be a while loop?
+			if (workflowStatusElement.equals(WorkflowStatusType.Done))
+			{
+				System.out.println("Workflow successfully executed..");
+			}
+			else
+			{
+				throw new Exception("Failed to execute the workflow! Please try again.");
+			}
+			// 3. Get Status operation invoked.
+			System.out.println("\n3. Checking the status of the workflow..");
+			WorkflowStatusType workflowStatus = TavernaWorkflowServiceClient.getStatus(resourceEPR);
+			if(workflowStatus.equals(WorkflowStatusType.Done))
+			{
+				System.out.println("Workflow Executions is Completed.");
+			}
+			else if (workflowStatus.equals(WorkflowStatusType.Failed))
+			{
+				System.out.println("Workflow failed to execute.");
+			}
+			else if (workflowStatus.equals(WorkflowStatusType.Pending))
+			{
+				System.out.println("Workflow execution is pending.");
+			}
+
+			//4. Get output of workflow.
+
+			System.out.println("\n4. Getting back the output string..");
+			WorkflowOutputType workflowOutput = TavernaWorkflowServiceClient.getOutput(resourceEPR);
+			
+			 outputs = workflowOutput.getOutputFile();			
 		} catch (SerializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -326,13 +433,26 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		
 		//TODO get a list of xml strings,add to output panel
 		Map<String, String> outputMap = new HashMap <String, String>();
-		outputMap.put("output", "<output>four projects here!</output>");
+		for (int i=0;i<facade.getDataflow().getOutputPorts().size();i++){
+			//TODO: sequence will mess up!
+			op = facade.getDataflow().getOutputPorts().get(i);
+			outputMap.put(op.getName(),outputs[i]);
+			
+		}
 		runComponent.outputMap = outputMap;
 		//show the outputMap in resultPanel
 		//traverse the outputMap
-		JTextArea resultText = new JTextArea(String.valueOf(runComponent.workflowid) + ": " + runComponent.outputMap.get("output"));
+		String resultDisplayString = "";
+		for(Iterator it = outputMap.entrySet().iterator(); it.hasNext();) {
+		    Map.Entry entry = (Map.Entry) it.next();
+		    Object key = entry.getKey();
+		    Object value = entry.getValue();
+		    resultDisplayString  = resultDisplayString + (String) key + ":\n" +(String) value;
+		}
+		JTextArea resultText = new JTextArea(resultDisplayString);
 		runComponent.status = "completed";
 		outputPanel.removeAll();
+		outputPanel.revalidate();
 		outputPanel.add(resultText, BorderLayout.CENTER);
 		outputPanel.revalidate();
 		revalidate();
