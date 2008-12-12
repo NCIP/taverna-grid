@@ -55,6 +55,7 @@ public class CaGridRun {
 		resultPanel = new JPanel();
 		resultPanel.setName(String.valueOf(workflowid));
 		status = "initiated";
+		outputMap = null;
 		
 	}
 

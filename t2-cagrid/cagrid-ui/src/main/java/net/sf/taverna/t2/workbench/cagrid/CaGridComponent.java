@@ -124,7 +124,9 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
       
       private JSplitPane resultPanel;
       private JPanel runListPanel;
-      private JPanel outputPanel;
+      //private JPanel outputPanel;
+      private JScrollPane outputPanel;
+      private JTextArea resultText;
 	
 	private CaGridComponent() {
 		  super(new GridBagLayout());
@@ -176,21 +178,30 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 						if (selection instanceof CaGridRun) {
 							CaGridRun dataflowRun = (CaGridRun) selection;
 							//TODO refresh outputPanel
+							String resultDisplayString = "";
 							if(dataflowRun.status.equals("completed")){
-								String resultDisplayString = "";
-								for(Iterator it = dataflowRun.outputMap.entrySet().iterator(); it.hasNext();) {
+								if(dataflowRun.outputMap!=null){
+									for(Iterator it = dataflowRun.outputMap.entrySet().iterator(); it.hasNext();) {
 								    Map.Entry entry = (Map.Entry) it.next();
 								    Object key = entry.getKey();
 								    Object value = entry.getValue();
 								    resultDisplayString  = resultDisplayString + (String) key + ":--" +(String) value + "\n";
 								}
-								JTextArea resultText = new JTextArea(resultDisplayString);
-							outputPanel.removeAll();
-							outputPanel.revalidate();
-							outputPanel.add(resultText, BorderLayout.CENTER);
-							outputPanel.revalidate();
-							revalidate();	
+								}
+								else{
+									resultDisplayString = "The workflow does not return any output.";
+								}
 							}
+							else{
+								resultDisplayString = "The workflow does not complete correctly";
+								
+							}
+							resultText.setText(resultDisplayString);
+							resultText.setLineWrap(true);
+							resultText.setEditable(false);
+							outputPanel.revalidate();
+			
+						revalidate();	
 							
 						}
 					}
@@ -201,12 +212,15 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			
 			//TODO outputPanel should be a tabbed pane?
 			//each output should be a (xml) string
-			outputPanel = new JPanel();
+			outputPanel = new JScrollPane();
 			
+			resultText = new JTextArea();
+			outputPanel = new JScrollPane(resultText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			//outputPanel = new JPanel(new BorderLayout());
 			outputPanel.setBorder(LineBorder.createGrayLineBorder());
 			outputPanel.setBackground(Color.WHITE);
-			outputPanel.add(new JLabel("Workflow Execution Outputs shows here.", JLabel.CENTER), BorderLayout.CENTER);
+			//outputPanel.add(new JLabel("Workflow Execution Outputs shows here.", JLabel.CENTER), null);
 			resultPanel.setBottomComponent(outputPanel);
 			add(resultPanel,c);
 			
@@ -428,15 +442,20 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			e.printStackTrace();
 		}
 		 
-		 DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(0);
-		System.out.println(op.getName());
-		
+		// DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(0);
+		//System.out.println(op.getName());
+		System.out.println("This workflow has" + facade.getDataflow().getOutputPorts().size() + "output ports");
+		System.out.println("Output returned by service " + outputs.length);
 		//TODO get a list of xml strings,add to output panel
 		Map<String, String> outputMap = new HashMap <String, String>();
 		for (int i=0;i<facade.getDataflow().getOutputPorts().size();i++){
 			//TODO: sequence will mess up!
-			op = facade.getDataflow().getOutputPorts().get(i);
-			outputMap.put(op.getName(),outputs[i]);
+			System.out.println("output no."+ (i+1));
+			if(i<outputs.length){
+				DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(i);
+				outputMap.put(op.getName(),outputs[i]);
+			}
+			
 			
 		}
 		runComponent.outputMap = outputMap;
@@ -449,15 +468,18 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		    Object value = entry.getValue();
 		    resultDisplayString  = resultDisplayString + (String) key + ":\n" +(String) value;
 		}
-		JTextArea resultText = new JTextArea(resultDisplayString);
+		//JTextArea resultText = new JTextArea(resultDisplayString);
+		resultText.setText(resultDisplayString);
+		resultText.setLineWrap(true);
+		resultText.setEditable(false);
+		System.out.println("workflow output:\n" + resultDisplayString);
 		runComponent.status = "completed";
-		outputPanel.removeAll();
+		resultText.revalidate();
+		//outputPanel.removeAll();
 		outputPanel.revalidate();
-		outputPanel.add(resultText, BorderLayout.CENTER);
-		outputPanel.revalidate();
+		//outputPanel.add(resultText);	
+		//outputPanel.revalidate();
 		revalidate();
-		
-		//CaGridComponent.getInstance()
 		
 	}
 	public static CaGridComponent getInstance() {
