@@ -118,6 +118,7 @@ public class TavernaWorkflowServiceClientMain {
 					WorkflowOutputType workflowOutput = TavernaWorkflowServiceClient.getOutput(readEPR);
 					
 					String[] outputs = workflowOutput.getOutputFile();
+					//for now the service only returns one output file
 					for (int i=0; i < outputs.length; i++)
 					{
 						String outputFile = System.getProperty("user.dir") + "/Test1-output-" + i + ".xml";
