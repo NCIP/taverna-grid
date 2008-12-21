@@ -20,17 +20,26 @@
 	</build>
 
 	<properties>
-		<t2.workbench.version>0.1</t2.workbench.version>
-		<t2.core.version>0.3</t2.core.version>
-		<t2.ui.version>0.3</t2.ui.version>
-		<t2.workbench.perspective.version>1.8</t2.workbench.perspective.version>
-		<t2.workbench.views.version>0.0.1</t2.workbench.views.version>
+		<t2.platform.version>0.2</t2.platform.version>
+		<t2.reference.version>0.2</t2.reference.version>
+		
+		<t2.core.version>0.4</t2.core.version>
+		
+		<t2.workbench.version>0.2</t2.workbench.version>
+		<t2.workbench.perspective.version>1.9</t2.workbench.perspective.version>
+		
+		<t2.ui.version>0.4</t2.ui.version>
+		<t2.io.version>0.4</t2.io.version>
+		<t2.observer.version>0.4</t2.observer.version>
+		<t2.partition.version>0.4</t2.partition.version>
+		<t2.spidiscovery.version>0.4</t2.spidiscovery.version>
+		
+		<raven.version>1.9</raven.version>
+		<t2.security.version>0.2</t2.security.version>
 
-		<t2.platform.version>0.1</t2.platform.version>
-		<t2.reference.version>0.1</t2.reference.version>
-		<t2.spidiscovery.version>0.3</t2.spidiscovery.version>
-		<raven.version>1.8</raven.version>
-		<t2.activities.version>0.3</t2.activities.version>
+		<taverna.version>1.7.2.0</taverna.version>
+
+		<t2.activities.version>0.4</t2.activities.version>
 	</properties>
 	<repositories>
 		<repository>
