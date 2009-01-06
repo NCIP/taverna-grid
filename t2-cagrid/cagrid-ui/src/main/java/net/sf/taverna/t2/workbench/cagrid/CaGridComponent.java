@@ -406,9 +406,16 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 				System.out.println("Workflow successfully executed..");
 			}
 			else
-			{
-				throw new Exception("Failed to execute the workflow! Please try again.");
+			{				
+				while(!workflowStatusElement.equals(WorkflowStatusType.Done)){
+					System.out.println(workflowStatusElement.getValue());
+					Thread.sleep(2000);
+					workflowStatusElement = TavernaWorkflowServiceClient.getStatus(resourceEPR);
+				}
+				
 			}
+		
+		
 			// 3. Get Status operation invoked.
 			System.out.println("\n3. Checking the status of the workflow..");
 			WorkflowStatusType workflowStatus = TavernaWorkflowServiceClient.getStatus(resourceEPR);

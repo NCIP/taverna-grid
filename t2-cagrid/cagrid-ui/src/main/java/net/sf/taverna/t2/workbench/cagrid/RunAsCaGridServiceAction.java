@@ -59,6 +59,7 @@ import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLDeserializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLDeserializerImpl;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializerImpl;
+import net.sf.taverna.t2.workbench.file.FileManager;
 
 import org.apache.log4j.Logger;
 
@@ -110,10 +111,28 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 		runComponent = CaGridComponent.getInstance();
 		//when the run button is pushed down
 		//1: retrieve workflow definition from workbench
+		/*
 		Object model = ModelMap.getInstance().getModel(
 				ModelMapConstants.CURRENT_DATAFLOW);
-		if (model instanceof Dataflow) {
-			Dataflow dataflow = (Dataflow) model;
+		//if (model instanceof Dataflow) {
+		Dataflow dataflow =null;
+		if(model!=null){
+			System.out.println(model.toString());
+			dataflow = (Dataflow) model;
+			System.out.println(dataflow.getLocalName());
+			
+		}
+		else {
+			System.out.println("model got from workbench is null");
+		}
+		*/
+		Dataflow dataflow = FileManager.getInstance().getCurrentDataflow();
+		if(dataflow==null){
+			System.out.println("model got from workbench is null");
+		}
+		
+		
+			
 			XMLSerializer serialiser = new XMLSerializerImpl();
 			XMLDeserializer deserialiser = new XMLDeserializerImpl();
 			Dataflow dataflowCopy = null;
@@ -172,7 +191,7 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 				showErrorDialog("Unable to make a copy of the workflow to run",
 						"Workflow copy failed");
 			}
-		}
+		//}
 
 	}
 

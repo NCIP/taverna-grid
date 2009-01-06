@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.workbench.views</groupId>
 			<artifactId>monitor</artifactId>
-			<version>${t2.workbench.views.version}</version>
+			<version>${t2.workbench.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.workbench</groupId>
@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.workbench.views</groupId>
 			<artifactId>results</artifactId>
-			<version>${t2.workbench.views.version}</version>
+			<version>${t2.workbench.version}</version>
 		</dependency>
 
 		<dependency>
