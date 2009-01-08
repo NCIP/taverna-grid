@@ -189,11 +189,14 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 								}
 								}
 								else{
-									resultDisplayString = "The workflow does not return any output.";
+									resultDisplayString = "Workflow succeeds to execute with no output.";
 								}
 							}
+							else if(dataflowRun.status.equals("pending")){
+								resultDisplayString = "Workflow execution is pending.";
+							}
 							else{
-								resultDisplayString = "The workflow does not complete correctly";
+								resultDisplayString = "Workflow failed to execute.";
 								
 							}
 							resultText.setText(resultDisplayString);
@@ -323,22 +326,22 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
    }
    
    
- 
+ //TODO: should be executed in a new thread
    public void runWorkflow(WorkflowInstanceFacade facade, Map<String, T2Reference> inputs) {
 	   //TODO invoke caGrid workflow execution service
 		CaGridRun runComponent = new CaGridRun();
 		runListModel.add(0, runComponent);
 		runList.setSelectedIndex(0);	
-		//TODO print out the information of the workflow
+		//print out the information of the workflow
 		System.out.println("Workflow is running.");
-		//TODO traverse inputports, get all strings and combine to a String[]
+		//traverse inputports, get all strings and combine to a String[]
 		Map<String, String> inputMap = new HashMap <String, String>();
 		for (int i=0;i<facade.getDataflow().getInputPorts().size();i++){
 			//TODO: sequence will mess up!
 			DataflowInputPort ip = facade.getDataflow().getInputPorts().get(i);
 			T2Reference inputRef = (T2Reference) inputs.get(ip.getName());
 			//System.out.println(inputRef.toString());
-			
+			//get a string from a T2Reference
 			String inputString = (String) facade.getContext().getReferenceService().renderIdentifier(inputRef,
 					String.class, null);
 			inputMap.put(ip.getName(),inputString);
@@ -357,6 +360,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
          Dataflow dataflow = facade.getDataflow();
 		XMLSerializer serialiser = new XMLSerializerImpl();
 		String[] outputs = null;
+		String resultDisplayString = "";
 		try {
 			Element workflowDef = serialiser.serializeDataflow(dataflow);
 			XMLOutputter outputter = new XMLOutputter();
@@ -364,7 +368,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			//outputter.output(workflowDef, System.out);
 			
 			String workflowDefString = outputter.outputString(workflowDef);
-			//TODO write this string into a file to be consumed by Dina's service
+			//write this string into a file to be consumed by Dina's service
 			 File file = new File(dataflow.getLocalName());
 		      FileUtils.writeStringToFile(file, workflowDefString);	
 		      System.out.println("File name: " + file.getAbsolutePath());
@@ -400,17 +404,29 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			// If there is no inputFile for the workflow, give "null"
 			WorkflowStatusType workflowStatusElement =  TavernaWorkflowServiceClient.startWorkflow(inputArgs, resourceEPR);
 			
-			//TODO should be a while loop?
+			//poll the status
 			if (workflowStatusElement.equals(WorkflowStatusType.Done))
 			{
 				System.out.println("Workflow successfully executed..");
 			}
+			else if (workflowStatusElement.equals(WorkflowStatusType.Failed))
+			{
+				System.out.println("Workflow failed to execute.");
+			}
 			else
-			{				
-				while(!workflowStatusElement.equals(WorkflowStatusType.Done)){
+			{	//TODO: need to set a timeout, what if it fails?	
+				//timeout: 200 seconds
+				int k=0;
+				int timeout =100;			
+				while(workflowStatusElement.equals(WorkflowStatusType.Active)&&(k<timeout)){
 					System.out.println(workflowStatusElement.getValue());
 					Thread.sleep(2000);
+					//refresh status
 					workflowStatusElement = TavernaWorkflowServiceClient.getStatus(resourceEPR);
+					k++;
+				}
+				if(k==timeout){
+					System.out.println("Workflow execution timeout: " + k + " s." );
 				}
 				
 			}
@@ -422,22 +438,41 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			if(workflowStatus.equals(WorkflowStatusType.Done))
 			{
 				System.out.println("Workflow Executions is Completed.");
+				//4. Get output of workflow.
+				System.out.println("\n4. Getting back the output string..");
+				WorkflowOutputType workflowOutput = TavernaWorkflowServiceClient.getOutput(resourceEPR);
+				outputs = workflowOutput.getOutputFile();	
+				System.out.println("This workflow has" + facade.getDataflow().getOutputPorts().size() + "output ports");
+				System.out.println("Output returned by service " + outputs.length);
+				//TODO get a list of xml strings,add to output panel
+				Map<String, String> outputMap = new HashMap <String, String>();
+				for (int j=0;j<facade.getDataflow().getOutputPorts().size();j++){
+					//TODO: sequence will mess up!
+					System.out.println("output no."+ (j+1));
+					if(j<outputs.length){
+						DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(j);
+						outputMap.put(op.getName(),outputs[j]);
+					}		
+				}
+				runComponent.outputMap = outputMap;
+				runComponent.status = "completed";
+				resultDisplayString = "Workflow succeeds to execute with no output.";
+				
 			}
 			else if (workflowStatus.equals(WorkflowStatusType.Failed))
 			{
 				System.out.println("Workflow failed to execute.");
+				resultDisplayString = "Workflow failed to execute.";
+				runComponent.status = "failed";
+				runComponent.outputMap = null;
 			}
 			else if (workflowStatus.equals(WorkflowStatusType.Pending))
 			{
 				System.out.println("Workflow execution is pending.");
-			}
-
-			//4. Get output of workflow.
-
-			System.out.println("\n4. Getting back the output string..");
-			WorkflowOutputType workflowOutput = TavernaWorkflowServiceClient.getOutput(resourceEPR);
-			
-			 outputs = workflowOutput.getOutputFile();			
+				resultDisplayString = "Workflow execution is pending.";
+				runComponent.status = "pending";
+				runComponent.outputMap = null;
+			}					
 		} catch (SerializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -448,39 +483,26 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
-		// DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(0);
-		//System.out.println(op.getName());
-		System.out.println("This workflow has" + facade.getDataflow().getOutputPorts().size() + "output ports");
-		System.out.println("Output returned by service " + outputs.length);
-		//TODO get a list of xml strings,add to output panel
-		Map<String, String> outputMap = new HashMap <String, String>();
-		for (int i=0;i<facade.getDataflow().getOutputPorts().size();i++){
-			//TODO: sequence will mess up!
-			System.out.println("output no."+ (i+1));
-			if(i<outputs.length){
-				DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(i);
-				outputMap.put(op.getName(),outputs[i]);
-			}
-			
-			
-		}
-		runComponent.outputMap = outputMap;
+		 		
 		//show the outputMap in resultPanel
 		//traverse the outputMap
-		String resultDisplayString = "";
-		for(Iterator it = outputMap.entrySet().iterator(); it.hasNext();) {
-		    Map.Entry entry = (Map.Entry) it.next();
-		    Object key = entry.getKey();
-		    Object value = entry.getValue();
-		    resultDisplayString  = resultDisplayString + (String) key + ":\n" +(String) value;
+		if(runComponent.outputMap!=null){
+			resultDisplayString = "";
+			for(Iterator it = runComponent.outputMap.entrySet().iterator(); it.hasNext();) {
+			    Map.Entry entry = (Map.Entry) it.next();
+			    Object key = entry.getKey();
+			    Object value = entry.getValue();
+			    resultDisplayString  = resultDisplayString + (String) key + ":\n" +(String) value;
+			}
+			
 		}
+				
 		//JTextArea resultText = new JTextArea(resultDisplayString);
 		resultText.setText(resultDisplayString);
 		resultText.setLineWrap(true);
 		resultText.setEditable(false);
 		System.out.println("workflow output:\n" + resultDisplayString);
-		runComponent.status = "completed";
+		
 		resultText.revalidate();
 		//outputPanel.removeAll();
 		outputPanel.revalidate();
