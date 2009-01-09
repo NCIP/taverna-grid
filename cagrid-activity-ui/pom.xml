@@ -66,12 +66,14 @@
 			<groupId>net.sf.taverna.t2.workbench</groupId>
 			<artifactId>activity-palette-api</artifactId>
 			<version>${t2.workbench.version}</version>
-		</dependency>
+		</dependency> 
+		<!--  
 		<dependency>
 			<groupId>net.sf.taverna</groupId>
 			<artifactId>wsdl-generic</artifactId>
-			<version>1.2</version>
+			<version>1.2</version>		
 		</dependency>
+		-->
 		<dependency>
 			<groupId>net.sf.taverna.t2.workbench</groupId>
 			<artifactId>contextual-views-impl</artifactId>
@@ -98,11 +100,22 @@
 			<groupId>net.sf.taverna.t2.activities</groupId>
 			<artifactId>wsdl-activity</artifactId>
 			<version>${t2.activities.version}</version>
+			 <exclusions>
+    <exclusion>
+      <groupId>axis</groupId>
+      <artifactId>axis</artifactId>
+    </exclusion>
+  </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>caGrid</groupId>
 			<artifactId>caGrid-package</artifactId>
 			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>Globus</groupId>
+			<artifactId>Globus-package</artifactId>
+			<version>4.0.3</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -22,7 +22,7 @@ import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.ServiceMetadata;
 import gov.nih.nci.cagrid.metadata.ServiceMetadataServiceDescription;
-import gov.nih.nci.cagrid.metadata.common.ResearchCenterPointOfContactCollection;
+//import gov.nih.nci.cagrid.metadata.common.ResearchCenterPointOfContactCollection;
 import gov.nih.nci.cagrid.metadata.common.PointOfContact;
 import gov.nih.nci.cagrid.metadata.common.UMLClass;
 import gov.nih.nci.cagrid.metadata.exceptions.QueryInvalidException;
@@ -31,7 +31,7 @@ import gov.nih.nci.cagrid.metadata.exceptions.ResourcePropertyRetrievalException
 import gov.nih.nci.cagrid.metadata.service.Operation;
 //import gov.nih.nci.cagrid.metadata.service.OperationInputParameterCollection;
 import gov.nih.nci.cagrid.metadata.service.ServiceContext;
-import gov.nih.nci.cagrid.metadata.service.ServicePointOfContactCollection;
+//import gov.nih.nci.cagrid.metadata.service.ServicePointOfContactCollection;
 import gov.nih.nci.cagrid.metadata.service.ServiceServiceContextCollection;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Arrays;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.axis.types.URI.MalformedURIException;
+//import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.Logger;
 
 
@@ -137,7 +137,7 @@ public class CaGridServiceQueryUtility {
 		DiscoveryClient client = null;
 		try {
 			client = new DiscoveryClient(indexURL);
-		} catch (MalformedURIException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

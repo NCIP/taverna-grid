@@ -1,20 +1,20 @@
 package net.sf.taverna.t2.activities.cagrid.query;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.List;
 
-import javax.wsdl.Operation;
-import javax.wsdl.WSDLException;
-import javax.xml.parsers.ParserConfigurationException;
+//import javax.wsdl.Operation;
+//import javax.wsdl.WSDLException;
+//import javax.xml.parsers.ParserConfigurationException;
 
 import net.sf.taverna.t2.partition.ActivityQuery;
-import net.sf.taverna.wsdl.parser.UnknownOperationException;
-import net.sf.taverna.wsdl.parser.WSDLParser;
+//import net.sf.taverna.wsdl.parser.UnknownOperationException;
+//import net.sf.taverna.wsdl.parser.WSDLParser;
 
 import org.apache.log4j.Logger;
 
 
-import org.xml.sax.SAXException;
+//import org.xml.sax.SAXException;
 
 public class CaGridQuery extends ActivityQuery {
 	
