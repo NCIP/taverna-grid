@@ -23,7 +23,7 @@ package net.sf.taverna.t2.activities.cagrid.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
+//import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,13 +39,13 @@ public class CaGridQueryTest {
 	}
 	
 	
-	@Ignore("JUnit uses a flat classpath so both Taverna and Globus axis are in classpth, this test will fail")
+	//Ignore("JUnit uses a flat classpath so both Taverna and Globus axis are in classpth, this test will fail")
 	@Test
 	public void testDoQuery() {
 		CaGridQuery q = new CaGridQuery(indexURL,null);
 		q.doQuery();
 		WSDLActivityItem i = (WSDLActivityItem)q.toArray()[0];
-		assertEquals("The type should be WSDL","WSDL",i.getType());
+		assertEquals("The type should be CaGrid Services","CaGrid Services",i.getType());
 		assertEquals("The style should be document","document",i.getStyle());
 		assertNotNull("The operation should be set",i.getOperation());
 		assertTrue("The operation should be have some content",i.getOperation().length()>2);
