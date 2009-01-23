@@ -7,20 +7,20 @@ package net.sf.taverna.cagrid.servicewrapper;
  * @author Stian Soiland-Reyes
  * 
  */
-public class InterProScanServiceInvoker {
+public class ServiceInvoker {
 
 	private static final int SLEEP = 500;
-	private InterProScanService service;
+	private AnalyticalService service;
 
 	/**
-	 * Invoke {@link InterProScanService} asynchronously.
+	 * Invoke {@link AnalyticalService} asynchronously.
 	 * 
 	 * @param inputData
 	 *            InterProScan-formatted input
 	 * @return InterProScan-formatted output
 	 */
-	public InterProScanOutput invoke(InterProScanInput inputData) {
-		String jobId = service.runInterProScan(inputData);
+	public AnalyticalServiceOutput invoke(AnalyticalServiceInput inputData) {
+		String jobId = service.runJob(inputData);
 		// TODO: Handle error conditions as well
 		while (!(service.getStatus(jobId).equals("DONE"))) {
 			try {
@@ -28,6 +28,6 @@ public class InterProScanServiceInvoker {
 			} catch (InterruptedException e) {
 			}
 		}
-		return service.polljobResponse(jobId);
+		return service.poll(jobId);
 	}
 }
