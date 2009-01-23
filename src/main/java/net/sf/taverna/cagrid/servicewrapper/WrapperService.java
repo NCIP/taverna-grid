@@ -9,7 +9,7 @@ package net.sf.taverna.cagrid.servicewrapper;
  * @author Stian Soiland-Reyes
  * 
  */
-public class WrappedService {
+public class WrapperService {
 
 	private DataConverter converter;
 	private ServiceInvoker invoker;
