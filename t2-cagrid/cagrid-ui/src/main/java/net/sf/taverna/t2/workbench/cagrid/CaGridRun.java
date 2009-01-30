@@ -21,15 +21,15 @@
  ******************************************************************************/
 package net.sf.taverna.t2.workbench.cagrid;
 
-import java.awt.BorderLayout;
+//import java.awt.BorderLayout;
 import java.util.Date;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
+//import javax.swing.JTabbedPane;
+//import javax.swing.JTextArea;
 
 import net.sf.taverna.t2.reference.T2Reference;
 

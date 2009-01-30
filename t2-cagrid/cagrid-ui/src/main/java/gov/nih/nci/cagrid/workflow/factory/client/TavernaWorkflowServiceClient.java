@@ -3,24 +3,24 @@ package gov.nih.nci.cagrid.workflow.factory.client;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.InputStream;
+//import java.io.InputStream;
 import java.rmi.RemoteException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+//import java.util.Calendar;
+//import java.util.HashMap;
+//import java.util.Map;
 import javax.xml.namespace.QName;
 
-import org.apache.axis.EngineConfiguration;
-import org.apache.axis.client.AxisClient;
+//import org.apache.axis.EngineConfiguration;
+//import org.apache.axis.client.AxisClient;
 import org.apache.axis.client.Stub;
-import org.apache.axis.configuration.FileProvider;
+//import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.axis.types.Duration;
+//import org.apache.axis.types.Duration;
 import org.apache.axis.types.URI.MalformedURIException;
 
 import org.apache.axis.types.URI;
 
-import org.oasis.wsrf.properties.GetResourcePropertyResponse;
+//import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 
 import org.xml.sax.InputSource;
 

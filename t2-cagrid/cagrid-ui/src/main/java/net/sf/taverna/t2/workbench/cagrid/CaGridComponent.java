@@ -22,19 +22,19 @@
  ******************************************************************************/
 package net.sf.taverna.t2.workbench.cagrid;
 
-import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
-import gov.nih.nci.cagrid.common.Utils;
+//import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
+//import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.workflow.factory.client.TavernaWorkflowServiceClient;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+//import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Date;
+//import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,7 +45,7 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.io.FileUtils;
 
 
-import javax.swing.Action;
+//import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,7 +55,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
+//import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
@@ -78,13 +78,13 @@ import net.sf.taverna.t2.facade.WorkflowInstanceFacade;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.workbench.reference.config.ReferenceConfiguration;
-import net.sf.taverna.t2.workbench.run.DataflowRun;
+//import net.sf.taverna.t2.workbench.run.DataflowRun;
 
 import net.sf.taverna.t2.workbench.ui.zaria.UIComponentSPI;
 import net.sf.taverna.t2.workflowmodel.Dataflow;
 import net.sf.taverna.t2.workflowmodel.DataflowInputPort;
 import net.sf.taverna.t2.workflowmodel.DataflowOutputPort;
-import net.sf.taverna.t2.workflowmodel.InvalidDataflowException;
+///import net.sf.taverna.t2.workflowmodel.InvalidDataflowException;
 import net.sf.taverna.t2.workflowmodel.serialization.SerializationException;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializerImpl;
@@ -247,7 +247,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
            c.anchor = GridBagConstraints.LINE_END;
            c.ipadx = 5;
            c.ipady = 5;
-           add(new JLabel("caGird Service URI :"), c);
+           add(new JLabel("CaGrid Service URL :"), c);
            
            c.weightx = 0.1;
            c.anchor = GridBagConstraints.LINE_START;

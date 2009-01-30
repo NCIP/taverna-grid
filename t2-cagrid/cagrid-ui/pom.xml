@@ -30,11 +30,13 @@
 			<artifactId>monitor</artifactId>
 			<version>${t2.workbench.version}</version>
 		</dependency>
+		<!--  
 		<dependency>
 			<groupId>net.sf.taverna.t2.workbench</groupId>
 			<artifactId>run-ui</artifactId>
 			<version>${t2.workbench.version}</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>net.sf.taverna.t2.workbench</groupId>
 			<artifactId>commons-icons</artifactId>
