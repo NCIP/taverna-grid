@@ -92,6 +92,11 @@
 			<name>myGrid maven proxy server</name>
 			<url>http://www.mygrid.org.uk/maven/proxy/repository</url>
 		</repository>
+		<repository>
+			<id>t2-cagrid</id>
+			<name>cagrid repository for t2 plug-ins</name>
+			<url>http://www.mcs.anl.gov/~wtan/t2/repository/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 	
