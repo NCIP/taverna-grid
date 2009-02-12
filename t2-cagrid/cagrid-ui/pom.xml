@@ -99,34 +99,34 @@
 			<version>${t2.workbench.version}</version>
 		</dependency>
 	<dependency>
-			<groupId>Globus</groupId>
-			<artifactId>Globus-package</artifactId>
+			<groupId>org.globus</groupId>
+			<artifactId>globus-package</artifactId>
 			<version>4.0.3</version>
 		</dependency>
 		<dependency>
-			<groupId>taverna-cagrid</groupId>
+			<groupId>org.taverna-cagrid</groupId>
 			<artifactId>TavernaWorkflowService-client</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>taverna-cagrid</groupId>
+			<groupId>org.taverna-cagrid</groupId>
 			<artifactId>TavernaWorkflowService-common</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>taverna-cagrid</groupId>
+			<groupId>org.taverna-cagrid</groupId>
 			<artifactId>TavernaWorkflowService-service</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>taverna-cagrid</groupId>
+			<groupId>org.taverna-cagrid</groupId>
 			<artifactId>TavernaWorkflowService-stubs</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>caGrid</groupId>
-			<artifactId>caGrid-package</artifactId>
-			<version>1.2</version>
+			<groupId>org.cagrid</groupId>
+			<artifactId>cagrid-package</artifactId>
+			<version>1.2-0</version>
 		</dependency>
 
 	</dependencies>
