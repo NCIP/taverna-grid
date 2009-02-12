@@ -68,13 +68,13 @@
 	</repositories>
 	<dependencies>
 	<dependency>
-			<groupId>caGrid</groupId>
-			<artifactId>caGrid-package</artifactId>
-			<version>1.2</version>
+			<groupId>org.cagrid</groupId>
+			<artifactId>cagrid-package</artifactId>
+			<version>1.2-0</version>
 		</dependency>
 		<dependency>
-			<groupId>Globus</groupId>
-			<artifactId>Globus-package</artifactId>
+			<groupId>org.globus</groupId>
+			<artifactId>globus-package</artifactId>
 			<version>4.0.3</version>
 		</dependency>
 		<dependency>
