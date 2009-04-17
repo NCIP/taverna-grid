@@ -24,10 +24,11 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-public class WSDLActivityItemTest {
+public class CaGridActivityItemTest {
 
 	@Test
 	public void testIcon() {
-		assertNotNull(new WSDLActivityItem().getIcon());
+		assertNotNull(new CaGridActivityItem().getIcon());
 	}
 }
+

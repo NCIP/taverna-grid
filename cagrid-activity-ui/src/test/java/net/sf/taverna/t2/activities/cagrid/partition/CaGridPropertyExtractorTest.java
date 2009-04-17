@@ -31,7 +31,7 @@ import java.util.Map;
 
 import javax.swing.Icon;
 
-import net.sf.taverna.t2.activities.cagrid.query.WSDLActivityItem;
+import net.sf.taverna.t2.activities.cagrid.query.CaGridActivityItem;
 import net.sf.taverna.t2.partition.ActivityItem;
 import net.sf.taverna.t2.partition.PropertyExtractorSPI;
 import net.sf.taverna.t2.partition.PropertyExtractorSPIRegistry;
@@ -57,7 +57,7 @@ public class CaGridPropertyExtractorTest {
 	
 	@Test
 	public void testExtractProperties() {
-		WSDLActivityItem item = new WSDLActivityItem();
+		CaGridActivityItem item = new CaGridActivityItem();
 		item.setUse("USE");
 		item.setStyle("STYLE");
 		item.setOperation("OPERATION");

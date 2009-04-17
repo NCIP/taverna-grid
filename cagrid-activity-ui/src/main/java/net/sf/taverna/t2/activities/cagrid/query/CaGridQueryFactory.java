@@ -1,5 +1,7 @@
 package net.sf.taverna.t2.activities.cagrid.query;
 
+import net.sf.taverna.t2.activities.cagrid.query.CaGridAddQueryActionHandler;
+import net.sf.taverna.t2.activities.cagrid.query.CaGridQuery;
 import net.sf.taverna.t2.partition.ActivityQuery;
 import net.sf.taverna.t2.partition.ActivityQueryFactory;
 import net.sf.taverna.t2.partition.AddQueryActionHandler;
@@ -13,8 +15,7 @@ public class CaGridQueryFactory extends ActivityQueryFactory {
 
 	@Override
 	protected String getPropertyKey() {
-		//TODO: change this line?
-		return "taverna.defaultwsdl";
+		return "taverna.defaultcagrid";
 	}
 
 	@Override
@@ -26,7 +27,5 @@ public class CaGridQueryFactory extends ActivityQueryFactory {
 	public boolean hasAddQueryActionHandler() {
 		return true;
 	}
-	
-	
 
 }

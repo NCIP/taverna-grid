@@ -51,7 +51,7 @@ public class CaGridPartitionAlgorithmSetSPITest {
 				c++;
 			}
 		}
-		assertEquals("There should be 1 WSDLPartitionAlgorithmSetSPI discovered",1,c);
+		assertEquals("There should be 1 CaGridPartitionAlgorithmSetSPI discovered",1,c);
 	}
 	
 	@Test

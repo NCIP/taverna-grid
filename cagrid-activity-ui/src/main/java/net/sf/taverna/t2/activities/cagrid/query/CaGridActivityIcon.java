@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (C) 2007-2009 The University of Manchester   
- * Copyright (C) 2009 The University of Chicago 
+ * Copyright (C) 2007 The University of Manchester   
+ * 
  *  Modifications to the initial code base are copyright of their
  *  respective authors, or their employers as appropriate.
  * 
@@ -20,35 +20,32 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid.query;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import javax.swing.Icon;
 
-import java.util.List;
+import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
+import net.sf.taverna.t2.activities.cagrid.query.CaGridActivityItem;
+import net.sf.taverna.t2.workbench.activityicons.ActivityIconSPI;
+import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
-import net.sf.taverna.t2.partition.QueryFactory;
-import net.sf.taverna.t2.partition.QueryFactoryRegistry;
+/**
+ * 
+ * @author Alex Nenadic
+ *
+ */
+public class CaGridActivityIcon implements ActivityIconSPI{
 
-import org.junit.Test;
-
-public class CaGridQueryFactoryTest {
-
-	@Test
-	public void testSPI() {
-		List<QueryFactory> instances = QueryFactoryRegistry.getInstance().getInstances();
-		assertTrue("There should be more than one instance found",instances.size()>0);
-		boolean found = false;
-		for (QueryFactory spi : instances) {
-			if (spi instanceof CaGridQueryFactory) {
-				found=true;
-				break;
-			}
-		}
-		assertTrue("A CaGridQueryFactory should have been found",found);
+	public int canProvideIconScore(Activity<?> activity) {
+		if (activity.getClass().getName().equals(CaGridActivity.class.getName()))
+			return DEFAULT_ICON + 1;
+		else
+			return NO_ICON;
 	}
-	
-	@Test
-	public void testKey() {
-		CaGridQueryFactory f = new CaGridQueryFactory();
-		assertEquals("taverna.defaultcagrid",f.getPropertyKey());
+
+	public Icon getIcon(Activity<?> activity) {
+		return new CaGridActivityItem().getIcon();
 	}
+
 }
+
+
+

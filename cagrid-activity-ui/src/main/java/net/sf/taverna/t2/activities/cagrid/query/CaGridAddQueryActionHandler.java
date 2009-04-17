@@ -1,7 +1,5 @@
 package net.sf.taverna.t2.activities.cagrid.query;
 
-
-
 import gov.nih.nci.cadsr.umlproject.domain.Project;
 import gov.nih.nci.cadsr.umlproject.domain.UMLClassMetadata;
 import gov.nih.nci.cadsr.umlproject.domain.UMLPackageMetadata;
@@ -18,11 +16,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
-
 
 import net.sf.taverna.t2.partition.AddQueryActionHandler;
 
@@ -32,7 +28,6 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
 	
 	//the class to popup a service query dialog for users to input caGrid index
 	//service address and the query criteria
-	private JFrame parentFrame = null;
 	
 	//give an initial value to classNameArray
 	//the data is retrieved at 8:30 am, June 16th, 2008
@@ -494,23 +489,15 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
 
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
-		/*
-		String wsdl = JOptionPane.showInputDialog(null,"Address of the WSDL document","WSDL location",JOptionPane.INFORMATION_MESSAGE);
-		if (wsdl!=null) {
-			CaGridQuery query = new CaGridQuery(wsdl);
-			//add the query result to the GUI-- each query corresponds to a wsdl file
-			//what about for each wsdl we get, invoke addQuery?
-			addQuery(query);
-		}
-		*/
 		
-		final JDialog dialog = new JDialog(parentFrame,
-                "Add Your Custom Service Query", true);
+		final JDialog dialog = new JDialog();
+		dialog.setTitle("Add Your Custom Service Query");
+		dialog.setModal(true);
 		
         final CaGridIndexQueryDialog cad = new CaGridIndexQueryDialog();
-        dialog.getContentPane().setLocation(30, 30);
-        dialog.validate();
-        dialog.getContentPane().add(cad);
+        //dialog.validate();
+        //dialog.getContentPane().add(cad);
+        //dialog.setLocation(50, 50);
         
         JButton accept = new JButton("Send Service Query");
         JButton cancel = new JButton("Cancel");
@@ -634,8 +621,8 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
                      	addQuery(new CaGridQuery(url,f_sq));
                      } catch (Exception e) {
                          JOptionPane
-                                 .showMessageDialog(parentFrame,
-                                         "Unable to create scavenger!\n"
+                                 .showMessageDialog(dialog,
+                                         "Unable to create service!\n"
                                                  + e.getMessage(),
                                          "Exception!",
                                          JOptionPane.ERROR_MESSAGE);
@@ -736,13 +723,13 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
             					        
             					        CaGridAddQueryActionHandler.classNameArray  = classNameArray;
             					        //System.out.println("caDSR data is updated, now there are " + classNameArray.length + "UMLClasses.");
-            					        JOptionPane.showMessageDialog(parentFrame, "caDSR data has been  updated. \n Now there are " + classNameArray.length + " UMLClasses in the list.", null, JOptionPane.INFORMATION_MESSAGE);
+            					        JOptionPane.showMessageDialog(dialog, "caDSR data has been  updated. \n Now there are " + classNameArray.length + " UMLClasses in the list.", null, JOptionPane.INFORMATION_MESSAGE);
             					        
         					        }
         					        else{
         					        	//the current value of the GT4ScavengerHelper.classNameArray is not updated
         					        	//System.out.println("Empty class name list retrived, so classNameArray is not updated!");
-        					        	JOptionPane.showMessageDialog(parentFrame,"Empty class name list retrived, so classNameArray is not updated!", null, JOptionPane.INFORMATION_MESSAGE);
+        					        	JOptionPane.showMessageDialog(dialog,"Empty class name list retrived, so classNameArray is not updated!", null, JOptionPane.INFORMATION_MESSAGE);
         					        }
                         	
                         }
@@ -752,21 +739,21 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
                 }
             }
         });
-        dialog.setResizable(false);
+        //dialog.setResizable(false);
         dialog.getContentPane().add(cad);
-        dialog.setLocationRelativeTo(null);
+        dialog.setLocation(50,50);
         dialog.pack();
         dialog.setVisible(true);
 	}
 
 	@Override
 	protected Icon getIcon() {
-		return new ImageIcon(CaGridAddQueryActionHandler.class.getResource("/caGrid.png"));
+		return new ImageIcon(CaGridAddQueryActionHandler.class.getResource("/cagrid.png"));
 	}
 
 	@Override
 	protected String getText() {
-		return "CaGrid...";
+		return "caGrid service...";
 	}
 
 }

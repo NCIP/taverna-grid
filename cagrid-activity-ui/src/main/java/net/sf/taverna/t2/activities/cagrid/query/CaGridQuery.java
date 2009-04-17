@@ -13,7 +13,6 @@ import net.sf.taverna.t2.partition.ActivityQuery;
 
 import org.apache.log4j.Logger;
 
-
 //import org.xml.sax.SAXException;
 
 public class CaGridQuery extends ActivityQuery {
@@ -47,7 +46,7 @@ public class CaGridQuery extends ActivityQuery {
 						// an Activity item corresponds to an operation
 						//services contains service metadata -- no wsdl parser is needed?
 						//we can add a parser to parse it if we need more details on those services
-						WSDLActivityItem item = new WSDLActivityItem();
+						CaGridActivityItem item = new CaGridActivityItem();
 						
 						item.setOperation(op);
 						//make use of "use" and "style" to facilitate metadata-based sorting

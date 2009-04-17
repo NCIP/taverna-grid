@@ -4,11 +4,11 @@ import java.awt.Frame;
 
 import javax.swing.Action;
 
-import net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean;
+import net.sf.taverna.t2.activities.cagrid.CaGridActivityConfigurationBean;
 import net.sf.taverna.t2.workbench.ui.actions.activity.HTMLBasedActivityContextualView;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
-public class CaGridActivityContextualView extends HTMLBasedActivityContextualView<WSDLActivityConfigurationBean> {
+public class CaGridActivityContextualView extends HTMLBasedActivityContextualView<CaGridActivityConfigurationBean> {
 
 	private static final long serialVersionUID = -4329643934083676113L;
 
@@ -17,8 +17,8 @@ public class CaGridActivityContextualView extends HTMLBasedActivityContextualVie
 	}
 
 	@Override
-	protected String getViewTitle() {
-		return "WSDL based activity";
+	public String getViewTitle() {
+		return "caGrid activity";
 	}
 
 	@Override
@@ -34,10 +34,7 @@ public class CaGridActivityContextualView extends HTMLBasedActivityContextualVie
 
 	@Override
 	public Action getConfigureAction(Frame owner) {
-		//return new WSDLActivityConfigureAction((WSDLActivity)getActivity(),owner);
 		return null;
 	}
 	
-	
-
 }
