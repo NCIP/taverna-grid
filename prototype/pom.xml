@@ -9,5 +9,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.org.mygrid.cagrid.servicewrapper</groupId>
 	<artifactId>servicewrapper-prototype</artifactId>
+	<name>caGrid Service Wrapper prototype</name>
 	<version>0.1-SNAPSHOT</version>	
 </project>
