@@ -22,7 +22,7 @@ public interface AnalyticalService {
 	
 	/**
 	 * Run the analytical service job.
-	 * @param input
+	 * @param input 
 	 * @return The ID of the submitted job.
 	 */
 	public String runJob(AnalyticalServiceInput input);
