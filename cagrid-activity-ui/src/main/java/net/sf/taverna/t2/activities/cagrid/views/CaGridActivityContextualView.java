@@ -4,6 +4,7 @@ import java.awt.Frame;
 
 import javax.swing.Action;
 
+import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivityConfigurationBean;
 import net.sf.taverna.t2.workbench.ui.actions.activity.HTMLBasedActivityContextualView;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
@@ -17,8 +18,13 @@ public class CaGridActivityContextualView extends HTMLBasedActivityContextualVie
 	}
 
 	@Override
+	public CaGridActivity getActivity() {
+		return (CaGridActivity) super.getActivity();
+	}
+	
+	@Override
 	public String getViewTitle() {
-		return "caGrid activity";
+		return "caGrid service";
 	}
 
 	@Override

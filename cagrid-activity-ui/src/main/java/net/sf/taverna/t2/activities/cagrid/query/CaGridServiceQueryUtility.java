@@ -390,7 +390,7 @@ public class CaGridServiceQueryUtility {
 				addressList[i][j] = tempEPRList[i][j].getAddress().toString();
 			}
 		}
-		List alist = new ArrayList(Arrays.asList(addressList[0]));
+		List<String> alist = new ArrayList<String>(Arrays.asList(addressList[0]));
 		for (int i = 1; i < tempEPRList.length; i++) {
 			alist.retainAll(Arrays.asList(addressList[i]));
 		}
@@ -417,12 +417,12 @@ public class CaGridServiceQueryUtility {
 }
 
 class ServiceMetaData {
-	String[] serviceAddress;
-	String[][] operationName;
+	String[] serviceAddress = null;
+	String[][] operationName = null;
 
 	ServiceMetaData() {
-		String[] serviceAddress = null;
-		String[][] operationName = null;
+		//String[] serviceAddress = null;
+		//String[][] operationName = null;
 	}
 
 }

@@ -36,6 +36,17 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	private String operation;
 	private String researchCenter;
 	
+	// Security settings of a caGrid service, if any, obtained by invoking
+	// getServiceSecurityMetadata() on the service
+	private boolean isSecure = false;
+	private String gsi_transport;
+	private String gsi_anonymouos;
+	private String authorisation;
+	private String gsi_credentials;
+	private String gsi_secure_conversation;
+	private String gsi_secure_message;
+	private String gsi_mode;
+	
 	public String getResearchCenter() {
 		return researchCenter;
 	}
@@ -85,6 +96,70 @@ public class CaGridActivityItem extends AbstractActivityItem {
 		this.operation = operation;
 	}
 
+	public void setSecure(boolean isSecure) {
+		this.isSecure = isSecure;
+	}
+
+	public boolean isSecure() {
+		return isSecure;
+	}
+
+	public void setGSITransport(String gsi_transport) {
+		this.gsi_transport = gsi_transport;
+	}
+
+	public String getGSITransport() {
+		return gsi_transport;
+	}
+
+	public void setGSIAnonymouos(String gsi_anonymouos) {
+		this.gsi_anonymouos = gsi_anonymouos;
+	}
+
+	public String getGSIAnonymouos() {
+		return gsi_anonymouos;
+	}
+
+	public void setAuthorisation(String authorisation) {
+		this.authorisation = authorisation;
+	}
+
+	public String getAuthorisation() {
+		return authorisation;
+	}
+
+	public void setGSICredentials(String gsi_credentials) {
+		this.gsi_credentials = gsi_credentials;
+	}
+
+	public String getGSICredentials() {
+		return gsi_credentials;
+	}
+
+	public void setGSISecureConversation(String gsi_sec_conv) {
+		this.gsi_secure_conversation = gsi_sec_conv;
+	}
+
+	public String getGSISecureConversation() {
+		return gsi_secure_conversation;
+	}
+
+	public void setGSISecureMessage(String gsi_sec_msg) {
+		this.gsi_secure_message = gsi_sec_msg;
+	}
+
+	public String getGSISecureMessage() {
+		return gsi_secure_message;
+	}
+
+	public void setGSIMode(String gsi_mode) {
+		this.gsi_mode = gsi_mode;
+	}
+
+	public String getGSIMode() {
+		return gsi_mode;
+	}
+
 	
 	public Icon getIcon() {
 		return new ImageIcon(CaGridActivityItem.class.getResource("/cagrid.png"));
@@ -92,8 +167,19 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	
 	public Object getConfigBean() {
 		CaGridActivityConfigurationBean bean = new CaGridActivityConfigurationBean();
+		
 		bean.setWsdl(getUrl());
 		bean.setOperation(getOperation());
+		
+		bean.setSecure(isSecure());
+		bean.setGSITransport(getGSITransport());
+		bean.setGSIAnonymouos(getGSIAnonymouos());
+		bean.setAuthorisation(getAuthorisation());
+		bean.setGSICredentials(getGSICredentials());
+		bean.setGSISecureConversation(getGSISecureConversation());
+		bean.setGSISecureMessage(getGSISecureMessage());
+		bean.setGSIMode(getGSIMode());
+		
 		return bean;
 	}
 	

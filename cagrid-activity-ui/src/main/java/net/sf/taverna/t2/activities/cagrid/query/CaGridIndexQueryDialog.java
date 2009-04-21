@@ -1,22 +1,32 @@
 package net.sf.taverna.t2.activities.cagrid.query;
 
-/*
- * 
- * Author: Wei Tan
+/**
+ *
+ * @author Wei Tan
+ * @author Alex Nenadic
  */
 
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import javax.swing.JComboBox;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 
 
 /**
- * a dialog for helping create scavengers for caGrid registries that are not the default registry.
+ * A panel for helping create scavengers for caGrid registries that are not the default registry.
  *
  */
 public class CaGridIndexQueryDialog extends JPanel {
@@ -37,13 +47,11 @@ public class CaGridIndexQueryDialog extends JPanel {
 			"Domain Model for Data Services"};
 	private String[] queryValues = {};
 
-	//Create the combo box, select item at index 0.
+	//Create the combobox, select item at index 0.
 	public JComboBox[]  queryList = new JComboBox[q_size];
-	public JButton addQuery = new JButton("Add Service Query");
-    public JButton removeQuery = new JButton("Remove Service Query");
+	public JButton addQueryButton = new JButton("Add Service Query");
+    public JButton removeQueryButton = new JButton("Remove Service Query");
     public int q_count =1;
-	
-
 
 
     /**
@@ -52,40 +60,71 @@ public class CaGridIndexQueryDialog extends JPanel {
      */
     public CaGridIndexQueryDialog() {
         super();
-        GridLayout layout = new GridLayout(q_size+5, 2);
-        setLayout(layout);
+        setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(10,10,10,10));
+        
+        JPanel indexServicePanel = new JPanel(new BorderLayout());
+        indexServicePanel.setBorder(new EmptyBorder(5,5,5,5));
         for(int i=0;i<q_size;i++){
         	queryValue[i]=new JComboBox(queryValues);
         	queryValue[i].setEditable(true);
         	queryList[i] = new JComboBox(queryStrings);     	
         }
-        add(new ShadedLabel("Location (URL) of the index service: ", ShadedLabel.BLUE, true));
+        indexServicePanel.add(new ShadedLabel("Location (URL) of the index service: ", ShadedLabel.BLUE, true), BorderLayout.WEST);
         indexServiceURLs.setEditable(true);
         indexServiceURLs.setToolTipText("caGrid Services will be retrieved from the index service whose URL you specify here!");
-        add(indexServiceURLs);
+        indexServicePanel.add(indexServiceURLs, BorderLayout.CENTER);
+        add(indexServicePanel, BorderLayout.NORTH);
         
-        add(addQuery);
-        add(removeQuery);
-        add(new ShadedLabel("Service Query Criteria: ", ShadedLabel.BLUE, true));        
-        //queryCriteria.setToolTipText("Service Query will use the query criteria you specify here!");        
-        add(new ShadedLabel("Service Query Value: ", ShadedLabel.BLUE, true));
-        for(int i=0;i<q_size;i++){
+        JPanel serviceQueryPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        serviceQueryPanel.setBorder(new CompoundBorder(new EmptyBorder(5,5,5,5), new EtchedBorder(EtchedBorder.LOWERED)));
+        JPanel queryListPanel = new JPanel(new GridBagLayout());
+        JPanel queryButtonsPanel = new JPanel();
+        queryButtonsPanel.setLayout(new BoxLayout(queryButtonsPanel, BoxLayout.Y_AXIS));
+        
+		GridBagConstraints c = new GridBagConstraints();
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5,0,5,5);
+        queryListPanel.add(new ShadedLabel("Service Query Criteria: ", ShadedLabel.BLUE, true), c);        
+        //queryCriteria.setToolTipText("Service Query will use the query criteria you specify here!");   
+		c.gridx = 1;
+		c.gridy = 0;
+        queryListPanel.add(new ShadedLabel("Service Query Value: ", ShadedLabel.BLUE, true), c);
+        
+        c.gridy = 1;
+        for (int i=0 ; i<q_size; i++){
+        	c.gridx = 0;
         	queryValue[i].setToolTipText("Service Query will use the query value you specify here!");
-            add(queryList[i]);
-            add(queryValue[i]);  	
+        	queryListPanel.add(queryList[i], c);
+        	c.gridx = 1;
+        	queryListPanel.add(queryValue[i], c);  	
+        	c.gridy++;
         }
-        for(int i=1;i<q_size;i++){
-        	
+        
+        for (int i=1; i<q_size; i++){	
             queryList[i].setVisible(false);
             queryValue[i].setVisible(false);  	
         }
+        serviceQueryPanel.add(queryListPanel);
+        queryButtonsPanel.setAlignmentY(Component.LEFT_ALIGNMENT);
+        queryButtonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
+        queryButtonsPanel.add(addQueryButton);
+        queryButtonsPanel.add(removeQueryButton);
+        queryButtonsPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        queryButtonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        serviceQueryPanel.add(queryButtonsPanel);
         
-    
-        //add(Box.createHorizontalGlue());add(Box.createHorizontalGlue());
-        setPreferredSize(this.getPreferredSize());
-        setMinimumSize(this.getPreferredSize());
-        setMaximumSize(this.getPreferredSize());
+        add(serviceQueryPanel, BorderLayout.CENTER);
+
+        // Size is set from the CaGridAddQueryActionHandler as we are still 
+        // adding components to CaGridIndexQueryDialog from there
+       // setPreferredSize(this.getPreferredSize());
+       // setMinimumSize(this.getPreferredSize());
+       // setMaximumSize(this.getPreferredSize());
     }
     
     /**

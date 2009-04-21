@@ -5,6 +5,9 @@ import gov.nih.nci.cadsr.umlproject.domain.UMLClassMetadata;
 import gov.nih.nci.cadsr.umlproject.domain.UMLPackageMetadata;
 import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
@@ -495,26 +499,29 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
 		dialog.setModal(true);
 		
         final CaGridIndexQueryDialog cad = new CaGridIndexQueryDialog();
-        //dialog.validate();
-        //dialog.getContentPane().add(cad);
-        //dialog.setLocation(50, 50);
         
-        JButton accept = new JButton("Send Service Query");
-        JButton cancel = new JButton("Cancel");
-        JButton updateCaDSRData = new JButton("Update caDSR Data");
-        updateCaDSRData.setToolTipText("Get an updated UML Class list from caDSR services. \n" +
+        JButton acceptButton = new JButton("Send Service Query");
+        JButton cancelButton = new JButton("Cancel");
+        JButton updateCaDSRDataButton = new JButton("Update caDSR Data");
+        updateCaDSRDataButton.setToolTipText("Get an updated UML Class list from caDSR services. \n" +
         		"This operation may take a few minutes depending on network status. ");
     
-        cad.add(accept);
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonsPanel.add(acceptButton);
         //gtd.add(new JLabel("Send Service Query to Index Service"));
-        cad.add(cancel);
-        cad.add(updateCaDSRData);
-        cad.addQuery.addActionListener(new ActionListener(){
+        buttonsPanel.add(updateCaDSRDataButton);
+        buttonsPanel.add(cancelButton);
+
+        cad.add(buttonsPanel, BorderLayout.SOUTH);
+        cad.setPreferredSize(new Dimension(cad.getPreferredSize().width, 275));
+
+        cad.addQueryButton.addActionListener(new ActionListener(){
         	 public void actionPerformed(ActionEvent ae3) {
         		 if (dialog.isVisible()) {
         			 if(cad.q_count<cad.q_size){
         				 cad.queryList[cad.q_count].setVisible(true);
         				 cad.queryValue[cad.q_count].setVisible(true);
+        				 cad.repaint();
         				 cad.validate();
         				 cad.q_count++;
         				 System.out.println("Add a New Query-- now q_count == " + cad.q_count);
@@ -523,12 +530,13 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
         	 }
         	
         });
-        cad.removeQuery.addActionListener(new ActionListener(){
+        cad.removeQueryButton.addActionListener(new ActionListener(){
         	 public void actionPerformed(ActionEvent ae4) {
         		 if (dialog.isVisible()) {
         			 if(cad.q_count>1){
         				 cad.queryList[cad.q_count-1].setVisible(false);
         				 cad.queryValue[cad.q_count-1].setVisible(false);
+        				 cad.repaint();
         				 cad.validate();
         				 cad.q_count--;
         				 System.out.println("Remove a New Query-- now q_count == " + cad.q_count);
@@ -575,13 +583,13 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
         }
         	
         
-        accept.addActionListener(new ActionListener() {
+        acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae2) {
                 if (dialog.isVisible()) {
                 	String indexURL = "";
-                    String queryCriteria = "";
-                    String queryValue = "";
-                    ServiceQuery squery = null;
+                    //String queryCriteria = "";
+                    //String queryValue = "";
+                    //ServiceQuery squery = null;
                     
                     if (cad.getIndexServiceURL().equals(""))
                     	//default index URL
@@ -637,7 +645,7 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
                 }
             }
         });
-        cancel.addActionListener(new ActionListener() {
+        cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae2) {
                 if (dialog.isVisible()) {
                     dialog.setVisible(false);
@@ -645,14 +653,14 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
                 }
             }
         });
-        updateCaDSRData.addActionListener(new ActionListener() {
+        updateCaDSRDataButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae2) {
                 if (dialog.isVisible()) {
                 	Thread t = new Thread("Updating caDSR Metadata.") {
 						public void run() {
                 	
                       //TODO: update the value of classNameArray
-                        	 ArrayList classNameList = new ArrayList();
+                        	 ArrayList<String> classNameList = new ArrayList<String>();
         					 Project[] projs = null;
         					 CaDSRServiceClient cadsr  =null;
         					 UMLPackageMetadata[] packs = null;
@@ -712,7 +720,7 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
 					            	}
     					             
     					            String [] classNameArray;
-    					            //if the retrived class name list is not empty, update the static datatype classNameArray
+    					            //if the retrieved class name list is not empty, update the static datatype classNameArray
         					        if(!classNameList.isEmpty()){
         					        	classNameArray = (String[]) classNameList.toArray(new String[0]);
             					        Arrays.sort(classNameArray,String.CASE_INSENSITIVE_ORDER);		                					       
@@ -739,7 +747,8 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
                 }
             }
         });
-        //dialog.setResizable(false);
+        
+       //dialog.setResizable(false);
         dialog.getContentPane().add(cad);
         dialog.setLocation(50,50);
         dialog.pack();
