@@ -14,8 +14,8 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>prototype</module>
-		<module>serviceinvoker</module>
+		<module>servicewrapper-prototype</module>
+		<module>servicewrapper-invoker</module>
 	</modules>
 
 	<repositories>
