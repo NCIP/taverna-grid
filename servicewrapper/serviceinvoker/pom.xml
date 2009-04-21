@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.org.mygrid.cagrid.servicewrapper</groupId>
 	<artifactId>servicewrapper-invoker</artifactId>
-	<name>Service invoker</name>
+	<name>caGrid Service Wrapper invoker</name>
 
 	<build>
 		<plugins>
