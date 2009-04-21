@@ -8,7 +8,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.org.mygrid.cagrid.servicewrapper</groupId>
-	<artifactId>serviceinvoker</artifactId>
+	<artifactId>servicewrapper-invoker</artifactId>
 	<name>Service invoker</name>
 
 	<build>
