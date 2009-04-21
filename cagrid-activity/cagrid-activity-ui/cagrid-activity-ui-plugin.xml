@@ -1,0 +1,38 @@
+<plugins:plugin
+	xsi:schemaLocation="http://taverna.sf.net/2008/xml/plugins http://taverna.sourceforge.net/2008/xml/plugins/plugins-2008-10-16.xsd ">
+	<!-- This file should be part of Taverna's plugin.xml -->
+	<provider>taverna.sf.net</provider>
+	<identifier>net.sf.taverna.t2.cagrid-activity-ui
+	</identifier>
+	<version>0.4-SNAPSHOT</version>
+	<name>cagrid-activity-ui</name>
+	<description>Taverna 2 caGrid activity UI</description>
+	<enabled>true</enabled>
+
+	<repositories>
+		<!--local repository while developing -->
+		<repository>file:/Users/alex/.m2/repository/
+		</repository>
+		<repository>http://www.mcs.anl.gov/~wtan/t2/repository/
+		</repository>
+		<!-- myGrid repositories and mirrors  -->
+		<repository>http://www.mygrid.org.uk/maven/repository/
+		</repository>
+		<repository>http://bioinf.ncl.ac.uk/mirror/maven/repository/
+		</repository>
+		<repository>http://www.mygrid.org.uk/maven/snapshot-repository/
+		</repository>
+	</repositories>
+	<profile>
+		<dependency>
+			<groupId>net.sf.taverna.t2</groupId>
+			<artifactId>cagrid-activity-ui</artifactId>
+			<version>0.4-SNAPSHOT</version>
+		</dependency>
+	</profile>
+	<compatibility>
+		<application>
+			<version>2.1-SNAPSHOT</version>
+		</application>
+	</compatibility>
+</plugins:plugin>
