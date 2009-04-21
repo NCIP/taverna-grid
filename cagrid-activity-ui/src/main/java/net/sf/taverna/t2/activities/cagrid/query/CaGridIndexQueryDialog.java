@@ -7,13 +7,13 @@ package net.sf.taverna.t2.activities.cagrid.query;
  */
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.FontMetrics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -36,12 +36,10 @@ public class CaGridIndexQueryDialog extends JPanel {
 	//TODO: add more well-know index service URLs
 	private String[] URLs = { "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService",
 			"http://cagrid01.bmi.ohio-state.edu:8080/wsrf/services/DefaultIndexService",
+			"http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService",
 			"Input Your Own Index Service URL Here..."};
-	//private JTextField indexServiceURL= new JTextField("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService");
-	//private JTextField queryCriteria = new JTextField("");
 	public JComboBox indexServiceURLs = new JComboBox(URLs);
 	public JComboBox[] queryValue = new JComboBox[q_size];
-	//public JTextField[] queryValue = new JTextField[q_size];
 	private String[] queryStrings = { "None", "Search String", "Point Of Contact", "Service Name", "Operation Name", "Operation Input",
 			"Operation Output","Operation Class", "Research Center","Concept Code",
 			"Domain Model for Data Services"};
@@ -49,8 +47,8 @@ public class CaGridIndexQueryDialog extends JPanel {
 
 	//Create the combobox, select item at index 0.
 	public JComboBox[]  queryList = new JComboBox[q_size];
-	public JButton addQueryButton = new JButton("Add Service Query");
-    public JButton removeQueryButton = new JButton("Remove Service Query");
+	public JButton addQueryButton = new JButton("Add service query");
+    public JButton removeQueryButton = new JButton("Remove service query");
     public int q_count =1;
 
 
@@ -68,6 +66,9 @@ public class CaGridIndexQueryDialog extends JPanel {
         for(int i=0;i<q_size;i++){
         	queryValue[i]=new JComboBox(queryValues);
         	queryValue[i].setEditable(true);
+        	FontMetrics fm = getFontMetrics(queryValue[i].getFont());
+        	int width = 50 + fm.stringWidth("RegionalNodeLymphadenectomyCutaneousMelanomaSurgicalPathologySpecimen"); //the longest string
+        	queryValue[i].setPreferredSize(new Dimension(width,queryValue[i].getPreferredSize().height));
         	queryList[i] = new JComboBox(queryStrings);     	
         }
         indexServicePanel.add(new ShadedLabel("Location (URL) of the index service: ", ShadedLabel.BLUE, true), BorderLayout.WEST);
@@ -76,11 +77,12 @@ public class CaGridIndexQueryDialog extends JPanel {
         indexServicePanel.add(indexServiceURLs, BorderLayout.CENTER);
         add(indexServicePanel, BorderLayout.NORTH);
         
-        JPanel serviceQueryPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel serviceQueryPanel = new JPanel(new BorderLayout());
         serviceQueryPanel.setBorder(new CompoundBorder(new EmptyBorder(5,5,5,5), new EtchedBorder(EtchedBorder.LOWERED)));
-        JPanel queryListPanel = new JPanel(new GridBagLayout());
+        JPanel queryPanel = new JPanel(new GridBagLayout());
         JPanel queryButtonsPanel = new JPanel();
-        queryButtonsPanel.setLayout(new BoxLayout(queryButtonsPanel, BoxLayout.Y_AXIS));
+        queryButtonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        queryButtonsPanel.setBorder(new EmptyBorder(0,0,0,25));
         
 		GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -88,19 +90,19 @@ public class CaGridIndexQueryDialog extends JPanel {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(5,0,5,5);
-        queryListPanel.add(new ShadedLabel("Service Query Criteria: ", ShadedLabel.BLUE, true), c);        
+        queryPanel.add(new ShadedLabel("Service query criteria: ", ShadedLabel.BLUE, true), c);        
         //queryCriteria.setToolTipText("Service Query will use the query criteria you specify here!");   
 		c.gridx = 1;
 		c.gridy = 0;
-        queryListPanel.add(new ShadedLabel("Service Query Value: ", ShadedLabel.BLUE, true), c);
+        queryPanel.add(new ShadedLabel("Service query value: ", ShadedLabel.BLUE, true), c);
         
         c.gridy = 1;
         for (int i=0 ; i<q_size; i++){
         	c.gridx = 0;
         	queryValue[i].setToolTipText("Service Query will use the query value you specify here!");
-        	queryListPanel.add(queryList[i], c);
+        	queryPanel.add(queryList[i], c);
         	c.gridx = 1;
-        	queryListPanel.add(queryValue[i], c);  	
+        	queryPanel.add(queryValue[i], c);  	
         	c.gridy++;
         }
         
@@ -108,15 +110,11 @@ public class CaGridIndexQueryDialog extends JPanel {
             queryList[i].setVisible(false);
             queryValue[i].setVisible(false);  	
         }
-        serviceQueryPanel.add(queryListPanel);
-        queryButtonsPanel.setAlignmentY(Component.LEFT_ALIGNMENT);
-        queryButtonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        serviceQueryPanel.add(queryPanel, BorderLayout.CENTER);
         
         queryButtonsPanel.add(addQueryButton);
         queryButtonsPanel.add(removeQueryButton);
-        queryButtonsPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        queryButtonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        serviceQueryPanel.add(queryButtonsPanel);
+        serviceQueryPanel.add(queryButtonsPanel, BorderLayout.SOUTH);
         
         add(serviceQueryPanel, BorderLayout.CENTER);
 

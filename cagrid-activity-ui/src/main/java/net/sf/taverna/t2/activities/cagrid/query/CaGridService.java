@@ -19,9 +19,7 @@ import java.util.List;
 
 public class CaGridService {
 	
-	private String wsdlLocation;
-	//TODO: add more service metadata to enable sorting
-	
+	private String wsdlLocation;	
 	private String serviceName;
 	private List<String> operations = new ArrayList<String>();
 	private String researchCenterName;

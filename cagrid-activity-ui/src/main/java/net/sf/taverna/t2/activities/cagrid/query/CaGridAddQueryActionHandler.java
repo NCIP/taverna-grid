@@ -513,7 +513,7 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
         buttonsPanel.add(cancelButton);
 
         cad.add(buttonsPanel, BorderLayout.SOUTH);
-        cad.setPreferredSize(new Dimension(cad.getPreferredSize().width, 275));
+        cad.setPreferredSize(new Dimension(900, 300));
 
         cad.addQueryButton.addActionListener(new ActionListener(){
         	 public void actionPerformed(ActionEvent ae3) {

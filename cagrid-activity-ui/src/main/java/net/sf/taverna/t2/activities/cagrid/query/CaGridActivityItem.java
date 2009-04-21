@@ -23,6 +23,9 @@ package net.sf.taverna.t2.activities.cagrid.query;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.globus.wsrf.impl.security.authorization.Authorization;
+import org.ietf.jgss.GSSCredential;
+
 import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivityConfigurationBean;
 import net.sf.taverna.t2.partition.AbstractActivityItem;
@@ -39,13 +42,13 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	// Security settings of a caGrid service, if any, obtained by invoking
 	// getServiceSecurityMetadata() on the service
 	private boolean isSecure = false;
-	private String gsi_transport;
-	private String gsi_anonymouos;
-	private String authorisation;
-	private String gsi_credentials;
-	private String gsi_secure_conversation;
-	private String gsi_secure_message;
+	private Integer gsi_transport;
+	private Boolean gsi_anonymouos;
+	private Authorization authorisation;
+	private Integer gsi_secure_conversation;
+	private Integer gsi_secure_message;
 	private String gsi_mode;
+	private GSSCredential gsi_credentials;
 	
 	public String getResearchCenter() {
 		return researchCenter;
@@ -104,51 +107,51 @@ public class CaGridActivityItem extends AbstractActivityItem {
 		return isSecure;
 	}
 
-	public void setGSITransport(String gsi_transport) {
+	public void setGSITransport(Integer gsi_transport) {
 		this.gsi_transport = gsi_transport;
 	}
 
-	public String getGSITransport() {
+	public Integer getGSITransport() {
 		return gsi_transport;
 	}
 
-	public void setGSIAnonymouos(String gsi_anonymouos) {
+	public void setGSIAnonymouos(Boolean gsi_anonymouos) {
 		this.gsi_anonymouos = gsi_anonymouos;
 	}
 
-	public String getGSIAnonymouos() {
+	public Boolean getGSIAnonymouos() {
 		return gsi_anonymouos;
 	}
 
-	public void setAuthorisation(String authorisation) {
-		this.authorisation = authorisation;
+	public void setAuthorisation(Authorization authorization) {
+		this.authorisation = authorization;
 	}
 
-	public String getAuthorisation() {
+	public Authorization getAuthorisation() {
 		return authorisation;
 	}
 
-	public void setGSICredentials(String gsi_credentials) {
+	public void setGSICredentials(GSSCredential gsi_credentials) {
 		this.gsi_credentials = gsi_credentials;
 	}
 
-	public String getGSICredentials() {
+	public GSSCredential getGSICredentials() {
 		return gsi_credentials;
 	}
 
-	public void setGSISecureConversation(String gsi_sec_conv) {
+	public void setGSISecureConversation(Integer gsi_sec_conv) {
 		this.gsi_secure_conversation = gsi_sec_conv;
 	}
 
-	public String getGSISecureConversation() {
+	public Integer getGSISecureConversation() {
 		return gsi_secure_conversation;
 	}
 
-	public void setGSISecureMessage(String gsi_sec_msg) {
+	public void setGSISecureMessage(Integer gsi_sec_msg) {
 		this.gsi_secure_message = gsi_sec_msg;
 	}
 
-	public String getGSISecureMessage() {
+	public Integer getGSISecureMessage() {
 		return gsi_secure_message;
 	}
 
@@ -186,5 +189,6 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	public Activity<?> getUnconfiguredActivity() {
 		return new CaGridActivity();
 	}
+
 
 }
