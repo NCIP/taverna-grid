@@ -15,8 +15,8 @@
 
 	<modules>
 		<module>servicewrapper-prototype</module>
-		<module>servicewrapper-invoker</module>
-		<module>servicewrapper-invokeraxis2</module>
+		<module>servicewrapper-invoker-api</module>
+		<module>servicewrapper-invoker-interproscan</module>
 	</modules>
 
 	<repositories>
