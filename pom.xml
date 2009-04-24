@@ -16,6 +16,7 @@
 	<modules>
 		<module>servicewrapper-prototype</module>
 		<module>servicewrapper-invoker</module>
+		<module>servicewrapper-invokeraxis2</module>
 	</modules>
 
 	<repositories>
