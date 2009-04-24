@@ -13,6 +13,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSession;
+
+import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
+import org.cagrid.gaards.authentication.BasicAuthentication;
+import org.cagrid.gaards.authentication.client.AuthenticationClient;
+import org.cagrid.gaards.dorian.client.GridUserClient;
+import org.cagrid.gaards.dorian.federation.CertificateLifetime;
 import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
@@ -30,31 +40,81 @@ import org.apache.log4j.Logger;
 
 //import org.xml.sax.SAXException;
 
+@SuppressWarnings("serial")
 public class CaGridQuery extends ActivityQuery {
 	
 	private static Logger logger = Logger.getLogger(CaGridQuery.class);
+	
+	// URL of Index Service	
+	private String indexServiceURL; 
+	// Map of Authentication Services corresponding to each of the Index Services 
+	// (should be a list of Authentication Services for each Index Service really)
+	private Map<String,String> authenticationServicesMap = new HashMap<String, String>(){
+	    {
+	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService");
+	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
+	    }
+	};
+	
+	// Map of Dorian Services corresponding to each of the Index Services
+	// (should be a list of Dorian Services for each Index Service really)
+	private Map<String,String> dorianServicesMap = new HashMap<String, String>(){
+	    {
+	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian");
+	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
+	    }
+	};	
+	
 	private final  ServiceQuery[] sq; // query to be passed to Index Service to search for available matching caGrid services
 	
-	public CaGridQuery(String url) {
-		this(url,null);
+	public CaGridQuery(String indexServiceURL) {
+		this(indexServiceURL, null);
 	}
-	public CaGridQuery(String url,ServiceQuery[] f_sq ) {
-		super(url);
-		sq = f_sq;
+	
+	public CaGridQuery(String indexServiceURL,ServiceQuery[] sq) {
+		super(indexServiceURL);
+			
+		this.indexServiceURL = indexServiceURL;
+		this.sq = sq;
 	}
 
 	@Override
 	public void doQuery() {
-		//use url and sq
 		try {
-			String indexURL = getProperty();	// URL of Index Service		
-			List<CaGridService> services=CaGridServiceQueryUtility.load(indexURL, sq);
+			List<CaGridService> services=CaGridServiceQueryUtility.load(indexServiceURL, sq);
 			
 			if(services!=null){
-				
 				for (CaGridService caGridService:services){
 					List<String> operations = caGridService.getOperations();
 					System.out.println("Adding service: "+ caGridService.getServiceName());
+					
+					// Some caGrid services requiring https have a weird CN in their certificates - 
+					// instead of CN=<HOSTNAME> they have CN="host/"+<HOSTNAME>, i.e. string 
+					// "host/" preprended so we have to tell Java's SSL to accept these hostnames as well.
+					// This is not very good at is sets this hosthane verifier across all 
+					// https connections created in the JVM from now on, but solves the problem 
+					// with such caGrid services.
+					if (caGridService.getServiceName().toLowerCase().startsWith("https")){
+						HostnameVerifier hv = new HostnameVerifier() {
+							public boolean verify(String hostName, SSLSession session) {
+								String hostNameFromCertificate = null;
+								try {
+									hostNameFromCertificate = session.getPeerPrincipal()
+											.getName().substring(3,
+													session.getPeerPrincipal().getName()
+															.indexOf(','));
+								} catch (SSLPeerUnverifiedException e) {
+									e.printStackTrace();
+									return false;
+								}
+								System.out.println("Hostname verifier: host from url: " + hostName + " vs. host from certificate: "+ hostNameFromCertificate);
+								System.out.println();
+								return (hostName.equals(hostNameFromCertificate) || ("host/"+hostName)
+										.equals(hostNameFromCertificate));
+							}
+						};
+						HttpsURLConnection.setDefaultHostnameVerifier(hv);
+					}
 					
 					// Get security metadata for all operations/methods of this service
 					// by invoking getServiceSecurityMetadata() method on the service
@@ -77,29 +137,35 @@ public class CaGridQuery extends ActivityQuery {
 							e.printStackTrace();
 						}
 					}
-					// Get all secure OperationS mapped to their name
+					// Get all secure OperationS of the service and map them to their name
+					// Not all operations will be detected as secure - only those that require
+					// GSI security. If is service only uses https and not any of the GSI security properties
+					// then it will not be listed as secure
 					Map<String, Operation> secureOperationsMap = new HashMap<String, Operation>();
 					ServiceSecurityMetadataOperations ssmo = null; 
 					if (securityMetadata != null){
-						ssmo = securityMetadata.getOperations(); // all secure operations of the service?
+						ssmo = securityMetadata.getOperations(); // all operations of the service requiring GSI security properties
 					}
 					if (ssmo != null) {
 						Operation[] ops = ssmo.getOperation();
 						if (ops != null) {
+							System.out.println("Discovered " + ops.length + " operations that require Globus GSI security:");
 							for (int i = 0; i < ops.length; i++) {
 								String lowerMethodName = ops[i].getName().substring(0, 1)
 										.toLowerCase()
 										+ ops[i].getName().substring(1);
 								secureOperationsMap.put(lowerMethodName, ops[i]);
+								System.out.println(lowerMethodName);
 							}
+							System.out.println();
 						}
 					}
-					
+											
 					for (String operation : operations) {
 						System.out.println("	Adding operation: "+ operation );
-						// An ActivityItem corresponds to an operation
-						// services contains service metadata -- no wsdl parser is needed?
-						// we can add a parser to parse it if we need more details on those services
+						// An ActivityItem corresponds to an operation.
+						// Service contains service metadata -- no wsdl parser is needed?
+						// We can add a parser to parse it if we need more details on those services
 						CaGridActivityItem item = new CaGridActivityItem();
 						
 						item.setOperation(operation);
@@ -118,11 +184,12 @@ public class CaGridQuery extends ActivityQuery {
 						// Check if operation is secure						
 						if (secureOperationsMap.containsKey(operation)) { // is our operation among the secure ones?
 							try{
+								configureSecurity(caGridService,
+										secureOperationsMap.get(operation),
+										authenticationServicesMap.get(indexServiceURL), 
+										dorianServicesMap.get(indexServiceURL), 
+										item);
 								item.setSecure(true);
-								configureSecurity(securityMetadata, caGridService, secureOperationsMap.get(operation), item);
-								
-								// Now is a good place to ask for a caGrid username/password
-								// to obtain proxy key and certificate
 							}
 							catch(RemoteException rex){
 								logger.error("Error getting user's proxy for operation "
@@ -133,7 +200,17 @@ public class CaGridQuery extends ActivityQuery {
 												+ "?wsdl. Skipping this operation.");
 								rex.printStackTrace();
 								continue;
-							}		
+							}
+							catch(MalformedURIException muex){
+								logger.error("Error getting user's proxy for operation "
+										+ operation
+										+ " of service: "
+										+ caGridService
+												.getServiceName()
+										+ "?wsdl. Skipping this operation.");
+								muex.printStackTrace();
+								continue;
+							}
 						} else { // operation is not secure
 							item.setSecure(false);
 						}	
@@ -167,17 +244,16 @@ public class CaGridQuery extends ActivityQuery {
 	 * @param operation
 	 * @param item
 	 * @throws RemoteException
+	 * @throws MalformedURIException 
 	 */
-	public static void configureSecurity(ServiceSecurityMetadata securityMetadata,
-			CaGridService caGridService, Operation operation,
-			CaGridActivityItem item) throws RemoteException {
+	public static void configureSecurity(CaGridService caGridService,
+			Operation operation, String authenticationServiceURL,
+			String dorianServiceURL, CaGridActivityItem item)
+			throws RemoteException, MalformedURIException {
 
 		boolean anonymousPrefered = true;
 		
-		boolean https = false;
-		if (caGridService.getServiceWSDLLocation().toLowerCase().startsWith("https")) {
-			https = true;
-		}
+		boolean https = caGridService.getServiceWSDLLocation().toLowerCase().startsWith("https");
 			
 		CommunicationMechanism mechanism = operation.getCommunicationMechanism();
 
@@ -244,13 +320,36 @@ public class CaGridQuery extends ActivityQuery {
 			credentialsAllowed = false;
 		}
 
+		// Get the proxy certificate - hardcode the username and password
+		/*if (credentialsAllowed){
+				
+			BasicAuthentication auth = new BasicAuthentication();
+	        auth.setUserId("anenadic");
+	        auth.setPassword("m^s7a*kpT302");
+
+	        // Authenticate to the Authentication Service using the basic authN credential
+	        AuthenticationClient authClient = new AuthenticationClient(authenticationServiceURL);
+	        SAMLAssertion saml = authClient.authenticate(auth);
+
+	        // Set requested Grid Credential lifetime (12 hours)
+	        CertificateLifetime lifetime = new CertificateLifetime();
+	        lifetime.setHours(12);
+
+	        // Request PKI/Grid Credential
+	        GridUserClient dorian = new GridUserClient(dorianServiceURL);
+	        proxy = dorian.requestUserCertificate(saml, lifetime);
+		}*/
+		
 		if ((anonymousAllowed) && (mechanism.isAnonymousPermitted()) && anonymousPrefered) {
 			item.setGSIAnonymouos(Boolean.TRUE);
 		} else if ((credentialsAllowed) && (proxy != null)) {
 			try {
+				// This should be done later on when we ask the user for the username and password and
+				// obtain his proxy
 				org.ietf.jgss.GSSCredential gss = new org.globus.gsi.gssapi.GlobusGSSCredentialImpl(proxy,
 					org.ietf.jgss.GSSCredential.INITIATE_AND_ACCEPT);
 				item.setGSICredentials(gss);
+				item.setRequiresGSiCredentials(true);
 			} catch (org.ietf.jgss.GSSException ex) {
 				throw new RemoteException(ex.getMessage());
 			}
@@ -268,7 +367,6 @@ public class CaGridQuery extends ActivityQuery {
 				item.setGSIMode(delegationMode);
 			}
 		}
-
 	}
 
 }

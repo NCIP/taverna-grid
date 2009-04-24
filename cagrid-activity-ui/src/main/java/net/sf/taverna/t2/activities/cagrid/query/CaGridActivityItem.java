@@ -49,6 +49,7 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	private Integer gsi_secure_message;
 	private String gsi_mode;
 	private GSSCredential gsi_credentials;
+	private boolean requires_gsi_credentials = false; // whether we need to generate proxy
 	
 	public String getResearchCenter() {
 		return researchCenter;
@@ -163,6 +164,14 @@ public class CaGridActivityItem extends AbstractActivityItem {
 		return gsi_mode;
 	}
 
+
+	public boolean getRequiresGSiCredentials() {
+		return requires_gsi_credentials;
+	}
+	
+	public void setRequiresGSiCredentials(boolean requires_gsi_credentials) {
+		this.requires_gsi_credentials = requires_gsi_credentials;
+	}
 	
 	public Icon getIcon() {
 		return new ImageIcon(CaGridActivityItem.class.getResource("/cagrid.png"));

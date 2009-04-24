@@ -32,24 +32,34 @@ import net.sf.taverna.t2.lang.ui.ShadedLabel;
 public class CaGridIndexQueryDialog extends JPanel {
 
 	private static final long serialVersionUID = -57047613557546678L;
-	final int q_size=3;//max query item size
-	//TODO: add more well-know index service URLs
-	private String[] URLs = { "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService",
-			"http://cagrid01.bmi.ohio-state.edu:8080/wsrf/services/DefaultIndexService",
-			"http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService",
-			"Input Your Own Index Service URL Here..."};
-	public JComboBox indexServiceURLs = new JComboBox(URLs);
-	public JComboBox[] queryValue = new JComboBox[q_size];
+	
+	final int query_size=3;//max query item size
+    public int query_count =1; // current number of queries
+
+	//TODO: add more well-know Index Services
+	private String[] indexServicesURLs = { "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService",
+			"http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService"};
+	
+	// Default Authentication Services corresponding to each of the Index Services
+	/*private String[] authenticationServicesURLs = {
+			"https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService",
+			"https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService" };
+	
+	private String[] dorianServicesURLs = {
+			"https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian",
+			"https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian"};
+	 */
+	
+	public JComboBox indexServiceURLs = new JComboBox(indexServicesURLs);
+	public JComboBox[] queryValue = new JComboBox[query_size];
 	private String[] queryStrings = { "None", "Search String", "Point Of Contact", "Service Name", "Operation Name", "Operation Input",
 			"Operation Output","Operation Class", "Research Center","Concept Code",
 			"Domain Model for Data Services"};
 	private String[] queryValues = {};
 
-	//Create the combobox, select item at index 0.
-	public JComboBox[]  queryList = new JComboBox[q_size];
+	public JComboBox[]  queryList = new JComboBox[query_size];
 	public JButton addQueryButton = new JButton("Add service query");
     public JButton removeQueryButton = new JButton("Remove service query");
-    public int q_count =1;
 
 
     /**
@@ -63,7 +73,7 @@ public class CaGridIndexQueryDialog extends JPanel {
         
         JPanel indexServicePanel = new JPanel(new BorderLayout());
         indexServicePanel.setBorder(new EmptyBorder(5,5,5,5));
-        for(int i=0;i<q_size;i++){
+        for(int i=0;i<query_size;i++){
         	queryValue[i]=new JComboBox(queryValues);
         	queryValue[i].setEditable(true);
         	FontMetrics fm = getFontMetrics(queryValue[i].getFont());
@@ -72,8 +82,8 @@ public class CaGridIndexQueryDialog extends JPanel {
         	queryList[i] = new JComboBox(queryStrings);     	
         }
         indexServicePanel.add(new ShadedLabel("Location (URL) of the index service: ", ShadedLabel.BLUE, true), BorderLayout.WEST);
-        indexServiceURLs.setEditable(true);
-        indexServiceURLs.setToolTipText("caGrid Services will be retrieved from the index service whose URL you specify here!");
+        //indexServiceURLs.setEditable(true);
+        indexServiceURLs.setToolTipText("caGrid Services will be retrieved from the Index Service whose URL you specify here!");
         indexServicePanel.add(indexServiceURLs, BorderLayout.CENTER);
         add(indexServicePanel, BorderLayout.NORTH);
         
@@ -97,7 +107,7 @@ public class CaGridIndexQueryDialog extends JPanel {
         queryPanel.add(new ShadedLabel("Service query value: ", ShadedLabel.BLUE, true), c);
         
         c.gridy = 1;
-        for (int i=0 ; i<q_size; i++){
+        for (int i=0 ; i<query_size; i++){
         	c.gridx = 0;
         	queryValue[i].setToolTipText("Service Query will use the query value you specify here!");
         	queryPanel.add(queryList[i], c);
@@ -106,7 +116,7 @@ public class CaGridIndexQueryDialog extends JPanel {
         	c.gridy++;
         }
         
-        for (int i=1; i<q_size; i++){	
+        for (int i=1; i<query_size; i++){	
             queryList[i].setVisible(false);
             queryValue[i].setVisible(false);  	
         }
@@ -127,11 +137,27 @@ public class CaGridIndexQueryDialog extends JPanel {
     
     /**
      * 
-     * @return the string representation of the IndexServiceURL
+     * @return the selected Index Service URL
      */
     public String getIndexServiceURL() {
         return (String) indexServiceURLs.getSelectedItem();
     }
+    
+    /**
+     * 
+     * @return the Authentication Service URL that corresponds to the selected Index Service
+     */
+ /*   public String getAuthenticationServiceURL() {
+        return (String) authenticationServicesURLs[indexServiceURLs.getSelectedIndex()];
+    }*/
+    
+    /**
+     * 
+     * @return the Dorian Service URL that corresponds to the selected Index Service
+     */
+ /*   public String getDorianServiceURL() {
+        return (String) dorianServicesURLs[indexServiceURLs.getSelectedIndex()];
+    }*/
 
     /**
      * 

@@ -518,28 +518,27 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
         cad.addQueryButton.addActionListener(new ActionListener(){
         	 public void actionPerformed(ActionEvent ae3) {
         		 if (dialog.isVisible()) {
-        			 if(cad.q_count<cad.q_size){
-        				 cad.queryList[cad.q_count].setVisible(true);
-        				 cad.queryValue[cad.q_count].setVisible(true);
+        			 if(cad.query_count<cad.query_size){
+        				 cad.queryList[cad.query_count].setVisible(true);
+        				 cad.queryValue[cad.query_count].setVisible(true);
         				 cad.repaint();
         				 cad.validate();
-        				 cad.q_count++;
-        				 System.out.println("Add a New Query-- now q_count == " + cad.q_count);
+        				 cad.query_count++;
+        				// System.out.println("Add a New Query-- now q_count == " + cad.q_count);
         			 }
         		 }
         	 }
-        	
         });
         cad.removeQueryButton.addActionListener(new ActionListener(){
         	 public void actionPerformed(ActionEvent ae4) {
         		 if (dialog.isVisible()) {
-        			 if(cad.q_count>1){
-        				 cad.queryList[cad.q_count-1].setVisible(false);
-        				 cad.queryValue[cad.q_count-1].setVisible(false);
+        			 if(cad.query_count>1){
+        				 cad.queryList[cad.query_count-1].setVisible(false);
+        				 cad.queryValue[cad.query_count-1].setVisible(false);
         				 cad.repaint();
         				 cad.validate();
-        				 cad.q_count--;
-        				 System.out.println("Remove a New Query-- now q_count == " + cad.q_count);
+        				 cad.query_count--;
+        				// System.out.println("Remove a New Query-- now q_count == " + cad.q_count);
         			 }
         		 }
         	 }
@@ -550,7 +549,7 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
         //listeners for service query criteria
         //do some prompt when possible, like if service query criteria is "operation class", "operation input"
         //or "operation output", retrieve all classes from caDSR
-        for(int i=0;i<cad.q_size;i++){
+        for(int i=0;i<cad.query_size;i++){
         	final JComboBox qValue =cad.queryValue[i];
     		final JComboBox qCriteria = cad.queryList[i];
         	cad.queryList[i].addActionListener(new ActionListener () {   		
@@ -586,21 +585,13 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae2) {
                 if (dialog.isVisible()) {
-                	String indexURL = "";
-                    //String queryCriteria = "";
-                    //String queryValue = "";
-                    //ServiceQuery squery = null;
+                	
+                	String indexServiceURL = cad.getIndexServiceURL();
                     
-                    if (cad.getIndexServiceURL().equals(""))
-                    	//default index URL
-                        indexURL = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
-                    else
-                        indexURL = cad.getIndexServiceURL();
-                    
-                    //gather service queries
-                    int [] flag = new int[cad.q_count];
+                    // Gather service queries
+                    int [] flag = new int[cad.query_count];
                     int count = 0;
-                    for (int i=0;i<cad.q_count;i++){
+                    for (int i=0;i<cad.query_count;i++){
                     	if(!cad.getQueryCriteria(i).equals("None")&&!cad.getQueryValue(i).equals("")){
                     		count ++ ;
                     		flag[i]=1;
@@ -611,22 +602,17 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
                     if(count>0){
                     	sq = new ServiceQuery[count];
                          int j = 0;
-                         for (int i=0;i<cad.q_count;i++){
+                         for (int i=0;i<cad.query_count;i++){
                          	if(flag[i]==1){
                          		sq[j++] = new ServiceQuery(cad.getQueryCriteria(i),cad.getQueryValue(i));
                          		System.out.println("Adding Query: "+ sq[j-1].queryCriteria + "  = " + sq[j-1].queryValue);
                        		
                          	}	
+                         }
                     }
-                   
-                    }
-                    //TODO use indexURL and sq to construct CaGridQuery
-                    final String url = indexURL;
-                	final ServiceQuery[] f_sq = sq;
-                	
+                    // Use Index Service URL and service query to construct CaGridQuery               	
                 	 try {
-                     	
-                     	addQuery(new CaGridQuery(url,f_sq));
+                     	addQuery(new CaGridQuery(indexServiceURL,sq));
                      } catch (Exception e) {
                          JOptionPane
                                  .showMessageDialog(dialog,
@@ -639,12 +625,10 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
                          dialog.setVisible(false);
                          dialog.dispose();
                      }
-                    
-                    
-                  
                 }
             }
         });
+        
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae2) {
                 if (dialog.isVisible()) {
@@ -653,13 +637,14 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
                 }
             }
         });
+        
         updateCaDSRDataButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae2) {
                 if (dialog.isVisible()) {
                 	Thread t = new Thread("Updating caDSR Metadata.") {
 						public void run() {
                 	
-                      //TODO: update the value of classNameArray
+							// Update the value of classNameArray
                         	 ArrayList<String> classNameList = new ArrayList<String>();
         					 Project[] projs = null;
         					 CaDSRServiceClient cadsr  =null;
@@ -677,7 +662,7 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
         					 }
         					 catch (Exception e) {
         						 e.printStackTrace();
-        						 }
+        					 }
         					 
         					     if(projs !=null){
 					            	for (int i = 0; i<projs.length;i++){

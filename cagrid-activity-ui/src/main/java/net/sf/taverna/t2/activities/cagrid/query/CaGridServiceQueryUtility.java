@@ -79,10 +79,9 @@ public class CaGridServiceQueryUtility {
 		System.out
 				.println("==================================================");
 		System.out.println("Starting to load caGrid services");
-		EndpointReferenceType[] servicesList = null;
+		EndpointReferenceType[] servicesList = new EndpointReferenceType[0];
 		servicesList = getEPRListByServiceQueryArray(indexURL, sq);
-		System.out
-				.println("DiscoveryClient loaded and EPR to services returned.");
+		System.out.println("DiscoveryClient loaded and EPR to services returned.");
 		for (EndpointReferenceType epr : servicesList) {
 			if (epr != null) {
 				foundSome = true;

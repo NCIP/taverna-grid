@@ -22,7 +22,7 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		//temporily disabled due to raven issues. 
+		//temporarily disabled due to raven issues. 
 //		WSDLActivityConfigurationBean bean = getActivity().getConfiguration();
 //			
 //		WSSecurityProfileChooser wsSecurityProfileChooser = new WSSecurityProfileChooser(owner);
