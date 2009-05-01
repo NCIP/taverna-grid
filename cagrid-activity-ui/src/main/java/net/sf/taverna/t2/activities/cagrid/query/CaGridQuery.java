@@ -279,8 +279,8 @@ public class CaGridQuery extends ActivityQuery {
 
 		item.setSecure(true); // set initially as secure - will change later on if we do not find any security properties
 		item.setIndexServiceURL(indexServiceURL);
-		item.setAuthNServiceURL(authenticationServiceURL);
-		item.setDorianServiceURL(dorianServiceURL);
+		item.setDefaultAuthNServiceURL(authenticationServiceURL);
+		item.setDefaultDorianServiceURL(dorianServiceURL);
 		
 		if ((https) && (communicationMechanism.getGSITransport() != null)) {
 			ProtectionLevelType level = communicationMechanism.getGSITransport().getProtectionLevel();

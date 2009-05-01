@@ -20,9 +20,6 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 import net.sf.taverna.t2.lang.beans.PropertyAnnotated;
 
@@ -35,13 +32,19 @@ public class CaGridServiceProviderConfig extends PropertyAnnotated {
 	
 	private String indexServiceURL;
 	private ServiceQuery[] serviceQueryList; 
+	private String defaultAuthNServiceURL;
+	private String defaultDorianServiceURL;
 	
 	public CaGridServiceProviderConfig() {
 	}
-
-	public CaGridServiceProviderConfig(String indexServiceURL, ServiceQuery[] serviceQueryList) {
+	
+	public CaGridServiceProviderConfig(String indexServiceURL,
+			ServiceQuery[] serviceQueryList, String authNServiceURL,
+			String dorianServiceURL) {
 		this.indexServiceURL = indexServiceURL;
 		this.setServiceQueryList(serviceQueryList);
+		this.setDefaultAuthNServiceURL(authNServiceURL);
+		this.setDefaultDorianServiceURL(dorianServiceURL);
 	}
 
 	public String getIndexServiceURL() {
@@ -58,6 +61,22 @@ public class CaGridServiceProviderConfig extends PropertyAnnotated {
 
 	public ServiceQuery[] getServiceQueryList() {
 		return serviceQueryList;
+	}
+
+	public void setDefaultAuthNServiceURL(String authNServiceURL) {
+		this.defaultAuthNServiceURL = authNServiceURL;
+	}
+
+	public String getDefaultAuthNServiceURL() {
+		return defaultAuthNServiceURL;
+	}
+
+	public void setDefaultDorianServiceURL(String dorianServiceURL) {
+		this.defaultDorianServiceURL = dorianServiceURL;
+	}
+
+	public String getDefaultDorianServiceURL() {
+		return defaultDorianServiceURL;
 	}
 	
 }

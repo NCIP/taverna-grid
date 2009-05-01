@@ -64,9 +64,9 @@ import net.sf.taverna.t2.workbench.helper.HelpEnabledDialog;
  *
  */
 @SuppressWarnings("serial")
-public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
+public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 
-	private static Logger logger = Logger.getLogger(CaGridServicesQueryDialog.class);
+	private static Logger logger = Logger.getLogger(CaGridServicesSearchDialog.class);
 
 	final int max_query_size = 3; // max number of queries
 	
@@ -74,7 +74,8 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
 	private String[] indexServicesURLs = { "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", 
 			"http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"};
 	
-	private List<ServiceQuery> serviceQueryList = new ArrayList<ServiceQuery>();
+	// List of queries to be used when searching for caGrid services 
+	private ServiceQuery[] serviceQueryList;
 
 	// Map of caDSR Services corresponding to each of the Index Services
 	private Map<String,String> caDSRServicesMap = new HashMap<String, String>(){
@@ -84,6 +85,23 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
 	    }
 	};	
 	
+	
+	// Map of Authentication Services corresponding to each of the Index Services 
+	// (should be a list of Authentication Services (and not just one) for each Index Service really)
+	private Map<String,String> authenticationServicesMap = new HashMap<String, String>(){
+	    {
+	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService");
+	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
+	    }
+	};
+	
+	// Map of Dorian Services corresponding to each of the Index Services
+	private Map<String,String> dorianServicesMap = new HashMap<String, String>(){
+	    {
+	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian");
+	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
+	    }
+	};	
 	public JComboBox indexServicesURLsComboBox = new JComboBox(indexServicesURLs);
 	
 	public JComboBox[]  queryList = new JComboBox[max_query_size];
@@ -93,7 +111,7 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
 	public JComboBox[] queryValue = new JComboBox[max_query_size];
 	private String[] queryValues = {};
 	
-	public CaGridServicesQueryDialog()  {
+	public CaGridServicesSearchDialog()  {
 		super((Frame) null, "caGrid services search criteria", true, null); // create a modal dialog
 		initComponents();
 		setLocation(50,50);
@@ -101,12 +119,10 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
 
 	private void initComponents() {
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBorder(new EmptyBorder(10,10,10,10));
+		this.getContentPane().setLayout(new BorderLayout());
         
         JPanel indexServicePanel = new JPanel(new BorderLayout());
-        indexServicePanel.setBorder(new EmptyBorder(5,5,5,5));
+        indexServicePanel.setBorder(new EmptyBorder(10,10,10,10));
         for(int i=0;i<max_query_size;i++){
         	queryValue[i]=new JComboBox(queryValues);
         	queryValue[i].setEditable(true);
@@ -145,7 +161,7 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
         //indexServiceURLs.setEditable(true);
         indexServicesURLsComboBox.setToolTipText("caGrid Services will be retrieved from the Index Service whose URL you specify here");
         indexServicePanel.add(indexServicesURLsComboBox, BorderLayout.CENTER);
-        mainPanel.add(indexServicePanel, BorderLayout.NORTH);
+        this.getContentPane().add(indexServicePanel, BorderLayout.NORTH);
         
         JPanel serviceQueryPanel = new JPanel(new BorderLayout());
         serviceQueryPanel.setBorder(new CompoundBorder(new EmptyBorder(5,5,5,5), new EtchedBorder(EtchedBorder.LOWERED)));
@@ -172,6 +188,7 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
         	c.gridy++;
         }
         serviceQueryPanel.add(queryPanel, BorderLayout.CENTER);
+        this.getContentPane().add(serviceQueryPanel, BorderLayout.CENTER);
 
         // Panel with buttons
         JPanel queryButtonsPanel = new JPanel();
@@ -267,14 +284,18 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
         okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				
+				List<ServiceQuery> qList = new ArrayList<ServiceQuery>();
                 for (int i=0; i<max_query_size; i++){
                 	if(!getQueryCriteria(i).equals("None") && !getQueryValue(i).equals("")){
-                		serviceQueryList.add(new ServiceQuery(getQueryCriteria(i),getQueryValue(i)));
+                		qList.add(new ServiceQuery(getQueryCriteria(i),getQueryValue(i)));
                 	}	
                 }
 
-				addRegistry((String) indexServicesURLsComboBox.getSelectedItem(),
-						serviceQueryList);
+                serviceQueryList = (ServiceQuery[]) qList.toArray(new ServiceQuery[0]);
+				addRegistry(getIndexServiceURL(),
+						serviceQueryList,
+						getDefaultAuthNServiceURL(),
+						getDefaultDorianServiceURL());
 				
 				setVisible(false);
 				dispose();				
@@ -289,20 +310,16 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
         });
  
         queryButtonsPanel.add(okButton);
-        queryButtonsPanel.add(cancelButton);
         queryButtonsPanel.add(updateCaDSRDataButton);
-        serviceQueryPanel.add(queryButtonsPanel, BorderLayout.SOUTH);
-        
-        mainPanel.add(serviceQueryPanel, BorderLayout.CENTER);
-        
-        this.getContentPane().add(mainPanel);
+        queryButtonsPanel.add(cancelButton);        
+        this.getContentPane().add(queryButtonsPanel, BorderLayout.SOUTH);
+
         this.setLocation(50,50);
         this.pack();
-        this.setVisible(true);
 	}
 	
 	protected abstract void addRegistry(String indexServiceURL,
-			List<ServiceQuery> serviceQueryList);
+			ServiceQuery[] serviceQueryList, String authNServiceURL, String dorianServiceURL);
 	
     /**
      * 
@@ -327,12 +344,28 @@ public abstract class CaGridServicesQueryDialog extends HelpEnabledDialog {
     public String getIndexServiceURL() {
         return (String) indexServicesURLsComboBox.getSelectedItem();
     }
+     
+    /**
+     * 
+     * @return the Authentication Service URL that corresponds to the selected Index Service
+     */
+    public String getDefaultAuthNServiceURL() {
+        return (String) authenticationServicesMap.get((String) indexServicesURLsComboBox.getSelectedItem());
+    }
+    
+    /**
+     * 
+     * @return the Dorian Service URL that corresponds to the selected Index Service
+     */
+    public String getDefaultDorianServiceURL() {
+        return (String) dorianServicesMap.get((String) indexServicesURLsComboBox.getSelectedItem());
+    }
     
     /**
      * 
      * @return the selected Index Service URL
      */
-    public List<ServiceQuery> getServiceQueryList() {
+    public ServiceQuery[] getServiceQueryList() {
         return serviceQueryList;
     }
 

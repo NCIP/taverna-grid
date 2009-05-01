@@ -63,7 +63,7 @@ public class CaGridServiceQueryUtility {
 		// Get the categories for this installation
 		boolean findServices = loadServices(indexURL, sq, services);
 		if (!findServices) {
-			throw new Exception("Unable to locate a GT4 index at \n" + indexURL);
+			throw new Exception("Unable to locate Index Service at " + indexURL);
 		}
 		return services;
 	}
@@ -77,60 +77,68 @@ public class CaGridServiceQueryUtility {
 		System.out.println("Starting to load caGrid services");
 		EndpointReferenceType[] servicesList = new EndpointReferenceType[0];
 		servicesList = getEPRListByServiceQueryArray(indexURL, sq);
+		System.out.println("Submitted " + sq.length + " criteria for caGrid services search.");
 		System.out.println("caGrid DiscoveryClient loaded and EPR to services returned.");
-		for (EndpointReferenceType epr : servicesList) {
-			if (epr != null) {
-				foundSome = true;
-				// Add a service node
-				String serviceAddress = epr.getAddress().toString();
-				// TODO add more metadata to s -- like research institute,
-				// operation class?
-				CaGridService service = new CaGridService(serviceAddress + "?wsdl",
-						serviceAddress);
-				services.add(service);
-				//System.out.println(serviceAddress + "?wsdl");
-				try {
-					ServiceMetadata serviceMetadata = MetadataUtils
-							.getServiceMetadata(epr);
-					ServiceMetadataServiceDescription serviceDes = serviceMetadata
-							.getServiceDescription();
+		if (servicesList == null){
+			// Something fishy happened
+			System.out.println("caGrid service list returned is null.");
+			return foundSome;
+		}
+		else{
+			for (EndpointReferenceType epr : servicesList) {
+				if (epr != null) {
+					foundSome = true;
+					// Add a service node
+					String serviceAddress = epr.getAddress().toString();
+					// TODO add more metadata to s -- like research institute,
+					// operation class?
+					CaGridService service = new CaGridService(serviceAddress + "?wsdl",
+							serviceAddress);
+					services.add(service);
+					//System.out.println(serviceAddress + "?wsdl");
+					try {
+						ServiceMetadata serviceMetadata = MetadataUtils
+								.getServiceMetadata(epr);
+						ServiceMetadataServiceDescription serviceDes = serviceMetadata
+								.getServiceDescription();
 
-					// ServiceContextOperationCollection s =
-					// serviceDes.getService().getServiceContextCollection().getServiceContext(0).getOperationCollection();
+						// ServiceContextOperationCollection s =
+						// serviceDes.getService().getServiceContextCollection().getServiceContext(0).getOperationCollection();
 
-					ServiceServiceContextCollection srvContxCol = serviceDes
-							.getService().getServiceContextCollection();
-					ServiceContext[] srvContxs = srvContxCol
-							.getServiceContext();
+						ServiceServiceContextCollection srvContxCol = serviceDes
+								.getService().getServiceContextCollection();
+						ServiceContext[] srvContxs = srvContxCol
+								.getServiceContext();
 
-					service.setResearchCenterName(serviceMetadata
-							.getHostingResearchCenter().getResearchCenter()
-							.getDisplayName());
-					for (ServiceContext srvcontx : srvContxs) {
-						Operation[] ops = srvcontx.getOperationCollection()
-								.getOperation();
+						service.setResearchCenterName(serviceMetadata
+								.getHostingResearchCenter().getResearchCenter()
+								.getDisplayName());
+						for (ServiceContext srvcontx : srvContxs) {
+							Operation[] ops = srvcontx.getOperationCollection()
+									.getOperation();
 
-						// TODO: portType is no longer needed??
-						for (Operation op : ops) {
-							// add an operation node
-							// print out the name of an operation
-							String operationName = op.getName();
-							// OperationInputParameterCollection opp =
-							// op.getInputParameterCollection();
+							// TODO: portType is no longer needed??
+							for (Operation op : ops) {
+								// add an operation node
+								// print out the name of an operation
+								String operationName = op.getName();
+								// OperationInputParameterCollection opp =
+								// op.getInputParameterCollection();
 
-							service.addOperation(operationName);
-							//System.out.println(operationName);
+								service.addOperation(operationName);
+								//System.out.println(operationName);
+							}
 						}
+					}
+
+					catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
-
+			return foundSome;
 		}
-		return foundSome;
 	}
 
 	public static EndpointReferenceType[] getEPRListByServiceQuery(
@@ -358,7 +366,7 @@ public class CaGridServiceQueryUtility {
 	public static EndpointReferenceType[] getEPRListByServiceQueryArray(
 			String indexURL, ServiceQuery sq[]) {
 		EndpointReferenceType[] servicesList = null;
-		if (sq == null) {
+		if ((sq == null) || (sq.length==0)) { // null or empty service query list
 			return getEPRListByServiceQuery(indexURL, null);
 		} else if (sq.length == 1) {
 			return getEPRListByServiceQuery(indexURL, sq[0]);

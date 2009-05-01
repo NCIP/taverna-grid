@@ -115,8 +115,7 @@ public class CaGridQueryDialog extends JDialog{
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 	}
 	
-	final int query_size=3;//max query item size
-    public int query_count =1; // current number of queries
+	final int max_query_size=3;//max query item size
 
 	// Index Services
 	private String[] indexServicesURLs = { "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", 
@@ -149,11 +148,11 @@ public class CaGridQueryDialog extends JDialog{
 	
 	public JComboBox indexServicesURLsComboBox = new JComboBox(indexServicesURLs);
 	
-	public JComboBox[]  queryList = new JComboBox[query_size];
+	public JComboBox[]  queryList = new JComboBox[max_query_size];
 	private String[] queryStrings = { "None", "Search String", "Point Of Contact", "Service Name", "Operation Name", "Operation Input",
 			"Operation Output","Operation Class", "Research Center","Concept Code",
 			"Domain Model for Data Services"};
-	public JComboBox[] queryValue = new JComboBox[query_size];
+	public JComboBox[] queryValue = new JComboBox[max_query_size];
 	private String[] queryValues = {};
 	
 	public JButton addQueryButton = new JButton("Add service query");
@@ -177,7 +176,7 @@ public class CaGridQueryDialog extends JDialog{
         
         JPanel indexServicePanel = new JPanel(new BorderLayout());
         indexServicePanel.setBorder(new EmptyBorder(5,5,5,5));
-        for(int i=0;i<query_size;i++){
+        for(int i=0;i<max_query_size;i++){
         	queryValue[i]=new JComboBox(queryValues);
         	queryValue[i].setEditable(true);
         	FontMetrics fm = getFontMetrics(queryValue[i].getFont());
@@ -233,7 +232,7 @@ public class CaGridQueryDialog extends JDialog{
         queryPanel.add(new ShadedLabel("Service query value: ", ShadedLabel.BLUE, true), c);
         
         c.gridy = 1;
-        for (int i=0 ; i<query_size; i++){
+        for (int i=0 ; i<max_query_size; i++){
         	c.gridx = 0;
         	queryValue[i].setToolTipText("Service search will use the query value you specify here");
         	queryPanel.add(queryList[i], c);
@@ -343,23 +342,18 @@ public class CaGridQueryDialog extends JDialog{
 		                
 						String indexServiceURL = (String) indexServicesURLsComboBox.getSelectedItem();
 		                 // Gather service queries - if any
-		                int [] flag = new int[query_count];
 		                int count = 0;
-		                for (int i=0;i<query_count;i++){
-		                	if(!getQueryCriteria(i).equals("None")&&!getQueryValue(i).equals("")){
+		                for (int i=0; i<max_query_size; i++){
+		                	if((!getQueryCriteria(i).equals("None")) && (!getQueryValue(i).equals(""))){
 		                		count ++ ;
-		                		flag[i]=1;
 		                	}	
 		                }
-		                ServiceQuery[] sqList= null;
+		                ServiceQuery[] sqList = new ServiceQuery[count];
 		                if(count>0){
-		                	sqList = new ServiceQuery[count];
-		                	int j = 0;
-		                	for (int i=0;i<query_count;i++){
-		                		if(flag[i]==1){
-		                			sqList[j++] = new ServiceQuery(getQueryCriteria(i),getQueryValue(i));
-		                			System.out.println("Adding Query: "+ sqList[j-1].queryCriteria + "  = " + sqList[j-1].queryValue);
-		                		}	
+		                	for (int i=0; i<max_query_size; i++){
+			                	if(!getQueryCriteria(i).equals("None")&&!getQueryValue(i).equals("")){
+		                			sqList[i++] = new ServiceQuery(getQueryCriteria(i),getQueryValue(i));
+			                	}
 		                	}
 		                }
 		                

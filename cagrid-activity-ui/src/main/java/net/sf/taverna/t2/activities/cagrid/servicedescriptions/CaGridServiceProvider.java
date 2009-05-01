@@ -20,20 +20,16 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.swing.Icon;
+
 import javax.swing.ImageIcon;
 
-import net.sf.taverna.t2.activities.cagrid.query.CaGridQueryDialog;
+import net.sf.taverna.t2.activities.cagrid.query.CaGridServiceSearcher;
 import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 import net.sf.taverna.t2.servicedescriptions.AbstractConfigurableServiceProvider;
 import net.sf.taverna.t2.servicedescriptions.CustomizedConfigurePanelProvider;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 /**
  * 
@@ -45,67 +41,67 @@ public class CaGridServiceProvider extends
 		implements
 		CustomizedConfigurePanelProvider<CaGridServiceProviderConfig> {
 
-	private static Logger logger = Logger.getLogger(CaGridServiceProvider.class);
+	//private static Logger logger = Logger.getLogger(CaGridServiceProvider.class);
 
 	private static final String CAGRID_SERVICE = "caGrid service";
 
 	public static final Icon cagridIcon = new ImageIcon(
 			CaGridServiceDescription.class.getResource("/cagrid.png"));
 
-	private CaGridQueryDialog caGridQueryDialog;
-	private String indexServiceURL;
-	
 	public CaGridServiceProvider() {
 		super(new CaGridServiceProviderConfig());
 	}
 
 	public String getName() {
-		return CAGRID_SERVICE;
+		return CAGRID_SERVICE + " provider";
 	}
 
 	public void findServiceDescriptionsAsync(
 			FindServiceDescriptionsCallBack callBack) {
-		String indexServiceURL = "";
-		
+	
 		try {
-			if (caGridQueryDialog == null){ // this is a brand new search for services
-				// caGrid service dialog has not been created so the search for service could not have been performed
-			}
-			else{
-			//List<CaGridServiceDescription> caGridServiceDescriptions = caGridQueryDialog.getFoundCaGridServiceDescriptions();
-			/*
-			 * if (caGridServiceDescriptions != null){
-			  		for (CaGridServiceDescription desc : caGridServiceDescriptions){
-			  			addToServicePanel(desc);
-			  		}
-				}
-			 */
-			}
+			CaGridServiceSearcher searcher = new CaGridServiceSearcher(
+					getConfiguration().getIndexServiceURL(),
+					getConfiguration().getServiceQueryList(), 
+					getConfiguration().getDefaultAuthNServiceURL(),
+					getConfiguration().getDefaultDorianServiceURL());
+			searcher.findServiceDescriptionsAsync(callBack);
 			
 		} catch (Exception ex) {
-			callBack.fail("Could not fetch caGrid services from Index Service: "
-					+ indexServiceURL, ex);
+			callBack.fail("Could not fetch caGrid services from the Index Service: "
+					+ getConfiguration().getIndexServiceURL(), ex);
+			ex.printStackTrace();
 		}
 
 	}
 
 	@Override
 	public String toString() {
-		return getName() + " " + getConfiguration().getIndexServiceURL();
+		return getName();
 	}
 
 	public Icon getIcon() {
 		return cagridIcon;
 	}
 
+	@SuppressWarnings("serial")
 	public void createCustomizedConfigurePanel(
 			final CustomizedConfigureCallBack<CaGridServiceProviderConfig> callBack) {
 		
-		caGridQueryDialog = new CaGridQueryDialog();
-		indexServiceURL = caGridQueryDialog.getIndexServiceURL(); // get selected Index Service URL
-		//serviceQueryList[] = caGridQueryDialog.getServiceQueryList(); // get selected queries
-		// Remember this search somewhere as service provider config
-		
+		CaGridServicesSearchDialog caGridServicesQueryDialogue = new CaGridServicesSearchDialog() {
+			@Override
+			protected void addRegistry(String indexServiceURL,
+					ServiceQuery[] serviceQueryList, String authNServiceURL,
+					String dorianServiceURL) {
+				
+				CaGridServiceProviderConfig providerConfig = new CaGridServiceProviderConfig(
+						indexServiceURL, serviceQueryList, authNServiceURL,
+						dorianServiceURL);
+				
+				callBack.newProviderConfiguration(providerConfig);
+			}
+		};
+		caGridServicesQueryDialogue.setVisible(true);
 	}
 
 }

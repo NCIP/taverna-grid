@@ -42,6 +42,28 @@ public class CaGridServiceDescription extends
 	private String operation;
 	private String researchCenter;
 
+	private String indexServiceURL;
+	private String defaultAuthNServiceURL;
+	private String defaultDorianServiceURL;
+	
+	
+	public Class<? extends Activity<CaGridActivityConfigurationBean>> getActivityClass() {
+		return CaGridActivity.class;
+	}
+
+	public CaGridActivityConfigurationBean getActivityConfiguration() {
+		CaGridActivityConfigurationBean bean = new CaGridActivityConfigurationBean();
+		bean.setWsdl(getURI().toASCIIString());
+		bean.setOperation(getOperation());
+		bean.setStyle(style);
+		
+		bean.setIndexServiceURL(indexServiceURL);
+		bean.setAuthNServiceURL(defaultAuthNServiceURL);
+		bean.setDorianServiceURL(defaultDorianServiceURL);
+		
+		return bean;
+	}
+	
 	public String getUse() {
 		return use;
 	}
@@ -91,19 +113,32 @@ public class CaGridServiceDescription extends
 		this.researchCenter = rc;
 	}
 	
+	public String getIndexServiceURL() {
+		return indexServiceURL;
+	}
+
+	public void setIndexServiceURL(String indexServiceURL) {
+		this.indexServiceURL = indexServiceURL;
+	}
+
+	public void setDefaultAuthNServiceURL(String authNServiceURL) {
+		this.defaultAuthNServiceURL = authNServiceURL;
+	}
+
+	public String getAuthNServiceURL() {
+		return defaultAuthNServiceURL;
+	}
+
+	public void setDefaultDorianServiceURL(String dorianServiceURL) {
+		this.defaultDorianServiceURL = dorianServiceURL;
+	}
+
+	public String getDorianServiceURL() {
+		return defaultDorianServiceURL;
+	}
+	
 	public Icon getIcon() {
 		return CaGridServiceProvider.cagridIcon;
-	}
-
-	public Class<? extends Activity<CaGridActivityConfigurationBean>> getActivityClass() {
-		return CaGridActivity.class;
-	}
-
-	public CaGridActivityConfigurationBean getActivityConfiguration() {
-		CaGridActivityConfigurationBean bean = new CaGridActivityConfigurationBean();
-		bean.setWsdl(getURI().toASCIIString());
-		bean.setOperation(getOperation());
-		return bean;
 	}
 
 	public String getName() {

@@ -184,7 +184,7 @@ public class CaGridActivityItem extends AbstractActivityItem {
 		return indexServiceURL;
 	}
 
-	public void setAuthNServiceURL(String authNServiceURL) {
+	public void setDefaultAuthNServiceURL(String authNServiceURL) {
 		this.authNServiceURL = authNServiceURL;
 	}
 
@@ -192,7 +192,7 @@ public class CaGridActivityItem extends AbstractActivityItem {
 		return authNServiceURL;
 	}
 
-	public void setDorianServiceURL(String dorianServiceURL) {
+	public void setDefaultDorianServiceURL(String dorianServiceURL) {
 		this.dorianServiceURL = dorianServiceURL;
 	}
 

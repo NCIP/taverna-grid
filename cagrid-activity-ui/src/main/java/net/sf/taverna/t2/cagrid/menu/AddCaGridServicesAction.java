@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import net.sf.taverna.t2.activities.cagrid.query.CaGridAddQueryActionHandler;
+//import net.sf.taverna.t2.activities.cagrid.query.CaGridAddQueryActionHandler;
 import net.sf.taverna.t2.activities.cagrid.query.CaGridQueryDialog;
 
 @SuppressWarnings("serial")
