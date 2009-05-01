@@ -23,8 +23,10 @@ package net.sf.taverna.t2.activities.cagrid;
 import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
 import gov.nih.nci.cagrid.metadata.security.CommunicationMechanism;
 import gov.nih.nci.cagrid.metadata.security.Operation;
+import gov.nih.nci.cagrid.metadata.security.ProtectionLevelType;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
+import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -33,6 +35,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSession;
+import javax.swing.JOptionPane;
 import javax.wsdl.WSDLException;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -40,8 +47,13 @@ import org.apache.axis.EngineConfiguration;
 import org.apache.axis.configuration.XMLStringProvider;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.Logger;
+import org.cagrid.gaards.authentication.BasicAuthentication;
+import org.cagrid.gaards.authentication.client.AuthenticationClient;
+import org.cagrid.gaards.dorian.client.GridUserClient;
+import org.cagrid.gaards.dorian.federation.CertificateLifetime;
 import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
+import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.ietf.jgss.GSSCredential;
 import org.xml.sax.SAXException;
 
@@ -85,6 +97,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	private boolean isWsrfService = false;
 	private String endpointReferenceInputPortName;
 	
+	/*
 	// Security settings for this operation of a caGrid service, if any, obtained by invoking
 	// getServiceSecurityMetadata() on the service
 	private String indexServiceURL; // URL of the Index Service used to discover this caGrid service (used as alias for username/password and proxy entries in the Taverna's keystore)
@@ -97,10 +110,40 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	private Integer gsi_secure_message;
 	private String gsi_mode;
 	private GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
-	private GlobusCredential proxy; // proxy
-	
+	private GlobusCredential proxy; // proxy*/
 	
 	private static Logger logger = Logger.getLogger(CaGridActivity.class);
+	
+	// This static block is needed in case some of the caGrid services require 
+	// https which is more than likely and needs to be executed before we start loading 
+	// caGrid services or otherwise some of these services will fail. 
+	// Some caGrid services requiring https have a weird CN in their server certificates - 
+	// instead of CN=<HOSTNAME> they have CN="host/"+<HOSTNAME>, i.e. string 
+	// "host/" prepended so we have to tell Java's SSL to accept these hostnames as well.
+	// This is not very good at is sets this hostname verifier across all 
+	// https connections created in the JVM from now on, but solves the problem 
+	// with such caGrid services.
+	static {
+		HostnameVerifier hv = new HostnameVerifier() {
+			public boolean verify(String hostName, SSLSession session) {
+				String hostNameFromCertificate = null;
+				try {
+					hostNameFromCertificate = session.getPeerPrincipal()
+							.getName().substring(3,
+									session.getPeerPrincipal().getName()
+											.indexOf(','));
+				} catch (SSLPeerUnverifiedException e) {
+					e.printStackTrace();
+					return false;
+				}
+				logger.info("Hostname verifier: host from url: " + hostName + " vs. host from certificate: "+ hostNameFromCertificate);
+				System.out.println();
+				return (hostName.equals(hostNameFromCertificate) || ("host/"+hostName)
+						.equals(hostNameFromCertificate));
+			}
+		};
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+	}
 	
 	public boolean isWsrfService() {
 		return isWsrfService;
@@ -128,6 +171,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			configurePorts();
 			configureSecurity();
 		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
 			throw new ActivityConfigurationException(
 					"Failed to configure CaGridActivity", ex);
 		}
@@ -254,7 +298,10 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		outputDepth.put("attachmentList", Integer.valueOf(1));
 	}
 
-	
+	/**
+	 * Configures security properties of the operation, if any.
+	 * @throws Exception
+	 */
 	public void configureSecurity()
 			throws Exception {
 		
@@ -262,7 +309,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		// by invoking getServiceSecurityMetadata() method on the service
 		ServiceSecurityClient ssc = null;
 		try {
-			ssc = new ServiceSecurityClient(parser.getWSDLLocation());
+			ssc = new ServiceSecurityClient(configurationBean.getWsdl());
 		} catch (MalformedURIException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -292,7 +339,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		if (ssmo != null) {
 			Operation[] ops = ssmo.getOperation();
 			if (ops != null) {
-				logger.info("Discovered " + ops.length + " operation(s) of the service that require(s) Globus GSI security.");
+				//logger.info("Discovered " + ops.length + " operation(s) of the service that require(s) Globus GSI security.");
 				for (int i = 0; i < ops.length; i++) {
 					//System.out.println("Secure operation name: " + ops[i].getName());
 					//String lowerMethodName = ops[i].getName().substring(0, 1)
@@ -314,9 +361,135 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			communicationMechanism = serviceDefaultCommunicationMechanism;
 		}
 		
-		//indexServiceURL = configurationBean.getIndexServiceURL();
-		//authNServiceURL = configurationBean.getAuthNServiceURL();
-		//dorianServiceURL = configurationBean.getDorianServiceURL();
+		boolean https = configurationBean.getWsdl().toLowerCase().startsWith("https");
+		
+		boolean anonymousPrefered = true;
+
+		boolean anonymousAllowed = true;
+		boolean authorizationAllowed = true;
+		boolean delegationAllowed = true;
+		boolean credentialsAllowed = true;
+		
+		Authorization authorization= null;
+		
+		String delegationMode = null;
+		
+		if ((https) && (communicationMechanism.getGSITransport() != null)) {
+			ProtectionLevelType level = communicationMechanism.getGSITransport().getProtectionLevel();
+			if (level != null) {
+				if ((level.equals(ProtectionLevelType.privacy)) || (level.equals(ProtectionLevelType.either))) {
+					configurationBean.setGSITransport(org.globus.wsrf.security.Constants.ENCRYPTION);
+				} else {
+					configurationBean.setGSITransport(org.globus.wsrf.security.Constants.SIGNATURE);
+				}
+
+			} else {
+				configurationBean.setGSITransport(org.globus.wsrf.security.Constants.SIGNATURE);
+			}
+			delegationAllowed = false;
+
+		} else if (https) {
+			configurationBean.setGSITransport(org.globus.wsrf.security.Constants.SIGNATURE);
+			delegationAllowed = false;
+		} else if (communicationMechanism.getGSISecureConversation() != null) {
+			ProtectionLevelType level = communicationMechanism.getGSISecureConversation().getProtectionLevel();
+			if (level != null) {
+				if ((level.equals(ProtectionLevelType.privacy)) || (level.equals(ProtectionLevelType.either))) {
+					configurationBean.setGSISecureConversation(org.globus.wsrf.security.Constants.ENCRYPTION);
+
+				} else {
+					configurationBean.setGSISecureConversation(org.globus.wsrf.security.Constants.SIGNATURE);
+				}
+
+			} else {
+				configurationBean.setGSISecureConversation(org.globus.wsrf.security.Constants.ENCRYPTION);
+			}
+
+		} else if (communicationMechanism.getGSISecureMessage() != null) {
+			ProtectionLevelType level = communicationMechanism.getGSISecureMessage().getProtectionLevel();
+			if (level != null) {
+				if ((level.equals(ProtectionLevelType.privacy)) || (level.equals(ProtectionLevelType.either))) {
+					configurationBean.setGSISecureMessage(org.globus.wsrf.security.Constants.ENCRYPTION);
+				} else {
+					configurationBean.setGSISecureMessage(org.globus.wsrf.security.Constants.SIGNATURE);
+				}
+
+			} else {
+				configurationBean.setGSISecureMessage(org.globus.wsrf.security.Constants.ENCRYPTION);
+			}
+			delegationAllowed = false;
+			anonymousAllowed = false;
+		} else {
+			// Service is not secure (i.e. does not require https nor Globus GSI security)
+			// We can exit.
+			/*
+			anonymousAllowed = false;
+			authorizationAllowed = false;
+			delegationAllowed = false;
+			credentialsAllowed = false;
+			*/
+			return;
+		}
+	
+		if ((anonymousAllowed) && (communicationMechanism.isAnonymousPermitted()) && anonymousPrefered) {
+			configurationBean.setGSIAnonymouos(Boolean.TRUE);
+		} else if (credentialsAllowed) {
+			// Get the proxy certificate - hardcoded username and password - proxy should be created only once
+			// for all services belonging to the same caGrid!
+			GlobusCredential proxy;
+			try{
+				BasicAuthentication auth = new BasicAuthentication();
+		        auth.setUserId("anenadic");
+		        auth.setPassword("m^s7a*kpT302");
+
+		        // Authenticate to the Authentication Service using the basic authN credential
+				logger.info("Trying to authenticate the user with AuthN Service: " + configurationBean.getAuthNServiceURL());
+		        AuthenticationClient authClient = new AuthenticationClient(configurationBean.getAuthNServiceURL());
+		        SAMLAssertion saml = authClient.authenticate(auth);
+				logger.info("Authenticated the user with AuthN Service: " + configurationBean.getAuthNServiceURL());
+
+		        // Set requested Grid Credential lifetime (12 hours)
+		        CertificateLifetime lifetime = new CertificateLifetime();
+		        lifetime.setHours(12);
+
+		        // Request PKI/Grid Credential
+		        logger.info("Trying to obtain user's proxy from Dorian: "+ configurationBean.getDorianServiceURL());					
+		        GridUserClient dorian = new GridUserClient(configurationBean.getDorianServiceURL());
+		        proxy = dorian.requestUserCertificate(saml, lifetime);
+		        logger.info("Obtained user's proxy from Dorian: "+ configurationBean.getDorianServiceURL());	
+			}
+			catch(Exception ex){
+				logger.error("Error occured while trying to authenticate user with caGrid", ex);
+				ex.printStackTrace();
+				throw new Exception("Error occured while trying to authenticate user with caGrid", ex);
+			}
+			
+			try {
+				logger.info("Trying to create GSSCredentials from the proxy.");
+				org.ietf.jgss.GSSCredential gss = new org.globus.gsi.gssapi.GlobusGSSCredentialImpl(proxy,
+					org.ietf.jgss.GSSCredential.INITIATE_AND_ACCEPT);
+				logger.info("Created GSSCredentials from the proxy.");
+				System.out.println("Created GSSCredentials from the proxy.");
+				configurationBean.setProxy(proxy);
+				configurationBean.setGSICredential(gss);
+			} catch (org.ietf.jgss.GSSException ex) {
+				ex.printStackTrace();
+				throw new Exception("Failed to create GSSCredentials with the user's proxy", ex);
+			}
+		}
+
+		if (authorizationAllowed) {
+			if (authorization == null) {
+				configurationBean.setAuthorisation(NoAuthorization.getInstance());
+			} else {
+				configurationBean.setAuthorisation(authorization);
+			}
+		}
+		if (delegationAllowed) {
+			if (delegationMode != null) {
+				configurationBean.setGSIMode(delegationMode);
+			}
+		}
 		
 	}
 	
