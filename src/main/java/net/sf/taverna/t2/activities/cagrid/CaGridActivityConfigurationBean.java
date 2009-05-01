@@ -22,13 +22,9 @@ package net.sf.taverna.t2.activities.cagrid;
 
 import org.globus.wsrf.impl.security.authorization.Authorization;
 
-import org.ietf.jgss.GSSCredential;
-
 /**
  * A standard Java Bean that provides the details required to configure a CaGridActivity.
- * Based on WSDLActivityConfigurationBean.
  *
- * @author Stuart Owen
  * @author Alex Nenadic
  */
 public class CaGridActivityConfigurationBean {
@@ -39,13 +35,14 @@ public class CaGridActivityConfigurationBean {
     // Operation/method on the service to be invoked
     private String operation;
     
-	// Security settings of a caGrid service, if any, obtained by invoking
+	// Security settings for this operation of a caGrid service, if any, obtained by invoking
 	// getServiceSecurityMetadata() on the service
-	private boolean isSecure = false;
+	private String indexServiceURL; // URL of the Index Service used to discover this caGrid service (used as alias for username/password and proxy entries in the Taverna's keystore)
+	private String authNServiceURL; // URL of the AuthN Service used or to be used to (re)authenticate the user
+	private String dorianServiceURL; // URL of the Dorian Service used or to be used to (re)issue proxy
 	private Integer gsi_transport;
 	private Boolean gsi_anonymouos;
 	private Authorization authorisation;
-	private GSSCredential gsi_credentials;
 	private Integer gsi_secure_conversation;
 	private Integer gsi_secure_message;
 	private String gsi_mode;
@@ -69,14 +66,6 @@ public class CaGridActivityConfigurationBean {
     public void setOperation(String operation) {
         this.operation = operation;
     }
-
-	public void setSecure(boolean isSecure) {
-		this.isSecure = isSecure;
-	}
-
-	public boolean isSecure() {
-		return isSecure;
-	}
 
 	public void setGSITransport(Integer gsi_transport) {
 		this.gsi_transport = gsi_transport;
@@ -102,14 +91,6 @@ public class CaGridActivityConfigurationBean {
 		return authorisation;
 	}
 
-	public void setGSICredentials(GSSCredential gsi_credentials) {
-		this.gsi_credentials = gsi_credentials;
-	}
-
-	public GSSCredential getGSICredentials() {
-		return gsi_credentials;
-	}
-
 	public void setGSISecureConversation(Integer gsi_sec_conv) {
 		this.gsi_secure_conversation = gsi_sec_conv;
 	}
@@ -132,6 +113,30 @@ public class CaGridActivityConfigurationBean {
 
 	public String getGSIMode() {
 		return gsi_mode;
+	}
+
+	public void setIndexServiceURL(String indexServiceURL) {
+		this.indexServiceURL = indexServiceURL;
+	}
+
+	public String getIndexServiceURL() {
+		return indexServiceURL;
+	}
+
+	public void setAuthNServiceURL(String authNServiceURL) {
+		this.authNServiceURL = authNServiceURL;
+	}
+
+	public String getAuthNServiceURL() {
+		return authNServiceURL;
+	}
+
+	public void setDorianServiceURL(String dorianServiceURL) {
+		this.dorianServiceURL = dorianServiceURL;
+	}
+
+	public String getDorianServiceURL() {
+		return dorianServiceURL;
 	}
 
 

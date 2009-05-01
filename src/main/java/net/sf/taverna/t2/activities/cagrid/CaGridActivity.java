@@ -20,7 +20,14 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid;
 
+import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
+import gov.nih.nci.cagrid.metadata.security.CommunicationMechanism;
+import gov.nih.nci.cagrid.metadata.security.Operation;
+import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata;
+import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
+
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +38,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.axis.EngineConfiguration;
 import org.apache.axis.configuration.XMLStringProvider;
+import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.Logger;
+import org.globus.gsi.GlobusCredential;
+import org.globus.wsrf.impl.security.authorization.Authorization;
+import org.ietf.jgss.GSSCredential;
 import org.xml.sax.SAXException;
 
 import net.sf.taverna.t2.activities.cagrid.InputPortTypeDescriptorActivity;
@@ -74,6 +85,21 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	private boolean isWsrfService = false;
 	private String endpointReferenceInputPortName;
 	
+	// Security settings for this operation of a caGrid service, if any, obtained by invoking
+	// getServiceSecurityMetadata() on the service
+	private String indexServiceURL; // URL of the Index Service used to discover this caGrid service (used as alias for username/password and proxy entries in the Taverna's keystore)
+	private String authNServiceURL; // URL of the AuthN Service used or to be used to (re)authenticate the user
+	private String dorianServiceURL; // URL of the Dorian Service used or to be used to (re)issue proxy
+	private Integer gsi_transport;
+	private Boolean gsi_anonymouos;
+	private Authorization authorisation;
+	private Integer gsi_secure_conversation;
+	private Integer gsi_secure_message;
+	private String gsi_mode;
+	private GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
+	private GlobusCredential proxy; // proxy
+	
+	
 	private static Logger logger = Logger.getLogger(CaGridActivity.class);
 	
 	public boolean isWsrfService() {
@@ -100,9 +126,10 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		try {
 			parseWSDL();
 			configurePorts();
+			configureSecurity();
 		} catch (Exception ex) {
 			throw new ActivityConfigurationException(
-					"Unable to parse the WSDL", ex);
+					"Failed to configure CaGridActivity", ex);
 		}
 	}
 
@@ -227,6 +254,72 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		outputDepth.put("attachmentList", Integer.valueOf(1));
 	}
 
+	
+	public void configureSecurity()
+			throws Exception {
+		
+		// Get security metadata for all operations/methods of this service
+		// by invoking getServiceSecurityMetadata() method on the service
+		ServiceSecurityClient ssc = null;
+		try {
+			ssc = new ServiceSecurityClient(parser.getWSDLLocation());
+		} catch (MalformedURIException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ServiceSecurityMetadata securityMetadata = null;
+		if (ssc != null) {
+			try {
+				securityMetadata = ssc.getServiceSecurityMetadata();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		// Get all secure OperationS of the service which security properties differ from the 
+		// default security properties for the service itself and map them to their names.
+		// Only operations which security properties are different from those of the service itself 
+		// will be detected here - whether because they require more stringent or more loose security.
+		Map<String, Operation> secureOperationsMap = new HashMap<String, Operation>();
+		ServiceSecurityMetadataOperations ssmo = null; 
+		if (securityMetadata != null){
+			ssmo = securityMetadata.getOperations(); // all operations of the service requiring GSI security properties
+		}
+		if (ssmo != null) {
+			Operation[] ops = ssmo.getOperation();
+			if (ops != null) {
+				logger.info("Discovered " + ops.length + " operation(s) of the service that require(s) Globus GSI security.");
+				for (int i = 0; i < ops.length; i++) {
+					//System.out.println("Secure operation name: " + ops[i].getName());
+					//String lowerMethodName = ops[i].getName().substring(0, 1)
+					//		.toLowerCase()
+					//		+ ops[i].getName().substring(1);
+					//secureOperationsMap.put(lowerMethodName, ops[i]);
+					//System.out.println("Lowercase secure operation name: " + lowerMethodName);
+					secureOperationsMap.put(ops[i].getName(), ops[i]);
+				}
+			}
+		}
+		
+		CommunicationMechanism serviceDefaultCommunicationMechanism = securityMetadata.getDefaultCommunicationMechanism();
+		CommunicationMechanism communicationMechanism = null;
+		if (secureOperationsMap.containsKey(configurationBean.getOperation())) {
+			Operation op = (Operation) secureOperationsMap.get(configurationBean.getOperation());
+			communicationMechanism = op.getCommunicationMechanism(); // specific for this operation, may differ from service default
+		} else {
+			communicationMechanism = serviceDefaultCommunicationMechanism;
+		}
+		
+		//indexServiceURL = configurationBean.getIndexServiceURL();
+		//authNServiceURL = configurationBean.getAuthNServiceURL();
+		//dorianServiceURL = configurationBean.getDorianServiceURL();
+		
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -305,7 +398,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 					callback.fail("Unable to find input data", e);
 					return;
 				} catch (Exception e) {
-					logger.error("Error invoking WSDL service "
+					logger.error("Error invoking caGrid service "
 							+ getConfiguration().getOperation(), e);
 					callback.fail(
 							"An error occurred invoking the CaGridActivity", e);
