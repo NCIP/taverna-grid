@@ -63,36 +63,32 @@ public class CaGridServiceQueryUtility {
 		// Get the categories for this installation
 		boolean findServices = loadServices(indexURL, sq, services);
 		if (!findServices) {
-
 			throw new Exception("Unable to locate a GT4 index at \n" + indexURL);
 		}
-
 		return services;
-
 	}
 
-	// load services & operations by caGrid discovery service API
+	// Load services & operations by caGrid discovery service API
 	private static boolean loadServices(String indexURL, ServiceQuery[] sq,
 			List<CaGridService> services) throws Exception {
 		boolean foundSome = false;
 
-		System.out
-				.println("==================================================");
+		System.out.println("==================================================");
 		System.out.println("Starting to load caGrid services");
 		EndpointReferenceType[] servicesList = new EndpointReferenceType[0];
 		servicesList = getEPRListByServiceQueryArray(indexURL, sq);
-		System.out.println("DiscoveryClient loaded and EPR to services returned.");
+		System.out.println("caGrid DiscoveryClient loaded and EPR to services returned.");
 		for (EndpointReferenceType epr : servicesList) {
 			if (epr != null) {
 				foundSome = true;
-				// add a service node
+				// Add a service node
 				String serviceAddress = epr.getAddress().toString();
 				// TODO add more metadata to s -- like research institute,
 				// operation class?
-				CaGridService s = new CaGridService(serviceAddress + "?wsdl",
+				CaGridService service = new CaGridService(serviceAddress + "?wsdl",
 						serviceAddress);
-				services.add(s);
-				System.out.println(serviceAddress + "?wsdl");
+				services.add(service);
+				//System.out.println(serviceAddress + "?wsdl");
 				try {
 					ServiceMetadata serviceMetadata = MetadataUtils
 							.getServiceMetadata(epr);
@@ -107,7 +103,7 @@ public class CaGridServiceQueryUtility {
 					ServiceContext[] srvContxs = srvContxCol
 							.getServiceContext();
 
-					s.setResearchCenterName(serviceMetadata
+					service.setResearchCenterName(serviceMetadata
 							.getHostingResearchCenter().getResearchCenter()
 							.getDisplayName());
 					for (ServiceContext srvcontx : srvContxs) {
@@ -122,8 +118,8 @@ public class CaGridServiceQueryUtility {
 							// OperationInputParameterCollection opp =
 							// op.getInputParameterCollection();
 
-							s.addOperation(operationName);
-							System.out.println(operationName);
+							service.addOperation(operationName);
+							//System.out.println(operationName);
 						}
 					}
 				}
@@ -149,7 +145,7 @@ public class CaGridServiceQueryUtility {
 		}
 		if (sq == null) {
 			System.out
-					.println("Retrieving all CaGrid services from the index: "
+					.println("Retrieving all caGrid services from the Index Service: "
 							+ indexURL);
 			System.out
 					.println("==================================================");

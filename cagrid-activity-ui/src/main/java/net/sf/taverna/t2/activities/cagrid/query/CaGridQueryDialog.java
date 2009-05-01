@@ -1,40 +1,697 @@
+/*******************************************************************************
+ * Copyright (C) 2007 The University of Manchester   
+ * 
+ *  Modifications to the initial code base are copyright of their
+ *  respective authors, or their employers as appropriate.
+ * 
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public License
+ *  as published by the Free Software Foundation; either version 2.1 of
+ *  the License, or (at your option) any later version.
+ *    
+ *  This program is distributed in the hope that it will be useful, but
+ *  WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *    
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid.query;
 
 import gov.nih.nci.cadsr.umlproject.domain.Project;
 import gov.nih.nci.cadsr.umlproject.domain.UMLClassMetadata;
 import gov.nih.nci.cadsr.umlproject.domain.UMLPackageMetadata;
 import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
+import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
+import gov.nih.nci.cagrid.metadata.security.CommunicationMechanism;
+import gov.nih.nci.cagrid.metadata.security.Operation;
+import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata;
+import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.FontMetrics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSession;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
+import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.Logger;
 
-import net.sf.taverna.t2.partition.AddQueryActionHandler;
+import net.sf.taverna.t2.lang.ui.ShadedLabel;
 
+/**
+ * Dialog for searching for caGrid services and adding them to Taverna's service panel. 
+ * 
+ * @author Alex Nenadic
+ *
+ */
 @SuppressWarnings("serial")
-public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
-	private static Logger logger = Logger.getLogger(CaGridAddQueryActionHandler.class);
+public class CaGridQueryDialog extends JDialog{
+
+	private static Logger logger = Logger.getLogger(CaGridQueryDialog.class);
 	
-	//the class to popup a service query dialog for users to input caGrid index
-	//service address and the query criteria
+	// This static block is needed in case some of the caGrid services require 
+	// https which is more than likely and needs to be executed before we start loading 
+	// caGrid services or otherwise some of these services will fail. 
+	// Some caGrid services requiring https have a weird CN in their server certificates - 
+	// instead of CN=<HOSTNAME> they have CN="host/"+<HOSTNAME>, i.e. string 
+	// "host/" prepended so we have to tell Java's SSL to accept these hostnames as well.
+	// This is not very good at is sets this hostname verifier across all 
+	// https connections created in the JVM from now on, but solves the problem 
+	// with such caGrid services.
+	static {
+		HostnameVerifier hv = new HostnameVerifier() {
+			public boolean verify(String hostName, SSLSession session) {
+				String hostNameFromCertificate = null;
+				try {
+					hostNameFromCertificate = session.getPeerPrincipal()
+							.getName().substring(3,
+									session.getPeerPrincipal().getName()
+											.indexOf(','));
+				} catch (SSLPeerUnverifiedException e) {
+					e.printStackTrace();
+					return false;
+				}
+				logger.info("Hostname verifier: host from url: " + hostName + " vs. host from certificate: "+ hostNameFromCertificate);
+				System.out.println();
+				return (hostName.equals(hostNameFromCertificate) || ("host/"+hostName)
+						.equals(hostNameFromCertificate));
+			}
+		};
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+	}
 	
-	//give an initial value to classNameArray
-	//the data is retrieved at 8:30 am, June 16th, 2008
+	final int query_size=3;//max query item size
+    public int query_count =1; // current number of queries
+
+	// Index Services
+	private String[] indexServicesURLs = { "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", 
+			"http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"};
+	
+	// Map of caDSR Services corresponding to each of the Index Services
+	private Map<String,String> caDSRServicesMap = new HashMap<String, String>(){
+	    {
+	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "http://cagrid-service.nci.nih.gov:8080/wsrf/services/cagrid/CaDSRService");
+	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://cadsr.training.cagrid.org:8443/wsrf/services/cagrid/CaDSRService");
+	    }
+	};	
+	
+	// Map of Authentication Services corresponding to each of the Index Services 
+	// (should be a list of Authentication Services (and not just one) for each Index Service really)
+	private Map<String,String> authenticationServicesMap = new HashMap<String, String>(){
+	    {
+	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService");
+	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
+	    }
+	};
+	
+	// Map of Dorian Services corresponding to each of the Index Services
+	private Map<String,String> dorianServicesMap = new HashMap<String, String>(){
+	    {
+	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian");
+	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
+	    }
+	};	
+	
+	public JComboBox indexServicesURLsComboBox = new JComboBox(indexServicesURLs);
+	
+	public JComboBox[]  queryList = new JComboBox[query_size];
+	private String[] queryStrings = { "None", "Search String", "Point Of Contact", "Service Name", "Operation Name", "Operation Input",
+			"Operation Output","Operation Class", "Research Center","Concept Code",
+			"Domain Model for Data Services"};
+	public JComboBox[] queryValue = new JComboBox[query_size];
+	private String[] queryValues = {};
+	
+	public JButton addQueryButton = new JButton("Add service query");
+    public JButton removeQueryButton = new JButton("Remove service query");
+    
+	private Thread searchThread;
+
+	private JList searchResultsList;
+	private DefaultListModel searchResultsListModel;
+	private JScrollPane searchResultsScrollPane;
+	private JLabel searchStatusLabel = new JLabel("Status: search results empty.");
+	private List<CaGridActivityItem> searchResultsActivityItems;
+	
+    public CaGridQueryDialog(){
+        super();
+		this.setTitle("Search for caGrid services");		
+        
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBorder(new EmptyBorder(10,10,10,10));
+        
+        JPanel indexServicePanel = new JPanel(new BorderLayout());
+        indexServicePanel.setBorder(new EmptyBorder(5,5,5,5));
+        for(int i=0;i<query_size;i++){
+        	queryValue[i]=new JComboBox(queryValues);
+        	queryValue[i].setEditable(true);
+        	FontMetrics fm = getFontMetrics(queryValue[i].getFont());
+        	int width = 50 + fm.stringWidth("RegionalNodeLymphadenectomyCutaneousMelanomaSurgicalPathologySpecimen"); //the longest string
+        	queryValue[i].setPreferredSize(new Dimension(width,queryValue[i].getPreferredSize().height));
+        	queryValue[i].setMinimumSize(new Dimension(width,queryValue[i].getPreferredSize().height));
+        	queryList[i] = new JComboBox(queryStrings);     
+        	
+        	final JComboBox final_queryValue = queryValue[i];
+            // Listener for queryList comboBox - if selected service query criteria is "Operation Class",
+        	// "Operation Input" or "Operation Output", retrieve possible query values from caDSR Service
+			queryList[i].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					String queryCriteriaString = (String) ((JComboBox) ae
+							.getSource()).getSelectedItem();
+					// Use values from classNameArray - later on should get them from caDSR
+					if (queryCriteriaString.equals("Operation Class")
+							|| queryCriteriaString.equals("Operation Input")
+							|| queryCriteriaString.equals("Operation Output")) {
+						// Should contact caDSR really for the up-to-date values
+						// of classNameArray
+						final_queryValue.setModel(new DefaultComboBoxModel(
+								classNameArray));
+					} else {
+						// keep the combobox empty and editible
+						String[] emptyValue = {};
+						final_queryValue.setModel(new DefaultComboBoxModel(emptyValue));
+
+					}
+					final_queryValue.validate();
+				}
+			});
+        }
+        indexServicePanel.add(new ShadedLabel("Location (URL) of the Index Service: ", ShadedLabel.BLUE, true), BorderLayout.WEST);
+        //indexServiceURLs.setEditable(true);
+        indexServicesURLsComboBox.setToolTipText("caGrid Services will be retrieved from the Index Service whose URL you specify here");
+        indexServicePanel.add(indexServicesURLsComboBox, BorderLayout.CENTER);
+        mainPanel.add(indexServicePanel, BorderLayout.NORTH);
+        
+        JPanel serviceQueryPanel = new JPanel(new BorderLayout());
+        serviceQueryPanel.setBorder(new CompoundBorder(new EmptyBorder(5,5,5,5), new EtchedBorder(EtchedBorder.LOWERED)));
+        // Panel with queries
+        JPanel queryPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(5,0,5,5);
+        queryPanel.add(new ShadedLabel("Service query criteria: ", ShadedLabel.BLUE, true), c);        
+		c.gridx = 1;
+		c.gridy = 0;
+        queryPanel.add(new ShadedLabel("Service query value: ", ShadedLabel.BLUE, true), c);
+        
+        c.gridy = 1;
+        for (int i=0 ; i<query_size; i++){
+        	c.gridx = 0;
+        	queryValue[i].setToolTipText("Service search will use the query value you specify here");
+        	queryPanel.add(queryList[i], c);
+        	c.gridx = 1;
+        	queryPanel.add(queryValue[i], c);  	
+        	c.gridy++;
+        }
+        serviceQueryPanel.add(queryPanel, BorderLayout.CENTER);
+
+        // Panel with buttons
+        JPanel queryButtonsPanel = new JPanel();
+        queryButtonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        queryButtonsPanel.setBorder(new EmptyBorder(0,0,0,25));
+        JButton updateCaDSRDataButton = new JButton("Update caDSR data");
+        updateCaDSRDataButton.setToolTipText("Get an updated UML class list from caDSR Service. \n" +
+		"This operation may take a few minutes depending on network status.");
+        updateCaDSRDataButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				Thread updateCaDSRDataThread = new Thread("Updating caDSR metadata") {
+					public void run() {
+						// Update the value of classNameArray
+                    	 ArrayList<String> classNameList = new ArrayList<String>();
+    					 Project[] projs = null;
+    					 CaDSRServiceClient cadsr  =null;
+    					 UMLPackageMetadata[] packs = null;
+    					 UMLClassMetadata[] classes = null;
+    					 System.out.println("===========Updating caDSR Metadata================");
+    					 
+    					 //Note: the try-catch module should be with fine granularity
+    					 try {
+    						 cadsr = new CaDSRServiceClient(caDSRServicesMap.get(indexServicesURLsComboBox.getSelectedItem()));		                					            
+    					     projs = cadsr.findAllProjects();
+    					 }
+    					 catch (Exception e) {
+    						 e.printStackTrace();
+    					 }
+    					 
+    					 if(projs !=null){
+    						 for (int i = 0; i<projs.length;i++){
+    							 Project project = projs[i];
+    							 //System.out.println("\n"+ project.getShortName());
+    							 //the bridg and c3pr project always yield error -- don't know why. so simply bypass them
+    							 if(!project.getShortName().equals("BRIDG")&&!project.getShortName().equals("C3PR")){
+    								 try {
+    									 packs = cadsr.findPackagesInProject(project);
+    								 }
+    								 catch (Exception e) {
+    									 e.printStackTrace();
+    								 }
+    								 if(packs !=null){
+    									 for(int j= 0;j<packs.length;j++){
+    										 UMLPackageMetadata pack = packs[j];
+    										 //System.out.println("\t-" + pack.getName());
+    										 try {
+    											 classes = cadsr.findClassesInPackage(project, pack.getName());
+    										 }
+    										 catch (Exception e) {
+    											 e.printStackTrace();
+    										 }
+    										 if(classes !=null){
+    											 for (int k=0;k<classes.length;k++){
+    												 UMLClassMetadata clazz = classes [k];
+    												 //System.out.println("\t\t-"+clazz.getName());
+    												 if(!classNameList.contains(clazz.getName()))
+    													 //classNameList is updated here!
+    													 classNameList.add((String)clazz.getName());
+    												 else {
+    													 //System.out.println("Duplicated Class Name Found.");
+    												 }
+    											 }
+    										 }
+    									 }
+    								 }
+    							 }
+    						 }
+    					 }
+    					 
+    					 String [] clsNameArray;
+    					 // If the retrieved class name list is not empty, update the static datatype classNameArray
+    					 if(!classNameList.isEmpty()){
+    						 clsNameArray = (String[]) classNameList.toArray(new String[0]);
+    						 Arrays.sort(clsNameArray,String.CASE_INSENSITIVE_ORDER);		                					       
+    						 System.out.println("=========Class Names Without Duplications=============");
+    						 for(int i=0;i<clsNameArray.length;i++){
+    							 System.out.println(clsNameArray[i]);
+    						 }
+    						 classNameArray  = clsNameArray;
+    						 JOptionPane.showMessageDialog(null, "caDSR data has been updated. \n Now there are " + classNameArray.length + " UML classes in the list.", null, JOptionPane.INFORMATION_MESSAGE);   
+    					 }
+    					 else{
+    						 //the current value of the GT4ScavengerHelper.classNameArray is not updated
+    						 //System.out.println("Empty class name list retrieved, so classNameArray is not updated!");
+    						 JOptionPane.showMessageDialog(null,"Empty class name list retrieved from caDSR Service, so UML class names have not been updated!", null, JOptionPane.INFORMATION_MESSAGE);
+    					 }	 
+                    }
+            	};
+            	updateCaDSRDataThread.start();
+            }
+		});
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				searchResultsListModel.removeAllElements();
+				searchThread = new Thread("Searching Index Service for available caGrid services") {
+					public void run() {
+						updateSearchStatus("Status: searching for services...");
+		                
+						String indexServiceURL = (String) indexServicesURLsComboBox.getSelectedItem();
+		                 // Gather service queries - if any
+		                int [] flag = new int[query_count];
+		                int count = 0;
+		                for (int i=0;i<query_count;i++){
+		                	if(!getQueryCriteria(i).equals("None")&&!getQueryValue(i).equals("")){
+		                		count ++ ;
+		                		flag[i]=1;
+		                	}	
+		                }
+		                ServiceQuery[] sqList= null;
+		                if(count>0){
+		                	sqList = new ServiceQuery[count];
+		                	int j = 0;
+		                	for (int i=0;i<query_count;i++){
+		                		if(flag[i]==1){
+		                			sqList[j++] = new ServiceQuery(getQueryCriteria(i),getQueryValue(i));
+		                			System.out.println("Adding Query: "+ sqList[j-1].queryCriteria + "  = " + sqList[j-1].queryValue);
+		                		}	
+		                	}
+		                }
+		                
+		                List<CaGridService> services = null;                	
+    					boolean searchStopped = false;
+    					int serviceCounter = 0;
+		                try {
+	            			services=CaGridServiceQueryUtility.load(indexServiceURL, sqList);
+		                }
+		                catch (InterruptedException intrex) {
+		                    // Allow thread to exit 
+		                	searchStopped = true;
+        					updateSearchStatus("Status: search stopped. Found 0 services.");
+        					Thread.currentThread().interrupt();
+		                }
+	            		catch (Exception ex) {
+			    				updateSearchStatus("Status: search failed. Failed to load Index Service.");
+			                	JOptionPane
+			                	.showMessageDialog(null,
+			                			"Failed to load Index Service - please try again later!",
+			                			"Error!",
+			                			JOptionPane.ERROR_MESSAGE);
+			                	logger.error(ex);
+			                	ex.printStackTrace();
+			            }
+
+	            		
+            			if((!Thread.currentThread().isInterrupted()) && (!searchStopped) && (services != null)){
+        					logger.info("Discovered "+ services.size() + " caGrid services.");
+
+        					Iterator<CaGridService> iter = services.iterator(); // services' iterator
+        					while((!Thread.currentThread().isInterrupted()) && iter.hasNext()){
+        						
+        						CaGridService caGridService = (CaGridService) iter.next();
+        						      						
+            					try{
+	            					List<String> operationNames = caGridService.getOperations();
+	            					logger.info("Found caGrid service: "+ caGridService.getServiceName());	
+        							logger.info("Discovered " + operationNames.size() + " operation(s) of the service.");
+	            					
+	            					// Get security metadata for all operations/methods of this service
+	            					// by invoking getServiceSecurityMetadata() method on the service
+	            					ServiceSecurityClient ssc = null;
+	            					try {
+	            						ssc = new ServiceSecurityClient(caGridService.getServiceWSDLLocation());
+	            					} catch (MalformedURIException e) {
+	            						// TODO Auto-generated catch block
+	            						e.printStackTrace();
+	            					} catch (RemoteException e) {
+	            						// TODO Auto-generated catch block
+	            						e.printStackTrace();
+	            					}
+	            					ServiceSecurityMetadata securityMetadata = null;
+	            					if (ssc != null) {
+	            						try {
+	            							securityMetadata = ssc.getServiceSecurityMetadata();
+	            						} catch (RemoteException e) {
+	            							// TODO Auto-generated catch block
+	            							e.printStackTrace();
+	            						}
+	            					}
+	            					// Get all secure OperationS of the service which security properties differ from the 
+	            					// default security properties for the service itself and map them to their names.
+	            					// Only operations which security properties are different from those of the service itself 
+	            					// will be detected here - whether because they require more stringent or more loose security.
+	            					Map<String, Operation> secureOperationsMap = new HashMap<String, Operation>();
+	            					ServiceSecurityMetadataOperations ssmo = null; 
+	            					if (securityMetadata != null){
+	            						ssmo = securityMetadata.getOperations(); // all operations of the service requiring GSI security properties
+	            					}
+	            					if (ssmo != null) {
+	            						Operation[] ops = ssmo.getOperation();
+	            						if (ops != null) {
+	            							for (int i = 0; i < ops.length; i++) {
+	            								/*String lowerMethodName = ops[i].getName().substring(0, 1)
+	            										.toLowerCase()
+	            										+ ops[i].getName().substring(1);
+	            								secureOperationsMap.put(lowerMethodName, ops[i]);
+	            								System.out.print(" " + lowerMethodName);
+	            								System.out.println();
+	            								*/
+	            								secureOperationsMap.put(ops[i].getName(), ops[i]);
+	            							}
+	            						}
+	            					}
+	            					
+	            					for (String operation : operationNames) {
+	            						logger.info("Adding operation: "+ operation + " for service " + caGridService.getServiceName());
+	            						// An ActivityItem corresponds to an operation.
+	            						// Service contains service metadata -- no wsdl parser is needed?
+	            						// We can add a parser to parse it if we need more details on those services
+	            						CaGridActivityItem item = new CaGridActivityItem();
+	            						
+	            						item.setOperation(operation);
+	            						
+	            						//make use of "use" and "style" to facilitate metadata-based sorting
+	            						item.setUse(operation);
+	            						//CaGrid services are all DOCUMENT style
+	            						item.setStyle("document");
+	            						
+	            						item.setUrl(caGridService.getServiceName()+"?wsdl");
+	            						
+	            						if(!caGridService.getResearchCenterName().equals("")){
+	            							item.setResearchCenter(caGridService.getResearchCenterName());	
+	            						}
+	            						
+	            						CommunicationMechanism serviceDefaultCommunicationMechanism = securityMetadata.getDefaultCommunicationMechanism();
+	            						CommunicationMechanism communicationMechanism = null;
+	            						if (secureOperationsMap.containsKey(operation)) {
+	            							Operation op = (Operation) secureOperationsMap.get(operation);
+	            							communicationMechanism = op.getCommunicationMechanism(); // specific for this operation, may differ from service default
+	            						} else {
+	            							communicationMechanism = serviceDefaultCommunicationMechanism;
+	            						}
+	            						
+	            						// Configure security properties for the operation, if any
+            							try{
+            								logger.info("Configuring security properties for operation: "+ operation);
+            								CaGridQuery.configureSecurity(caGridService,
+            										communicationMechanism,
+            										indexServiceURL,
+            										authenticationServicesMap.get(indexServiceURL), 
+            										dorianServicesMap.get(indexServiceURL), 
+            										item);
+            							}
+            							catch(Exception ex){
+            								logger.error(ex.getMessage() + 
+            												". Skipping this operation.");
+            								ex.printStackTrace();
+            								continue; // skip this operation
+            							}
+
+		            					searchResultsActivityItems.add(item);
+	            					}
+	            					updateSearchResultsList(caGridService.getServiceName());
+	        						serviceCounter ++;
+	            					Thread.sleep(500); // Give a chance to another thread to update the services JList
+            					}
+        		                catch (InterruptedException intrex) {
+        		                    // Allow thread to exit 
+        		                	searchStopped = true;
+        		                    Thread.currentThread().interrupt();
+        		                }
+        		                catch (Exception ex) { // anything else that went wrong
+        		    				logger.error(ex);
+        		                	continue; // skip this service
+        		                }
+        						
+        					}
+        					
+            				if (searchStopped){
+            					logger.info("caGrid service search stopped. Found " + serviceCounter + " services.");
+            					updateSearchStatus("Status: search stopped. Found " + serviceCounter + " services.");
+            				}
+            				else{
+            					logger.info("caGrid service search complete. Found " + serviceCounter + " services.");
+            					updateSearchStatus("Status: search done. Found " + serviceCounter + " services.");
+            				}
+            			}	
+					}					
+				};
+				searchThread.start();
+            }
+        });
+        JButton stopButton = new JButton("Stop search");
+        stopButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+            	Thread stopThread = new Thread("Stopping the search for caGrid services"){
+            		public void run(){
+                    	if ((searchThread != null) && searchThread.isAlive()){
+                    	    updateSearchStatus("Status: stopping search...");
+                    		searchThread.interrupt();            		
+                    		while(!searchThread.getState().equals(State.TERMINATED)){
+                    			continue;
+                    		}
+                    	}
+                    	//updateSearchStatus("Status: search stopped."); // status will be updated from the searchThread
+            		}
+            	};
+            	stopThread.start();
+            }
+        });
+        queryButtonsPanel.add(searchButton);
+        queryButtonsPanel.add(stopButton);
+        queryButtonsPanel.add(updateCaDSRDataButton);
+        serviceQueryPanel.add(queryButtonsPanel, BorderLayout.SOUTH);
+        
+        mainPanel.add(serviceQueryPanel, BorderLayout.CENTER);
+
+        // Search results panel
+        JPanel searchResultsPanel = new JPanel(new BorderLayout());
+        searchResultsPanel.setBorder(new CompoundBorder(new EmptyBorder(5,5,5,5), new EtchedBorder(EtchedBorder.LOWERED)));
+        searchResultsActivityItems = new ArrayList<CaGridActivityItem>();
+        searchResultsListModel = new DefaultListModel();
+        searchResultsList = new JList(searchResultsListModel);	
+        searchResultsScrollPane = new JScrollPane(searchResultsList);
+        JPanel searchScrollPanel = new JPanel(new BorderLayout());
+        searchScrollPanel.add(searchResultsScrollPane, BorderLayout.CENTER);
+        searchScrollPanel.add(searchStatusLabel, BorderLayout.SOUTH);
+        JPanel searchResultsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton selectAllButton = new JButton("Select all");
+        selectAllButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+			    int start = 0;
+			    int end = searchResultsListModel.getSize()-1;
+			    if (end >= 0) {
+			    	searchResultsList.setSelectionInterval(start, end); 
+			    }
+			}
+        });
+        searchResultsButtonsPanel.add(selectAllButton);
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				searchResultsListModel.removeAllElements();
+			}
+        });
+        //searchResultsButtonsPanel.add(clearButton);
+        JButton addServicesButton = new JButton("Add services");
+        searchResultsButtonsPanel.add(addServicesButton);
+        searchResultsPanel.add(searchScrollPanel, BorderLayout.CENTER);
+        searchResultsPanel.add(searchResultsButtonsPanel, BorderLayout.SOUTH);
+        
+        mainPanel.add(searchResultsPanel, BorderLayout.SOUTH);
+        
+        this.getContentPane().add(mainPanel);
+        this.setLocation(50,50);
+        this.pack();
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent ev) {
+            	closeDialog();
+            }
+        });
+        this.setVisible(true);
+    }
+    
+    private void updateSearchStatus(final String newStatus) {
+    	  SwingUtilities.invokeLater(new Runnable() {
+    	    public void run() {
+      	    	synchronized(searchStatusLabel){
+      	    		searchStatusLabel.setText(newStatus);
+      	    	}
+    	    }
+    	  });
+    }
+    
+    private void updateSearchResultsList(final String operation) {
+  	  SwingUtilities.invokeLater(new Runnable() {
+  	    public void run() {
+  	    	synchronized(searchResultsListModel){
+  	  	      // Append an item
+  	  	      searchResultsListModel.addElement(operation);
+  	    	}
+  	    }
+  	  });
+  }
+
+
+    private void closeDialog(){
+    	if ((searchThread != null) && searchThread.isAlive()){
+    		searchThread.interrupt();
+    	}
+        setVisible(false);
+        dispose();
+    }
+    
+    /**
+     * 
+     * @return the selected Index Service URL
+     */
+    public String getIndexServiceURL() {
+        return (String) indexServicesURLsComboBox.getSelectedItem();
+    }
+    
+    /**
+     * 
+     * @return the Authentication Service URL that corresponds to the selected Index Service
+     */
+ /*   public String getAuthenticationServiceURL() {
+        return (String) authenticationServicesURLs[indexServiceURLs.getSelectedIndex()];
+    }*/
+    
+    /**
+     * 
+     * @return the Dorian Service URL that corresponds to the selected Index Service
+     */
+ /*   public String getDorianServiceURL() {
+        return (String) dorianServicesURLs[indexServiceURLs.getSelectedIndex()];
+    }*/
+
+    /**
+     * 
+     * @return the string representation of the i-th QueryCriteria
+     */
+    public String getQueryCriteria(int i) {
+        return (String) queryList[i].getSelectedItem();
+    }
+    
+    /**
+     * 
+     * @return the string representation of the i-th QueryValue
+     */
+    public String getQueryValue(int i) {
+        return (String) queryValue[i].getSelectedItem();
+    }
+    
+    /*
+     // Sets the busy cursor while action is being performed.
+      private final static class CursorController {
+    	private CursorController() {}
+    	
+    	public static ActionListener createListener(final Component component, final ActionListener mainActionListener) {
+    		ActionListener actionListener = new ActionListener() {
+        
+    	    	public void actionPerformed(ActionEvent ae) {
+    	    		try {
+    	    			component.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    	    			mainActionListener.actionPerformed(ae);
+    	    		} 
+    	    		finally { // restore the cursor to normal state
+    	    			component.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    	    		}
+    	        }
+    	      };
+      
+    	     return actionListener;   
+    	}
+    }*/
+    
+	// Give an initial value to classNameArray.
+	// The data is retrieved at 8:30 am, June 16th, 2008.
 	public static String []classNameArray = {
 		"A2Conjugate", 
 		"A2Experiment", "A2LP4Parameters", "A2Plate", "A2Sample", 
@@ -477,275 +1134,5 @@ public class CaGridAddQueryActionHandler extends AddQueryActionHandler {
 		"XTandemScores", "YeastModel", "ZincFingerRegion", "Zone", 
 		"ZoneDefect", "ZoneGroup", "ZoneLayout"
 	};
-	
-	//configure the classloader for the (de) serializer used by CaDSRServiceClient
-	public CaGridAddQueryActionHandler(){
-		
-		try{
-			org.apache.axis.utils.ClassUtils.setDefaultClassLoader(CaDSRServiceClient.class.getClassLoader()) ;	
-		}
-		catch (Exception e) {
-			 e.printStackTrace();
-			 }
-		
-	
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent actionEvent) {
-		
-		final JDialog dialog = new JDialog();
-		dialog.setTitle("Add Your Custom Service Query");
-		dialog.setModal(true);
-		
-        final CaGridIndexQueryDialog cad = new CaGridIndexQueryDialog();
-        
-        JButton acceptButton = new JButton("Send Service Query");
-        JButton cancelButton = new JButton("Cancel");
-        JButton updateCaDSRDataButton = new JButton("Update caDSR Data");
-        updateCaDSRDataButton.setToolTipText("Get an updated UML Class list from caDSR services. \n" +
-        		"This operation may take a few minutes depending on network status. ");
     
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonsPanel.add(acceptButton);
-        //gtd.add(new JLabel("Send Service Query to Index Service"));
-        buttonsPanel.add(updateCaDSRDataButton);
-        buttonsPanel.add(cancelButton);
-
-        cad.add(buttonsPanel, BorderLayout.SOUTH);
-        cad.setPreferredSize(new Dimension(900, 300));
-
-        cad.addQueryButton.addActionListener(new ActionListener(){
-        	 public void actionPerformed(ActionEvent ae3) {
-        		 if (dialog.isVisible()) {
-        			 if(cad.query_count<cad.query_size){
-        				 cad.queryList[cad.query_count].setVisible(true);
-        				 cad.queryValue[cad.query_count].setVisible(true);
-        				 cad.repaint();
-        				 cad.validate();
-        				 cad.query_count++;
-        				// System.out.println("Add a New Query-- now q_count == " + cad.q_count);
-        			 }
-        		 }
-        	 }
-        });
-        cad.removeQueryButton.addActionListener(new ActionListener(){
-        	 public void actionPerformed(ActionEvent ae4) {
-        		 if (dialog.isVisible()) {
-        			 if(cad.query_count>1){
-        				 cad.queryList[cad.query_count-1].setVisible(false);
-        				 cad.queryValue[cad.query_count-1].setVisible(false);
-        				 cad.repaint();
-        				 cad.validate();
-        				 cad.query_count--;
-        				// System.out.println("Remove a New Query-- now q_count == " + cad.q_count);
-        			 }
-        		 }
-        	 }
-        	
-        });
-        
-        
-        //listeners for service query criteria
-        //do some prompt when possible, like if service query criteria is "operation class", "operation input"
-        //or "operation output", retrieve all classes from caDSR
-        for(int i=0;i<cad.query_size;i++){
-        	final JComboBox qValue =cad.queryValue[i];
-    		final JComboBox qCriteria = cad.queryList[i];
-        	cad.queryList[i].addActionListener(new ActionListener () {   		
-        		public void actionPerformed(ActionEvent ae4) {
-            		 if (dialog.isVisible()) {
-            			 String qString =  (String) qCriteria.getSelectedItem();
-            			 System.out.println(qString+"--Selected");
-            			 //if the selection should be prompted with caDSR data
-            			 if(qString.equals("Operation Class")||qString.equals("Operation Input")
-            					 ||qString.equals("Operation Output") ){
-            				 //TODO get the classNameList by invoking caDSR; add to another thread!!
-            				 qValue.setModel(new DefaultComboBoxModel(CaGridAddQueryActionHandler.classNameArray));
-            					        
-            				}
-            			 //if the selection should NOT be prompted with caDSR data
-            			 else {
-            				 //keep the combo box empty and editible
-            				 String [] emptyValue = {};
-            				 qValue.setModel(new DefaultComboBoxModel(emptyValue));
-            				 //in the future more hints can be given to assist the users
-            				 
-            			 }		                				 
-            				 qValue.validate();		             
-            				 cad.validate();
-            			 }
-            		
-            		
-            		 }
-            	 });
-        }
-        	
-        
-        acceptButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae2) {
-                if (dialog.isVisible()) {
-                	
-                	String indexServiceURL = cad.getIndexServiceURL();
-                    
-                    // Gather service queries
-                    int [] flag = new int[cad.query_count];
-                    int count = 0;
-                    for (int i=0;i<cad.query_count;i++){
-                    	if((!cad.getQueryCriteria(i).equals("None")) && (!cad.getQueryValue(i).equals(""))){
-                    		count ++ ;
-                    		flag[i]=1;
-                    	}
-                    }
-                    ServiceQuery [] sqList = null;
-                    if(count>0){
-                    	sqList = new ServiceQuery[count];
-                         int j = 0;
-                         for (int i=0;i<cad.query_count;i++){
-                         	if(flag[i]==1){
-                         		sqList[j++] = new ServiceQuery(cad.getQueryCriteria(i),cad.getQueryValue(i));
-                         		System.out.println("Adding Query: "+ sqList[j-1].queryCriteria + "  = " + sqList[j-1].queryValue);                       		
-                         	}	
-                         }
-                    }
-                    // Use Index Service URL and service query to construct CaGridQuery               	
-                	 try {
-                     	addQuery(new CaGridQuery(indexServiceURL,sqList));
-                     } catch (Exception e) {
-                         JOptionPane
-                                 .showMessageDialog(dialog,
-                                         "Unable to create service!\n"
-                                                 + e.getMessage(),
-                                         "Exception!",
-                                         JOptionPane.ERROR_MESSAGE);
-                         logger.error("Exception thrown:", e);
-                     } finally {
-                         dialog.setVisible(false);
-                         dialog.dispose();
-                     }
-                }
-            }
-        });
-        
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae2) {
-                if (dialog.isVisible()) {
-                    dialog.setVisible(false);
-                    dialog.dispose();
-                }
-            }
-        });
-        
-        updateCaDSRDataButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae2) {
-                if (dialog.isVisible()) {
-                	Thread t = new Thread("Updating caDSR Metadata.") {
-						public void run() {
-                	
-							// Update the value of classNameArray
-                        	 ArrayList<String> classNameList = new ArrayList<String>();
-        					 Project[] projs = null;
-        					 CaDSRServiceClient cadsr  =null;
-        					 UMLPackageMetadata[] packs = null;
-        					 UMLClassMetadata[] classes = null;
-        					 System.out.println("===========Updating caDSR Metadata================");
-        					 
-        					 //Note: the try-catch module should be with fine granularity
-        					
-        					 try {
-        						 
-        						  cadsr = new CaDSRServiceClient(
-        								 "http://cagrid-service.nci.nih.gov:8080/wsrf/services/cagrid/CaDSRService");		                					            
-        					     projs = cadsr.findAllProjects();
-        					 }
-        					 catch (Exception e) {
-        						 e.printStackTrace();
-        					 }
-        					 
-        					     if(projs !=null){
-					            	for (int i = 0; i<projs.length;i++){
-					            		Project project = projs[i];
-					            		//System.out.println("\n"+ project.getShortName());
-					            		//the bridg and c3pr project always yield error -- don't know why. so simply bypass them
-					            		if(!project.getShortName().equals("BRIDG")&&!project.getShortName().equals("C3PR")){
-					            			try {
-					            				packs = cadsr.findPackagesInProject(project);
-					            			}
-					            			catch (Exception e) {
-		                						 e.printStackTrace();
-		                						 }
-						            		if(packs !=null){
-						            			for(int j= 0;j<packs.length;j++){
-						            				UMLPackageMetadata pack = packs[j];
-						            				//System.out.println("\t-" + pack.getName());
-						            				try {
-						            					 classes = cadsr.findClassesInPackage(project, pack.getName());
-						            				}
-						            				catch (Exception e) {
-				                						 e.printStackTrace();
-				                						 }
-						            				if(classes !=null){
-						            					for (int k=0;k<classes.length;k++){
-						            						UMLClassMetadata clazz = classes [k];
-						            						//System.out.println("\t\t-"+clazz.getName());
-						            						if(!classNameList.contains(clazz.getName()))
-						            							//classNameList is updated here!
-						            							classNameList.add((String)clazz.getName());
-						            						else {
-						            							//System.out.println("Duplicated Class Name Found.");
-						            							}
-						            						}
-						            					}
-						            				}
-						            			}
-						            		}
-					            		}
-					            	}
-    					             
-    					            String [] classNameArray;
-    					            //if the retrieved class name list is not empty, update the static datatype classNameArray
-        					        if(!classNameList.isEmpty()){
-        					        	classNameArray = (String[]) classNameList.toArray(new String[0]);
-            					        Arrays.sort(classNameArray,String.CASE_INSENSITIVE_ORDER);		                					       
-            					        System.out.println("=========Classes Names Without Duplications=============");
-            					        for(int i=0;i<classNameArray.length;i++){
-            					        	System.out.println(classNameArray[i]);
-            					        }
-            					        
-            					        CaGridAddQueryActionHandler.classNameArray  = classNameArray;
-            					        //System.out.println("caDSR data is updated, now there are " + classNameArray.length + "UMLClasses.");
-            					        JOptionPane.showMessageDialog(dialog, "caDSR data has been  updated. \n Now there are " + classNameArray.length + " UMLClasses in the list.", null, JOptionPane.INFORMATION_MESSAGE);
-            					        
-        					        }
-        					        else{
-        					        	//the current value of the GT4ScavengerHelper.classNameArray is not updated
-        					        	//System.out.println("Empty class name list retrived, so classNameArray is not updated!");
-        					        	JOptionPane.showMessageDialog(dialog,"Empty class name list retrived, so classNameArray is not updated!", null, JOptionPane.INFORMATION_MESSAGE);
-        					        }
-                        	
-                        }
-						};
-						t.start();
-					
-                }
-            }
-        });
-        
-       //dialog.setResizable(false);
-        dialog.getContentPane().add(cad);
-        dialog.setLocation(50,50);
-        dialog.pack();
-        dialog.setVisible(true);
-	}
-
-	@Override
-	protected Icon getIcon() {
-		return new ImageIcon(CaGridAddQueryActionHandler.class.getResource("/cagrid.png"));
-	}
-
-	@Override
-	protected String getText() {
-		return "caGrid service...";
-	}
-
 }

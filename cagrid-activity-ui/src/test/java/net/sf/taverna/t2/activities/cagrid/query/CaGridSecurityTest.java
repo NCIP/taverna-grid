@@ -23,19 +23,10 @@ package net.sf.taverna.t2.activities.cagrid.query;
 import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
 import gov.nih.nci.cagrid.metadata.security.CommunicationMechanism;
 import gov.nih.nci.cagrid.metadata.security.Operation;
-import gov.nih.nci.cagrid.metadata.security.ProtectionLevelType;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.net.URL;
 import java.rmi.RemoteException;
-import java.security.KeyStore;
-import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,26 +40,29 @@ import javax.net.ssl.SSLSession;
 import net.sf.taverna.cagrid.wsdl.parser.WSDLParser;
 
 import org.apache.axis.types.URI.MalformedURIException;
-import org.globus.gsi.GlobusCredential;
-import org.globus.wsrf.impl.security.authorization.Authorization;
-import org.globus.wsrf.impl.security.authorization.NoAuthorization;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CaGridSecurityTest {
 
-	//@Ignore
+	@Ignore
 	@Test
 	public void testSecurityMetadata(){
 		
 		// caGrid
-		String authenticationServiceURL = "https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService";
+		String indexServiceURL = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
 		// Training caGrid
-		//String authenticationServiceURL = "https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService";
+       //String indexServiceURL = "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService";
 
 		// caGrid
-		String dorianServiceURL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
+		//String authenticationServiceURL = "https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService";
 		// Training caGrid
-		//String dorianServiceURL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
+		String authenticationServiceURL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
+
+		// caGrid
+		//String dorianServiceURL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
+		// Training caGrid
+		String dorianServiceURL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
 		
 		//System.out.println("org.globus.wsrf.security.Constants.ENCRYPTION: " + org.globus.wsrf.security.Constants.ENCRYPTION);
 		//System.out.println("org.globus.wsrf.security.Constants.SIGNATURE: " + org.globus.wsrf.security.Constants.SIGNATURE);
@@ -78,13 +72,14 @@ public class CaGridSecurityTest {
 		//String serviceURL = "http://scigridserver.arc.georgetown.edu:18080/wsrf/services/cagrid/CaArraySvc";
 		// Causes java.io.IOException: HTTPS hostname wrong
 		//String serviceURL = "https://cagrid-gts-master.nci.nih.gov:8443/wsrf/services/cagrid/GTS";
-		
 		//String serviceURL = "https://tissueinventory.cabig.upmc.edu:8443/wsrf/services/cagrid/CaTissueSuite";
+		
 		// Training caGrid
 		//String serviceURL = "https://globalmodelexchange.training.cagrid.org:8443/wsrf/services/cagrid/GlobalModelExchange";
 		//String serviceURL = "https://workflow-bpel.training.cagrid.org:8443/wsrf/services/cagrid/WorkflowFactoryService";
 		String serviceURL = "https://cspool94.cs.man.ac.uk:8443/wsrf/services/cagrid/SecureHelloWorldService";
-
+		//String serviceURL = "http://linuxcomp64.wustl.edu:9880/wsrf/services/cagrid/ChromosomalSegmentOverlapAcrossSources";
+		
 		CaGridService caGridService = new CaGridService(serviceURL+"?wsdl", serviceURL);
 
 		// Get the service's operations
@@ -214,39 +209,44 @@ public class CaGridSecurityTest {
 				e.printStackTrace();
 			}
 		}
-		// Get all secure OperationS mapped to their name
+		// Get all secure OperationS of the service which security properties differ from the 
+		// default security properties for the service itself and map them to their names.
+		// Only operations which security properties are different from those of the service itself 
+		// will be detected here - whether because they require more stringent or more loose security.
 		Map<String, Operation> secureOperationsMap = new HashMap<String, Operation>();
 		ServiceSecurityMetadataOperations ssmo = null; 
 		if (securityMetadata != null){
-			ssmo = securityMetadata.getOperations(); // all secure operations of the service?
+			ssmo = securityMetadata.getOperations(); 
 		}
 		if (ssmo != null) {
 			Operation[] ops = ssmo.getOperation();
 			if (ops != null) {
-				System.out.println("Discovered " + ops.length + " operations that require Globus GSI security:");
 				for (int i = 0; i < ops.length; i++) {
-					String lowerMethodName = ops[i].getName().substring(0, 1)
+					//System.out.print("Secure operation name: " + ops[i].getName());
+					/*String lowerMethodName = ops[i].getName().substring(0, 1)
 							.toLowerCase()
 							+ ops[i].getName().substring(1);
 					secureOperationsMap.put(lowerMethodName, ops[i]);
-					System.out.println(lowerMethodName);
-
+					*/
+					secureOperationsMap.put(ops[i].getName(), ops[i]);
+					//System.out.println(" and its lowercase  name: " + lowerMethodName);
 				}
-				System.out.println();
+				//System.out.println();
 			}
 		}
 		
-		for (String secureOperation : secureOperationsMap.keySet()) {
+		for (String operation : operationNames) {
 
 			// An ActivityItem corresponds to an operation
 			// services contains service metadata -- no wsdl parser is needed?
 			// we can add a parser to parse it if we need more details on those services
 			CaGridActivityItem item = new CaGridActivityItem();
 			
-			item.setOperation(secureOperation);
+			item.setOperation(operation);
 			
 			//make use of "use" and "style" to facilitate metadata-based sorting
-			item.setUse(secureOperation);
+			item.setUse(operation);
+			
 			//CaGrid services are all DOCUMENT style
 			item.setStyle("document");
 			
@@ -256,16 +256,25 @@ public class CaGridSecurityTest {
 				item.setResearchCenter(caGridService.getResearchCenterName());	
 			}
 
+			CommunicationMechanism serviceDefaultCommunicationMechanism = securityMetadata.getDefaultCommunicationMechanism();
+			CommunicationMechanism communicationMechanism = null;
+			if (secureOperationsMap.containsKey(operation)) {
+				Operation op = (Operation) secureOperationsMap.get(operation);
+				communicationMechanism = op.getCommunicationMechanism(); // specific for this operation, may differ from service default
+				System.out.println("Using operation specific communication mechanism.");
+			} else {
+				communicationMechanism = serviceDefaultCommunicationMechanism;
+				System.out.println("Using service default communication mechanism.");
+			}
 			try{
-
 				CaGridQuery.configureSecurity(caGridService,
-						secureOperationsMap.get(secureOperation), 
+						communicationMechanism,
+						indexServiceURL,
 						authenticationServiceURL,
 						dorianServiceURL,
 						item);
 				
-				item.setSecure(true);
-				System.out.println("Security properties for operation: " + secureOperation);
+				System.out.println("Security properties for operation: " + operation);
 				System.out.println("GSI_TRANSPORT: " + item.getGSITransport());
 				System.out.println("GSI_SEC_CONV: " + item.getGSISecureConversation());
 				System.out.println("GSI_SEC_MSG: " + item.getGSISecureMessage());
@@ -279,141 +288,9 @@ public class CaGridSecurityTest {
 					// to obtain proxy key and certificate
 			}
 			catch(Exception ex){
-				/*logger.error("Error getting user's proxy for operation "
-									+ operation
-									+ " of service: "
-									+ caGridService
-											.getServiceName()
-									+ "?wsdl. Skipping this operation.");*/
 				ex.printStackTrace();
 				continue;
 			}		
-		}
-	}
-	
-	
-	public void configureSecurity(ServiceSecurityMetadata securityMetadata,
-			CaGridService caGridService, Operation operation,
-			CaGridActivityItem item) throws RemoteException, MalformedURIException {
-
-		boolean anonymousPrefered = true;
-		
-		boolean https = caGridService.getServiceWSDLLocation().toLowerCase().startsWith("https");
-			
-		CommunicationMechanism mechanism = operation.getCommunicationMechanism();
-
-		boolean anonymousAllowed = true;
-		boolean authorizationAllowed = true;
-		boolean delegationAllowed = true;
-		boolean credentialsAllowed = true;
-		
-		GlobusCredential proxy = null;
-		
-		Authorization authorization= null;
-		
-		String delegationMode = null;
-
-		if ((https) && (mechanism.getGSITransport() != null)) {
-			ProtectionLevelType level = mechanism.getGSITransport().getProtectionLevel();
-			if (level != null) {
-				if ((level.equals(ProtectionLevelType.privacy)) || (level.equals(ProtectionLevelType.either))) {
-					item.setGSITransport(org.globus.wsrf.security.Constants.ENCRYPTION);
-				} else {
-					item.setGSITransport(org.globus.wsrf.security.Constants.SIGNATURE);
-				}
-
-			} else {
-				item.setGSITransport(org.globus.wsrf.security.Constants.SIGNATURE);
-			}
-			delegationAllowed = false;
-
-		} else if (https) {
-			item.setGSITransport(org.globus.wsrf.security.Constants.SIGNATURE);
-			delegationAllowed = false;
-		} else if (mechanism.getGSISecureConversation() != null) {
-			ProtectionLevelType level = mechanism.getGSISecureConversation().getProtectionLevel();
-			if (level != null) {
-				if ((level.equals(ProtectionLevelType.privacy)) || (level.equals(ProtectionLevelType.either))) {
-					item.setGSISecureConversation(org.globus.wsrf.security.Constants.ENCRYPTION);
-
-				} else {
-					item.setGSISecureConversation(org.globus.wsrf.security.Constants.SIGNATURE);
-				}
-
-			} else {
-				item.setGSISecureConversation(org.globus.wsrf.security.Constants.ENCRYPTION);
-			}
-
-		} else if (mechanism.getGSISecureMessage() != null) {
-			ProtectionLevelType level = mechanism.getGSISecureMessage().getProtectionLevel();
-			if (level != null) {
-				if ((level.equals(ProtectionLevelType.privacy)) || (level.equals(ProtectionLevelType.either))) {
-					item.setGSISecureMessage(org.globus.wsrf.security.Constants.ENCRYPTION);
-				} else {
-					item.setGSISecureMessage(org.globus.wsrf.security.Constants.SIGNATURE);
-				}
-
-			} else {
-				item.setGSISecureMessage(org.globus.wsrf.security.Constants.ENCRYPTION);
-			}
-			delegationAllowed = false;
-			anonymousAllowed = false;
-		} else {
-			anonymousAllowed = false;
-			authorizationAllowed = false;
-			delegationAllowed = false;
-			credentialsAllowed = false;
-		}
-
-		// Get the proxy certificate - hardcode the username and password
-		/*if (credentialsAllowed){
-			
-			String authenticationServiceURL = "https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService";
-			String dorianURL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
-		
-			BasicAuthentication auth = new BasicAuthentication();
-	        auth.setUserId("anenadic");
-	        auth.setPassword("m^s7a*kpT302");
-
-	        // Authenticate to the Authentication Service using the basic authN credential
-	        AuthenticationClient authClient = new AuthenticationClient(authenticationServiceURL);
-	        SAMLAssertion saml = authClient.authenticate(auth);
-
-	        // Set requested Grid Credential lifetime (12 hours)
-	        CertificateLifetime lifetime = new CertificateLifetime();
-	        lifetime.setHours(12);
-
-	        // Request PKI/Grid Credential
-	        GridUserClient dorian = new GridUserClient(dorianURL);
-	        proxy = dorian.requestUserCertificate(saml, lifetime);
-		}*/
-		
-		if ((anonymousAllowed) && (mechanism.isAnonymousPermitted()) && anonymousPrefered) {
-			item.setGSIAnonymouos(Boolean.TRUE);
-		} else if ((credentialsAllowed) && (proxy != null)) {
-			try {
-				// This should be done later on when we ask the user for the username and password and
-				// obtain his proxy
-				org.ietf.jgss.GSSCredential gss = new org.globus.gsi.gssapi.GlobusGSSCredentialImpl(proxy,
-					org.ietf.jgss.GSSCredential.INITIATE_AND_ACCEPT);
-				item.setGSICredentials(gss);
-				item.setRequiresGSiCredentials(true);
-			} catch (org.ietf.jgss.GSSException ex) {
-				throw new RemoteException(ex.getMessage());
-			}
-		}
-
-		if (authorizationAllowed) {
-			if (authorization == null) {
-				item.setAuthorisation(NoAuthorization.getInstance());
-			} else {
-				item.setAuthorisation(authorization);
-			}
-		}
-		if (delegationAllowed) {
-			if (delegationMode != null) {
-				item.setGSIMode(delegationMode);
-			}
 		}
 	}
 	

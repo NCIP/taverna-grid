@@ -23,6 +23,7 @@ package net.sf.taverna.t2.activities.cagrid.query;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.ietf.jgss.GSSCredential;
 
@@ -39,8 +40,11 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	private String operation;
 	private String researchCenter;
 	
-	// Security settings of a caGrid service, if any, obtained by invoking
+	// Security settings for this operation of a caGrid service, if any, obtained by invoking
 	// getServiceSecurityMetadata() on the service
+	private String indexServiceURL; // URL of the Index Service used to discover this caGrid service (used as alias for username/password and proxy entries in the Taverna's keystore)
+	private String authNServiceURL; // URL of the AuthN Service used or to be used to (re)authenticate the user
+	private String dorianServiceURL; // URL of the Dorian Service used or to be used to (re)issue proxy
 	private boolean isSecure = false;
 	private Integer gsi_transport;
 	private Boolean gsi_anonymouos;
@@ -48,8 +52,8 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	private Integer gsi_secure_conversation;
 	private Integer gsi_secure_message;
 	private String gsi_mode;
-	private GSSCredential gsi_credentials;
-	private boolean requires_gsi_credentials = false; // whether we need to generate proxy
+	private GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
+	private GlobusCredential proxy; // proxy
 	
 	public String getResearchCenter() {
 		return researchCenter;
@@ -133,11 +137,19 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	}
 
 	public void setGSICredentials(GSSCredential gsi_credentials) {
-		this.gsi_credentials = gsi_credentials;
+		this.gsi_credential = gsi_credentials;
+	}
+
+	public void setProxy(GlobusCredential proxy) {
+		this.proxy = proxy;
+	}
+
+	public GlobusCredential getProxy() {
+		return proxy;
 	}
 
 	public GSSCredential getGSICredentials() {
-		return gsi_credentials;
+		return gsi_credential;
 	}
 
 	public void setGSISecureConversation(Integer gsi_sec_conv) {
@@ -163,16 +175,31 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	public String getGSIMode() {
 		return gsi_mode;
 	}
-
-
-	public boolean getRequiresGSiCredentials() {
-		return requires_gsi_credentials;
-	}
 	
-	public void setRequiresGSiCredentials(boolean requires_gsi_credentials) {
-		this.requires_gsi_credentials = requires_gsi_credentials;
+	public void setIndexServiceURL(String indexServiceURL) {
+		this.indexServiceURL = indexServiceURL;
 	}
-	
+
+	public String getIndexServiceURL() {
+		return indexServiceURL;
+	}
+
+	public void setAuthNServiceURL(String authNServiceURL) {
+		this.authNServiceURL = authNServiceURL;
+	}
+
+	public String getAuthNServiceURL() {
+		return authNServiceURL;
+	}
+
+	public void setDorianServiceURL(String dorianServiceURL) {
+		this.dorianServiceURL = dorianServiceURL;
+	}
+
+	public String getDorianServiceURL() {
+		return dorianServiceURL;
+	}
+
 	public Icon getIcon() {
 		return new ImageIcon(CaGridActivityItem.class.getResource("/cagrid.png"));
 	}
@@ -183,15 +210,10 @@ public class CaGridActivityItem extends AbstractActivityItem {
 		bean.setWsdl(getUrl());
 		bean.setOperation(getOperation());
 		
-		bean.setSecure(isSecure());
-		bean.setGSITransport(getGSITransport());
-		bean.setGSIAnonymouos(getGSIAnonymouos());
-		bean.setAuthorisation(getAuthorisation());
-		bean.setGSICredentials(getGSICredentials());
-		bean.setGSISecureConversation(getGSISecureConversation());
-		bean.setGSISecureMessage(getGSISecureMessage());
-		bean.setGSIMode(getGSIMode());
-		
+		bean.setIndexServiceURL(getIndexServiceURL());
+		bean.setAuthNServiceURL(getAuthNServiceURL());
+		bean.setDorianServiceURL(getDorianServiceURL());
+				
 		return bean;
 	}
 	
