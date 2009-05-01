@@ -20,7 +20,9 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid;
 
+import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
+import org.ietf.jgss.GSSCredential;
 
 /**
  * A standard Java Bean that provides the details required to configure a CaGridActivity.
@@ -31,9 +33,10 @@ public class CaGridActivityConfigurationBean {
 
 	// WSDL url
     private String wsdl;
-    
     // Operation/method on the service to be invoked
     private String operation;
+    // SOAP style binding
+    private String style;
     
 	// Security settings for this operation of a caGrid service, if any, obtained by invoking
 	// getServiceSecurityMetadata() on the service
@@ -46,6 +49,9 @@ public class CaGridActivityConfigurationBean {
 	private Integer gsi_secure_conversation;
 	private Integer gsi_secure_message;
 	private String gsi_mode;
+	// Not to be serialised gsi_credential and proxy - we do not want these to appear in the saved wf file
+	private transient GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
+	private transient GlobusCredential proxy; // proxy
 	
     /** Creates a new instance of CaGridActivityConfigurationBean */
     public CaGridActivityConfigurationBean() {
@@ -66,6 +72,14 @@ public class CaGridActivityConfigurationBean {
     public void setOperation(String operation) {
         this.operation = operation;
     }
+
+	public void setStyle(String style) {
+		this.style = style;
+	}
+
+	public String getStyle() {
+		return style;
+	}
 
 	public void setGSITransport(Integer gsi_transport) {
 		this.gsi_transport = gsi_transport;
@@ -137,6 +151,22 @@ public class CaGridActivityConfigurationBean {
 
 	public String getDorianServiceURL() {
 		return dorianServiceURL;
+	}
+
+	public void setGSICredential(GSSCredential gsi_credential) {
+		this.gsi_credential = gsi_credential;
+	}
+
+	public GSSCredential getGSICredential() {
+		return gsi_credential;
+	}
+
+	public void setProxy(GlobusCredential proxy) {
+		this.proxy = proxy;
+	}
+
+	public GlobusCredential getProxy() {
+		return proxy;
 	}
 
 
