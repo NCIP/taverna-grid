@@ -81,7 +81,7 @@ public class CaGridServiceQueryUtility {
 		System.out.println("caGrid DiscoveryClient loaded and EPR to services returned.");
 		if (servicesList == null){
 			// Something fishy happened
-			System.out.println("caGrid service list returned is null.");
+			System.out.println("Resulting caGrid service list returned is null.");
 			return foundSome;
 		}
 		else{

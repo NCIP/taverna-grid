@@ -147,7 +147,7 @@ public class CaGridServiceDescription extends
 	
 	@SuppressWarnings("unchecked")
 	public List<? extends Comparable> getPath() {
-		if (researchCenter!= null && (!researchCenter.equals("")))
+		if ((researchCenter!= null) && (!researchCenter.equals("")))
 			return Arrays.asList(CAGRID_SERVICES, researchCenter, "WSDL @ "+ getURI());
 		else
 			return Arrays.asList(CAGRID_SERVICES, "WSDL @ " + getURI());
