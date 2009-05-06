@@ -2,13 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>uk.org.mygrid.cagrid.servicewrapper</groupId>
 	<artifactId>servicewrapper-invoker-interproscan</artifactId>
+	<name>caGrid Service Wrapper invoker InterproScan</name>
 	<parent>
 		<artifactId>servicewrapper</artifactId>
 		<groupId>uk.org.mygrid.cagrid</groupId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>uk.org.mygrid.cagrid.servicewrapper</groupId>
 	<build>
 		<plugins>
 			<plugin>
@@ -27,9 +28,7 @@
 					<wsdlFile>http://www.ebi.ac.uk/Tools/webservices/wsdl/WSInterProScan.wsdl</wsdlFile>
 					<!--
 						Valid databinding(s) are adb, xmlbeans, jibx, jaxme and jaxbri
-						(Default: adb).
-						
-						xmlbeans seems to support RPC encoded
+						(Default: adb). xmlbeans seems to support RPC encoded
 					-->
 					<databindingName>xmlbeans</databindingName>
 				</configuration>
@@ -44,8 +43,18 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-xmlbeans</artifactId>
+			<artifactId>axis2-jibx</artifactId>
 			<version>1.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>servicewrapper-invoker-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
