@@ -238,7 +238,8 @@ public class WSDLSOAPInvoker {
 	protected Call getCall(EngineConfiguration config)  throws ServiceException, UnknownOperationException, MalformedURLException {
 		
 		org.apache.axis.client.Service service;
-		if (config==null) {
+		
+		if (config==null) { // Should never be null for caGrid services!
 			service = new org.apache.axis.client.Service();
 		}
 		else {
@@ -247,7 +248,10 @@ public class WSDLSOAPInvoker {
 		
 		Call call = new Call(service);
 		
-		call.setTransport(new HTTPTransport());
+		// Should not be setting Transport for caGrid services 
+		// as this gets configured from the client-config.wsdd
+		//call.setTransport(new HTTPTransport());
+		
 		call.setTargetEndpointAddress(parser.getOperationEndpointLocations(operationName).get(0));
 		//result.setPortName(parser.getPortType(operationName).getQName());
 		//result.setOperation(operationName);
