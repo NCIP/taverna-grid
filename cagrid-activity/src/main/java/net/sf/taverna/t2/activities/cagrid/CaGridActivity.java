@@ -28,7 +28,9 @@ import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
+import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,8 +46,9 @@ import javax.wsdl.WSDLException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.axis.EngineConfiguration;
-import org.apache.axis.configuration.XMLStringProvider;
+import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.axis.utils.ClassUtils;
 import org.apache.log4j.Logger;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.client.AuthenticationClient;
@@ -54,15 +57,15 @@ import org.cagrid.gaards.dorian.federation.CertificateLifetime;
 import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
-import org.ietf.jgss.GSSCredential;
 import org.xml.sax.SAXException;
 
 import net.sf.taverna.t2.activities.cagrid.InputPortTypeDescriptorActivity;
 import net.sf.taverna.t2.activities.cagrid.OutputPortTypeDescriptorActivity;
-import net.sf.taverna.t2.activities.cagrid.T2WSDLSOAPInvoker;
+import net.sf.taverna.t2.activities.cagrid.CaGridWSDLSOAPInvoker;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.ReferenceServiceException;
 import net.sf.taverna.t2.reference.T2Reference;
+import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workflowmodel.OutputPort;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousActivity;
 import net.sf.taverna.t2.workflowmodel.processor.activity.ActivityConfigurationException;
@@ -97,21 +100,6 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	private boolean isWsrfService = false;
 	private String endpointReferenceInputPortName;
 	
-	/*
-	// Security settings for this operation of a caGrid service, if any, obtained by invoking
-	// getServiceSecurityMetadata() on the service
-	private String indexServiceURL; // URL of the Index Service used to discover this caGrid service (used as alias for username/password and proxy entries in the Taverna's keystore)
-	private String authNServiceURL; // URL of the AuthN Service used or to be used to (re)authenticate the user
-	private String dorianServiceURL; // URL of the Dorian Service used or to be used to (re)issue proxy
-	private Integer gsi_transport;
-	private Boolean gsi_anonymouos;
-	private Authorization authorisation;
-	private Integer gsi_secure_conversation;
-	private Integer gsi_secure_message;
-	private String gsi_mode;
-	private GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
-	private GlobusCredential proxy; // proxy*/
-	
 	private static Logger logger = Logger.getLogger(CaGridActivity.class);
 	
 	// This static block is needed in case some of the caGrid services require 
@@ -144,6 +132,12 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		};
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 	}
+	
+	// Configure colour for CaGridActivity
+	static{
+		ColourManager.getInstance().setPreferredColour("net.sf.taverna.t2.activities.cagrid.CaGridActivity", new Color(0x4b539e));
+	}
+	
 	
 	public boolean isWsrfService() {
 		return isWsrfService;
@@ -428,6 +422,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			delegationAllowed = false;
 			credentialsAllowed = false;
 			*/
+			configurationBean.setSecure(false);
 			return;
 		}
 	
@@ -491,6 +486,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			}
 		}
 		
+		configurationBean.setSecure(true);
 	}
 	
 	/**
@@ -528,21 +524,26 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 						outputNames.add(port.getName());
 					}
 
-					T2WSDLSOAPInvoker invoker = new T2WSDLSOAPInvoker(parser,
-							configurationBean.getOperation(), outputNames,
+					CaGridWSDLSOAPInvoker invoker = new CaGridWSDLSOAPInvoker(parser,
+							configurationBean, outputNames,
 							endpointReference);
-					CaGridActivityConfigurationBean bean = getConfiguration();
-					EngineConfiguration wssEngineConfiguration = null;
-
-					// Set security properties on the engine here
 					
-					/*if (bean.getSecurityProfileString() != null) {
-						wssEngineConfiguration = new XMLStringProvider(bean
-								.getSecurityProfileString());
-					}*/
-
+					EngineConfiguration engineConfiguration = null;
+					// Load caGrid's context sensitive wsdd file
+					InputStream resourceAsStream = ClassUtils.getResourceAsStream(this.getClass(), "client-config.wsdd");
+					if (resourceAsStream != null) {
+						// We found it, so tell axis to configure an engine to use it
+						engineConfiguration = new FileProvider(resourceAsStream);
+						// Note that security parameters for invoking the operation that we have 
+						// discovered previously will be set as part of the invoke() method when 
+						// the axis call for the service gets created
+					}
+					else{
+						// We are in big trouble - caGrid services most probably will not work
+					}
+					
 					Map<String, Object> invokerOutputMap = invoker.invoke(
-							invokerInputMap, wssEngineConfiguration);
+							invokerInputMap, engineConfiguration);
 
 					for (String outputName : invokerOutputMap.keySet()) {
 						Object value = invokerOutputMap.get(outputName);
@@ -573,6 +574,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 				} catch (Exception e) {
 					logger.error("Error invoking caGrid service "
 							+ getConfiguration().getOperation(), e);
+					//e.printStackTrace();
 					callback.fail(
 							"An error occurred invoking the CaGridActivity", e);
 					return;

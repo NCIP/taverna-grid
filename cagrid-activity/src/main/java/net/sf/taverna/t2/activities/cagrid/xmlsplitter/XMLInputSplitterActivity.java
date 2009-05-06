@@ -20,6 +20,7 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid.xmlsplitter;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import net.sf.taverna.t2.activities.cagrid.InputPortTypeDescriptorActivity;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.ReferenceServiceException;
 import net.sf.taverna.t2.reference.T2Reference;
+import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workflowmodel.OutputPort;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousActivity;
 import net.sf.taverna.t2.workflowmodel.processor.activity.ActivityConfigurationException;
@@ -57,6 +59,11 @@ public class XMLInputSplitterActivity extends AbstractAsynchronousActivity<XMLSp
 
 	XMLSplitterConfigurationBean configBean;
 	TypeDescriptor typeDescriptor;
+	
+	// Configure colour for XMLInputSplitterActivity
+	static{
+		ColourManager.getInstance().setPreferredColour("net.sf.taverna.t2.activities.cagrid.xmlsplitter.XMLInputSplitterActivity", new Color(0xab92ea));
+	}
 	
 	@Override
 	public void configure(XMLSplitterConfigurationBean config) throws ActivityConfigurationException {

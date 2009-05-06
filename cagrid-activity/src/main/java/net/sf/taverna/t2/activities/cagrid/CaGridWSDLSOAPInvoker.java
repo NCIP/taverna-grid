@@ -80,24 +80,23 @@ import org.jdom.output.DOMOutputter;
  * @author Stian Soiland-Reyes
  * 
  */
-public class T2WSDLSOAPInvoker extends WSDLSOAPInvoker {
+public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 
 	private static final String REFERENCE_PROPERTIES = "ReferenceProperties";
 	private static final String ENDPOINT_REFERENCE = "EndpointReference";
-	private static Logger logger = Logger.getLogger(T2WSDLSOAPInvoker.class);
+	private static Logger logger = Logger.getLogger(CaGridWSDLSOAPInvoker.class);
 	private static final Namespace wsaNS = Namespace.getNamespace("wsa", "http://schemas.xmlsoap.org/ws/2004/03/addressing");
 
 	private String wsrfEndpointReference = null;
+	
+	// Configuration bean carries security settings for the operation
+	private CaGridActivityConfigurationBean configurationBean;
 
-	public T2WSDLSOAPInvoker(WSDLParser parser, String operationName,
-			List<String> outputNames) {
-		super(parser, operationName, outputNames);
-	}
-
-	public T2WSDLSOAPInvoker(WSDLParser parser, String operationName,
+	public CaGridWSDLSOAPInvoker(WSDLParser parser, CaGridActivityConfigurationBean bean,
 			List<String> outputNames, String wsrfEndpointReference) {
-		this(parser, operationName, outputNames);
-		this.wsrfEndpointReference = wsrfEndpointReference;
+		super(parser, bean.getOperation(), outputNames);
+		this.wsrfEndpointReference = wsrfEndpointReference;	
+		this.configurationBean = bean;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -164,8 +163,7 @@ public class T2WSDLSOAPInvoker extends WSDLSOAPInvoker {
 	 * 
 	 * @param config
 	 *            - Axis engine configuration containing settings for the
-	 *            transport and WSS4J handlers that will add WS-Security headers
-	 *            to the SOAP envelope in order to make secure WSs invocation.
+	 *            handlers that are required in order to make a call to a caGrid service.
 	 * @return Call object initialised for the operation that needs to be
 	 *         invoked.
 	 * @throws ServiceException
@@ -178,10 +176,45 @@ public class T2WSDLSOAPInvoker extends WSDLSOAPInvoker {
 		
 		Call call = super.getCall(config);
 		
-		if (config != null) {
-			//configureSecurity(call);
-		}
+		// Configure caGrid security properties for the operation, if any
+		configureSecurity(call);
+
 		return call;
+	}
+	
+	/** 
+	 * This method will configure the axis call with the 
+	 * appropriate GSI security configuration parameters based on the security 
+	 * metadata provided by the service.
+	 */
+	protected void configureSecurity(Call call) {
+		if (configurationBean.getGSITransport() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.GSI_TRANSPORT, configurationBean.getGSITransport());
+		}
+		
+		if (configurationBean.getGSISecureConversation() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.GSI_SEC_CONV, configurationBean.getGSISecureConversation());
+		}
+		
+		if (configurationBean.getGSISecureMessage() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.GSI_SEC_MSG, configurationBean.getGSISecureMessage());
+		}
+		
+		if (configurationBean.getGSIAnonymouos() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.GSI_ANONYMOUS, configurationBean.getGSIAnonymouos());
+		}
+		
+		if (configurationBean.getGSICredential() != null){
+			call.setProperty(org.globus.axis.gsi.GSIConstants.GSI_CREDENTIALS, configurationBean.getGSICredential());
+		}
+		
+		if (configurationBean.getAuthorisation() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.AUTHORIZATION, configurationBean.getAuthorisation());
+		}
+		
+		if (configurationBean.getGSIMode() != null){
+			call.setProperty(org.globus.axis.gsi.GSIConstants.GSI_MODE, configurationBean.getGSIMode());
+		}
 	}
 	
 	@Override
