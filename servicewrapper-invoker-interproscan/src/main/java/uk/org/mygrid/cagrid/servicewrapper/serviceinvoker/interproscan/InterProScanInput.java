@@ -1,7 +1,7 @@
-package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker;
+package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan;
 
-import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.Data;
-import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InputParams;
+import uk.ac.ebi.www.wsinterproscan.Data;
+import uk.ac.ebi.www.wsinterproscan.InputParams;
 
 public class InterProScanInput {
 

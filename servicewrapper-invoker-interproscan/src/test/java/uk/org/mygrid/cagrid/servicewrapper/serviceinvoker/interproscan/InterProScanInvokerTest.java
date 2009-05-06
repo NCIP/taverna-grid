@@ -1,34 +1,35 @@
-package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker;
+package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.Data;
-import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InputParams;
+import uk.ac.ebi.www.wsinterproscan.Data;
+import uk.ac.ebi.www.wsinterproscan.InputParams;
+import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.Invoker;
+import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 
 
 public class InterProScanInvokerTest {
 
-	private Invoker invoker;
+	private Invoker<InterProScanInput, byte[]> invoker;
 
 	@Before
 	public void findInvoker() throws InvokerException {
 		invoker = new InterProScanInvoker();		
 	}
 
-	@Ignore
 	@Test
 	public void invokeInterProScan() throws Exception {
 		InterProScanInput analyticalServiceInput = new InterProScanInput();
-		InputParams inputParams = new InputParams();
+		InputParams inputParams = uk.ac.ebi.www.wsinterproscan.InputParams.Factory.newInstance();
 		inputParams.setEmail("mannen@soiland-reyes.com");
 		inputParams.setAsync(true);
 		inputParams.setSeqtype("P");
 		analyticalServiceInput.setParams(inputParams);
 		
 		Data[] content = new Data[1];
-		content[0] = new Data();
+		content[0] = Data.Factory.newInstance();
 		content[0].setContent("uniprot:wap_rat");
 		content[0].setType("sequence");
 		analyticalServiceInput.setContent(content);
