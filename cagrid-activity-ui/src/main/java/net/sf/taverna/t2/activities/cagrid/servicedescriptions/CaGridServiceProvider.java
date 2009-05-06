@@ -53,7 +53,7 @@ public class CaGridServiceProvider extends
 	}
 
 	public String getName() {
-		return CAGRID_SERVICE + " provider";
+		return CAGRID_SERVICE;
 	}
 
 	public void findServiceDescriptionsAsync(

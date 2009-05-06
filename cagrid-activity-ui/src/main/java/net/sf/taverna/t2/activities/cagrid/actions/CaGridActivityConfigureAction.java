@@ -22,23 +22,7 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		//temporarily disabled due to raven issues. 
-//		WSDLActivityConfigurationBean bean = getActivity().getConfiguration();
-//			
-//		WSSecurityProfileChooser wsSecurityProfileChooser = new WSSecurityProfileChooser(owner);
-//		if (wsSecurityProfileChooser.isInitialised()) {
-//			wsSecurityProfileChooser.setVisible(true);
-//		}
-//		
-//		WSSecurityProfile wsSecurityProfile = wsSecurityProfileChooser.getWSSecurityProfile();
-//		String profileString;
-//		if (wsSecurityProfile != null) { // user did not cancel
-//			profileString = wsSecurityProfile.getWSSecurityProfileString();
-//			logger.info("WSSecurityProfile string read as:"+profileString);
-//			bean.setSecurityProfileString(profileString);
-//			configureActivity(bean);
-//		}
-		
+		CaGridActivityConfigurationBean configurationBean = getActivity().getConfiguration();
 	}
 
 }

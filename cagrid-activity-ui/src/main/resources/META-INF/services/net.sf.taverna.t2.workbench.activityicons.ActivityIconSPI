@@ -1,1 +1,3 @@
 net.sf.taverna.t2.activities.cagrid.query.CaGridActivityIcon
+net.sf.taverna.t2.activities.cagrid.query.XMLInputSplitterActivityIcon
+net.sf.taverna.t2.activities.cagrid.query.XMLOutputSplitterActivityIcon

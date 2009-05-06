@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Arrays;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.log4j.Logger;
 
 //import org.apache.axis.types.URI.MalformedURIException;
 //import org.apache.log4j.Logger;
@@ -48,6 +49,8 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
  */
 
 public class CaGridServiceQueryUtility {
+
+	private static Logger logger = Logger.getLogger(CaGridServiceQueryUtility.class);
 
 	// private static Logger logger =
 	// Logger.getLogger(CaGridServiceQueryUtility.class);
@@ -73,15 +76,13 @@ public class CaGridServiceQueryUtility {
 			List<CaGridService> services) throws Exception {
 		boolean foundSome = false;
 
-		System.out.println("==================================================");
-		System.out.println("Starting to load caGrid services");
+		logger.info("Starting to search for caGrid services: using " + sq.length + " additonal search criteria.");
 		EndpointReferenceType[] servicesList = new EndpointReferenceType[0];
 		servicesList = getEPRListByServiceQueryArray(indexURL, sq);
-		System.out.println("Submitted " + sq.length + " criteria for caGrid services search.");
-		System.out.println("caGrid DiscoveryClient loaded and EPR to services returned.");
+		logger.info("caGrid DiscoveryClient loaded and EPR to services returned.");
 		if (servicesList == null){
 			// Something fishy happened
-			System.out.println("Resulting caGrid service list returned is null.");
+			logger.info("Resulting caGrid service list returned is null.");
 			return foundSome;
 		}
 		else{
@@ -152,11 +153,8 @@ public class CaGridServiceQueryUtility {
 			e.printStackTrace();
 		}
 		if (sq == null) {
-			System.out
-					.println("Retrieving all caGrid services from the Index Service: "
+			logger.info("Retrieving all caGrid services from the Index Service: "
 							+ indexURL);
-			System.out
-					.println("==================================================");
 			try {
 				servicesList = client.getAllServices(true);
 			} catch (RemoteResourcePropertyRetrievalException e) {
