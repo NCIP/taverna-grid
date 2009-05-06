@@ -40,15 +40,16 @@ public class CaGridActivityConfigurationBean {
     
 	// Security settings for this operation of a caGrid service, if any, obtained by invoking
 	// getServiceSecurityMetadata() on the service
+    private boolean isSecure;
 	private String indexServiceURL; // URL of the Index Service used to discover this caGrid service (used as alias for username/password and proxy entries in the Taverna's keystore)
 	private String authNServiceURL; // URL of the AuthN Service used or to be used to (re)authenticate the user
 	private String dorianServiceURL; // URL of the Dorian Service used or to be used to (re)issue proxy
-	private Integer gsi_transport;
-	private Boolean gsi_anonymouos;
-	private Authorization authorisation;
-	private Integer gsi_secure_conversation;
-	private Integer gsi_secure_message;
-	private String gsi_mode;
+	private Integer gsiTransport;
+	private Boolean gsiAnonymouos;
+	private Authorization gsiAuthorisation;
+	private Integer gsiSecureConversation;
+	private Integer gsiSecureMessage;
+	private String gsiMode;
 	// Not to be serialised gsi_credential and proxy - we do not want these to appear in the saved wf file
 	private transient GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
 	private transient GlobusCredential proxy; // proxy
@@ -81,52 +82,60 @@ public class CaGridActivityConfigurationBean {
 		return style;
 	}
 
+	public void setSecure(boolean isSecure) {
+		this.isSecure = isSecure;
+	}
+
+	public boolean isSecure() {
+		return isSecure;
+	}
+
 	public void setGSITransport(Integer gsi_transport) {
-		this.gsi_transport = gsi_transport;
+		this.gsiTransport = gsi_transport;
 	}
 
 	public Integer getGSITransport() {
-		return gsi_transport;
+		return gsiTransport;
 	}
 
 	public void setGSIAnonymouos(Boolean gsi_anonymouos) {
-		this.gsi_anonymouos = gsi_anonymouos;
+		this.gsiAnonymouos = gsi_anonymouos;
 	}
 
 	public Boolean getGSIAnonymouos() {
-		return gsi_anonymouos;
+		return gsiAnonymouos;
 	}
 
 	public void setAuthorisation(Authorization authorisation) {
-		this.authorisation = authorisation;
+		this.gsiAuthorisation = authorisation;
 	}
 
 	public Authorization getAuthorisation() {
-		return authorisation;
+		return gsiAuthorisation;
 	}
 
 	public void setGSISecureConversation(Integer gsi_sec_conv) {
-		this.gsi_secure_conversation = gsi_sec_conv;
+		this.gsiSecureConversation = gsi_sec_conv;
 	}
 
 	public Integer getGSISecureConversation() {
-		return gsi_secure_conversation;
+		return gsiSecureConversation;
 	}
 
 	public void setGSISecureMessage(Integer gsi_sec_msg) {
-		this.gsi_secure_message = gsi_sec_msg;
+		this.gsiSecureMessage = gsi_sec_msg;
 	}
 
 	public Integer getGSISecureMessage() {
-		return gsi_secure_message;
+		return gsiSecureMessage;
 	}
 
 	public void setGSIMode(String gsi_mode) {
-		this.gsi_mode = gsi_mode;
+		this.gsiMode = gsi_mode;
 	}
 
 	public String getGSIMode() {
-		return gsi_mode;
+		return gsiMode;
 	}
 
 	public void setIndexServiceURL(String indexServiceURL) {
