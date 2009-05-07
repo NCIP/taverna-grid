@@ -211,8 +211,9 @@ public class CaGridActivityItem extends AbstractActivityItem {
 		bean.setOperation(getOperation());
 		
 		bean.setIndexServiceURL(getIndexServiceURL());
-		bean.setAuthNServiceURL(getAuthNServiceURL());
-		bean.setDorianServiceURL(getDorianServiceURL());
+		// Do not save AuthN and Dorian Servoce urls here- they will be read from properties file
+		//bean.setAuthNServiceURL(getAuthNServiceURL());
+		//bean.setDorianServiceURL(getDorianServiceURL());
 				
 		return bean;
 	}

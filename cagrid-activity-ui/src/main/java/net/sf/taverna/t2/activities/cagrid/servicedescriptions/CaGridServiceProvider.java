@@ -20,8 +20,11 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
-import javax.swing.Icon;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import net.sf.taverna.t2.activities.cagrid.query.CaGridServiceSearcher;
@@ -102,6 +105,17 @@ public class CaGridServiceProvider extends
 			}
 		};
 		caGridServicesQueryDialogue.setVisible(true);
+	}
+
+	@Override
+	protected List<? extends Object> getIdentifyingData() {
+		ArrayList<String> identifying = new ArrayList<String>();
+		identifying.add(getConfiguration().getIndexServiceURL());
+		for (ServiceQuery query : getConfiguration().getServiceQueryList()) {
+			identifying.add(query.queryCriteria);
+			identifying.add(query.queryValue);
+		}
+		return identifying;		
 	}
 
 }
