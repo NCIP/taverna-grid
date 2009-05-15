@@ -115,14 +115,7 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
         okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				
-				if (caGridServiceWSDLTextField.getText().equals("")){
-		        	JOptionPane
-		        	.showMessageDialog(((JButton) e.getSource()).getParent(),
-		        			"Service WSDL's URL cannot be empty",
-		        			"Error!",
-		        			JOptionPane.ERROR_MESSAGE);					
-		        	return;
-				}
+				System.out.println("__________________ wsdlURL: " + caGridServiceWSDLTextField.getText());
 				
 				addRegistry(caGridServiceWSDLTextField.getText(),
 						getIndexServiceURL(),

@@ -70,7 +70,7 @@ public class CaGridServiceSearcher {
             			"Failed to load Index Service - please try again later!",
             			"Error!",
             			JOptionPane.ERROR_MESSAGE);
-            	logger.error(ex);
+            	logger.error("Failed to load Index Service", ex);
         }
 
 		ArrayList<CaGridActivityItem> searchResultsActivityItems = new ArrayList<CaGridActivityItem>();		

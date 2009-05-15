@@ -56,7 +56,8 @@ public class CaGridServiceFromWSDLProvider extends
 	public void findServiceDescriptionsAsync(
 			FindServiceDescriptionsCallBack callBack) {
 		
-		
+		System.out.println("__________________ wsdlURL from provider: " + getConfiguration().getWsdlURL());
+
 		try {
 			CaGridServiceFromWSDLSearcher searcher = new CaGridServiceFromWSDLSearcher(
 					getConfiguration().getWsdlURL(),

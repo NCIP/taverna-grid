@@ -35,6 +35,7 @@ public class CaGridServiceFromWSDLProviderConfig {
 	public CaGridServiceFromWSDLProviderConfig(String wsdlURL, String indexServiceURL,
 			String authNServiceURL,
 			String dorianServiceURL) {
+		this.wsdlURL = wsdlURL;
 		this.indexServiceURL = indexServiceURL;
 		this.setDefaultAuthNServiceURL(authNServiceURL);
 		this.setDefaultDorianServiceURL(dorianServiceURL);

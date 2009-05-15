@@ -71,7 +71,9 @@ public class CaGridServiceFromWSDLSearcher {
 			throws Exception {
 
 
-		String addressString = wsdlURL.replaceFirst("?wsdl$", "");
+		System.out.println("__________________ wsdlURL from Searcher: " + wsdlURL);
+
+		String addressString = wsdlURL.replaceFirst("[?]wsdl$", "");
 		org.apache.axis.types.URI address = new org.apache.axis.types.URI(addressString);
 		EndpointReferenceType epr = new EndpointReferenceType(address);
 
