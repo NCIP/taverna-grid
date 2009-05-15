@@ -28,6 +28,7 @@ import gov.nih.nci.cagrid.metadata.exceptions.RemoteResourcePropertyRetrievalExc
 import gov.nih.nci.cagrid.metadata.exceptions.ResourcePropertyRetrievalException;
 import gov.nih.nci.cagrid.metadata.service.Operation; //import gov.nih.nci.cagrid.metadata.service.OperationInputParameterCollection;
 import gov.nih.nci.cagrid.metadata.service.ServiceContext; //import gov.nih.nci.cagrid.metadata.service.ServicePointOfContactCollection;
+import gov.nih.nci.cagrid.metadata.service.ServiceContextOperationCollection;
 import gov.nih.nci.cagrid.metadata.service.ServiceServiceContextCollection;
 
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class CaGridServiceQueryUtility {
 		boolean foundSome = false;
 
 		logger.info("Starting to search for caGrid services: using " + sq.length + " additonal search criteria.");
-		EndpointReferenceType[] servicesList = new EndpointReferenceType[0];
+		EndpointReferenceType[] servicesList = null;
 		servicesList = getEPRListByServiceQueryArray(indexURL, sq);
 		logger.info("caGrid DiscoveryClient loaded and EPR to services returned.");
 		if (servicesList == null){
@@ -90,12 +91,11 @@ public class CaGridServiceQueryUtility {
 				if (epr != null) {
 					foundSome = true;
 					// Add a service node
-					String serviceAddress = epr.getAddress().toString();
+					String serviceAddress = epr.getAddress().toString();					
 					// TODO add more metadata to s -- like research institute,
 					// operation class?
 					CaGridService service = new CaGridService(serviceAddress + "?wsdl",
 							serviceAddress);
-					services.add(service);
 					//System.out.println(serviceAddress + "?wsdl");
 					try {
 						ServiceMetadata serviceMetadata = MetadataUtils
@@ -115,23 +115,28 @@ public class CaGridServiceQueryUtility {
 								.getHostingResearchCenter().getResearchCenter()
 								.getDisplayName());
 						for (ServiceContext srvcontx : srvContxs) {
-							Operation[] ops = srvcontx.getOperationCollection()
-									.getOperation();
+							ServiceContextOperationCollection operationCollection = srvcontx.getOperationCollection();
+							if (operationCollection != null){
+								Operation[] ops = srvcontx
+										.getOperationCollection()
+										.getOperation();
 
-							// TODO: portType is no longer needed??
-							for (Operation op : ops) {
-								// add an operation node
-								// print out the name of an operation
-								String operationName = op.getName();
-								// OperationInputParameterCollection opp =
-								// op.getInputParameterCollection();
+								// TODO: portType is no longer needed??
+								for (Operation op : ops) {
+									// add an operation node
+									// print out the name of an operation
+									String operationName = op.getName();
+									// OperationInputParameterCollection opp =
+									// op.getInputParameterCollection();
 
-								service.addOperation(operationName);
-								//System.out.println(operationName);
+									service.addOperation(operationName);
+									// System.out.println(operationName);
+								}
 							}
-						}
-					}
 
+						}
+						services.add(service);
+					}
 					catch (Exception e) {
 						e.printStackTrace();
 					}

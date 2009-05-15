@@ -28,6 +28,9 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.globus.axis.gsi.GSIConstants;
+import org.globus.wsrf.impl.security.authorization.NoAuthorization;
+
 import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivityConfigurationBean;
 import net.sf.taverna.t2.workbench.ui.actions.activity.HTMLBasedActivityContextualView;
@@ -89,6 +92,8 @@ public class CaGridActivityContextualView extends
 			summary+="<tr><th colspan=\"2\" align=\"left\"><b>Security settings</b></th></tr>";
 			summary+="<tr><td>Authentication Service URL</td><td>"+getConfigBean().getAuthNServiceURL()+ "</td></tr>";
 			summary+="<tr><td>Dorian Service URL</td><td>"+getConfigBean().getDorianServiceURL()+ "</td></tr>";
+			
+			// GSI TRANSPORT
 			if (getConfigBean().getGSITransport() == null){
 				summary+="<tr><td>GSI Transport</td><td>Not set</td></tr>";
 			}
@@ -98,6 +103,62 @@ public class CaGridActivityContextualView extends
 			else if (getConfigBean().getGSITransport().equals(org.globus.wsrf.security.Constants.SIGNATURE)){
 				summary+="<tr><td>GSI Transport</td><td>SIGNATURE</td></tr>";
 			}
+			
+			// GSI SEC MESG
+			if (getConfigBean().getGSISecureMessage() == null){
+				summary+="<tr><td>GSI Secure Message</td><td>Not set</td></tr>";
+			}
+			else if (getConfigBean().getGSISecureMessage().equals(org.globus.wsrf.security.Constants.ENCRYPTION)){
+				summary+="<tr><td>GSI Secure Message</td><td>ENCRYPTION</td></tr>";
+			}
+			else if (getConfigBean().getGSISecureMessage().equals(org.globus.wsrf.security.Constants.SIGNATURE)){
+				summary+="<tr><td>GSI Secure Message</td><td>SIGNATURE</td></tr>";
+			}
+		
+			// GSI SEC CONV
+			if (getConfigBean().getGSISecureConversation() == null){
+				summary+="<tr><td>GSI Secure Conversation</td><td>Not set</td></tr>";
+			}
+			else if (getConfigBean().getGSISecureConversation().equals(org.globus.wsrf.security.Constants.ENCRYPTION)){
+				summary+="<tr><td>GSI Secure Conversation</td><td>ENCRYPTION</td></tr>";
+			}
+			else if (getConfigBean().getGSISecureConversation().equals(org.globus.wsrf.security.Constants.SIGNATURE)){
+				summary+="<tr><td>GSI Secure Conversation</td><td>SIGNATURE</td></tr>";
+			}
+			
+			// GSI ANONYMOUS
+			if (getConfigBean().getGSIAnonymouos() == null){
+				summary+="<tr><td>GSI Anonymous</td><td>Not set</td></tr>";
+			}
+			else if (getConfigBean().getGSIAnonymouos().equals(Boolean.TRUE)){
+				summary+="<tr><td>GSI Anonymous</td><td>Allowed</td></tr>";
+			}
+			else if (getConfigBean().getGSIAnonymouos().equals(Boolean.FALSE)){
+				summary+="<tr><td>GSI Anonymous</td><td>Not allowed</td></tr>";
+			}
+			
+			// GSI MODE
+			if (getConfigBean().getGSIMode() == null){
+				summary+="<tr><td>GSI Delegation</td><td>Not set</td></tr>";
+			}
+			else if(getConfigBean().getGSIMode().equals(GSIConstants.GSI_MODE_NO_DELEG)){
+				summary+="<tr><td>GSI Delegation</td><td>Not allowed</td></tr>";
+			}
+			else {
+				summary+="<tr><td>GSI Delegation</td><td>"+getConfigBean().getGSIMode()+"</td></tr>";
+			}
+			
+			// GSI AUTHORIZATION
+			if (getConfigBean().getGSIAuthorisation() == null){
+				summary+="<tr><td>GSI Authorisation</td><td>Not set</td></tr>";
+			}
+			else if (getConfigBean().getGSIAuthorisation().equals(NoAuthorization.getInstance())){
+				summary+="<tr><td>GSI Authorisation</td><td>Not required</td></tr>";
+			}
+			else {
+				summary+="<tr><td>GSI Authorisation</td><td>Required</td></tr>";
+			}
+			
 		}
 		
 		summary += describePorts();

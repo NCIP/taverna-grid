@@ -26,55 +26,50 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import net.sf.taverna.t2.activities.cagrid.query.CaGridServiceSearcher;
-import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
+import net.sf.taverna.t2.activities.cagrid.query.CaGridServiceFromWSDLSearcher;
 import net.sf.taverna.t2.servicedescriptions.AbstractConfigurableServiceProvider;
 import net.sf.taverna.t2.servicedescriptions.CustomizedConfigurePanelProvider;
 
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
-/**
- * 
- * @author Alex Nenadic
- *
- */
-public class CaGridServiceProvider extends
-		AbstractConfigurableServiceProvider<CaGridServiceProviderConfig>
+public class CaGridServiceFromWSDLProvider extends
+		AbstractConfigurableServiceProvider<CaGridServiceFromWSDLProviderConfig>
 		implements
-		CustomizedConfigurePanelProvider<CaGridServiceProviderConfig> {
+		CustomizedConfigurePanelProvider<CaGridServiceFromWSDLProviderConfig> {
 
-	//private static Logger logger = Logger.getLogger(CaGridServiceProvider.class);
+	private static final String CAGRID_SERVICE_FROM_WSDL = "caGrid service from WSDL";
+	
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(CaGridServiceFromWSDLProvider.class);
 
-	private static final String CAGRID_SERVICE = "caGrid service";
-
-	public static final Icon cagridIcon = new ImageIcon(
+	public static final Icon caGridIcon = new ImageIcon(
 			CaGridServiceDescription.class.getResource("/cagrid.png"));
 
-	public CaGridServiceProvider() {
-		super(new CaGridServiceProviderConfig());
+	public CaGridServiceFromWSDLProvider() {
+		super(new CaGridServiceFromWSDLProviderConfig());
 	}
 
 	public String getName() {
-		return CAGRID_SERVICE;
+		return CAGRID_SERVICE_FROM_WSDL;
 	}
 
 	public void findServiceDescriptionsAsync(
 			FindServiceDescriptionsCallBack callBack) {
-	
+		
+		
 		try {
-			CaGridServiceSearcher searcher = new CaGridServiceSearcher(
-					getConfiguration().getIndexServiceURL(),
-					getConfiguration().getServiceQueryList(), 
+			CaGridServiceFromWSDLSearcher searcher = new CaGridServiceFromWSDLSearcher(
+					getConfiguration().getWsdlURL(),
+					getConfiguration().getIndexServiceURL(), 
 					getConfiguration().getDefaultAuthNServiceURL(),
 					getConfiguration().getDefaultDorianServiceURL());
 			searcher.findServiceDescriptionsAsync(callBack);
 			
 		} catch (Exception ex) {
-			callBack.fail("Could not fetch caGrid services from the Index Service: "
+			callBack.fail("Could not fetch the caGrid service "
 					+ getConfiguration().getIndexServiceURL(), ex);
 			ex.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -83,38 +78,37 @@ public class CaGridServiceProvider extends
 	}
 
 	public Icon getIcon() {
-		return cagridIcon;
-	}
-
-	@SuppressWarnings("serial")
-	public void createCustomizedConfigurePanel(
-			final CustomizedConfigureCallBack<CaGridServiceProviderConfig> callBack) {
-		
-		CaGridServicesSearchDialog caGridServicesQueryDialogue = new CaGridServicesSearchDialog() {
-			@Override
-			protected void addRegistry(String indexServiceURL,
-					ServiceQuery[] serviceQueryList, String authNServiceURL,
-					String dorianServiceURL) {
-				
-				CaGridServiceProviderConfig providerConfig = new CaGridServiceProviderConfig(
-						indexServiceURL, serviceQueryList, authNServiceURL,
-						dorianServiceURL);
-				
-				callBack.newProviderConfiguration(providerConfig);
-			}
-		};
-		caGridServicesQueryDialogue.setVisible(true);
+		return caGridIcon;
 	}
 
 	@Override
 	protected List<? extends Object> getIdentifyingData() {
 		ArrayList<String> identifying = new ArrayList<String>();
 		identifying.add(getConfiguration().getIndexServiceURL());
-		for (ServiceQuery query : getConfiguration().getServiceQueryList()) {
-			identifying.add(query.queryCriteria);
-			identifying.add(query.queryValue);
-		}
-		return identifying;		
+		identifying.add(getConfiguration().getWsdlURL());
+		return identifying;
 	}
+	
+	@SuppressWarnings("serial")
+	public void createCustomizedConfigurePanel(
+			final CustomizedConfigureCallBack<CaGridServiceFromWSDLProviderConfig> callBack) {
+		
+		CaGridServiceFromWSDLDialog caGridServiceFromWSDLDialogue = new CaGridServiceFromWSDLDialog() {
+			@Override
+			protected void addRegistry(String wsdlURL, 
+					String indexServiceURL,
+					String authNServiceURL,
+					String dorianServiceURL) {
+				
+				CaGridServiceFromWSDLProviderConfig providerConfig = new CaGridServiceFromWSDLProviderConfig(wsdlURL,
+						indexServiceURL, authNServiceURL,
+						dorianServiceURL);
+				
+				callBack.newProviderConfiguration(providerConfig);
+			}
+		};
+		caGridServiceFromWSDLDialogue.setVisible(true);
+	}
+
 
 }

@@ -125,7 +125,7 @@ public class CaGridServiceDescription extends
 		this.defaultAuthNServiceURL = authNServiceURL;
 	}
 
-	public String getAuthNServiceURL() {
+	public String getDefaultAuthNServiceURL() {
 		return defaultAuthNServiceURL;
 	}
 
@@ -133,7 +133,7 @@ public class CaGridServiceDescription extends
 		this.defaultDorianServiceURL = dorianServiceURL;
 	}
 
-	public String getDorianServiceURL() {
+	public String getDefaultDorianServiceURL() {
 		return defaultDorianServiceURL;
 	}
 	
