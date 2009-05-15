@@ -50,7 +50,7 @@ public class CaGridActivityConfigurationBean {
 	private Integer gsiSecureConversation;
 	private Integer gsiSecureMessage;
 	private String gsiMode;
-	// Not to be serialised gsi_credential and proxy - we do not want these to appear in the saved wf file
+	// Do not serialise gsi_credential and proxy - we do not want these to appear in the saved wf file
 	private transient GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
 	private transient GlobusCredential proxy; // proxy
 	
@@ -106,11 +106,11 @@ public class CaGridActivityConfigurationBean {
 		return gsiAnonymouos;
 	}
 
-	public void setAuthorisation(Authorization authorisation) {
+	public void setGSIAuthorisation(Authorization authorisation) {
 		this.gsiAuthorisation = authorisation;
 	}
 
-	public Authorization getAuthorisation() {
+	public Authorization getGSIAuthorisation() {
 		return gsiAuthorisation;
 	}
 

@@ -54,6 +54,7 @@ import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.client.AuthenticationClient;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.CertificateLifetime;
+import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
@@ -299,6 +300,18 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	public void configureSecurity()
 			throws Exception {
 		
+		boolean https = configurationBean.getWsdl().toLowerCase().startsWith("https");
+
+		// Is this the special getServiceSecurityMetadata() operation
+		if (configurationBean.getOperation().equals("getServiceSecurityMetadata")) {
+			if (https) {
+				configurationBean.setGSITransport(org.globus.wsrf.security.Constants.SIGNATURE);
+				configurationBean.setGSIAnonymouos(Boolean.TRUE);
+				configurationBean.setGSIAuthorisation(NoAuthorization.getInstance());
+			}
+			return;
+		}
+		
 		// Get security metadata for all operations/methods of this service
 		// by invoking getServiceSecurityMetadata() method on the service
 		ServiceSecurityClient ssc = null;
@@ -349,14 +362,14 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		CommunicationMechanism serviceDefaultCommunicationMechanism = securityMetadata.getDefaultCommunicationMechanism();
 		CommunicationMechanism communicationMechanism = null;
 		if (secureOperationsMap.containsKey(configurationBean.getOperation())) {
+			System.out.println("Using service specific communication mechanim.");
 			Operation op = (Operation) secureOperationsMap.get(configurationBean.getOperation());
 			communicationMechanism = op.getCommunicationMechanism(); // specific for this operation, may differ from service default
 		} else {
+			System.out.println("Using service default communication mechanim.");
 			communicationMechanism = serviceDefaultCommunicationMechanism;
 		}
-		
-		boolean https = configurationBean.getWsdl().toLowerCase().startsWith("https");
-		
+				
 		boolean anonymousPrefered = true;
 
 		boolean anonymousAllowed = true;
@@ -366,7 +379,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		
 		Authorization authorization= null;
 		
-		String delegationMode = null;
+		String delegationMode = GSIConstants.GSI_MODE_NO_DELEG;
 		
 		if ((https) && (communicationMechanism.getGSITransport() != null)) {
 			ProtectionLevelType level = communicationMechanism.getGSITransport().getProtectionLevel();
@@ -425,13 +438,27 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			configurationBean.setSecure(false);
 			return;
 		}
-	
+
 		if ((anonymousAllowed) && (communicationMechanism.isAnonymousPermitted()) && anonymousPrefered) {
 			configurationBean.setGSIAnonymouos(Boolean.TRUE);
+			//			configurationBean.setRequiresProxy(false);
+			System.out.println("Service IS anonymous.");
+
 		} else if (credentialsAllowed) {
+			/*configurationBean.setProxy(null);
+			configurationBean.setGSICredential(null);
+			configurationBean.setGSIAnonymouos(Boolean.FALSE);
+			System.out.println("Should be generating proxy but am not.");*/
+			System.out.println("Service NOT anonymous.");
+			System.out.println("Index Service " + configurationBean.getIndexServiceURL());
+			System.out.println("Dorian Service " + configurationBean.getDorianServiceURL());
+			System.out.println("Authentication Service " + configurationBean.getAuthNServiceURL());
+
+			
 			// Get the proxy certificate - hardcoded username and password - proxy should be created only once
 			// for all services belonging to the same caGrid!
 			GlobusCredential proxy;
+			configurationBean.setGSIAnonymouos(Boolean.FALSE);
 			try{
 				BasicAuthentication auth = new BasicAuthentication();
 		        auth.setUserId("anenadic");
@@ -471,13 +498,15 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 				ex.printStackTrace();
 				throw new Exception("Failed to create GSSCredentials with the user's proxy", ex);
 			}
+			//			configurationBean.setRequiresProxy(true); as we will get proxy later when executing operation and not here
+
 		}
 
 		if (authorizationAllowed) {
 			if (authorization == null) {
-				configurationBean.setAuthorisation(NoAuthorization.getInstance());
+				configurationBean.setGSIAuthorisation(NoAuthorization.getInstance());
 			} else {
-				configurationBean.setAuthorisation(authorization);
+				configurationBean.setGSIAuthorisation(authorization);
 			}
 		}
 		if (delegationAllowed) {
