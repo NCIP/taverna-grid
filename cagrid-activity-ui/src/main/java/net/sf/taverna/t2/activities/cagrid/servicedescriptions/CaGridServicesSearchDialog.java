@@ -71,12 +71,12 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 	final int max_query_size = 5; // max number of queries
 	
 	// CaGrid type the user wishes to add service from (e.g. Training, Production)
-	private String[] caGridType = {"Training caGrid", 
-			"Production caGrid"};
+	private String[] caGridType = {"Production caGrid", 
+			"Training caGrid"};
 	
 	// Index Services
 	private String[] indexServicesURLs = {"http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", 
-			"http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService"};
+	"http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService"};
 	
 	// List of queries to be used when searching for caGrid services 
 	private ServiceQuery[] serviceQueryList;

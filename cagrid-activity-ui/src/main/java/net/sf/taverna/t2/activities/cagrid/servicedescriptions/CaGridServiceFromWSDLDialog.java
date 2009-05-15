@@ -22,21 +22,30 @@ package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+
+import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 
 /**
  * Dialog to specify type of caGrid and WSDL URL of the caGrid service to be added to service panel.
@@ -49,12 +58,12 @@ import javax.swing.border.EtchedBorder;
 public abstract class CaGridServiceFromWSDLDialog extends JDialog{
 
 	// CaGrid type the user wishes to add service from (e.g. Training, Production)
-	private String[] caGridType = {"Training caGrid", 
-			"Production caGrid"};
+	private String[] caGridType = {"Production caGrid",
+			"Training caGrid"};
 	
 	// Index Services
-	private String[] indexServicesURLs = { "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", 
-			"http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"};
+	private String[] indexServicesURLs = {"http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", 
+			"http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService"};
 
 	// Map of Authentication Services corresponding to each of the Index Services 
 	// (should be a list of Authentication Services (and not just one) for each Index Service really)
@@ -84,37 +93,64 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
 
 	private void initComponents() {
         
-        JPanel servicePanel = new JPanel(new GridBagLayout());
+        JPanel servicePanel = new JPanel(new BorderLayout());
         servicePanel.setBorder(new CompoundBorder(new EmptyBorder(10,10,10,10), new EtchedBorder(EtchedBorder.LOWERED)));
-		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.FIRST_LINE_START;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.insets = new Insets(5,5,5,5);
-		c.weightx = 0.5;
-		c.weighty = 0.5;
+
         // caGrid Type combobox
-        servicePanel.add(new JLabel("Select grid"), c);
-        
-		c.gridx = 1;
-		c.gridy = 0;
+        JPanel gridPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        gridPanel.add(new JLabel("Select grid"));
         caGridTypeComboBox = new JComboBox(caGridType);
-        servicePanel.add(caGridTypeComboBox, c);
+        gridPanel.add(caGridTypeComboBox);
         
-		c.gridx = 0;
-		c.gridy = 1;
-        servicePanel.add(new JLabel("Service WSDL's URL"), c);
-        
-		c.gridx = 1;
-		c.gridy = 1;
+        JPanel wsdlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        wsdlPanel.add(new JLabel("Service WSDL's URL"));
         caGridServiceWSDLTextField = new JTextField(50);
         caGridServiceWSDLTextField.setMinimumSize(new Dimension(50, caGridServiceWSDLTextField.getPreferredSize().height));
-        servicePanel.add(caGridServiceWSDLTextField, c);
+        wsdlPanel.add(caGridServiceWSDLTextField);
+        
+        servicePanel.add(gridPanel, BorderLayout.NORTH);
+        servicePanel.add(wsdlPanel, BorderLayout.SOUTH);
+
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+				if (caGridServiceWSDLTextField.getText().equals("")){
+		        	JOptionPane
+		        	.showMessageDialog(((JButton) e.getSource()).getParent(),
+		        			"Service WSDL's URL cannot be empty",
+		        			"Error!",
+		        			JOptionPane.ERROR_MESSAGE);					
+		        	return;
+				}
+				
+				addRegistry(caGridServiceWSDLTextField.getText(),
+						getIndexServiceURL(),
+						getAuthenticationServiceURL(),
+						getDorianServiceURL());
+
+				setVisible(false);
+				dispose();				
+			}
+        });
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();				
+			}
+        });
+        
+        // Panel with buttons
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonsPanel.add(okButton);
+        buttonsPanel.add(cancelButton);        
         
 		this.getContentPane().setLayout(new BorderLayout());
-		this.getContentPane().add(servicePanel);
-        
+		this.getContentPane().add(servicePanel, BorderLayout.CENTER);
+        this.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+
+        this.pack();
 	}
 	
 	public String getWsdlURL(){
@@ -126,11 +162,11 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
 		return indexServicesURLs[caGridTypeComboBox.getSelectedIndex()];
 	}
 
-	public String AuthenticationServiceURL(){
+	public String getAuthenticationServiceURL(){
 		return authenticationServicesMap.get(indexServicesURLs[caGridTypeComboBox.getSelectedIndex()]);
 	}
 	
-	public String DorianServiceURL(){
+	public String getDorianServiceURL(){
 		return dorianServicesMap.get(indexServicesURLs[caGridTypeComboBox.getSelectedIndex()]);
 	}
 	
