@@ -188,6 +188,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 	 * metadata provided by the service.
 	 */
 	protected void configureSecurity(Call call) {
+		
 		if (configurationBean.getGSITransport() != null){
 			call.setProperty(org.globus.wsrf.security.Constants.GSI_TRANSPORT, configurationBean.getGSITransport());
 		}
@@ -208,8 +209,8 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 			call.setProperty(org.globus.axis.gsi.GSIConstants.GSI_CREDENTIALS, configurationBean.getGSICredential());
 		}
 		
-		if (configurationBean.getAuthorisation() != null){
-			call.setProperty(org.globus.wsrf.security.Constants.AUTHORIZATION, configurationBean.getAuthorisation());
+		if (configurationBean.getGSIAuthorisation() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.AUTHORIZATION, configurationBean.getGSIAuthorisation());
 		}
 		
 		if (configurationBean.getGSIMode() != null){

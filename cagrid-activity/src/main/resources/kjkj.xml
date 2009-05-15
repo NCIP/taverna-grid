@@ -1,0 +1,18 @@
+<GetServiceSecurityMetadataResponse
+	xmlns="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity">
+	<ns1:ServiceSecurityMetadata
+		xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+		<ns1:defaultCommunicationMechanism
+			anonymousPermitted="false">
+			<ns1:None />
+		</ns1:defaultCommunicationMechanism>
+		<ns1:operations>
+			<ns1:Operation name="getServiceSecurityMetadata">
+				<ns1:CommunicationMechanism
+					anonymousPermitted="false">
+					<ns1:None />
+				</ns1:CommunicationMechanism>
+			</ns1:Operation>
+		</ns1:operations>
+	</ns1:ServiceSecurityMetadata>
+</GetServiceSecurityMetadataResponse>
