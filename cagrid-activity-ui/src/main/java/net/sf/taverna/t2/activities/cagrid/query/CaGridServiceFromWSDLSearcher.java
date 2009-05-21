@@ -70,9 +70,6 @@ public class CaGridServiceFromWSDLSearcher {
 	public synchronized ArrayList<CaGridActivityItem> getCaGridActivityItems()
 			throws Exception {
 
-
-		System.out.println("__________________ wsdlURL from Searcher: " + wsdlURL);
-
 		String addressString = wsdlURL.replaceFirst("[?]wsdl$", "");
 		org.apache.axis.types.URI address = new org.apache.axis.types.URI(addressString);
 		EndpointReferenceType epr = new EndpointReferenceType(address);
@@ -119,12 +116,8 @@ public class CaGridServiceFromWSDLSearcher {
 			}
 		}
 		catch (Exception ex) {
-        	JOptionPane
-        	.showMessageDialog(null,
-        			"Failed to add caGrid Service " + wsdlURL,
-        			"Error!",
-        			JOptionPane.ERROR_MESSAGE);
-        	logger.error(ex);
+        	logger.error("Failed to add caGrid service " + wsdlURL, ex);
+        	ex.printStackTrace();
 			throw(ex);
 		}
 		

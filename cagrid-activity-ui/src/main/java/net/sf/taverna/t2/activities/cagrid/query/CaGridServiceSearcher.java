@@ -65,12 +65,9 @@ public class CaGridServiceSearcher {
 			services=CaGridServiceQueryUtility.load(indexServiceURL, serviceQueryList);
         }
 		catch (Exception ex) {
-            	JOptionPane
-            	.showMessageDialog(null,
-            			"Failed to load Index Service - please try again later!",
-            			"Error!",
-            			JOptionPane.ERROR_MESSAGE);
             	logger.error("Failed to load Index Service", ex);
+            	ex.printStackTrace();
+            	throw(ex);
         }
 
 		ArrayList<CaGridActivityItem> searchResultsActivityItems = new ArrayList<CaGridActivityItem>();		

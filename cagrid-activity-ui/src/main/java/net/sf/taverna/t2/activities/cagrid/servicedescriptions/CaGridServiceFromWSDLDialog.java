@@ -114,9 +114,7 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				
-				System.out.println("__________________ wsdlURL: " + caGridServiceWSDLTextField.getText());
-				
+								
 				addRegistry(caGridServiceWSDLTextField.getText(),
 						getIndexServiceURL(),
 						getAuthenticationServiceURL(),

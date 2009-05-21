@@ -56,8 +56,6 @@ public class CaGridServiceFromWSDLProvider extends
 	public void findServiceDescriptionsAsync(
 			FindServiceDescriptionsCallBack callBack) {
 		
-		System.out.println("__________________ wsdlURL from provider: " + getConfiguration().getWsdlURL());
-
 		try {
 			CaGridServiceFromWSDLSearcher searcher = new CaGridServiceFromWSDLSearcher(
 					getConfiguration().getWsdlURL(),
@@ -67,7 +65,7 @@ public class CaGridServiceFromWSDLProvider extends
 			searcher.findServiceDescriptionsAsync(callBack);
 			
 		} catch (Exception ex) {
-			callBack.fail("Could not fetch the caGrid service "
+			callBack.fail("Could not add the caGrid service "
 					+ getConfiguration().getIndexServiceURL(), ex);
 			ex.printStackTrace();
 		}
