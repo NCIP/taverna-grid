@@ -206,6 +206,8 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 		}
 		
 		if (configurationBean.getGSICredential() != null){
+			//call.getMessageContext().setProperty(org.globus.wsrf.impl.security.authentication.Constants.AUTHZ_REQUIRED, Boolean.TRUE);
+			//call.setProperty(org.globus.wsrf.impl.security.authentication.Constants.AUTHZ_REQUIRED, Boolean.TRUE);
 			call.setProperty(org.globus.axis.gsi.GSIConstants.GSI_CREDENTIALS, configurationBean.getGSICredential());
 		}
 		
