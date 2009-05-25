@@ -559,7 +559,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 					
 					EngineConfiguration engineConfiguration = null;
 					// Load caGrid's context sensitive wsdd file
-					InputStream resourceAsStream = ClassUtils.getResourceAsStream(this.getClass(), "client-config.wsdd");
+					InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
 					if (resourceAsStream != null) {
 						// We found it, so tell axis to configure an engine to use it
 						engineConfiguration = new FileProvider(resourceAsStream);
