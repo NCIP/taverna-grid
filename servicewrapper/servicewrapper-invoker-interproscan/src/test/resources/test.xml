@@ -1,0 +1,14 @@
+<content>
+	<data xmlns="http://www.ebi.ac.uk/WSInterProScan">
+		<type xmlns="">sequence</type>
+		<content xmlns="">uniprot:wap_rat</content>
+	</data>
+	<data xmlns="http://www.ebi.ac.uk/WSInterProScan">
+		<type xmlns="">sequence</type>
+		<content xmlns="">uniprot:wap_rat2</content>
+	</data>
+	<data xmlns="http://www.ebi.ac.uk/WSInterProScan">
+		<type xmlns="">sequence</type>
+		<content xmlns="">gi:123123</content>
+	</data>
+</content>
