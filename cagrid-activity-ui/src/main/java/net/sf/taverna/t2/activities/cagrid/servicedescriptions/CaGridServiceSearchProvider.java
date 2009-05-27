@@ -38,10 +38,10 @@ import net.sf.taverna.t2.servicedescriptions.CustomizedConfigurePanelProvider;
  * @author Alex Nenadic
  *
  */
-public class CaGridServiceProvider extends
-		AbstractConfigurableServiceProvider<CaGridServiceProviderConfig>
+public class CaGridServiceSearchProvider extends
+		AbstractConfigurableServiceProvider<CaGridServiceSearchProviderConfig>
 		implements
-		CustomizedConfigurePanelProvider<CaGridServiceProviderConfig> {
+		CustomizedConfigurePanelProvider<CaGridServiceSearchProviderConfig> {
 
 	//private static Logger logger = Logger.getLogger(CaGridServiceProvider.class);
 
@@ -50,8 +50,8 @@ public class CaGridServiceProvider extends
 	public static final Icon cagridIcon = new ImageIcon(
 			CaGridServiceDescription.class.getResource("/cagrid.png"));
 
-	public CaGridServiceProvider() {
-		super(new CaGridServiceProviderConfig());
+	public CaGridServiceSearchProvider() {
+		super(new CaGridServiceSearchProviderConfig());
 	}
 
 	public String getName() {
@@ -63,10 +63,9 @@ public class CaGridServiceProvider extends
 	
 		try {
 			CaGridServiceSearcher searcher = new CaGridServiceSearcher(
+					getConfiguration().getCaGridName(),
 					getConfiguration().getIndexServiceURL(),
-					getConfiguration().getServiceQueryList(), 
-					getConfiguration().getDefaultAuthNServiceURL(),
-					getConfiguration().getDefaultDorianServiceURL());
+					getConfiguration().getServiceQueryList());
 			searcher.findServiceDescriptionsAsync(callBack);
 			
 		} catch (Exception ex) {
@@ -88,17 +87,15 @@ public class CaGridServiceProvider extends
 
 	@SuppressWarnings("serial")
 	public void createCustomizedConfigurePanel(
-			final CustomizedConfigureCallBack<CaGridServiceProviderConfig> callBack) {
+			final CustomizedConfigureCallBack<CaGridServiceSearchProviderConfig> callBack) {
 		
 		CaGridServicesSearchDialog caGridServicesQueryDialogue = new CaGridServicesSearchDialog() {
 			@Override
-			protected void addRegistry(String indexServiceURL,
-					ServiceQuery[] serviceQueryList, String authNServiceURL,
-					String dorianServiceURL) {
+			protected void addRegistry(String caGridName, String indexServiceURL,
+					ServiceQuery[] serviceQueryList) {
 				
-				CaGridServiceProviderConfig providerConfig = new CaGridServiceProviderConfig(
-						indexServiceURL, serviceQueryList, authNServiceURL,
-						dorianServiceURL);
+				CaGridServiceSearchProviderConfig providerConfig = new CaGridServiceSearchProviderConfig(
+						caGridName, indexServiceURL, serviceQueryList);
 				
 				callBack.newProviderConfiguration(providerConfig);
 			}

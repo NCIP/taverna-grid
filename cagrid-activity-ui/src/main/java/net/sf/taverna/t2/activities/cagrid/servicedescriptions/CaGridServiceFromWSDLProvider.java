@@ -59,9 +59,8 @@ public class CaGridServiceFromWSDLProvider extends
 		try {
 			CaGridServiceFromWSDLSearcher searcher = new CaGridServiceFromWSDLSearcher(
 					getConfiguration().getWsdlURL(),
-					getConfiguration().getIndexServiceURL(), 
-					getConfiguration().getDefaultAuthNServiceURL(),
-					getConfiguration().getDefaultDorianServiceURL());
+					getConfiguration().getCaGridName(),
+					getConfiguration().getIndexServiceURL());
 			searcher.findServiceDescriptionsAsync(callBack);
 			
 		} catch (Exception ex) {
@@ -95,13 +94,13 @@ public class CaGridServiceFromWSDLProvider extends
 		CaGridServiceFromWSDLDialog caGridServiceFromWSDLDialogue = new CaGridServiceFromWSDLDialog() {
 			@Override
 			protected void addRegistry(String wsdlURL, 
-					String indexServiceURL,
-					String authNServiceURL,
-					String dorianServiceURL) {
+					String caGridName,
+					String indexServiceURL) {
 				
-				CaGridServiceFromWSDLProviderConfig providerConfig = new CaGridServiceFromWSDLProviderConfig(wsdlURL,
-						indexServiceURL, authNServiceURL,
-						dorianServiceURL);
+				CaGridServiceFromWSDLProviderConfig providerConfig = new CaGridServiceFromWSDLProviderConfig(
+						wsdlURL,
+						caGridName,
+						indexServiceURL);
 				
 				callBack.newProviderConfiguration(providerConfig);
 			}

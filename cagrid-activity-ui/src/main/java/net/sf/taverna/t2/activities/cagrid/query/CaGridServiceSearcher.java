@@ -24,8 +24,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridServiceDescription;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescriptionProvider.FindServiceDescriptionsCallBack;
 
@@ -35,20 +33,17 @@ public class CaGridServiceSearcher {
 
 	private static Logger logger = Logger.getLogger(CaGridServiceSearcher.class);
 
+	private String caGridName;
 	private String indexServiceURL;
 	private ServiceQuery[] serviceQueryList;
-	private String defaultAuthNServiceURL;
-	private String defaultDorianServiceURL;
 	
-	public CaGridServiceSearcher(String indexServiceURL,
-			ServiceQuery[] serviceQueryList, String authNServiceURL,
-			String dorianServiceURL)
+	public CaGridServiceSearcher(String caGridName, String indexServiceURL,
+			ServiceQuery[] serviceQueryList)
 			throws Exception {
 		
+		this.caGridName = caGridName;
 		this.indexServiceURL = indexServiceURL;
 		this.serviceQueryList = serviceQueryList;
-		this.defaultAuthNServiceURL = authNServiceURL;
-		this.defaultDorianServiceURL = dorianServiceURL;
 	}
 
 	/**
@@ -94,9 +89,8 @@ public class CaGridServiceSearcher {
 						item.setResearchCenter(caGridService.getResearchCenterName());	
 					}
 					
+					item.setCaGridName(caGridName);
 					item.setIndexServiceURL(indexServiceURL);
-					item.setDefaultAuthNServiceURL(defaultAuthNServiceURL);
-					item.setDefaultDorianServiceURL(defaultDorianServiceURL);
 					
 					// Security properties of the item will be set later
 					// at the time of adding the activity to the diagram
@@ -141,9 +135,8 @@ public class CaGridServiceSearcher {
 						serviceDesc.setResearchCenter(caGridService.getResearchCenterName());	
 					}
 					
+					serviceDesc.setCaGridName(caGridName);
 					serviceDesc.setIndexServiceURL(indexServiceURL);
-					serviceDesc.setDefaultAuthNServiceURL(defaultAuthNServiceURL);
-					serviceDesc.setDefaultDorianServiceURL(defaultDorianServiceURL);
 					
 					// Security properties of the item will be set later
 					// at the time of adding the activity to the diagram

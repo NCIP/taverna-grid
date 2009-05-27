@@ -37,9 +37,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -52,6 +51,7 @@ import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
 
+import net.sf.taverna.t2.activities.cagrid.config.CaGridActivityConfiguration;
 import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.workbench.helper.HelpEnabledDialog;
@@ -70,43 +70,19 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 
 	final int max_query_size = 5; // max number of queries
 	
-	// CaGrid type the user wishes to add service from (e.g. Training, Production)
-	private String[] caGridType = {"Production caGrid", 
-			"Training caGrid"};
+	// CaGrid name the user wishes to add service from (e.g. Training, Production , etc.) that can
+	// be configured from the preferences panel
+	private String[] caGridNames;
+	public JComboBox caGridNamesComboBox;
+
+	// Index Services (one per caGrid)
+	private String[] indexServicesURLs;
 	
-	// Index Services
-	private String[] indexServicesURLs = {"http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", 
-	"http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService"};
+	// caDSR Service used to search for caGrid services
+	private String[] caDSRServicesURLs;	
 	
 	// List of queries to be used when searching for caGrid services 
 	private ServiceQuery[] serviceQueryList;
-
-	// Map of caDSR Services corresponding to each of the Index Services
-	private Map<String,String> caDSRServicesMap = new HashMap<String, String>(){
-	    {
-	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "http://cagrid-service.nci.nih.gov:8080/wsrf/services/cagrid/CaDSRService");
-	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://cadsr.training.cagrid.org:8443/wsrf/services/cagrid/CaDSRService");
-	    }
-	};	
-	
-	
-	// Map of Authentication Services corresponding to each of the Index Services 
-	// (should be a list of Authentication Services (and not just one) for each Index Service really)
-	private Map<String,String> authenticationServicesMap = new HashMap<String, String>(){
-	    {
-	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian");
-	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
-	    }
-	};
-	
-	// Map of Dorian Services corresponding to each of the Index Services
-	private Map<String,String> dorianServicesMap = new HashMap<String, String>(){
-	    {
-	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian");
-	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
-	    }
-	};	
-	public JComboBox caGridTypeComboBox = new JComboBox(caGridType);
 	
 	public JComboBox[]  queryList = new JComboBox[max_query_size];
 	private String[] queryStrings = { "None", "Search String", "Point Of Contact", "Service Name", "Operation Name", "Operation Input",
@@ -122,7 +98,23 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 	}
 
 	private void initComponents() {
-
+		
+		CaGridActivityConfiguration configuration = CaGridActivityConfiguration.getInstance();
+		// Get default list of CaGridS - keys in the map contain CaGrid names and values contain 
+		// various properties set for the CaGrid (Index Service URL, AuthN service URL, Dorian Service URL).
+		HashSet<String> caGridNamesSet = new HashSet<String>(configuration.getDefaultPropertyMap().keySet());
+		// Get all other CaGridS that may have been configured though preferences (may include 
+		// the default ones as well if some of their values have been changed), 
+		// but set will ignore duplicates so we are OK
+		caGridNamesSet.addAll(configuration.getKeys());
+		caGridNames = caGridNamesSet.toArray(new String[caGridNamesSet.size()]);
+		caGridNamesComboBox = new JComboBox(caGridNames);
+		// Get Index Service URLs for all caGrids
+		indexServicesURLs = new String[caGridNames.length];
+		for (int i = 0; i < caGridNames.length; i++){
+			indexServicesURLs[i] = configuration.getPropertyStringList(caGridNames[i]).get(0);
+		}
+		
 		this.getContentPane().setLayout(new BorderLayout());
         
         JPanel indexServicePanel = new JPanel(new BorderLayout());
@@ -162,8 +154,8 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 			});
         }
         indexServicePanel.add(new ShadedLabel("Select grid", ShadedLabel.BLUE, true), BorderLayout.WEST);
-        caGridTypeComboBox.setToolTipText("caGrid services will be retrieved from the grid which you specify here");
-        indexServicePanel.add(caGridTypeComboBox, BorderLayout.CENTER);
+        caGridNamesComboBox.setToolTipText("caGrid services will be retrieved from the grid which you specify here");
+        indexServicePanel.add(caGridNamesComboBox, BorderLayout.CENTER);
         this.getContentPane().add(indexServicePanel, BorderLayout.NORTH);
         
         JPanel serviceQueryPanel = new JPanel(new BorderLayout());
@@ -214,7 +206,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
     					 
     					 //Note: the try-catch module should be with fine granularity
     					 try {
-    						 cadsr = new CaDSRServiceClient(caDSRServicesMap.get(caGridTypeComboBox.getSelectedItem()));		                					            
+    						 cadsr = new CaDSRServiceClient(caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()]);		                					            
     					     projs = cadsr.findAllProjects();
     					 }
     					 catch (Exception e) {
@@ -295,10 +287,9 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
                 }
 
                 serviceQueryList = (ServiceQuery[]) qList.toArray(new ServiceQuery[0]);
-				addRegistry(getIndexServiceURL(),
-						serviceQueryList,
-						getDefaultAuthNServiceURL(),
-						getDefaultDorianServiceURL());
+				addRegistry(getCaGridName(), 
+						getIndexServiceURL(),
+						serviceQueryList);
 				
 				setVisible(false);
 				dispose();				
@@ -321,8 +312,8 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
         this.pack();
 	}
 	
-	protected abstract void addRegistry(String indexServiceURL,
-			ServiceQuery[] serviceQueryList, String authNServiceURL, String dorianServiceURL);
+	protected abstract void addRegistry(String caGridName, String indexServiceURL,
+			ServiceQuery[] serviceQueryList);
 	
     /**
      * 
@@ -345,23 +336,15 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
      * @return the selected Index Service URL
      */
     public String getIndexServiceURL() {
-        return indexServicesURLs[caGridTypeComboBox.getSelectedIndex()];
-    }
-     
-    /**
-     * 
-     * @return the Authentication Service URL that corresponds to the selected Index Service
-     */
-    public String getDefaultAuthNServiceURL() {
-        return (String) authenticationServicesMap.get(indexServicesURLs[caGridTypeComboBox.getSelectedIndex()]);
+        return indexServicesURLs[caGridNamesComboBox.getSelectedIndex()];
     }
     
     /**
      * 
-     * @return the Dorian Service URL that corresponds to the selected Index Service
+     * @return the selected CaGrid name
      */
-    public String getDefaultDorianServiceURL() {
-        return (String) dorianServicesMap.get(indexServicesURLs[caGridTypeComboBox.getSelectedIndex()]);
+    public String getCaGridName() {
+        return (String)caGridNamesComboBox.getSelectedItem();
     }
     
     /**

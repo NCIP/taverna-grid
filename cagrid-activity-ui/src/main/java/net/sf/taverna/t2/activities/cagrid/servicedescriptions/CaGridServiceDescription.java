@@ -34,7 +34,7 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 public class CaGridServiceDescription extends
 		ServiceDescription<CaGridActivityConfigurationBean> {
 
-	private static final String CAGRID_SERVICES = "caGrid services";
+	//private static final String CAGRID_SERVICES = "caGrid services";
 
 	private String use;
 	private URI uri;
@@ -42,10 +42,10 @@ public class CaGridServiceDescription extends
 	private String operation;
 	private String researchCenter;
 
+	// Name of the caGrid the service belongs to
+	private String caGridName;
+	// Index Service URL identifies the caGrid the service belongs to
 	private String indexServiceURL;
-	private String defaultAuthNServiceURL;
-	private String defaultDorianServiceURL;
-	
 	
 	public Class<? extends Activity<CaGridActivityConfigurationBean>> getActivityClass() {
 		return CaGridActivity.class;
@@ -57,9 +57,8 @@ public class CaGridServiceDescription extends
 		bean.setOperation(getOperation());
 		bean.setStyle(style);
 		
+		bean.setCaGridName(caGridName);
 		bean.setIndexServiceURL(indexServiceURL);
-		bean.setAuthNServiceURL(defaultAuthNServiceURL);
-		bean.setDorianServiceURL(defaultDorianServiceURL);
 		
 		return bean;
 	}
@@ -112,6 +111,14 @@ public class CaGridServiceDescription extends
 	public void setResearchCenter(String rc) {
 		this.researchCenter = rc;
 	}
+
+	public void setCaGridName(String caGridName) {
+		this.caGridName = caGridName;
+	}
+
+	public String getCaGridName() {
+		return caGridName;
+	}
 	
 	public String getIndexServiceURL() {
 		return indexServiceURL;
@@ -121,24 +128,8 @@ public class CaGridServiceDescription extends
 		this.indexServiceURL = indexServiceURL;
 	}
 
-	public void setDefaultAuthNServiceURL(String authNServiceURL) {
-		this.defaultAuthNServiceURL = authNServiceURL;
-	}
-
-	public String getDefaultAuthNServiceURL() {
-		return defaultAuthNServiceURL;
-	}
-
-	public void setDefaultDorianServiceURL(String dorianServiceURL) {
-		this.defaultDorianServiceURL = dorianServiceURL;
-	}
-
-	public String getDefaultDorianServiceURL() {
-		return defaultDorianServiceURL;
-	}
-	
 	public Icon getIcon() {
-		return CaGridServiceProvider.cagridIcon;
+		return CaGridServiceSearchProvider.cagridIcon;
 	}
 
 	public String getName() {
@@ -148,9 +139,9 @@ public class CaGridServiceDescription extends
 	@SuppressWarnings("unchecked")
 	public List<? extends Comparable> getPath() {
 		if ((researchCenter!= null) && (!researchCenter.equals("")))
-			return Arrays.asList(CAGRID_SERVICES, researchCenter, "WSDL @ "+ getURI());
+			return Arrays.asList(caGridName, researchCenter, "WSDL @ "+ getURI());
 		else
-			return Arrays.asList(CAGRID_SERVICES, "WSDL @ " + getURI());
+			return Arrays.asList(caGridName, "WSDL @ " + getURI());
 
 	}
 

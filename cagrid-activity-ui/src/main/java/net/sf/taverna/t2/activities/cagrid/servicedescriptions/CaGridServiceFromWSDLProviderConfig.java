@@ -28,17 +28,13 @@ package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 public class CaGridServiceFromWSDLProviderConfig {
 
 	private String wsdlURL;
+	private String caGridName;
 	private String indexServiceURL;
-	private String defaultAuthNServiceURL;
-	private String defaultDorianServiceURL;
 
-	public CaGridServiceFromWSDLProviderConfig(String wsdlURL, String indexServiceURL,
-			String authNServiceURL,
-			String dorianServiceURL) {
+	public CaGridServiceFromWSDLProviderConfig(String wsdlURL, String caGridName, String indexServiceURL) {
 		this.wsdlURL = wsdlURL;
+		this.setCaGridName(caGridName);
 		this.indexServiceURL = indexServiceURL;
-		this.setDefaultAuthNServiceURL(authNServiceURL);
-		this.setDefaultDorianServiceURL(dorianServiceURL);
 	}
 
 	public CaGridServiceFromWSDLProviderConfig() {
@@ -52,28 +48,20 @@ public class CaGridServiceFromWSDLProviderConfig {
 		this.indexServiceURL = indexServiceURL;
 	}
 
-	public void setDefaultAuthNServiceURL(String authNServiceURL) {
-		this.defaultAuthNServiceURL = authNServiceURL;
-	}
-
-	public String getDefaultAuthNServiceURL() {
-		return defaultAuthNServiceURL;
-	}
-
-	public void setDefaultDorianServiceURL(String dorianServiceURL) {
-		this.defaultDorianServiceURL = dorianServiceURL;
-	}
-
-	public String getDefaultDorianServiceURL() {
-		return defaultDorianServiceURL;
-	}
-
 	public void setWsdlURL(String wsdlURL) {
 		this.wsdlURL = wsdlURL;
 	}
 
 	public String getWsdlURL() {
 		return wsdlURL;
+	}
+
+	public void setCaGridName(String caGridName) {
+		this.caGridName = caGridName;
+	}
+
+	public String getCaGridName() {
+		return caGridName;
 	}
 
 

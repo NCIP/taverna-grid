@@ -24,28 +24,21 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
-import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
+import net.sf.taverna.t2.activities.cagrid.config.CaGridActivityConfiguration;
 
 /**
  * Dialog to specify type of caGrid and WSDL URL of the caGrid service to be added to service panel.
@@ -57,32 +50,13 @@ import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 @SuppressWarnings("serial")
 public abstract class CaGridServiceFromWSDLDialog extends JDialog{
 
-	// CaGrid type the user wishes to add service from (e.g. Training, Production)
-	private String[] caGridType = {"Production caGrid",
-			"Training caGrid"};
-	
-	// Index Services
-	private String[] indexServicesURLs = {"http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", 
-			"http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService"};
+	// CaGrid name the user wishes to add service from (e.g. Training, Production , etc.) that can
+	// be configured from the preferences panel
+	private String[] caGridNames;
+	private JComboBox caGridNamesComboBox;
 
-	// Map of Authentication Services corresponding to each of the Index Services 
-	// (should be a list of Authentication Services (and not just one) for each Index Service really)
-	private Map<String,String> authenticationServicesMap = new HashMap<String, String>(){
-	    {
-	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian");
-	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
-	    }
-	};
-	
-	// Map of Dorian Services corresponding to each of the Index Services
-	private Map<String,String> dorianServicesMap = new HashMap<String, String>(){
-	    {
-	        put("http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService", "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian");
-	        put("http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService", "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian");
-	    }
-	};	
-
-	public JComboBox caGridTypeComboBox;
+	// Index Services (one per caGrid)
+	private String[] indexServicesURLs;
 
 	private JTextField caGridServiceWSDLTextField;
 
@@ -92,15 +66,32 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
 	}
 
 	private void initComponents() {
-        
+
+		CaGridActivityConfiguration configuration = CaGridActivityConfiguration.getInstance();
+		// Get default list of CaGridS - keys in the map contain CaGrid names and values contain 
+		// various properties set for the CaGrid (Index Service URL, AuthN service URL, Dorian Service URL).
+		HashSet<String> caGridNamesSet = new HashSet<String>(configuration.getDefaultPropertyMap().keySet());
+		// Get all other CaGridS that may have been configured though preferences (may include 
+		// the default ones as well if some of their values have been changed), 
+		// but set will ignore duplicates so we are OK
+		caGridNamesSet.addAll(configuration.getKeys());
+		caGridNames = caGridNamesSet.toArray(new String[caGridNamesSet.size()]);
+		caGridNamesComboBox = new JComboBox(caGridNames);
+		
+		// Get Index Service URLs for all caGrids
+		indexServicesURLs = new String[caGridNames.length];
+		for (int i = 0; i< caGridNames.length; i++){
+			indexServicesURLs[i] = configuration.getPropertyStringList(caGridNames[i]).get(0);
+		}
+		
         JPanel servicePanel = new JPanel(new BorderLayout());
         servicePanel.setBorder(new CompoundBorder(new EmptyBorder(10,10,10,10), new EtchedBorder(EtchedBorder.LOWERED)));
 
-        // caGrid Type combobox
+        // caGrid name combobox
         JPanel gridPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         gridPanel.add(new JLabel("Select grid"));
-        caGridTypeComboBox = new JComboBox(caGridType);
-        gridPanel.add(caGridTypeComboBox);
+        caGridNamesComboBox = new JComboBox(caGridNames);
+        gridPanel.add(caGridNamesComboBox);
         
         JPanel wsdlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         wsdlPanel.add(new JLabel("Service WSDL's URL"));
@@ -116,9 +107,8 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 								
 				addRegistry(caGridServiceWSDLTextField.getText(),
-						getIndexServiceURL(),
-						getAuthenticationServiceURL(),
-						getDorianServiceURL());
+						getCaGridName(),
+						getIndexServiceURL());
 
 				setVisible(false);
 				dispose();				
@@ -150,17 +140,16 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
 	
 	
 	public String getIndexServiceURL(){
-		return indexServicesURLs[caGridTypeComboBox.getSelectedIndex()];
-	}
-
-	public String getAuthenticationServiceURL(){
-		return authenticationServicesMap.get(indexServicesURLs[caGridTypeComboBox.getSelectedIndex()]);
+		return indexServicesURLs[caGridNamesComboBox.getSelectedIndex()];
 	}
 	
-	public String getDorianServiceURL(){
-		return dorianServicesMap.get(indexServicesURLs[caGridTypeComboBox.getSelectedIndex()]);
-	}
+    /**
+     * 
+     * @return the selected CaGrid name
+     */
+    public String getCaGridName() {
+        return (String)caGridNamesComboBox.getSelectedItem();
+    }
 	
-	protected abstract void addRegistry(String wsdlURL, String indexServiceURL,
-			String authNServiceURL, String dorianServiceURL) ;
+	protected abstract void addRegistry(String wsdlURL, String caGridName, String indexServiceURL) ;
 }

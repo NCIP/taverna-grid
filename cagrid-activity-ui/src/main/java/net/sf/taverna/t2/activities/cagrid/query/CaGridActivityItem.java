@@ -40,6 +40,9 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	private String operation;
 	private String researchCenter;
 	
+	// Name of the caGrid the service belongs to
+	private String caGridName;
+	
 	// Security settings for this operation of a caGrid service, if any, obtained by invoking
 	// getServiceSecurityMetadata() on the service
 	private String indexServiceURL; // URL of the Index Service used to discover this caGrid service (used as alias for username/password and proxy entries in the Taverna's keystore)
@@ -55,6 +58,14 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	private GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
 	private GlobusCredential proxy; // proxy
 	
+	public void setCaGridName(String caGridName) {
+		this.caGridName = caGridName;
+	}
+
+	public String getCaGridName() {
+		return caGridName;
+	}
+
 	public String getResearchCenter() {
 		return researchCenter;
 	}
@@ -221,6 +232,5 @@ public class CaGridActivityItem extends AbstractActivityItem {
 	public Activity<?> getUnconfiguredActivity() {
 		return new CaGridActivity();
 	}
-
 
 }

@@ -32,8 +32,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridServiceDescription;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescriptionProvider.FindServiceDescriptionsCallBack;
 
@@ -46,19 +44,15 @@ public class CaGridServiceFromWSDLSearcher {
 	private static Logger logger = Logger.getLogger(CaGridServiceFromWSDLSearcher.class);
 
 	private String wsdlURL;
+	private String caGridName;
 	private String indexServiceURL;
-	private String defaultAuthNServiceURL;
-	private String defaultDorianServiceURL;
-	
-	public CaGridServiceFromWSDLSearcher(String wsdlURL, String indexServiceURL,
-			String authNServiceURL,
-			String dorianServiceURL)
+
+	public CaGridServiceFromWSDLSearcher(String wsdlURL, String caGridName, String indexServiceURL)
 			throws Exception {
 		
 		this.wsdlURL = wsdlURL;
+		this.caGridName = caGridName;
 		this.indexServiceURL = indexServiceURL;
-		this.defaultAuthNServiceURL = authNServiceURL;
-		this.defaultDorianServiceURL = dorianServiceURL;
 	}
 
 	/**
@@ -104,9 +98,8 @@ public class CaGridServiceFromWSDLSearcher {
 						if(researchCenter!= null && !researchCenter.equals("")){
 							item.setResearchCenter(researchCenter);	
 						}
+						item.setCaGridName(caGridName);
 						item.setIndexServiceURL(indexServiceURL);
-						item.setDefaultAuthNServiceURL(defaultAuthNServiceURL);
-						item.setDefaultDorianServiceURL(defaultDorianServiceURL);
 						
 						// Security properties of the item will be set later
 						// at the time of adding the activity to the diagram
@@ -146,10 +139,9 @@ public class CaGridServiceFromWSDLSearcher {
 			if(item.getResearchCenter()!= null && !item.getResearchCenter().equals("")){
 					serviceDesc.setResearchCenter(item.getResearchCenter());	
 			}
-					
+				
+			serviceDesc.setCaGridName(caGridName);
 			serviceDesc.setIndexServiceURL(indexServiceURL);
-			serviceDesc.setDefaultAuthNServiceURL(defaultAuthNServiceURL);
-			serviceDesc.setDefaultDorianServiceURL(defaultDorianServiceURL);
 					
 			// Security properties of the item will be set later
 			// at the time of adding the activity to the diagram

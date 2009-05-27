@@ -28,23 +28,28 @@ import net.sf.taverna.t2.lang.beans.PropertyAnnotated;
  * @author Alex Nenadic
  *
  */
-public class CaGridServiceProviderConfig extends PropertyAnnotated {
+public class CaGridServiceSearchProviderConfig extends PropertyAnnotated {
 	
+	private String caGridName;
 	private String indexServiceURL;
 	private ServiceQuery[] serviceQueryList; 
-	private String defaultAuthNServiceURL;
-	private String defaultDorianServiceURL;
 	
-	public CaGridServiceProviderConfig() {
+	public void setCaGridName(String caGridName) {
+		this.caGridName = caGridName;
+	}
+
+	public String getCaGridName() {
+		return caGridName;
+	}
+
+	public CaGridServiceSearchProviderConfig() {
 	}
 	
-	public CaGridServiceProviderConfig(String indexServiceURL,
-			ServiceQuery[] serviceQueryList, String authNServiceURL,
-			String dorianServiceURL) {
+	public CaGridServiceSearchProviderConfig(String caGridName, String indexServiceURL,
+			ServiceQuery[] serviceQueryList) {
+		this.setCaGridName(caGridName);
 		this.indexServiceURL = indexServiceURL;
 		this.setServiceQueryList(serviceQueryList);
-		this.setDefaultAuthNServiceURL(authNServiceURL);
-		this.setDefaultDorianServiceURL(dorianServiceURL);
 	}
 
 	public String getIndexServiceURL() {
@@ -61,22 +66,6 @@ public class CaGridServiceProviderConfig extends PropertyAnnotated {
 
 	public ServiceQuery[] getServiceQueryList() {
 		return serviceQueryList;
-	}
-
-	public void setDefaultAuthNServiceURL(String authNServiceURL) {
-		this.defaultAuthNServiceURL = authNServiceURL;
-	}
-
-	public String getDefaultAuthNServiceURL() {
-		return defaultAuthNServiceURL;
-	}
-
-	public void setDefaultDorianServiceURL(String dorianServiceURL) {
-		this.defaultDorianServiceURL = dorianServiceURL;
-	}
-
-	public String getDefaultDorianServiceURL() {
-		return defaultDorianServiceURL;
 	}
 	
 }
