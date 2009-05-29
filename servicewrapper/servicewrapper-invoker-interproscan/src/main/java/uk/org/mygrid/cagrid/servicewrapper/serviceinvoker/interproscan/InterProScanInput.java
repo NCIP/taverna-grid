@@ -24,5 +24,18 @@ public class InterProScanInput {
 	public void setContent(Data[] content) {
 		this.content = content;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer string = new StringBuffer("InterProScanInput params=");
+		string.append(getParams());
+		string.append(" content="); 
+		string.append(" ");
+		for (Data data : getContent()) {
+			string.append(data);
+			string.append('\n');
+		}
+		return string.toString();
+	}
 
 }

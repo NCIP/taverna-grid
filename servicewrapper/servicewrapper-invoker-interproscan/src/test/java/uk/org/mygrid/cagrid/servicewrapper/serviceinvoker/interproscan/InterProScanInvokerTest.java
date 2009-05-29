@@ -1,5 +1,8 @@
 package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan;
 
+import static org.junit.Assert.*;
+
+import org.apache.xmlbeans.XmlBeans;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,6 +15,8 @@ import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 
 public class InterProScanInvokerTest {
 
+	private static final String ISO_8859_1 = "ISO-8859-1";
+	private static final String JOB_ID = "iprscan-20090529-1051066486";
 	private Invoker<InterProScanInput, byte[]> invoker;
 
 	@Before
@@ -19,6 +24,7 @@ public class InterProScanInvokerTest {
 		invoker = new InterProScanInvoker();		
 	}
 
+	@Ignore
 	@Test
 	public void invokeInterProScan() throws Exception {
 		InterProScanInput analyticalServiceInput = new InterProScanInput();
@@ -43,6 +49,20 @@ public class InterProScanInvokerTest {
 		}
 		byte[] poll = invoker.poll(jobID);
 		System.out.println(new String(poll));
+	}
+	
+	@Test
+	public void getStatus() throws Exception {
+		assertEquals("DONE", invoker.checkStatus(JOB_ID));
+	}
+
+	@Test
+	public void poll() throws Exception {
+		byte[] poll = invoker.poll(JOB_ID);
+		String pollXML = new String(poll, ISO_8859_1);
+		assertTrue(pollXML.startsWith("<?xml"));
+		assertTrue(pollXML.contains("sp|P01174|WAP_RAT"));
+		assertTrue(pollXML.contains("GO:0030414"));
 	}
 	
 }

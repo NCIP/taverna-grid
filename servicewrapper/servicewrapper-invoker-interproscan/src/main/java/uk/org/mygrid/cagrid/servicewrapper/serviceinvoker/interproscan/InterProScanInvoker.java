@@ -2,11 +2,16 @@ package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan;
 
 import java.rmi.RemoteException;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlOptions;
 import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import uk.ac.ebi.www.wsinterproscan.CheckStatusDocument;
 import uk.ac.ebi.www.wsinterproscan.CheckStatusResponseDocument;
@@ -22,41 +27,55 @@ import uk.org.mygrid.cagrid.servicewrapper.wsdl.interproscan.WSInterProScanServi
 
 public class InterProScanInvoker implements Invoker<InterProScanInput, byte[]> {
 
+	private static final String POLL_TYPE = "toolxml";
+
+	private static Logger logger = Logger.getLogger(InterProScanInvoker.class);
+
 	private WSInterProScanServiceStub interProScan;
 
 	public InterProScanInvoker() throws InvokerException {
 		try {
 			interProScan = new WSInterProScanServiceStub();
 			// To avoid 411 Error: Length Required
-			interProScan._getServiceClient().getOptions().setProperty(HTTPConstants.CHUNKED, false); 
-			
+			interProScan._getServiceClient().getOptions().setProperty(
+					HTTPConstants.CHUNKED, false);
+
 		} catch (AxisFault e) {
+			logger.error("Could not initialize InterProScan service stub", e);
 			throw new InvokerException(
 					"Could not initialize InterProScan service stub", e);
 		}
 	}
 
 	public String checkStatus(String jobID) throws InvokerException {
-
 		CheckStatusDocument statusDoc = CheckStatusDocument.Factory
 				.newInstance();
 		statusDoc.addNewCheckStatus().setJobid(jobID);
 		CheckStatusResponseDocument checkStatus;
+		logger.info("Checking status for " + jobID);
+		logger.debug("checkStatus\n" + statusDoc);
 		try {
 			checkStatus = interProScan.checkStatus(statusDoc);
 		} catch (RemoteException e) {
+			logger.warn("Can't check status for " + jobID, e);
 			throw new InvokerException("Can't check status for " + jobID, e);
 		}
+		logger.debug("Received status for " + jobID + ": \n" + checkStatus);
 		return checkStatus.getCheckStatusResponse().getStatus();
 	}
 
 	public byte[] poll(String jobID) throws InvokerException {
 		PollDocument pollDoc = PollDocument.Factory.newInstance();
 		pollDoc.addNewPoll().setJobid(jobID);
+		pollDoc.getPoll().setType(POLL_TYPE);
+		logger.info("Polling for " + jobID);
+		logger.debug("poll\n" +  pollDoc);
 		try {
 			PollResponseDocument poll = interProScan.poll(pollDoc);
+			logger.debug("Received poll response for " + jobID + ":\n" + poll);
 			return poll.getPollResponse().getResult();
 		} catch (RemoteException e) {
+			logger.warn("Can't poll for " + jobID, e);
 			throw new InvokerException("Can't poll for " + jobID, e);
 		}
 	}
@@ -69,28 +88,47 @@ public class InterProScanInvoker implements Invoker<InterProScanInput, byte[]> {
 			runDoc.addNewRunInterProScan().setParams(
 					analyticalServiceInput.getParams());
 			WSArrayofData content = runDoc.getRunInterProScan().addNewContent();
-			// FIXME: Add analyticalServiceInput.getContent()
+
+			// Determine array type
+			QName arrayType = Data.type.getName();
+			String wsinPrefix = "wsin95e016c8";
+			Element el = (Element) content.getDomNode();
+			el.setAttribute("xmlns:" + wsinPrefix, arrayType.getNamespaceURI());
+			content.setArrayType(wsinPrefix + ":" + arrayType.getLocalPart()
+					+ "[]");
+
+			// Add analyticalServiceInput.getContent()
 			for (Data data : analyticalServiceInput.getContent()) {
 				XmlOptions xmlOptions = new XmlOptions();
 				xmlOptions.setSaveOuter();
-				System.out.println(data.xmlText(xmlOptions));
-				DocumentFragment newDomNode = (DocumentFragment) data.newDomNode(xmlOptions );
-				Node importNode = content.getDomNode().getOwnerDocument().importNode(newDomNode.getFirstChild(), true);
-				content.getDomNode().appendChild(importNode);
+				DocumentFragment dataNode = (DocumentFragment) data
+						.newDomNode(xmlOptions);
+
+				Element dataElem = content.getDomNode().getOwnerDocument()
+						.createElementNS(arrayType.getNamespaceURI(),
+								arrayType.getLocalPart());
+				content.getDomNode().appendChild(dataElem);
+				NodeList childNodes = dataNode.getFirstChild().getChildNodes();
+				for (int i = 0; i < childNodes.getLength(); i++) {
+					Node child = childNodes.item(i);
+					Node importNode = dataElem.getOwnerDocument().importNode(
+							child, true);
+					dataElem.appendChild(importNode);
+				}
 			}
 
-			System.out.println(runDoc);
+			logger.info("Running interpro scan for " + analyticalServiceInput);
+			logger.debug("runInterProScan:\n" + runDoc);
 
-	
 			RunInterProScanResponseDocument response = interProScan
 					.runInterProScan(runDoc);
+			logger.debug("Received run response:\n" + response);
 			return response.getRunInterProScanResponse().getJobid();
-			
-			//throw new RuntimeException("");
 		} catch (RemoteException e) {
-			throw new InvokerException(e);
+			logger.warn("Could not invoke runInterProScan for "
+					+ analyticalServiceInput, e);
+			throw new InvokerException("Could not invoke runInterProScan", e);
 		}
-
 	}
 
 }
