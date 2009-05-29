@@ -21,6 +21,7 @@
 				<version>${axis2.version}</version>
 				<executions>
 					<execution>
+						<id>wsdl2code</id>
 						<goals>
 							<goal>wsdl2code</goal>
 						</goals>
@@ -65,11 +66,6 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>servicewrapper-invoker-api</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
