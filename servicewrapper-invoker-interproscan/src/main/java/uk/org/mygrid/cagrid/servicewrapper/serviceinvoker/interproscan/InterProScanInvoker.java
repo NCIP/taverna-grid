@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.log4j.Logger;
+import org.apache.xmlbeans.XmlBoolean;
 import org.apache.xmlbeans.XmlOptions;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -84,9 +85,14 @@ public class InterProScanInvoker implements Invoker<InterProScanInput, byte[]> {
 			throws InvokerException {
 		try {
 			RunInterProScanDocument runDoc = RunInterProScanDocument.Factory
-					.newInstance();
+					.newInstance();			
 			runDoc.addNewRunInterProScan().setParams(
 					analyticalServiceInput.getParams());
+			runDoc.getRunInterProScan().getParams().setAsync(true);
+			// InterProScan bug: The string 'true' is not recognised - only the string '1'
+			runDoc.getRunInterProScan().getParams().xgetAsync().setStringValue("1");
+			
+			
 			WSArrayofData content = runDoc.getRunInterProScan().addNewContent();
 
 			// Determine array type
