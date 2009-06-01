@@ -16,7 +16,7 @@ import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 public class InterProScanInvokerTest {
 
 	private static final String ISO_8859_1 = "ISO-8859-1";
-	private static final String JOB_ID = "iprscan-20090529-1051066486";
+	private static final String EXPIRED_JOB_ID = "iprscan-20090529-1051066486";
 	private Invoker<InterProScanInput, byte[]> invoker;
 
 	@Before
@@ -24,13 +24,12 @@ public class InterProScanInvokerTest {
 		invoker = new InterProScanInvoker();		
 	}
 
-	@Ignore
 	@Test
 	public void invokeInterProScan() throws Exception {
 		InterProScanInput analyticalServiceInput = new InterProScanInput();
 		InputParams inputParams = uk.ac.ebi.www.wsinterproscan.InputParams.Factory.newInstance();
 		inputParams.setEmail("mannen@soiland-reyes.com");
-		inputParams.setAsync(true);
+		//inputParams.setAsync(true);
 		inputParams.setSeqtype("P");
 		analyticalServiceInput.setParams(inputParams);
 		
@@ -48,21 +47,23 @@ public class InterProScanInvokerTest {
 			System.out.println(status);
 		}
 		byte[] poll = invoker.poll(jobID);
-		System.out.println(new String(poll));
-	}
-	
-	@Test
-	public void getStatus() throws Exception {
-		assertEquals("DONE", invoker.checkStatus(JOB_ID));
-	}
-
-	@Test
-	public void poll() throws Exception {
-		byte[] poll = invoker.poll(JOB_ID);
-		String pollXML = new String(poll, ISO_8859_1);
+		
+		String pollXML = new String(poll, ISO_8859_1);	
+		System.out.println(pollXML);
+		
 		assertTrue(pollXML.startsWith("<?xml"));
 		assertTrue(pollXML.contains("sp|P01174|WAP_RAT"));
 		assertTrue(pollXML.contains("GO:0030414"));
+	}
+	
+	@Test
+	public void getStatusNotFound() throws Exception {
+		assertEquals("NOT_FOUND", invoker.checkStatus(EXPIRED_JOB_ID));
+	}
+
+	@Test(expected=InvokerException.class)
+	public void pollExpiredFails() throws Exception {
+		byte[] poll = invoker.poll(EXPIRED_JOB_ID);
 	}
 	
 }
