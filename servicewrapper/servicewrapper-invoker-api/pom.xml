@@ -11,6 +11,10 @@
 	<artifactId>servicewrapper-invoker-api</artifactId>
 	<name>caGrid Service Wrapper invoker</name>
 
+	<properties>
+		<axis.version>1.2</axis.version>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -33,7 +37,7 @@
 					<dependency>
 						<groupId>axis</groupId>
 						<artifactId>axis</artifactId>
-						<version>1.2</version>
+						<version>${axis.version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -77,39 +81,23 @@
 		</repository>
 	</repositories>
 
-	<properties>
-	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<!--<dependency>
-			<groupId>org.globus</groupId>
-			<artifactId>globus-package</artifactId>
-			<version>4.0.3</version>
-		</dependency>-->
-
-		<dependency>
 			<groupId>axis</groupId>
 			<artifactId>axis</artifactId>
-			<version>1.2</version>
+			<version>${axis.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>axis</groupId>
 			<artifactId>axis-jaxrpc</artifactId>
-			<version>1.2</version>
+			<version>${axis.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>axis</groupId>
 			<artifactId>axis-saaj</artifactId>
-			<version>1.2</version>
+			<version>${axis.version}</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>commons-discovery</groupId>
 			<artifactId>commons-discovery</artifactId>
@@ -120,6 +108,14 @@
 			<artifactId>wsdl4j</artifactId>
 			<version>1.6.2</version>
 		</dependency>
+		
+		<!--
+		<dependency>
+			<groupId>org.globus</groupId>
+			<artifactId>globus-package</artifactId>
+			<version>4.0.3</version>
+		</dependency>
+		-->
 	</dependencies>
 
 </project>
