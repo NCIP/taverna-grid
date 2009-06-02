@@ -10,9 +10,6 @@
 		<groupId>uk.org.mygrid.cagrid</groupId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
-	<properties>
-		<axis2.version>1.4.1</axis2.version>
-	</properties>
 	<build>
 		<plugins>
 			<plugin>
