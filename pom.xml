@@ -17,7 +17,12 @@
 		<module>servicewrapper-prototype</module>
 		<module>servicewrapper-invoker-api</module>
 		<module>servicewrapper-invoker-interproscan</module>
+		<module>servicewrapper-invoker-ncbiblast</module>
 	</modules>
+	
+	<properties>
+		<axis2.version>1.4.1</axis2.version>
+	</properties>
 
 	<repositories>
 		<repository>
