@@ -189,34 +189,40 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 	 */
 	protected void configureSecurity(Call call) {
 		
-		if (configurationBean.getGSITransport() != null){
-			call.setProperty(org.globus.wsrf.security.Constants.GSI_TRANSPORT, configurationBean.getGSITransport());
+		CaGridActivitySecurityProperties secProperties = CaGridActivity.securityPropertiesCache
+				.get(configurationBean.getWsdl()
+						+ configurationBean.getOperation());
+		
+		if (secProperties == null){
+			return;
 		}
 		
-		if (configurationBean.getGSISecureConversation() != null){
-			call.setProperty(org.globus.wsrf.security.Constants.GSI_SEC_CONV, configurationBean.getGSISecureConversation());
+		if (secProperties.getGSITransport() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.GSI_TRANSPORT, secProperties.getGSITransport());
 		}
 		
-		if (configurationBean.getGSISecureMessage() != null){
-			call.setProperty(org.globus.wsrf.security.Constants.GSI_SEC_MSG, configurationBean.getGSISecureMessage());
+		if (secProperties.getGSISecureConversation() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.GSI_SEC_CONV, secProperties.getGSISecureConversation());
 		}
 		
-		if (configurationBean.getGSIAnonymouos() != null){
-			call.setProperty(org.globus.wsrf.security.Constants.GSI_ANONYMOUS, configurationBean.getGSIAnonymouos());
+		if (secProperties.getGSISecureMessage() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.GSI_SEC_MSG, secProperties.getGSISecureMessage());
 		}
 		
-		if (configurationBean.getGSICredential() != null){
-			//call.getMessageContext().setProperty(org.globus.wsrf.impl.security.authentication.Constants.AUTHZ_REQUIRED, Boolean.TRUE);
-			//call.setProperty(org.globus.wsrf.impl.security.authentication.Constants.AUTHZ_REQUIRED, Boolean.TRUE);
-			call.setProperty(org.globus.axis.gsi.GSIConstants.GSI_CREDENTIALS, configurationBean.getGSICredential());
+		if (secProperties.getGSIAnonymouos() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.GSI_ANONYMOUS, secProperties.getGSIAnonymouos());
 		}
 		
-		if (configurationBean.getGSIAuthorisation() != null){
-			call.setProperty(org.globus.wsrf.security.Constants.AUTHORIZATION, configurationBean.getGSIAuthorisation());
+		if (secProperties.getGSICredential() != null){
+			call.setProperty(org.globus.axis.gsi.GSIConstants.GSI_CREDENTIALS, secProperties.getGSICredential());
 		}
 		
-		if (configurationBean.getGSIMode() != null){
-			call.setProperty(org.globus.axis.gsi.GSIConstants.GSI_MODE, configurationBean.getGSIMode());
+		if (secProperties.getGSIAuthorisation() != null){
+			call.setProperty(org.globus.wsrf.security.Constants.AUTHORIZATION, secProperties.getGSIAuthorisation());
+		}
+		
+		if (secProperties.getGSIMode() != null){
+			call.setProperty(org.globus.axis.gsi.GSIConstants.GSI_MODE, secProperties.getGSIMode());
 		}
 	}
 	
