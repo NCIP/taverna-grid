@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:simpleType name="Matrix">
+		<xsd:annotation>
+			<xsd:documentation>List of supported scoring (comparison) matrices to use when searching the database. Includes: BLOSUM45, BLOSUM50, BLOSUM62, BLOSUM80, BLOSUM90, PAM30, PAM70, PAM250. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BLOSUM45"/>
+			<xsd:enumeration value="BLOSUM50"/>
+			<xsd:enumeration value="BLOSUM62"/>
+			<xsd:enumeration value="BLOSUM80"/>
+			<xsd:enumeration value="BLOSUM90"/>
+			<xsd:enumeration value="PAM30"/>
+			<xsd:enumeration value="PAM70"/>
+			<xsd:enumeration value="PAM250"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BLASTProgram">
+		<xsd:annotation>
+			<xsd:documentation>List of supported BLAST programs. Includes BLASTN, BLASTP and BLASTX. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BLASTN">
+				<xsd:annotation>
+					<xsd:documentation>Compares a nucleotide query sequence against a nucleotide sequence database.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BLASTP">
+				<xsd:annotation>
+					<xsd:documentation>Compares a protein query sequence against a protein sequence database.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BLASTX">
+				<xsd:annotation>
+					<xsd:documentation>Compares the six-frame conceptual translation products of a nucleotide query sequence (both strands) against a protein sequence database.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SignatureMethod">
+		<xsd:annotation>
+			<xsd:documentation>List of available InterPro signature methods.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BLASTPRODOM"/>
+			<xsd:enumeration value="GENE3D"/>
+			<xsd:enumeration value="HMMPANTHER"/>
+			<xsd:enumeration value="HMMPIR"/>
+			<xsd:enumeration value="HMMPFAM"/>
+			<xsd:enumeration value="HMMSMART"/>
+			<xsd:enumeration value="SIGNALP"/>
+			<xsd:enumeration value="TMHMM"/>
+			<xsd:enumeration value="HMMTIGR"/>
+			<xsd:enumeration value="FPRINTSCAN"/>
+			<xsd:enumeration value="SCANREGEXP"/>
+			<xsd:enumeration value="PROFILESCAN"/>
+			<xsd:enumeration value="SUPERFAMILY"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SignatureStatus">
+		<xsd:annotation>
+			<xsd:documentation>Status of the found signature - can be known or unknown.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="KNOWN">
+				<xsd:annotation>
+					<xsd:documentation>Denotes the feature is known</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UNKNOWN">
+				<xsd:annotation>
+					<xsd:documentation>Denotes the feature is unknown</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

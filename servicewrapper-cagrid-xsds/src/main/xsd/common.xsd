@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="FASTAProteinSequence" type="FASTAProteinSequence"/>
+	<xsd:complexType name="FASTAProteinSequence">
+		<xsd:annotation>
+			<xsd:documentation>FASTA-formatted protein sequence.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ProteinSequenceRepresentation">
+				<xsd:sequence>
+					<xsd:element name="sequence" type="xsd:string" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>FASTA-formatted protein sequence.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ProteinSequenceRepresentation" type="ProteinSequenceRepresentation"/>
+	<xsd:complexType name="ProteinSequenceRepresentation" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>An abstract class that represents a protein. It has two concrete subclasses: (1) FASTAProteinSequence to represent the case where the actual protein sequence is known and being passed, and (2) ProteinSequenceIdentifier (in format db:id) to represent the case where the sequence identified in a certain database is given and the sequence has first to be fetched from a protein database (such as uniprot) before the InterProScan or BLAST search can be performed on that sequence. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="SequenceRepresentation">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="Error" type="Error"/>
+	<xsd:complexType name="Error" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>An error returned by the wrapped service in case something goes wrong during invocation, e.g. wrong input parameters passed, analytical service down, etc.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="error_code" type="xsd:integer" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Error code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorDescription" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>A more detailed explanation of what went wrong.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorMessage" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Error message to be displayed to the user</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="FASTANucleotideSequence" type="FASTANucleotideSequence"/>
+	<xsd:complexType name="FASTANucleotideSequence">
+		<xsd:annotation>
+			<xsd:documentation>FASTA-formatted nucleotide sequence.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="NucleotideSequenceRepresentation">
+				<xsd:sequence>
+					<xsd:element name="sequence" type="xsd:string" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>FASTA-formatted nucleotide sequence.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="NucleotideSequenceRepresentation" type="NucleotideSequenceRepresentation"/>
+	<xsd:complexType name="NucleotideSequenceRepresentation" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>An abstract class that represents a nucleotide. It has two concrete subclasses: (1) FASTANucleotideSequence to represent the case where the actual protein sequence is known and being passed, and (2) NucleotideSequenceIdentifier (in format db:id) to represent the case where the sequence identified in a certain database is given and the sequence has first to be fetched from a nucleotide database (such as ncbi) before the BLAST search can be performed on that sequence. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="SequenceRepresentation">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ProteinSequenceIdentifier" type="ProteinSequenceIdentifier"/>
+	<xsd:complexType name="ProteinSequenceIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>Protein identifier in format 'db:id'.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ProteinSequenceRepresentation">
+				<xsd:sequence>
+					<xsd:element name="sequenceId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="NucleotideSequenceIdentifier" type="NucleotideSequenceIdentifier"/>
+	<xsd:complexType name="NucleotideSequenceIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>Nucleotide identifier in format 'db:id'.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="NucleotideSequenceRepresentation">
+				<xsd:sequence>
+					<xsd:element name="sequenceId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="SequenceRepresentation" type="SequenceRepresentation"/>
+	<xsd:complexType name="SequenceRepresentation" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>Abstract class to represent a protein or nucleotide.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence/>
+	</xsd:complexType>
+</xsd:schema>
