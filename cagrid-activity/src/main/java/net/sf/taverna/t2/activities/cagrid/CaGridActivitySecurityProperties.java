@@ -20,9 +20,7 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid;
 
-import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
-import org.ietf.jgss.GSSCredential;
 
 /**
  * Security properties of a caGrid service (operation) obtained from 
@@ -45,8 +43,9 @@ public class CaGridActivitySecurityProperties {
 	private Integer gsiSecureMessage;
 	private String gsiMode;
 	
-	private transient GSSCredential gsi_credential; // GSSCredential wraps the proxy used for context initiation, acceptance or both
-	private transient GlobusCredential proxy; // proxy
+	// Whether the operation using these security properties would require proxy 
+	// (to be fetched from Credential Manager)
+	private boolean requiresProxy;
 	
 	public void setGSITransport(Integer gsi_transport) {
 		this.gsiTransport = gsi_transport;
@@ -95,21 +94,11 @@ public class CaGridActivitySecurityProperties {
 	public String getGSIMode() {
 		return gsiMode;
 	}
-	
 
-	public void setGSICredential(GSSCredential gsi_credential) {
-		this.gsi_credential = gsi_credential;
+	public boolean requiresProxy(){
+		return requiresProxy;
 	}
-
-	public GSSCredential getGSICredential() {
-		return gsi_credential;
-	}
-
-	public void setProxy(GlobusCredential proxy) {
-		this.proxy = proxy;
-	}
-
-	public GlobusCredential getProxy() {
-		return proxy;
+	public void setRequiresProxy(boolean requiresProxy){
+		this.requiresProxy = requiresProxy;
 	}
 }
