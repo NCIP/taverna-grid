@@ -26,20 +26,12 @@ import gov.nih.nci.cagrid.metadata.security.Operation;
 import gov.nih.nci.cagrid.metadata.security.ProtectionLevelType;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
-import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import java.awt.Color;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
 import java.security.Security;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,13 +49,7 @@ import org.apache.axis.EngineConfiguration;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.Logger;
-import org.bouncycastle.jce.provider.X509CertificateObject;
-import org.cagrid.gaards.authentication.BasicAuthentication;
-import org.cagrid.gaards.authentication.client.AuthenticationClient;
-import org.cagrid.gaards.dorian.client.GridUserClient;
-import org.cagrid.gaards.dorian.federation.CertificateLifetime;
 import org.globus.axis.gsi.GSIConstants;
-import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.xml.sax.SAXException;
@@ -71,12 +57,9 @@ import org.xml.sax.SAXException;
 import net.sf.taverna.t2.activities.cagrid.InputPortTypeDescriptorActivity;
 import net.sf.taverna.t2.activities.cagrid.OutputPortTypeDescriptorActivity;
 import net.sf.taverna.t2.activities.cagrid.CaGridWSDLSOAPInvoker;
-import net.sf.taverna.t2.activities.cagrid.config.CaGridActivityConfiguration;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.ReferenceServiceException;
 import net.sf.taverna.t2.reference.T2Reference;
-import net.sf.taverna.t2.security.credentialmanager.CMException;
-import net.sf.taverna.t2.security.credentialmanager.CredentialManager;
 import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workflowmodel.OutputPort;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousActivity;
@@ -321,7 +304,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	 * 
 	 * @throws Exception
 	 */
-	public static synchronized void configureSecurity(CaGridActivityConfigurationBean configBean, boolean fetchProxy)
+	public static void configureSecurity(CaGridActivityConfigurationBean configBean)
 			throws Exception {
 		
 		// If security properties for this operation are in the cache (even if they are null) 
@@ -404,11 +387,9 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		CommunicationMechanism serviceDefaultCommunicationMechanism = securityMetadata.getDefaultCommunicationMechanism();
 		CommunicationMechanism communicationMechanism = null;
 		if (secureOperationsMap.containsKey(configBean.getOperation())) {
-			//System.out.println("Using service specific communication mechanim.");
 			Operation op = (Operation) secureOperationsMap.get(configBean.getOperation());
 			communicationMechanism = op.getCommunicationMechanism(); // specific for this operation, may differ from service default
 		} else {
-			//System.out.println("Using service default communication mechanim.");
 			communicationMechanism = serviceDefaultCommunicationMechanism;
 		}
 				
@@ -483,140 +464,10 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 
 		if ((anonymousAllowed) && (communicationMechanism.isAnonymousPermitted()) && anonymousPrefered) {
 			secProperties.setGSIAnonymouos(Boolean.TRUE);
-			//System.out.println("Service IS anonymous.");
-
-		} else if (credentialsAllowed && fetchProxy) {
-			//secProperties.setGSIAnonymouos(Boolean.FALSE);
-
-			/*configurationBean.setProxy(null);
-			configurationBean.setGSICredential(null);
-			configurationBean.setGSIAnonymouos(Boolean.FALSE);
-			System.out.println("Should be generating proxy but am not.");*/
-			//System.out.println("Service NOT anonymous.");
-			
-			// Get the proxy certificate - proxy should be created only once
-			// for all services belonging to the same caGrid until it expires
-			GlobusCredential proxy = null;
-
-		    // Get AuthN Service and Dorian Service URLs - check if they are set in the configuration bean first,
-		    // if not - get them from the preferences for the CaGrid this service belongs to.
-			String authNServiceURL = configBean.getAuthNServiceURL();
-			if (authNServiceURL == null) {
-				CaGridActivityConfiguration configuration = CaGridActivityConfiguration
-						.getInstance();
-				authNServiceURL = configuration.getPropertyStringList(
-						configBean.getCaGridName()).get(1);
-			}
-		    if (authNServiceURL == null) { // if still null - we are in trouble
-				logger
-						.error("Authentication Service has not been configured for the operation "
-								+ configBean.getOperation()
-								+ " of the service "
-								+ configBean.getWsdl()
-								+ " that expects user to authenticate");
-				throw new Exception(
-						"Authentication Service has not been configured for the operation "
-								+ configBean.getOperation()
-								+ " of the service " + configBean.getWsdl()
-								+ " that expects user to authenticate");
-			}
-		    String dorianServiceURL = configBean.getDorianServiceURL();
-			if (dorianServiceURL == null) {
-				CaGridActivityConfiguration configuration = CaGridActivityConfiguration
-						.getInstance();
-				dorianServiceURL = configuration.getPropertyStringList(
-						configBean.getCaGridName()).get(2);
-			}
-		    if (dorianServiceURL == null){ // if still null - we are in trouble
-		        	logger.error("Dorian Service has not been configured for the operation "
-							+ configBean.getOperation()
-							+ " of the service "
-							+ configBean.getWsdl() + " that expects user to have a proxy certificate");
-					throw new Exception("Dorian Service has not been configured for the operation "
-							+ configBean.getOperation()
-							+ " of the service "
-							+ configBean.getWsdl() + " that expects user to have a proxy certificate");
-		    }
-		        
-	        // Check first if Credential Manager already has a proxy for this operation
-	        CredentialManager credManager = null;
-	        try{
-	        	credManager = CredentialManager.getInstance();
-	        }
-	        catch (CMException cme){
-	        	logger.error(cme.getMessage());
-	        	throw cme;
-	        }
-	        
-	        PrivateKey privateKey;
-	        X509Certificate[] x509CertChain;
-	        
-	        // We sync here on Credential Manager because we want
-	        // getCaGridProxyXXX() and insertCaGridProxy() to be atomic - so another
-	        // CaGridActivity would have to wait 
-	        	privateKey = credManager.getCaGridProxyPrivateKey(authNServiceURL, dorianServiceURL);
-	        	Certificate[] certChain = credManager.getCaGridProxyCertificateChain(authNServiceURL, dorianServiceURL);
-
-		        if (certChain != null && privateKey != null){
-		        	logger.info("Proxy for the operation "+configBean.getOperation()+" found by Credential Manager.");
-		        	x509CertChain = convertCertificatesToX509CertificateObjects(certChain);
-		        	proxy = new GlobusCredential(privateKey, x509CertChain);
-		        }	
-		        else{
-		        	logger.info("Proxy for the operation "+configBean.getOperation()+" not found by Credential Manager - getting a new one.");
-					try{
-						BasicAuthentication auth = new BasicAuthentication();
-				        auth.setUserId("anenadic");
-				        auth.setPassword("m^s7a*kpT302");
-				        // Authenticate to the Authentication Service using the basic authN credential
-				        AuthenticationClient authClient = new AuthenticationClient(authNServiceURL);
-				        SAMLAssertion saml = authClient.authenticate(auth);
-				        logger.info("Authenticated the user with AuthN Service: " + authNServiceURL);
-
-				        // Set requested Grid credential lifetime (12 hours)
-				        CertificateLifetime lifetime = new CertificateLifetime();
-				        lifetime.setHours(12);
-
-				        // Request PKI/Grid credential
-				        GridUserClient dorian = new GridUserClient(dorianServiceURL);
-				        proxy = dorian.requestUserCertificate(saml, lifetime);
-				        logger.info("Obtained user's proxy from Dorian: "+ dorianServiceURL);
-			        	
-				        try{
-				        	// Get Credential Manager to save the proxy if user wishes so			        	
-					        credManager.insertCaGridProxy(proxy.getPrivateKey(), proxy.getCertificateChain(), authNServiceURL, dorianServiceURL);
-				        }
-				        catch(CMException cme){
-				        	logger.error(cme.getMessage());
-				        	cme.printStackTrace();
-				        }
-					}
-					catch(Exception ex){
-						logger
-						.error("Error occured while authenticating the user with caGrid for accesing the operation "
-								+ configBean.getOperation() + " of service " + configBean.getWsdl());
-						ex.printStackTrace();
-						throw new Exception("Error occured while authenticating the user with caGrid for accesing the operation "
-								+ configBean.getOperation() + " of service " + configBean.getWsdl(), ex);
-					}
-		        }
-	        
-	        // Create the GSS credential
-	        org.ietf.jgss.GSSCredential gss = null;
-	        try {
-				gss = new org.globus.gsi.gssapi.GlobusGSSCredentialImpl(proxy,
-					org.ietf.jgss.GSSCredential.INITIATE_AND_ACCEPT);
-				logger.info("Created GSSCredentials from the proxy.");
-			} catch (org.ietf.jgss.GSSException ex) {
-				logger
-				.error("Error occured while creating GSSCredentials from the user's proxy for accesing the operation "
-						+ configBean.getOperation() + " of service " + configBean.getWsdl());
-				ex.printStackTrace();
-				throw new Exception("Error occured while creating GSSCredentials from the user's proxy for accesing the operation "
-						+ configBean.getOperation() + " of service " + configBean.getWsdl(), ex);
-			}
-			secProperties.setProxy(proxy);
-			secProperties.setGSICredential(gss);
+		} else if (credentialsAllowed) {
+			// Set that this operation requires proxy that will be fetched later by the
+			// invoker from the Credential Manager
+			secProperties.setRequiresProxy(true);			
 		}
 
 		if (authorizationAllowed) {
@@ -634,28 +485,6 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		securityPropertiesCache.put(configBean.getWsdl()
 				+ configBean.getOperation(), secProperties);
 	}
-	
-	private static X509Certificate[] convertCertificatesToX509CertificateObjects(
-			Certificate[] certsIn) throws Exception{
-		
-        X509Certificate[] certsOut = new X509Certificate[certsIn.length];
-
-        for (int iCnt = 0; iCnt < certsIn.length; iCnt++) {
-            certsOut[iCnt] = convertCertificatesToX509CertificateObject(certsIn[iCnt]);
-        }
-
-        return certsOut;
-	}
-	
-	private static X509Certificate convertCertificatesToX509CertificateObject(Certificate certIn)
-    throws Exception
-    {
-		CertificateFactory cf = CertificateFactory.getInstance("X.509", "BC");
-        ByteArrayInputStream bais = new ByteArrayInputStream(
-            certIn.getEncoded());
-        return (X509Certificate) cf.generateCertificate(bais);
-
-    }
 
 	/**
 	 * {@inheritDoc}
@@ -670,7 +499,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 				
 				try{
 					// Configure security if service requires it
-					configureSecurity(getConfiguration(), true);
+					configureSecurity(getConfiguration());
 				}
 				catch(Exception ex){
 					logger.error(
