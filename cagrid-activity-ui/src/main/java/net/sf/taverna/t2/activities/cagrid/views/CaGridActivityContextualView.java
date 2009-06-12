@@ -35,6 +35,7 @@ import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivityConfigurationBean;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivitySecurityProperties;
+import net.sf.taverna.t2.activities.cagrid.config.CaGridActivityConfiguration;
 import net.sf.taverna.t2.workbench.ui.actions.activity.HTMLBasedActivityContextualView;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
@@ -100,7 +101,7 @@ public class CaGridActivityContextualView extends
 			try {
 				// Get security metadata but do not fetch the proxy as we are just 
 				// displaying security properties
-				CaGridActivity.configureSecurity(getConfigBean(), false);
+				CaGridActivity.configureSecurity(getConfigBean());
 				// Get the security properties from the cache - they should have been set now from the configureSecurity() method
 				secProperties = CaGridActivity.securityPropertiesCache.get(getConfigBean().getWsdl()+getConfigBean().getOperation());
 			} catch (Exception ex) {
@@ -112,9 +113,36 @@ public class CaGridActivityContextualView extends
 		
 		if (secProperties != null){ // operation is not secure so do not show anything
 			summary+="<tr><th colspan=\"2\" align=\"left\"><b>Security settings</b></th></tr>";
-			summary+="<tr><td>Authentication Service URL</td><td>"+getConfigBean().getAuthNServiceURL()+ "</td></tr>";
-			summary+="<tr><td>Dorian Service URL</td><td>"+getConfigBean().getDorianServiceURL()+ "</td></tr>";
 			
+		    // Get AuthN Service and Dorian Service URLs - check if they are set in the configuration bean first,
+		    // if not - get them from the preferences for the CaGrid this service belongs to.
+			String authNServiceURL = getConfigBean().getAuthNServiceURL();
+			if (authNServiceURL == null) {
+				CaGridActivityConfiguration configuration = CaGridActivityConfiguration
+						.getInstance();
+				authNServiceURL = configuration.getPropertyStringList(
+						getConfigBean().getCaGridName()).get(1);
+			}
+		    if (authNServiceURL == null) { // should not happen for a secure service
+				summary+="<tr><td>Authentication Service URL</td><td>Not set</td></tr>";
+			}
+		    else{
+				summary+="<tr><td>Authentication Service URL</td><td>"+authNServiceURL+ "</td></tr>";
+		    }
+		    String dorianServiceURL = getConfigBean().getDorianServiceURL();
+			if (dorianServiceURL == null) {
+				CaGridActivityConfiguration configuration = CaGridActivityConfiguration
+						.getInstance();
+				dorianServiceURL = configuration.getPropertyStringList(
+						getConfigBean().getCaGridName()).get(2);
+			}
+		    if (dorianServiceURL == null){ // should not happen for a secure service
+				summary+="<tr><td>Dorian Service URL</td><td>Not set</td></tr>";
+		    }
+		    else{
+				summary+="<tr><td>Dorian Service URL</td><td>"+dorianServiceURL+ "</td></tr>";
+		    }
+
 			// GSI TRANSPORT
 			if (secProperties.getGSITransport() == null){
 				summary+="<tr><td>GSI Transport</td><td>Not set</td></tr>";
@@ -146,6 +174,14 @@ public class CaGridActivityContextualView extends
 			}
 			else if (secProperties.getGSISecureConversation().equals(org.globus.wsrf.security.Constants.SIGNATURE)){
 				summary+="<tr><td>GSI Secure Conversation</td><td>SIGNATURE</td></tr>";
+			}
+			
+			// Uses proxy?
+			if (secProperties.requiresProxy()){
+				summary+="<tr><td>Using proxy credential</td><td>True</td></tr>";
+			}
+			else{
+				summary+="<tr><td>Using proxy credential</td><td>False</td></tr>";
 			}
 			
 			// GSI ANONYMOUS
