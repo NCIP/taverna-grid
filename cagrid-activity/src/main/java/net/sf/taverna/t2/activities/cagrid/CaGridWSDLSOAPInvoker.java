@@ -420,7 +420,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 
 		        // Set the requested Grid credential lifetime (12 hours)
 		        CertificateLifetime lifetime = new CertificateLifetime();
-		        lifetime.setHours(1);
+		        lifetime.setHours(12);
 
 		        // Request PKI/Grid credential
 		        GridUserClient dorian = new GridUserClient(dorianServiceURL);
