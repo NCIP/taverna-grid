@@ -127,11 +127,13 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
         buttonsPanel.add(okButton);
         buttonsPanel.add(cancelButton);        
         
-		this.getContentPane().setLayout(new BorderLayout());
-		this.getContentPane().add(servicePanel, BorderLayout.CENTER);
-        this.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(servicePanel, BorderLayout.CENTER);
+        getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
-        this.pack();
+        getRootPane().setDefaultButton(okButton);
+
+        pack();
 	}
 	
 	public String getWsdlURL(){
