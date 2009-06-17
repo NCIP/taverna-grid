@@ -92,7 +92,7 @@ public class CaGridRenewProxyDialog extends JDialog{
 	                closeDialog();
 	            }
 	        });
-	        JButton jbNoAndDoNotAskPressed = new JButton("No and do not ask again");
+	        JButton jbNoAndDoNotAskPressed = new JButton("No and do not ask again until it expires");
 	        jbNoAndDoNotAskPressed.addActionListener(new ActionListener()
 	        {
 	            public void actionPerformed(ActionEvent evt)

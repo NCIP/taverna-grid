@@ -331,14 +331,14 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
         	proxy = new GlobusCredential(privateKey, x509CertChain);
         	// If it expires soon - ask the user to renew        	
         	long timeLeft = proxy.getTimeLeft();
-        	logger.info("Time left for proxy before it expires: " + timeLeft);
+        	logger.info("Time left for proxy before it expires (in seconds): " + timeLeft);
         	if (timeLeft <= 0){
         		// Already expired - get a new one
             	logger.info("Proxy expired - getting a new one.");
         		newProxy = true;
         	}
         	else if (timeLeft < 3600){ // less than one hour left
-            	logger.info("Proxy expires - in less than an hour.");
+            	logger.info("Proxy expires in less than an hour.");
         		// Ask user - if he wishes to be asked :-)
         		Boolean askMe = renewProxyAskMeAgain.get(configurationBean.getCaGridName());
         		if (askMe == null || askMe == Boolean.TRUE){
@@ -352,6 +352,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
                 		newProxy = false; // do not get a new proxy
                     	renewProxyAskMeAgain.put(configurationBean.getCaGridName(), new Boolean(renewProxyDialog.renewProxyAskMeAgain())); // whether to ask again to renew proxy for this caGrid or leave it till expires
             		}
+                	logger.info("Ask again: " +  renewProxyDialog.renewProxyAskMeAgain());
         		}    		
         	}
         	else{
@@ -366,7 +367,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 				
 				String unpassPair = null;
 				// Check first if we have a saved username/password pair for this Authentication Service
-				unpassPair = credManager.getUsernameAndPassword(authNServiceURL);
+				unpassPair = credManager.getUsernameAndPasswordForService(authNServiceURL);
 
 				String username = null;
 				String password = null;
@@ -404,7 +405,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 				if (shouldSaveUsernameAndPassword){
 			        try{
 			        	// Get Credential Manager to save the username and passsoword			        	
-						credManager.saveUsernameAndPassword(username, password, authNServiceURL);
+						credManager.saveUsernameAndPasswordForService(username, password, authNServiceURL);
 			        }
 			        catch(CMException cme){
 			        	// This is not fatal error but will probably cause problems 
