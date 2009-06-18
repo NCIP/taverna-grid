@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<xsd:include schemaLocation="common.xsd"></xsd:include>
-	<xsd:include schemaLocation="valuedomains.xsd"></xsd:include>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan" 
+xmlns:interproscan="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"
+xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains"
+xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common">
+	<xsd:import
+		namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
+		schemaLocation="common.xsd">
+	</xsd:import>
+	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"></xsd:import>
 
 	<xsd:element name="InterProScanInputParameters"
-		type="InterProScanInputParameters" />
+		type="interproscan:InterProScanInputParameters" />
 	<xsd:complexType name="InterProScanInputParameters">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -29,12 +36,12 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="signatureMethod" type="SignatureMethod"
+			<xsd:element name="signatureMethod" type="valuedomains:SignatureMethod"
 				minOccurs="1" maxOccurs="13" />
 		</xsd:sequence>
 	</xsd:complexType>
 
-	<xsd:element name="InterProScanInput" type="InterProScanInput" />
+	<xsd:element name="InterProScanInput" type="interproscan:InterProScanInput" />
 	<xsd:complexType name="InterProScanInput">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -54,15 +61,15 @@
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="InterProScanInputParameters"
-				type="InterProScanInputParameters" minOccurs="1" maxOccurs="1" />
+				type="interproscan:InterProScanInputParameters" minOccurs="1" maxOccurs="1" />
 			<xsd:element name="SequenceRepresentation"
-				type="SequenceRepresentation" minOccurs="1" maxOccurs="1" />
+				type="common:SequenceRepresentation" minOccurs="1" maxOccurs="1" />
 			<xsd:element name="ProteinSequenceRepresentation"
-				type="ProteinSequenceRepresentation" minOccurs="1" maxOccurs="1" />
+				type="common:ProteinSequenceRepresentation" minOccurs="1" maxOccurs="1" />
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="ProteinSignatureLocation"
-		type="ProteinSignatureLocation" />
+		type="interproscan:ProteinSignatureLocation" />
 	<xsd:complexType name="ProteinSignatureLocation">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -89,7 +96,7 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="signatureMethod" type="SignatureMethod"
+			<xsd:element name="signatureMethod" type="valuedomains:SignatureMethod"
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
@@ -109,7 +116,7 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="status" type="SignatureStatus" minOccurs="1"
+			<xsd:element name="status" type="valuedomains:SignatureStatus" minOccurs="1"
 				maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
@@ -120,7 +127,7 @@
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:element name="InterProScanOutput" type="InterProScanOutput" />
+	<xsd:element name="InterProScanOutput" type="interproscan:InterProScanOutput" />
 	<xsd:complexType name="InterProScanOutput">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -143,13 +150,13 @@
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="ProteinSignatureMatches"
-				type="ProteinSignatureMatch" minOccurs="0" maxOccurs="unbounded" />
-			<xsd:element name="Protein" type="Protein" minOccurs="1"
+				type="interproscan:ProteinSignatureMatch" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="Protein" type="interproscan:Protein" minOccurs="1"
 				maxOccurs="1" />
 		</xsd:sequence>	
 	</xsd:complexType>
 	
-	<xsd:element name="DatabaseMatch" type="DatabaseMatch" />
+	<xsd:element name="DatabaseMatch" type="interproscan:DatabaseMatch" />
 	<xsd:complexType name="DatabaseMatch">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -158,7 +165,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="databaseName" type="Database"
+			<xsd:element name="databaseName" type="interproscan:Database"
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
@@ -184,10 +191,10 @@
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="ProteinSignatureLocations"
-				type="ProteinSignatureLocation" minOccurs="1" maxOccurs="unbounded" />
+				type="interproscan:ProteinSignatureLocation" minOccurs="1" maxOccurs="unbounded" />
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:element name="Protein" type="Protein" />
+	<xsd:element name="Protein" type="interproscan:Protein" />
 	<xsd:complexType name="Protein">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -224,7 +231,7 @@
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:element name="Classification" type="Classification" />
+	<xsd:element name="Classification" type="interproscan:Classification" />
 	<xsd:complexType name="Classification">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -267,7 +274,7 @@
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="ProteinSignatureMatch"
-		type="ProteinSignatureMatch" />
+		type="interproscan:ProteinSignatureMatch" />
 	<xsd:complexType name="ProteinSignatureMatch">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -308,9 +315,9 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="Classification" type="Classification"
+			<xsd:element name="Classification" type="interproscan:Classification"
 				minOccurs="0" maxOccurs="1" />
-			<xsd:element name="DatabaseMatches" type="DatabaseMatch"
+			<xsd:element name="DatabaseMatches" type="interproscan:DatabaseMatch"
 				minOccurs="1" maxOccurs="unbounded" />
 		</xsd:sequence>
 	</xsd:complexType>
