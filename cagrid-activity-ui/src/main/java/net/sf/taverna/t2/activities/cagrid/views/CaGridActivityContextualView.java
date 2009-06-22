@@ -35,7 +35,7 @@ import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivityConfigurationBean;
 import net.sf.taverna.t2.activities.cagrid.CaGridActivitySecurityProperties;
-import net.sf.taverna.t2.activities.cagrid.config.CaGridActivityConfiguration;
+import net.sf.taverna.t2.activities.cagrid.config.CaGridConfiguration;
 import net.sf.taverna.t2.workbench.ui.actions.activity.HTMLBasedActivityContextualView;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
@@ -118,7 +118,7 @@ public class CaGridActivityContextualView extends
 		    // if not - get them from the preferences for the CaGrid this service belongs to.
 			String authNServiceURL = getConfigBean().getAuthNServiceURL();
 			if (authNServiceURL == null) {
-				CaGridActivityConfiguration configuration = CaGridActivityConfiguration
+				CaGridConfiguration configuration = CaGridConfiguration
 						.getInstance();
 				authNServiceURL = configuration.getPropertyStringList(
 						getConfigBean().getCaGridName()).get(1);
@@ -131,7 +131,7 @@ public class CaGridActivityContextualView extends
 		    }
 		    String dorianServiceURL = getConfigBean().getDorianServiceURL();
 			if (dorianServiceURL == null) {
-				CaGridActivityConfiguration configuration = CaGridActivityConfiguration
+				CaGridConfiguration configuration = CaGridConfiguration
 						.getInstance();
 				dorianServiceURL = configuration.getPropertyStringList(
 						getConfigBean().getCaGridName()).get(2);

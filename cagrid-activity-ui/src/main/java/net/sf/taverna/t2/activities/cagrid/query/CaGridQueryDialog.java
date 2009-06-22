@@ -336,7 +336,7 @@ public class CaGridQueryDialog extends JDialog{
         searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				searchResultsListModel.removeAllElements();
-				searchThread = new Thread("Searching Index Service for available caGrid services") {
+				searchThread = new Thread("Searching the Index Service for available caGrid services") {
 					public void run() {
 						updateSearchStatus("Status: searching for services...");
 		                

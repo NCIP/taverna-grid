@@ -51,7 +51,7 @@ import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
 
-import net.sf.taverna.t2.activities.cagrid.config.CaGridActivityConfiguration;
+import net.sf.taverna.t2.activities.cagrid.config.CaGridConfiguration;
 import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.workbench.helper.HelpEnabledDialog;
@@ -99,11 +99,12 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 
 	private void initComponents() {
 		
-		CaGridActivityConfiguration configuration = CaGridActivityConfiguration.getInstance();
+		CaGridConfiguration configuration = CaGridConfiguration.getInstance();
 		// Get default list of CaGridS - keys in the map contain CaGrid names and values contain 
-		// various properties set for the CaGrid (Index Service URL, AuthN service URL, Dorian Service URL).
+		// various properties set for the CaGrid (Index Service URL, AuthN service URL, Dorian Service URL, 
+		// proxy lifetime and CaDSR URL).
 		HashSet<String> caGridNamesSet = new HashSet<String>(configuration.getDefaultPropertyMap().keySet());
-		// Get all other CaGridS that may have been configured though preferences (may include 
+		// Get all other caGridS that may have been configured though preferences (may include 
 		// the default ones as well if some of their values have been changed), 
 		// but set will ignore duplicates so we are OK
 		caGridNamesSet.addAll(configuration.getKeys());
@@ -113,6 +114,11 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 		indexServicesURLs = new String[caGridNames.length];
 		for (int i = 0; i < caGridNames.length; i++){
 			indexServicesURLs[i] = configuration.getPropertyStringList(caGridNames[i]).get(0);
+		}
+		// Get CaDSR Service URLs for all caGrids, if defined
+		caDSRServicesURLs = new String[caGridNames.length];
+		for (int i = 0; i < caGridNames.length; i++){
+			caDSRServicesURLs[i] = configuration.getPropertyStringList(caGridNames[i]).get(4);
 		}
 		
 		this.getContentPane().setLayout(new BorderLayout());
@@ -189,7 +195,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
         JPanel queryButtonsPanel = new JPanel();
         queryButtonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         queryButtonsPanel.setBorder(new EmptyBorder(0,0,0,25));
-        JButton updateCaDSRDataButton = new JButton("Update caDSR metadata");
+        final JButton updateCaDSRDataButton = new JButton("Update caDSR metadata");
         updateCaDSRDataButton.setToolTipText("Get an updated UML class list from caDSR Service. \n" +
 		"This operation may take a few minutes depending on network status.");
         updateCaDSRDataButton.addActionListener(new ActionListener(){
@@ -202,7 +208,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
     					 CaDSRServiceClient cadsr  =null;
     					 UMLPackageMetadata[] packs = null;
     					 UMLClassMetadata[] classes = null;
-    					 logger.info("===========Updating caDSR Metadata================");
+    					 logger.info("Updating caDSR Metadata: using caDSR Service " + caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()]);
     					 
     					 //Note: the try-catch module should be with fine granularity
     					 try {
@@ -275,6 +281,17 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
             	updateCaDSRDataThread.start();
             }
 		});
+        // Disable 'update caDSR metadata' button if there is no caDSR service URL defined
+        caGridNamesComboBox.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if (caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()].equals("")){
+					updateCaDSRDataButton.setEnabled(false);
+				}
+				else{
+					updateCaDSRDataButton.setEnabled(true);
+				}
+			}
+        });
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -308,6 +325,9 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
         queryButtonsPanel.add(cancelButton);        
         this.getContentPane().add(queryButtonsPanel, BorderLayout.SOUTH);
 
+        // Set the default CaGrid to Production CaGrid
+		caGridNamesComboBox.setSelectedItem(CaGridConfiguration.PRODUCTION_CAGRID_NAME);
+		
         this.setLocation(50,50);
         this.pack();
 	}

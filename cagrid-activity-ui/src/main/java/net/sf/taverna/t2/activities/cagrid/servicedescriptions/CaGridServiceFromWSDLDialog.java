@@ -38,7 +38,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
-import net.sf.taverna.t2.activities.cagrid.config.CaGridActivityConfiguration;
+import net.sf.taverna.t2.activities.cagrid.config.CaGridConfiguration;
 
 /**
  * Dialog to specify type of caGrid and WSDL URL of the caGrid service to be added to service panel.
@@ -67,7 +67,7 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
 
 	private void initComponents() {
 
-		CaGridActivityConfiguration configuration = CaGridActivityConfiguration.getInstance();
+		CaGridConfiguration configuration = CaGridConfiguration.getInstance();
 		// Get default list of CaGridS - keys in the map contain CaGrid names and values contain 
 		// various properties set for the CaGrid (Index Service URL, AuthN service URL, Dorian Service URL).
 		HashSet<String> caGridNamesSet = new HashSet<String>(configuration.getDefaultPropertyMap().keySet());
@@ -132,6 +132,9 @@ public abstract class CaGridServiceFromWSDLDialog extends JDialog{
         getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
         getRootPane().setDefaultButton(okButton);
+
+        // Set the default CaGrid to Production CaGrid
+		caGridNamesComboBox.setSelectedItem(CaGridConfiguration.PRODUCTION_CAGRID_NAME);
 
         pack();
 	}
