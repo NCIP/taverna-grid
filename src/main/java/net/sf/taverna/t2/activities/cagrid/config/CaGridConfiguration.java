@@ -30,30 +30,37 @@ import net.sf.taverna.t2.workbench.configuration.AbstractConfigurable;
  * 
  * @author Alex Nenadic
  */
-public class CaGridActivityConfiguration extends AbstractConfigurable {
-
+public class CaGridConfiguration extends AbstractConfigurable {
+	
+	public static String uuid = "1df75ad0-491e-11de-8a39-0800200c9a66";
+	
+	// Default values
 	public static String PRODUCTION_CAGRID_NAME =  "Production CaGrid";
 	public static String PRODUCTION_INDEX_SERVICE_URL = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
 	public static String PRODUCTION_AUTHN_SERVICE_URL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
 	public static String PRODUCTION_DORIAN_SERVICE_URL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
-	
+	public static String PRODUCTION_PROXY_LIFETIME = "12"; // 12 hours
+	public static String PRODUCTION_CADSR_SERVICE_URL = "http://cagrid-service.nci.nih.gov:8080/wsrf/services/cagrid/CaDSRService";
+
 	public static String TRAINING_CAGRID_NAME =  "Training CaGrid";
 	public static String TRAINING_INDEX_SERVICE_URL = "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService";
 	public static String TRAINING_AUTHN_SERVICE_URL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
 	public static String TRAINING_DORIAN_SERVICE_URL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
+	public static String TRAINING_PROXY_LIFETIME = "12"; //12 hours
+	public static String TRAINING_CADSR_SERVICE_URL = "https://cadsr.training.cagrid.org:8443/wsrf/services/cagrid/CaDSRService";
 
 	private Map<String, String> defaultPropertyMap;
 
-	private static CaGridActivityConfiguration instance;
+	private static CaGridConfiguration instance;
 	
-	public static CaGridActivityConfiguration getInstance() {
+	public static CaGridConfiguration getInstance() {
 		if (instance == null) {
-			instance = new CaGridActivityConfiguration();
+			instance = new CaGridConfiguration();
 		}
 		return instance;
 	}
 
-	private CaGridActivityConfiguration() {
+	private CaGridConfiguration() {
 		super();
 		initaliseDefaults();
 	}
@@ -74,12 +81,16 @@ public class CaGridActivityConfiguration extends AbstractConfigurable {
 			defaultPropertyMap.put(PRODUCTION_CAGRID_NAME,
 					PRODUCTION_INDEX_SERVICE_URL + ","
 							+ PRODUCTION_AUTHN_SERVICE_URL + ","
-							+ PRODUCTION_DORIAN_SERVICE_URL);
+							+ PRODUCTION_DORIAN_SERVICE_URL + ","
+							+ PRODUCTION_PROXY_LIFETIME + ","
+							+ PRODUCTION_CADSR_SERVICE_URL);
 
 			defaultPropertyMap.put(TRAINING_CAGRID_NAME,
 					TRAINING_INDEX_SERVICE_URL + ","
 							+ TRAINING_AUTHN_SERVICE_URL + ","
-							+ TRAINING_DORIAN_SERVICE_URL);	
+							+ TRAINING_DORIAN_SERVICE_URL + ","
+							+ TRAINING_PROXY_LIFETIME + ","
+							+ TRAINING_CADSR_SERVICE_URL);	
 		}			
 	}
 
@@ -88,7 +99,7 @@ public class CaGridActivityConfiguration extends AbstractConfigurable {
 	}
 
 	public String getUUID() {
-		return "1df75ad0-491e-11de-8a39-0800200c9a66";
+		return uuid;
 	}
 
 }
