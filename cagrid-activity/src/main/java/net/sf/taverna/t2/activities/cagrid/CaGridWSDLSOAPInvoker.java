@@ -64,7 +64,7 @@ import javax.xml.rpc.ServiceException;
 import net.sf.taverna.cagrid.wsdl.parser.UnknownOperationException;
 import net.sf.taverna.cagrid.wsdl.parser.WSDLParser;
 import net.sf.taverna.cagrid.wsdl.soap.WSDLSOAPInvoker;
-import net.sf.taverna.t2.activities.cagrid.config.CaGridActivityConfiguration;
+import net.sf.taverna.t2.activities.cagrid.config.CaGridConfiguration;
 import net.sf.taverna.t2.security.credentialmanager.CMException;
 import net.sf.taverna.t2.security.credentialmanager.CredentialManager;
 
@@ -262,6 +262,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 	 * user with AuthN/Dorian) and use it to create GSSCredential
 	 */	
 	public GSSCredential getGSSCredential() throws Exception{
+		
 		// Get the proxy certificate - proxy should be created only once
 		// for all services belonging to the same caGrid until it expires
 		GlobusCredential proxy = null;
@@ -270,7 +271,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 	    // if not - get them from the preferences for the CaGrid this service belongs to.
 		String authNServiceURL = configurationBean.getAuthNServiceURL();
 		if (authNServiceURL == null) {
-			CaGridActivityConfiguration configuration = CaGridActivityConfiguration
+			CaGridConfiguration configuration = CaGridConfiguration
 					.getInstance();
 			authNServiceURL = configuration.getPropertyStringList(
 					configurationBean.getCaGridName()).get(1);
@@ -290,7 +291,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 		}
 	    String dorianServiceURL = configurationBean.getDorianServiceURL();
 		if (dorianServiceURL == null) {
-			CaGridActivityConfiguration configuration = CaGridActivityConfiguration
+			CaGridConfiguration configuration = CaGridConfiguration
 					.getInstance();
 			dorianServiceURL = configuration.getPropertyStringList(
 					configurationBean.getCaGridName()).get(2);
@@ -397,8 +398,6 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 				BasicAuthentication auth = new BasicAuthentication();
 				auth.setUserId(username);
 		        auth.setPassword(password);
-				//auth.setUserId("anenadic");
-		        //auth.setPassword("m^s7a*kpT302");
 		        
 				// Authentication succeeded - check if user wanted to permanently save 
 		        // this username and password for this Authentication Service
