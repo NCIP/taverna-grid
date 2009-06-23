@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (C) 2007-2008 The University of Manchester   
- * Copyright (C) 2008 The University of Chicago
+ * Copyright (C) 2007-2009 The University of Manchester   
+ * Copyright (C) 2009 The University of Chicago
  * @author Wei Tan
  * 
  *  Modifications to the initial code base are copyright of their

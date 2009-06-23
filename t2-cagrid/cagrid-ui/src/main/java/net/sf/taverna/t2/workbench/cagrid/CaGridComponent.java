@@ -386,24 +386,32 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			// 2. Start Workflow Operations Invoked.
 			//
 
-			String[] inputArgs = new String[inputMap.size()];
-			int i = 0;
-			for(Iterator it = inputMap.entrySet().iterator(); it.hasNext();) {
-			    Map.Entry entry = (Map.Entry) it.next();
-			    Object key = entry.getKey();
-			    Object value = entry.getValue();
-			    inputArgs[i++] =  (String) value;
+			String[] inputArgs = null;
+			if(inputMap.size()>0){
+				System.out.println("number of input ports: " + inputMap.size());
+				inputArgs = new String[inputMap.size()];		
+				int i = 0;
+				for(Iterator it = inputMap.entrySet().iterator(); it.hasNext();) {
+				    Map.Entry entry = (Map.Entry) it.next();
+				    Object key = entry.getKey();
+				    Object value = entry.getValue();
+				    inputArgs[i++] =  (String) value;
+				}
 			}
 			
-			//String[] inputArgs = {"caCore"}; 
-			
+			for(int k=0;k<inputArgs.length;k++){
+				System.out.println("\ninput sent to execution service ..\n");
+				System.out.println("No. "+k+" " + inputArgs[k]);
+			}
 			System.out.println("\n2. Now starting the workflow ..");
 			
 
 			//This method runs the workflow with the resource represented by the EPR.
 			// If there is no inputFile for the workflow, give "null"
 			WorkflowStatusType workflowStatusElement =  TavernaWorkflowServiceClient.startWorkflow(inputArgs, resourceEPR);
-			
+			//System.out.println("NULL input");
+			//WorkflowStatusType workflowStatusElement =  TavernaWorkflowServiceClient.startWorkflow(null, resourceEPR);
+			System.out.println("workflow created");
 			//poll the status
 			if (workflowStatusElement.equals(WorkflowStatusType.Done))
 			{
@@ -415,18 +423,18 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			}
 			else
 			{	//TODO: need to set a timeout, what if it fails?	
-				//timeout: 200 seconds
+				//timeout: 4*200 seconds
 				int k=0;
-				int timeout =100;			
+				int timeout =200;			
 				while(workflowStatusElement.equals(WorkflowStatusType.Active)&&(k<timeout)){
 					System.out.println(workflowStatusElement.getValue());
-					Thread.sleep(2000);
+					Thread.sleep(4000);
 					//refresh status
 					workflowStatusElement = TavernaWorkflowServiceClient.getStatus(resourceEPR);
 					k++;
 				}
 				if(k==timeout){
-					System.out.println("Workflow execution timeout: " + k + " s." );
+					System.out.println("Workflow execution timeout: " + k*4 + " s." );
 				}
 				
 			}

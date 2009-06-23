@@ -35,6 +35,7 @@ import net.sf.taverna.t2.invocation.InvocationContext;
 //import net.sf.taverna.t2.lang.ui.ModelMap;
 import net.sf.taverna.t2.provenance.ProvenanceConnectorRegistry;
 import net.sf.taverna.t2.provenance.connector.ProvenanceConnector;
+import net.sf.taverna.t2.provenance.reporter.ProvenanceReporter;
 import net.sf.taverna.t2.reference.ReferenceContext;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
@@ -69,12 +70,12 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 			InvocationContext {
 		private final ReferenceService referenceService;
 		
-		private final ProvenanceConnector provenanceConnector;
+		private final ProvenanceReporter provenanceReporter;
 
 		private InvocationContextImplementation(
-				ReferenceService referenceService, ProvenanceConnector provenanceConnector) {
+				ReferenceService referenceService, ProvenanceReporter provenanceReporter) {
 			this.referenceService = referenceService;
-			this.provenanceConnector = provenanceConnector;
+			this.provenanceReporter = provenanceReporter;
 		}
 
 		public ReferenceService getReferenceService() {
@@ -86,9 +87,11 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 			return null;
 		}
 
-		public ProvenanceConnector getProvenanceConnector() {
-			return provenanceConnector;
+		public ProvenanceReporter getProvenanceReporter() {
+			return provenanceReporter;
 		}
+
+		
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -232,8 +235,7 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 		final JFrame frame = new JFrame("Workflow input builder");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		WorkflowLaunchPanel wlp = new WorkflowLaunchPanel(facade.getContext()
-				.getReferenceService(), refContext) {
+		WorkflowLaunchPanel wlp = new WorkflowLaunchPanel(facade, refContext) {
 			@Override
 			public void handleLaunch(Map<String, T2Reference> workflowInputs) {
 				//switchToResultsPerspective();
@@ -247,7 +249,7 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 		wlp.setOpaque(true); // content panes must be opaque
 
 		for (DataflowInputPort input : facade.getDataflow().getInputPorts()) {
-			wlp.addInputTab(input.getName(), input.getDepth());
+			wlp.addInput(input.getName(), input.getDepth());
 		}
 
 		frame.setContentPane(wlp);
