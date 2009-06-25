@@ -26,8 +26,6 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import net.sf.taverna.t2.activities.cagrid.query.CaGridServiceSearcher;
-import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 import net.sf.taverna.t2.servicedescriptions.AbstractConfigurableServiceProvider;
 import net.sf.taverna.t2.servicedescriptions.CustomizedConfigurePanelProvider;
 
@@ -92,7 +90,7 @@ public class CaGridServiceSearchProvider extends
 		CaGridServicesSearchDialog caGridServicesQueryDialogue = new CaGridServicesSearchDialog() {
 			@Override
 			protected void addRegistry(String caGridName, String indexServiceURL,
-					ServiceQuery[] serviceQueryList) {
+					CaGridServiceQuery[] serviceQueryList) {
 				
 				CaGridServiceSearchProviderConfig providerConfig = new CaGridServiceSearchProviderConfig(
 						caGridName, indexServiceURL, serviceQueryList);
@@ -107,7 +105,7 @@ public class CaGridServiceSearchProvider extends
 	protected List<? extends Object> getIdentifyingData() {
 		ArrayList<String> identifying = new ArrayList<String>();
 		identifying.add(getConfiguration().getIndexServiceURL());
-		for (ServiceQuery query : getConfiguration().getServiceQueryList()) {
+		for (CaGridServiceQuery query : getConfiguration().getServiceQueryList()) {
 			identifying.add(query.queryCriteria);
 			identifying.add(query.queryValue);
 		}

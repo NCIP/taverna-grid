@@ -18,7 +18,7 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.query;
+package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.ServiceMetadata;
@@ -32,20 +32,25 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridServiceDescription;
+import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescriptionProvider.FindServiceDescriptionsCallBack;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.log4j.Logger;
+import org.apache.axis.types.URI.MalformedURIException;
+//import org.apache.log4j.Logger;
 
 
 public class CaGridServiceFromWSDLSearcher {
 
-	private static Logger logger = Logger.getLogger(CaGridServiceFromWSDLSearcher.class);
+	//private static Logger logger = Logger.getLogger(CaGridServiceFromWSDLSearcher.class);
 
 	private String wsdlURL;
 	private String caGridName;
 	private String indexServiceURL;
+	
+	static {
+		CaGridActivity.initializeSecurity();
+	}
 
 	public CaGridServiceFromWSDLSearcher(String wsdlURL, String caGridName, String indexServiceURL)
 			throws Exception {
@@ -55,20 +60,20 @@ public class CaGridServiceFromWSDLSearcher {
 		this.indexServiceURL = indexServiceURL;
 	}
 
-	/**
-	 * 
-	 * @return an ArrayList of CaGridActivityItemS
-	 * @throws Exception
-	 *             if something goes wrong
-	 */
-	public synchronized ArrayList<CaGridActivityItem> getCaGridActivityItems()
-			throws Exception {
-
+	public void findServiceDescriptionsAsync(
+			FindServiceDescriptionsCallBack callBack) {
+			
 		String addressString = wsdlURL.replaceFirst("[?]wsdl$", "");
-		org.apache.axis.types.URI address = new org.apache.axis.types.URI(addressString);
+		org.apache.axis.types.URI address;
+		try {
+			address = new org.apache.axis.types.URI(addressString);
+		} catch (MalformedURIException ex) {
+			callBack.fail("An error occurred while trying to create an URI for " + wsdlURL, ex);
+			return;
+		}
 		EndpointReferenceType epr = new EndpointReferenceType(address);
 
-		ArrayList<CaGridActivityItem> caGridActivityItemsSearchResults = new ArrayList<CaGridActivityItem>();		
+		List<CaGridServiceDescription> serviceDescriptions = new ArrayList<CaGridServiceDescription>();
 		try {
 			ServiceMetadata serviceMetadata = MetadataUtils.getServiceMetadata(epr);
 			ServiceMetadataServiceDescription serviceDes = serviceMetadata.getServiceDescription();
@@ -84,70 +89,34 @@ public class CaGridServiceFromWSDLSearcher {
 			for (ServiceContext srvcontx : srvContxs) {
 				ServiceContextOperationCollection operationCollection = srvcontx.getOperationCollection();
 				if (operationCollection != null){
-					Operation[] ops = srvcontx
+					Operation[] operations = srvcontx
 							.getOperationCollection()
 							.getOperation();
 
-					for (Operation op : ops) {
-						CaGridActivityItem item = new CaGridActivityItem();
-						item.setOperation(op.getName());
-						item.setUse(op.getName());
-						//CaGrid services are all DOCUMENT style
-						item.setStyle("document");
-						item.setUrl(wsdlURL);
-						if(researchCenter!= null && !researchCenter.equals("")){
-							item.setResearchCenter(researchCenter);	
-						}
-						item.setCaGridName(caGridName);
-						item.setIndexServiceURL(indexServiceURL);
+					for (Operation operation : operations) {
 						
-						// Security properties of the item will be set later
-						// at the time of adding the activity to the diagram
-						caGridActivityItemsSearchResults.add(item);
+						CaGridServiceDescription serviceDesc = new CaGridServiceDescription();
+						serviceDesc.setOperation(operation.getName());
+						serviceDesc.setUse(operation.getName());
+						//CaGrid services are all DOCUMENT style
+						serviceDesc.setStyle("document");
+						serviceDesc.setURI(URI.create(wsdlURL));
+						if(researchCenter!= null && !researchCenter.equals("")){
+								serviceDesc.setResearchCenter(researchCenter);	
+						}
+						serviceDesc.setCaGridName(caGridName);
+						serviceDesc.setIndexServiceURL(indexServiceURL);
+						// Security properties of the service will be set later
+						// at the time of invoking the activity
+						serviceDescriptions.add(serviceDesc);
 					}
 				}
 			}
 		}
 		catch (Exception ex) {
-        	logger.error("Failed to add caGrid service " + wsdlURL, ex);
-        	ex.printStackTrace();
-			throw(ex);
-		}
-		
-    	return caGridActivityItemsSearchResults;
-	}
-
-	public void findServiceDescriptionsAsync(
-			FindServiceDescriptionsCallBack callBack) {
-			
-		ArrayList<CaGridActivityItem> itemList = null;
-		try {
-			itemList = this.getCaGridActivityItems();
-		} catch (Exception ex) {
-			callBack.fail("An error occurred while trying to add caGrid service " + wsdlURL, ex);
-			return;
+			callBack.fail("Failed to create service description for caGrid service " + wsdlURL, ex);
 		}
 
-		List<CaGridServiceDescription> serviceDescriptions = new ArrayList<CaGridServiceDescription>();
-		for(CaGridActivityItem item : itemList){
-												      						
-			CaGridServiceDescription serviceDesc = new CaGridServiceDescription();
-			serviceDesc.setOperation(item.getOperation());
-			serviceDesc.setUse(item.getUse());
-			serviceDesc.setStyle(item.getStyle());
-			serviceDesc.setURI(URI.create(wsdlURL));
-			if(item.getResearchCenter()!= null && !item.getResearchCenter().equals("")){
-					serviceDesc.setResearchCenter(item.getResearchCenter());	
-			}
-				
-			serviceDesc.setCaGridName(caGridName);
-			serviceDesc.setIndexServiceURL(indexServiceURL);
-					
-			// Security properties of the item will be set later
-			// at the time of adding the activity to the diagram
-			serviceDescriptions.add(serviceDesc);
-
-		}
 	    callBack.partialResults(serviceDescriptions);
 	    callBack.finished();
 	}

@@ -18,12 +18,12 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.query;
+package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import net.sf.taverna.t2.activities.cagrid.xmlsplitter.XMLOutputSplitterActivity;
+import net.sf.taverna.t2.activities.cagrid.xmlsplitter.XMLInputSplitterActivity;
 import net.sf.taverna.t2.workbench.activityicons.ActivityIconSPI;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
@@ -32,22 +32,20 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
  * @author Alex Nenadic
  *
  */
-public class XMLOutputSplitterActivityIcon implements ActivityIconSPI{
+public class XMLInputSplitterActivityIcon implements ActivityIconSPI{
 
 	public int canProvideIconScore(Activity<?> activity) {
-		if (activity.getClass().getName().equals(XMLOutputSplitterActivity.class.getName()))
+		if (activity.getClass().getName().equals(XMLInputSplitterActivity.class.getName()))
 			return DEFAULT_ICON + 1;
 		else
 			return NO_ICON;
 	}
 
 	public Icon getIcon(Activity<?> activity) {
-		// As we do not have the XMLOutputSplitterActivityItem we just get the icon directly
-		return new ImageIcon(CaGridActivityItem.class.getResource("/xml-splitter.png"));
+		return new ImageIcon(XMLInputSplitterActivityIcon.class.getResource("/xml-splitter.png"));
 	}
 
 }
-
 
 
 

@@ -34,8 +34,6 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 public class CaGridServiceDescription extends
 		ServiceDescription<CaGridActivityConfigurationBean> {
 
-	//private static final String CAGRID_SERVICES = "caGrid services";
-
 	private String use;
 	private URI uri;
 	private String style;

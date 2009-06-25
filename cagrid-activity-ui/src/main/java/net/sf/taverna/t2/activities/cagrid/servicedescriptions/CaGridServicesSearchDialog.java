@@ -23,7 +23,7 @@ package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 import gov.nih.nci.cadsr.umlproject.domain.Project;
 import gov.nih.nci.cadsr.umlproject.domain.UMLClassMetadata;
 import gov.nih.nci.cadsr.umlproject.domain.UMLPackageMetadata;
-import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
+import org.cagrid.cadsr.client.CaDSRUMLModelService;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -52,7 +52,6 @@ import javax.swing.border.EtchedBorder;
 import org.apache.log4j.Logger;
 
 import net.sf.taverna.t2.activities.cagrid.config.CaGridConfiguration;
-import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 import net.sf.taverna.t2.lang.ui.ShadedLabel;
 import net.sf.taverna.t2.workbench.helper.HelpEnabledDialog;
 
@@ -82,7 +81,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 	private String[] caDSRServicesURLs;	
 	
 	// List of queries to be used when searching for caGrid services 
-	private ServiceQuery[] serviceQueryList;
+	private CaGridServiceQuery[] serviceQueryList;
 	
 	public JComboBox[]  queryList = new JComboBox[max_query_size];
 	private String[] queryStrings = { "None", "Search String", "Point Of Contact", "Service Name", "Operation Name", "Operation Input",
@@ -205,14 +204,15 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 						// Update the value of classNameArray
                     	 ArrayList<String> classNameList = new ArrayList<String>();
     					 Project[] projs = null;
-    					 CaDSRServiceClient cadsr  =null;
+
+    					 CaDSRUMLModelService cadsr  = null;
     					 UMLPackageMetadata[] packs = null;
     					 UMLClassMetadata[] classes = null;
     					 logger.info("Updating caDSR Metadata: using caDSR Service " + caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()]);
     					 
     					 //Note: the try-catch module should be with fine granularity
     					 try {
-    						 cadsr = new CaDSRServiceClient(caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()]);		                					            
+    						 cadsr = new CaDSRUMLModelService(caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()]);		                					            
     					     projs = cadsr.findAllProjects();
     					 }
     					 catch (Exception e) {
@@ -296,14 +296,14 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
         okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				
-				List<ServiceQuery> qList = new ArrayList<ServiceQuery>();
+				List<CaGridServiceQuery> qList = new ArrayList<CaGridServiceQuery>();
                 for (int i=0; i<max_query_size; i++){
                 	if(!getQueryCriteria(i).equals("None") && !getQueryValue(i).equals("")){
-                		qList.add(new ServiceQuery(getQueryCriteria(i),getQueryValue(i)));
+                		qList.add(new CaGridServiceQuery(getQueryCriteria(i),getQueryValue(i)));
                 	}	
                 }
 
-                serviceQueryList = (ServiceQuery[]) qList.toArray(new ServiceQuery[0]);
+                serviceQueryList = (CaGridServiceQuery[]) qList.toArray(new CaGridServiceQuery[0]);
 				addRegistry(getCaGridName(), 
 						getIndexServiceURL(),
 						serviceQueryList);
@@ -333,7 +333,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 	}
 	
 	protected abstract void addRegistry(String caGridName, String indexServiceURL,
-			ServiceQuery[] serviceQueryList);
+			CaGridServiceQuery[] serviceQueryList);
 	
     /**
      * 
@@ -371,7 +371,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
      * 
      * @return the selected Index Service URL
      */
-    public ServiceQuery[] getServiceQueryList() {
+    public CaGridServiceQuery[] getServiceQueryList() {
         return serviceQueryList;
     }
 

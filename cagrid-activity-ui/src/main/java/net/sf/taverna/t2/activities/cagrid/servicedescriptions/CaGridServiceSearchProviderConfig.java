@@ -20,7 +20,6 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
-import net.sf.taverna.t2.activities.cagrid.query.ServiceQuery;
 import net.sf.taverna.t2.lang.beans.PropertyAnnotated;
 
 /**
@@ -32,7 +31,7 @@ public class CaGridServiceSearchProviderConfig extends PropertyAnnotated {
 	
 	private String caGridName;
 	private String indexServiceURL;
-	private ServiceQuery[] serviceQueryList; 
+	private CaGridServiceQuery[] serviceQueryList; 
 	
 	public void setCaGridName(String caGridName) {
 		this.caGridName = caGridName;
@@ -46,7 +45,7 @@ public class CaGridServiceSearchProviderConfig extends PropertyAnnotated {
 	}
 	
 	public CaGridServiceSearchProviderConfig(String caGridName, String indexServiceURL,
-			ServiceQuery[] serviceQueryList) {
+			CaGridServiceQuery[] serviceQueryList) {
 		this.setCaGridName(caGridName);
 		this.indexServiceURL = indexServiceURL;
 		this.setServiceQueryList(serviceQueryList);
@@ -60,11 +59,11 @@ public class CaGridServiceSearchProviderConfig extends PropertyAnnotated {
 		this.indexServiceURL = indexServiceURL;
 	}
 
-	public void setServiceQueryList(ServiceQuery[] serviceQueryList) {
+	public void setServiceQueryList(CaGridServiceQuery[] serviceQueryList) {
 		this.serviceQueryList = serviceQueryList;
 	}
 
-	public ServiceQuery[] getServiceQueryList() {
+	public CaGridServiceQuery[] getServiceQueryList() {
 		return serviceQueryList;
 	}
 	

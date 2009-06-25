@@ -12,7 +12,7 @@
  *               by   $Author: tanw $
  * Created on 01-Dec-2007
  *****************************************************************/
-package net.sf.taverna.t2.activities.cagrid.query;
+package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
 import java.util.ArrayList;
 import java.util.List;

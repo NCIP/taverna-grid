@@ -22,13 +22,15 @@ package net.sf.taverna.t2.activities.cagrid.query;
 
 import static org.junit.Assert.assertNotNull;
 
+import net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridServiceDescription;
+
 import org.junit.Test;
 
-public class CaGridActivityItemTest {
+public class CaGridServiceDescriptionTest {
 
 	@Test
 	public void testIcon() {
-		assertNotNull(new CaGridActivityItem().getIcon());
+		assertNotNull(new CaGridServiceDescription().getIcon());
 	}
 }
 

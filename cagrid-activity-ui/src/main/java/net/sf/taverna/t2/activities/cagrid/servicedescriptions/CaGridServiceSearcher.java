@@ -18,13 +18,13 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.query;
+package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridServiceDescription;
+import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescriptionProvider.FindServiceDescriptionsCallBack;
 
 import org.apache.log4j.Logger;
@@ -35,10 +35,14 @@ public class CaGridServiceSearcher {
 
 	private String caGridName;
 	private String indexServiceURL;
-	private ServiceQuery[] serviceQueryList;
+	private CaGridServiceQuery[] serviceQueryList;
+	
+	static {
+		CaGridActivity.initializeSecurity();
+	}
 	
 	public CaGridServiceSearcher(String caGridName, String indexServiceURL,
-			ServiceQuery[] serviceQueryList)
+			CaGridServiceQuery[] serviceQueryList)
 			throws Exception {
 		
 		this.caGridName = caGridName;
@@ -46,67 +50,12 @@ public class CaGridServiceSearcher {
 		this.serviceQueryList = serviceQueryList;
 	}
 
-	/**
-	 * 
-	 * @return an ArrayList of CaGridActivityItemS
-	 * @throws Exception
-	 *             if something goes wrong
-	 */
-	public synchronized ArrayList<CaGridActivityItem> getCaGridActivityItems()
-			throws Exception {
-
-        List<CaGridService> services = null;                	
-        try {
-			services=CaGridServiceQueryUtility.load(indexServiceURL, serviceQueryList);
-        }
-		catch (Exception ex) {
-            	logger.error("Failed to load Index Service", ex);
-            	ex.printStackTrace();
-            	throw(ex);
-        }
-
-		ArrayList<CaGridActivityItem> searchResultsActivityItems = new ArrayList<CaGridActivityItem>();		
-    	if(services != null){
-			logger.info("Discovered "+ services.size() + " caGrid services.");
-			for(CaGridService caGridService : services){
-												      						
-				List<String> operationNames = caGridService.getOperations();
-				logger.info("Found caGrid service: "+ caGridService.getServiceName());	
-				logger.info("Discovered " + operationNames.size() + " operation(s) of the service.");
-				
-				for (String operation : operationNames) {
-					logger.info("Adding operation: "+ operation + " for service " + caGridService.getServiceName());
-
-					CaGridActivityItem item = new CaGridActivityItem();
-					
-					item.setOperation(operation);
-					//make use of "use" and "style" to facilitate metadata-based sorting
-					item.setUse(operation);
-					//CaGrid services are all DOCUMENT style
-					item.setStyle("document");
-					item.setUrl(caGridService.getServiceName()+"?wsdl");
-					if(!caGridService.getResearchCenterName().equals("")){
-						item.setResearchCenter(caGridService.getResearchCenterName());	
-					}
-					
-					item.setCaGridName(caGridName);
-					item.setIndexServiceURL(indexServiceURL);
-					
-					// Security properties of the item will be set later
-					// at the time of adding the activity to the diagram
-					searchResultsActivityItems.add(item);
-				}
-			}
-    	}	
-    	return searchResultsActivityItems;
-	}
-
 	public void findServiceDescriptionsAsync(
 			FindServiceDescriptionsCallBack callBack) {
 
-	       List<CaGridService> services = null;                	
+	       List<CaGridService> caGridServices = null;                	
 	        try {
-				services=CaGridServiceQueryUtility.load(indexServiceURL, serviceQueryList);
+				caGridServices=CaGridServiceQueryUtility.load(indexServiceURL, serviceQueryList);
 	        }
 			catch (Exception ex) {
 				callBack.fail("An error occured when contacting the Index Service - could not load caGrid services.", ex);
@@ -114,8 +63,8 @@ public class CaGridServiceSearcher {
 	        }
 
 			List<CaGridServiceDescription> serviceDescriptions = new ArrayList<CaGridServiceDescription>();
-			logger.info("Discovered "+ services.size() + " caGrid services.");
-			for(CaGridService caGridService : services){
+			logger.info("Discovered "+ caGridServices.size() + " caGrid services.");
+			for(CaGridService caGridService : caGridServices){
 												      						
 				List<String> operationNames = caGridService.getOperations();
 				logger.info("Discovered caGrid service: "+ caGridService.getServiceName() + 
@@ -143,7 +92,7 @@ public class CaGridServiceSearcher {
 					serviceDescriptions.add(serviceDesc);
 				}
 			}
-			logger.info("Added " + services.size() + " caGrid services to Service Panel.");
+			logger.info("Added " + caGridServices.size() + " caGrid services to Service Panel.");
 	    	callBack.partialResults(serviceDescriptions);
 	    	callBack.finished();
 		}

@@ -31,7 +31,7 @@ import net.sf.taverna.t2.activities.cagrid.CaGridActivityConfigurationBean;
 import net.sf.taverna.t2.workbench.helper.HelpEnabledDialog;
 import net.sf.taverna.t2.workbench.ui.actions.activity.ActivityConfigurationAction;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 /**
  * Action to configure CaGridActivity.
@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("serial")
 public class CaGridActivityConfigureAction extends ActivityConfigurationAction<CaGridActivity,CaGridActivityConfigurationBean> {
 
-	private static Logger logger = Logger.getLogger(CaGridActivityConfigureAction.class);
+	//private static Logger logger = Logger.getLogger(CaGridActivityConfigureAction.class);
 
 	private final Frame owner;
 

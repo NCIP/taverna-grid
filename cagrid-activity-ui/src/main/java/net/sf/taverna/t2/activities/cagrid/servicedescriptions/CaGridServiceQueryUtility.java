@@ -13,7 +13,7 @@
  *               by   $Author: tanw $
  * Created on 01-Dec-2007
  *****************************************************************/
-package net.sf.taverna.t2.activities.cagrid.query;
+package net.sf.taverna.t2.activities.cagrid.servicedescriptions;
 
 //Comments: do not use CaGrid client API, use pure WS client instead
 
@@ -34,6 +34,7 @@ import gov.nih.nci.cagrid.metadata.service.ServiceServiceContextCollection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.log4j.Logger;
@@ -60,7 +61,7 @@ public class CaGridServiceQueryUtility {
 	 * Returns a list of GT4 services, containing a list of their operations.
 	 * Throws Exception if a service cannot be found.
 	 */
-	public static List<CaGridService> load(String indexURL, ServiceQuery[] sq)
+	public static List<CaGridService> load(String indexURL, CaGridServiceQuery[] sq)
 			throws Exception {
 		List<CaGridService> services = new ArrayList<CaGridService>();
 
@@ -73,7 +74,7 @@ public class CaGridServiceQueryUtility {
 	}
 
 	// Load services & operations by caGrid discovery service API
-	private static boolean loadServices(String indexURL, ServiceQuery[] sq,
+	private static boolean loadServices(String indexURL, CaGridServiceQuery[] sq,
 			List<CaGridService> services) throws Exception {
 		boolean foundSome = false;
 
@@ -148,7 +149,7 @@ public class CaGridServiceQueryUtility {
 	}
 
 	public static EndpointReferenceType[] getEPRListByServiceQuery(
-			String indexURL, ServiceQuery sq) {
+			String indexURL, CaGridServiceQuery sq) {
 		EndpointReferenceType[] servicesList = null;
 		DiscoveryClient client = null;
 		try {
@@ -174,13 +175,12 @@ public class CaGridServiceQueryUtility {
 			}
 		} else {
 
-			System.out.println("Service Index URL: " + indexURL);
+			logger.info("Service Index URL: " + indexURL);
 			// semanticQueryingClause = indexURL.substring(n1+2);
 
-			System.out.println("Service Query: " + sq.queryCriteria + "  == "
+			logger.info("Service Query: " + sq.queryCriteria + "  == "
 					+ sq.queryValue);
-			System.out
-					.println("==================================================");
+			
 			// TODO: semantic based service searching
 			// query by Search String
 			if (sq.queryCriteria.equals("Search String")) {
@@ -367,7 +367,7 @@ public class CaGridServiceQueryUtility {
 	}
 
 	public static EndpointReferenceType[] getEPRListByServiceQueryArray(
-			String indexURL, ServiceQuery sq[]) {
+			String indexURL, CaGridServiceQuery sq[]) {
 		EndpointReferenceType[] servicesList = null;
 		if ((sq == null) || (sq.length==0)) { // null or empty service query list
 			return getEPRListByServiceQuery(indexURL, null);
