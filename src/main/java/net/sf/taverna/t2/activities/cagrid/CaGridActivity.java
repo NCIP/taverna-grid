@@ -48,7 +48,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.axis.EngineConfiguration;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.axis.utils.ClassUtils;
 import org.apache.log4j.Logger;
+import org.cagrid.gaards.saml.encoding.SAMLSerializerFactory;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
@@ -88,6 +90,7 @@ public class CaGridActivity extends
 AbstractAsynchronousActivity<CaGridActivityConfigurationBean> implements
 InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 
+	
 	private static final String ENDPOINT_REFERENCE = "EndpointReference";
 	private CaGridActivityConfigurationBean configurationBean;
 	private WSDLParser parser;
@@ -103,16 +106,37 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	// we just put null in the map.
 	public static HashMap<String, CaGridActivitySecurityProperties> securityPropertiesCache = new HashMap<String, CaGridActivitySecurityProperties>();
 	
-	// This static block is needed in case some of the caGrid services require 
-	// https which is more than likely and needs to be executed before we start loading 
-	// caGrid services or otherwise some of these services will fail. 
-	// Some caGrid services requiring https have a weird CN in their server certificates - 
-	// instead of CN=<HOSTNAME> they have CN="host/"+<HOSTNAME>, i.e. string 
-	// "host/" prepended so we have to tell Java's SSL to accept these hostnames as well.
-	// This is not very good at is sets this hostname verifier across all 
-	// https connections created in the JVM from now on, but solves the problem 
-	// with such caGrid services.
+
 	static {
+		initializeSecurity();
+	}
+	
+	/**
+	 * Configure Axis inside Globus to use caGrid classloader.
+	 * <p>
+	 * This is so that Axis inside Globus can find caGrid handlers 
+	 * such as org.cagrid.gaards.saml.encoding.SAMLSerializerFactory
+	 */
+	protected static void initializeAxisClassLoader() {		
+		ClassLoader classLoader = SAMLSerializerFactory.class.getClassLoader();
+		if (ClassUtils.getDefaultClassLoader() != classLoader) {
+			ClassUtils.setDefaultClassLoader(classLoader);			
+		}
+	}
+	
+	/**
+	 * This static block is needed in case some of the caGrid services require
+	 * https which is more than likely and needs to be executed before we start
+	 * loading caGrid services or otherwise some of these services will fail.
+	 * Some caGrid services requiring https have a weird CN in their server
+	 * certificates - instead of CN=<HOSTNAME> they have CN="host/"+<HOSTNAME>,
+	 * i.e. string "host/" prepended so we have to tell Java's SSL to accept
+	 * these hostnames as well. This is not very good at is sets this hostname
+	 * verifier across all https connections created in the JVM from now on, but
+	 * solves the problem with such caGrid services.
+	 * 
+	 */
+	protected static void setHostNameVerifier() {
 		HostnameVerifier hv = new HostnameVerifier() {
 			public boolean verify(String hostName, SSLSession session) {
 				String hostNameFromCertificate = null;
@@ -126,14 +150,13 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 					return false;
 				}
 				logger.info("Hostname verifier: host from url: " + hostName + " vs. host from certificate: "+ hostNameFromCertificate);
-				System.out.println();
 				return (hostName.equals(hostNameFromCertificate) || ("host/"+hostName)
 						.equals(hostNameFromCertificate));
 			}
 		};
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 	}
-	
+
 	// Configure colour for CaGridActivity
 	static{
 		ColourManager.getInstance().setPreferredColour("net.sf.taverna.t2.activities.cagrid.CaGridActivity", new Color(0x4b539e));
@@ -164,7 +187,6 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		try {
 			parseWSDL();
 			configurePorts();
-			//configureSecurity();
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
 			throw new ActivityConfigurationException(
@@ -466,7 +488,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			secProperties.setGSIAnonymouos(Boolean.TRUE);
 		} else if (credentialsAllowed) {
 			// Set that this operation requires proxy that will be fetched later by the
-			// invoker from the Credential Manager
+			// CaGridWSDLInvoker from the Credential Manager
 			secProperties.setRequiresProxy(true);			
 		}
 
@@ -606,6 +628,20 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 
 		});
 
+	}
+
+	private static transient boolean securityInitialized = false;
+	
+	public static void initializeSecurity() {
+		if (securityInitialized) {
+			return;
+		}
+		synchronized(CaGridActivity.class){
+			if (! securityInitialized) {
+				initializeAxisClassLoader();
+				setHostNameVerifier();
+			}
+		}
 	}
 
 }
