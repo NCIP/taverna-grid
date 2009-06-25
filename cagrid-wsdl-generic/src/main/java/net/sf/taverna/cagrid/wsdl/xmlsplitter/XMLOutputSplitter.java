@@ -134,7 +134,7 @@ public class XMLOutputSplitter {
 	@SuppressWarnings({ "unchecked" })
 	private void executeForComplexType(Map<String, Object> result,
 			List<String> outputNameList, List<Element> children)
-			throws IOException {
+			throws IOException {               
 
 		XMLOutputter outputter = new XMLOutputter();
 		for (Element child : children) {
@@ -149,8 +149,7 @@ public class XMLOutputSplitter {
 								.isWrapped()) {
 					boolean isXMLContent = outputTypes[i].contains("text/xml");
 					result.put(child.getName(), extractDataListFromChildList(
-							children, isXMLContent));
-					break;
+							child.getChildren(), isXMLContent));
 				} else {
 					if (outputTypes[i].equals("'text/xml'")
 							|| outputTypes[i].equals("l('text/xml')")) {
