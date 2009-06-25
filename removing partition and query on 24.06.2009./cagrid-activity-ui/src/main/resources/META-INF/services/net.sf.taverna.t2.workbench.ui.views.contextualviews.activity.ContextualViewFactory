@@ -1,0 +1,2 @@
+net.sf.taverna.t2.activities.cagrid.views.CaGridActivityViewFactory
+net.sf.taverna.t2.activities.cagrid.views.XMLSplitterViewFactory
