@@ -62,9 +62,9 @@ public class CaGridConfigurationPanel extends JPanel{
 
 	private CaGridConfiguration configuration;
 
-	// List of all defined caGridS - includes two default ones (Production and Training CaGrid)
+	// List of all defined caGrid configurations - includes two default ones (Production and Training CaGrid)
 	public static ArrayList<String> caGridNames;
-	// CaGridS' configurations
+	// CaGrid configurations' details
 	private ArrayList<String> indexServicesURLs;
 	private ArrayList<String> authNServicesURLs;
 	private ArrayList<String> dorianServicesURLs;
@@ -241,6 +241,7 @@ public class CaGridConfigurationPanel extends JPanel{
 		c.weightx = 1.0;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.NONE;
+		JPanel updateButtonPanel= new JPanel (new FlowLayout(FlowLayout.CENTER));
 		JButton updateButton = new JButton("Edit");
 		updateButton.addActionListener(new ActionListener(){
 
@@ -265,7 +266,7 @@ public class CaGridConfigurationPanel extends JPanel{
 						editCaGridConfigurationDialog.getDorianServiceURL(), editCaGridConfigurationDialog.getProxyLifetime());			
 			}			
 		});
-		configurationPanel.add(updateButton, c);
+		updateButtonPanel.add(updateButton);
 		
 		// Button to restore default values for Training and Production CaGrid
 		restoreDefaultsButton = new JButton("Restore defaults");
@@ -280,8 +281,7 @@ public class CaGridConfigurationPanel extends JPanel{
 					ConfigurationManager manager = ConfigurationManager.getInstance();
 					String defaultConfiguration = configuration.getDefaultProperty(caGridConfigurationName);
 					List<String> defaultConfigurationList = CaGridConfiguration.fromListText(defaultConfiguration);
-//					configuration.setPropertyStringList(caGridConfigurationName, defaultConfigurationList);
-					configuration.deleteProperty(caGridConfigurationName);
+					configuration.setPropertyStringList(caGridConfigurationName, defaultConfigurationList);
 					try {
 						manager.store(configuration);
 					} catch (Exception ex) {
@@ -310,6 +310,9 @@ public class CaGridConfigurationPanel extends JPanel{
 				}
 			}			
 		});
+		updateButtonPanel.add(restoreDefaultsButton);
+
+		configurationPanel.add(updateButtonPanel, c);
 		
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		addButton = new JButton("New");

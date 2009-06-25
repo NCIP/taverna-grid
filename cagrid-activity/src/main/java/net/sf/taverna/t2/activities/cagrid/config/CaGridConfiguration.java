@@ -20,8 +20,18 @@
  ******************************************************************************/
 package net.sf.taverna.t2.activities.cagrid.config;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
 
 import net.sf.taverna.t2.workbench.configuration.AbstractConfigurable;
 
@@ -35,7 +45,7 @@ public class CaGridConfiguration extends AbstractConfigurable {
 	public static String uuid = "1df75ad0-491e-11de-8a39-0800200c9a66";
 	
 	// Default values
-	public static String PRODUCTION_CAGRID_NAME =  "Production CaGrid";
+	public static String PRODUCTION_CAGRID_NAME =  "NCI Production CaGrid 1.3";
 	public static String PRODUCTION_INDEX_SERVICE_URL = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
 	public static String PRODUCTION_AUTHN_SERVICE_URL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
 	public static String PRODUCTION_DORIAN_SERVICE_URL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
@@ -52,6 +62,8 @@ public class CaGridConfiguration extends AbstractConfigurable {
 	private Map<String, String> defaultPropertyMap;
 
 	private static CaGridConfiguration instance;
+
+	private static Logger logger = Logger.getLogger(CaGridConfiguration.class);
 	
 	public static CaGridConfiguration getInstance() {
 		if (instance == null) {
@@ -100,6 +112,33 @@ public class CaGridConfiguration extends AbstractConfigurable {
 
 	public String getUUID() {
 		return uuid;
+	}
+	
+	// Copied from AbstractConfigurable as could not update AbstractConfigurable due to
+	// code freeze and needed this for cagrid plugin
+	public static List<String> fromListText(String property) {
+		List<String> result = new ArrayList<String>();
+		if (property.length()>0) { //an empty string as assumed to be an empty list, rather than a list with 1 empty string in it!
+			StringReader reader = new StringReader(property);
+			CSVReader csvReader = new CSVReader(reader);
+			try {
+				for (String v : csvReader.readNext()) {
+					result.add(v);
+				}
+			} catch (IOException e) {
+				logger .error("Exception occurred parsing CSV properties:"+property,e);
+			}
+		}
+		return result;
+	}
+	
+	// Copied from AbstractConfigurable as could not update AbstractConfigurable due to
+	// code freeze and needed this for cagrid plugin
+	public static String toListText(List<String> values) {
+		StringWriter writer = new StringWriter();
+		CSVWriter csvWriter = new CSVWriter(writer);
+		csvWriter.writeNext(values.toArray(new String[]{}));
+		return writer.getBuffer().toString().trim();
 	}
 
 }
