@@ -24,6 +24,8 @@ public class InterProScanInvokerTest {
 		invoker = new InterProScanInvoker();		
 	}
 
+	
+	@Ignore("For now")
 	@Test
 	public void invokeInterProScan() throws Exception {
 		InterProScanInput analyticalServiceInput = new InterProScanInput();
