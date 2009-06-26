@@ -18,12 +18,11 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.xmlsplitter;
+package net.sf.taverna.cagrid.activity.xmlsplitter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.taverna.t2.activities.cagrid.CaGridActivity;
 import net.sf.taverna.t2.workflowmodel.CompoundEdit;
 import net.sf.taverna.t2.workflowmodel.Dataflow;
 import net.sf.taverna.t2.workflowmodel.Edit;
@@ -41,6 +40,7 @@ import net.sf.taverna.t2.workflowmodel.impl.AbstractDataflowEdit;
 import net.sf.taverna.t2.workflowmodel.impl.DataflowImpl;
 import net.sf.taverna.t2.workflowmodel.utils.Tools;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
+import net.sf.taverna.cagrid.activity.CaGridActivity;
 import net.sf.taverna.cagrid.wsdl.parser.ArrayTypeDescriptor;
 import net.sf.taverna.cagrid.wsdl.parser.TypeDescriptor;
 

@@ -1,9 +1,9 @@
-package net.sf.taverna.t2.activities.cagrid;
+package net.sf.taverna.cagrid.activity;
 
 import java.io.IOException;
 import java.util.Map;
 
-import net.sf.taverna.t2.activities.cagrid.xmlsplitter.XMLOutputSplitterActivity;
+import net.sf.taverna.cagrid.activity.xmlsplitter.XMLOutputSplitterActivity;
 import net.sf.taverna.cagrid.wsdl.parser.TypeDescriptor;
 import net.sf.taverna.cagrid.wsdl.parser.UnknownOperationException;
 

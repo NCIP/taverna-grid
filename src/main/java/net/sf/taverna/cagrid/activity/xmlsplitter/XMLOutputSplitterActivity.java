@@ -18,7 +18,7 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.xmlsplitter;
+package net.sf.taverna.cagrid.activity.xmlsplitter;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.taverna.t2.activities.cagrid.OutputPortTypeDescriptorActivity;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.ReferenceServiceException;
 import net.sf.taverna.t2.reference.T2Reference;
@@ -38,6 +37,7 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousAc
 import net.sf.taverna.t2.workflowmodel.processor.activity.ActivityConfigurationException;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AsynchronousActivityCallback;
 import net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean;
+import net.sf.taverna.cagrid.activity.OutputPortTypeDescriptorActivity;
 import net.sf.taverna.cagrid.wsdl.parser.ArrayTypeDescriptor;
 import net.sf.taverna.cagrid.wsdl.parser.ComplexTypeDescriptor;
 import net.sf.taverna.cagrid.wsdl.parser.TypeDescriptor;
@@ -64,7 +64,7 @@ public class XMLOutputSplitterActivity extends
 
 	// Configure colour for XMLOutputSplitterActivity
 	static{
-		ColourManager.getInstance().setPreferredColour("net.sf.taverna.t2.activities.cagrid.xmlsplitter.XMLOutputSplitterActivity", new Color(0xab92ea));
+		ColourManager.getInstance().setPreferredColour("net.sf.taverna.cagrid.activity.xmlsplitter.XMLOutputSplitterActivity", new Color(0xab92ea));
 	}
 	
 	@Override

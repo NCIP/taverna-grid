@@ -18,7 +18,7 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.xmlsplitter;
+package net.sf.taverna.cagrid.activity.xmlsplitter;
 
 import java.io.IOException;
 import java.io.StringReader;

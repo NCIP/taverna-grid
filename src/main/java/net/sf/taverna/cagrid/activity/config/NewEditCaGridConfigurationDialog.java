@@ -18,7 +18,7 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.config;
+package net.sf.taverna.cagrid.activity.config;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -50,6 +50,8 @@ import javax.swing.border.EtchedBorder;
  */
 @SuppressWarnings("serial")
 public class NewEditCaGridConfigurationDialog extends JDialog {
+	
+	private static final String PROXY_LIFETIME_NOT_SET = "Not set";
 	
 	private JTextField jtfCaGridName;
 	private JTextField jtfIndexServiceURL;
@@ -149,9 +151,9 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 		jtfDorianServiceURL = new JTextField(35);
 		jtfDorianServiceURL.setText(dorianServiceURL);
 		
-		jcbfProxyLifetime = new JComboBox(new String[] {"", "12h", "24h"});
+		jcbfProxyLifetime = new JComboBox(new String[] {PROXY_LIFETIME_NOT_SET, "6h", "12h"});
 		if (proxyLifetime.equals("")){
-			jcbfProxyLifetime.setSelectedItem("");
+			jcbfProxyLifetime.setSelectedItem(PROXY_LIFETIME_NOT_SET);
 		}
 		else{
 			jcbfProxyLifetime.setSelectedItem(proxyLifetime+"h");
@@ -334,19 +336,21 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 		 	}
 	   
 	    	indexServiceURL = jtfIndexServiceURL.getText();
-	    	if (indexServiceURL.length() == 0){
-	            JOptionPane.showMessageDialog(this,
-	                "Index Service cannot be empty", 
-	                "Warning",
-	                JOptionPane.WARNING_MESSAGE);            
-	            return false;
-	    	}
+//	    	if (indexServiceURL.length() == 0){
+//	            JOptionPane.showMessageDialog(this,
+//	                "Index Service cannot be empty", 
+//	                "Warning",
+//	                JOptionPane.WARNING_MESSAGE);            
+//	            return false;
+//	    	}
 	    	   	
 	    	caDSRServiceURL = jtfCaDSRServiceURL.getText();
 	    	
 	    	authNServiceURL= jtfAuthNServiceURL.getText();
 	    	dorianServiceURL = jtfDorianServiceURL.getText();
 
+	    	// If user configures AuthN Service then Dorian must be configured as well.
+	    	// And vice versa.
 	    	if ((authNServiceURL.length() == 0 && dorianServiceURL.length() > 0) ||
 	    			(authNServiceURL.length() > 0 && dorianServiceURL.length() == 0)){
 	            JOptionPane.showMessageDialog(this,
@@ -355,9 +359,12 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 	                JOptionPane.WARNING_MESSAGE);            
 	            return false;
 	    	}
+    		String proxyLf = (String)jcbfProxyLifetime.getSelectedItem();
 	    	if (authNServiceURL.length() == 0 && dorianServiceURL.length() == 0){
-	    		proxyLifetime = (String)jcbfProxyLifetime.getSelectedItem();
-	    		if (!proxyLifetime.equals("")){
+	    		if (proxyLf.equals(PROXY_LIFETIME_NOT_SET)){
+		    		proxyLifetime = "";
+	    		}
+	    		else{
 	    			JOptionPane.showMessageDialog(this,
 	    					"You cannot configure proxy lifetime if Authentication or Dorian Service is empty", 
 	    					"Warning",
@@ -366,16 +373,16 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 	    		}
 	    	}
 	    	else{
-	    		String proxyLf = (String)jcbfProxyLifetime.getSelectedItem();
-
-	    		if (proxyLf.equals("")){
+	    		if (proxyLf.equals(PROXY_LIFETIME_NOT_SET)){
 		            JOptionPane.showMessageDialog(this,
 			                "Proxy lifetime must be configured if Authentication and Dorian Services are configured", 
 			                "Warning",
 			                JOptionPane.WARNING_MESSAGE);            
 			            return false;
 	    		}
-	    		proxyLifetime = proxyLf.substring(0, proxyLf.indexOf('h'));//remove character 'h' from the string
+	    		else{
+	    			proxyLifetime = proxyLf.substring(0, proxyLf.indexOf('h'));//remove character 'h' from the string
+	    		}
 	    	}
 	   	
 	    	return true;

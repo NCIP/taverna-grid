@@ -18,32 +18,7 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-/*
- * Copyright (C) 2003 The University of Manchester 
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
- * USA.
- *
- */
-
-package net.sf.taverna.t2.activities.cagrid;
+package net.sf.taverna.cagrid.activity;
 
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
@@ -61,10 +36,10 @@ import java.util.List;
 
 import javax.xml.rpc.ServiceException;
 
+import net.sf.taverna.cagrid.activity.config.CaGridConfiguration;
 import net.sf.taverna.cagrid.wsdl.parser.UnknownOperationException;
 import net.sf.taverna.cagrid.wsdl.parser.WSDLParser;
 import net.sf.taverna.cagrid.wsdl.soap.WSDLSOAPInvoker;
-import net.sf.taverna.t2.activities.cagrid.config.CaGridConfiguration;
 import net.sf.taverna.t2.security.credentialmanager.CMException;
 import net.sf.taverna.t2.security.credentialmanager.CredentialManager;
 
@@ -262,14 +237,13 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 
 	    // Get AuthN Service and Dorian Service URLs - check if they are set in the configuration bean first,
 	    // if not - get them from the preferences for the CaGrid this service belongs to.
+		CaGridConfiguration configuration = CaGridConfiguration.getInstance();
 		String authNServiceURL = configurationBean.getAuthNServiceURL();
 		if (authNServiceURL == null) {
-			CaGridConfiguration configuration = CaGridConfiguration
-					.getInstance();
 			authNServiceURL = configuration.getPropertyStringList(
 					configurationBean.getCaGridName()).get(1);
 		}
-	    if (authNServiceURL == null) { // if still null - we are in trouble
+	    if (authNServiceURL == null || authNServiceURL.equals("")) { // if still empty - we are in trouble
 			logger
 					.error("Authentication Service has not been configured for the operation "
 							+ configurationBean.getOperation()
@@ -284,12 +258,10 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 		}
 	    String dorianServiceURL = configurationBean.getDorianServiceURL();
 		if (dorianServiceURL == null) {
-			CaGridConfiguration configuration = CaGridConfiguration
-					.getInstance();
 			dorianServiceURL = configuration.getPropertyStringList(
 					configurationBean.getCaGridName()).get(2);
 		}
-	    if (dorianServiceURL == null){ // if still null - we are in trouble
+	    if (dorianServiceURL == null || dorianServiceURL.equals("")){ // if still empty - we are in trouble
 	        	logger.error("Dorian Service has not been configured for the operation "
 						+ configurationBean.getOperation()
 						+ " of the service "
@@ -364,7 +336,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 	        if (newProxy){
 	        	logger.info("Proxy for the operation "+configurationBean.getOperation()+" not found by Credential Manager - getting a new one.");
 				try{
-					
+					// User's username and password pair for the AuthN service
 					String unpassPair = null;
 					// Check first if we have a saved username/password pair for this Authentication Service
 					unpassPair = credManager.getUsernameAndPasswordForService(authNServiceURL);
@@ -418,9 +390,24 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 			        SAMLAssertion saml = authClient.authenticate(auth);
 			        logger.info("Authenticated the user with AuthN Service: " + authNServiceURL);
 
-			        // Set the requested Grid credential lifetime (12 hours)
+			        // Set the requested Grid credential lifetime - get it from user's preferences
 			        CertificateLifetime lifetime = new CertificateLifetime();
-			        lifetime.setHours(12);
+			        String proxyLifetimeFromPreferences = configuration.getPropertyStringList(
+							configurationBean.getCaGridName()).get(3);
+			        
+			        if (proxyLifetimeFromPreferences == null || proxyLifetimeFromPreferences.equals("")){ // should not be null really but just in case
+			        	lifetime.setHours(12); // set to 12 hours by default
+				        logger.error("Proxy lifetime is missing from preferences - setting proxy lifetime to default (12 hours).");
+			        }
+			        else{
+			        	try{
+			        		lifetime.setHours(Integer.parseInt(proxyLifetimeFromPreferences));
+					        logger.info("Setting proxy lifetime to: " + proxyLifetimeFromPreferences + " hours.");
+			        	}catch(NumberFormatException nfex){
+				        	lifetime.setHours(12); // set to 12 hours by default
+					        logger.error("Proxy lifetime format in preferences is wrong - setting proxy lifetime to default (12 hours).");
+			        	}
+			        }
 
 			        // Request PKI/Grid credential
 			        GridUserClient dorian = new GridUserClient(dorianServiceURL);

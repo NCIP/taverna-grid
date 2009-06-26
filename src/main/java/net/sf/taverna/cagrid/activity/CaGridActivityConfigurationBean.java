@@ -18,7 +18,7 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid;
+package net.sf.taverna.cagrid.activity;
 
 /**
  * A standard Java Bean that provides the details required to configure a CaGridActivity.
@@ -35,13 +35,11 @@ public class CaGridActivityConfigurationBean {
     private String style;
     
     // Name of the caGrid the service belongs to, used to locate preferences for this caGrid such as
-    // Dorian and AuthN services
+    // Index, Dorian and AuthN services. 
     private String caGridName;
-	// Security settings for this operation of a caGrid service, if any, obtained by invoking
-	// getServiceSecurityMetadata() on the service
-	private String indexServiceURL; // URL of the Index Service used to discover this caGrid service (used as alias for username/password and proxy entries in the Taverna's keystore)
-	private String authNServiceURL; // URL of the AuthN Service used or to be used to (re)authenticate the user
-	private String dorianServiceURL; // URL of the Dorian Service used or to be used to (re)issue proxy
+    // Users can override the values from preferences for AuthN and Dorian services for this particular WSDL operation using this bean
+	private String authNServiceURL = null; // URL of the AuthN Service used or to be used to (re)authenticate the user
+	private String dorianServiceURL = null; // URL of the Dorian Service used or to be used to (re)issue proxy
 
 	/** Creates a new instance of CaGridActivityConfigurationBean */
     public CaGridActivityConfigurationBean() {
@@ -77,14 +75,6 @@ public class CaGridActivityConfigurationBean {
 
 	public String getCaGridName() {
 		return caGridName;
-	}
-
-	public void setIndexServiceURL(String indexServiceURL) {
-		this.indexServiceURL = indexServiceURL;
-	}
-
-	public String getIndexServiceURL() {
-		return indexServiceURL;
 	}
 
 	public void setAuthNServiceURL(String authNServiceURL) {
