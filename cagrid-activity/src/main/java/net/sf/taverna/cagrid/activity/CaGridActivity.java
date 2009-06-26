@@ -18,7 +18,7 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid;
+package net.sf.taverna.cagrid.activity;
 
 import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
 import gov.nih.nci.cagrid.metadata.security.CommunicationMechanism;
@@ -56,9 +56,6 @@ import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.xml.sax.SAXException;
 
-import net.sf.taverna.t2.activities.cagrid.InputPortTypeDescriptorActivity;
-import net.sf.taverna.t2.activities.cagrid.OutputPortTypeDescriptorActivity;
-import net.sf.taverna.t2.activities.cagrid.CaGridWSDLSOAPInvoker;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.ReferenceServiceException;
 import net.sf.taverna.t2.reference.T2Reference;
@@ -68,6 +65,9 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousAc
 import net.sf.taverna.t2.workflowmodel.processor.activity.ActivityConfigurationException;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AsynchronousActivityCallback;
 import net.sf.taverna.t2.workflowmodel.utils.Tools;
+import net.sf.taverna.cagrid.activity.CaGridWSDLSOAPInvoker;
+import net.sf.taverna.cagrid.activity.InputPortTypeDescriptorActivity;
+import net.sf.taverna.cagrid.activity.OutputPortTypeDescriptorActivity;
 import net.sf.taverna.cagrid.wsdl.parser.TypeDescriptor;
 import net.sf.taverna.cagrid.wsdl.parser.UnknownOperationException;
 import net.sf.taverna.cagrid.wsdl.parser.WSDLParser;
@@ -105,7 +105,6 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	// location of the service concatenated with the operation name. If an operation is not secure
 	// we just put null in the map.
 	public static HashMap<String, CaGridActivitySecurityProperties> securityPropertiesCache = new HashMap<String, CaGridActivitySecurityProperties>();
-	
 
 	static {
 		initializeSecurity();
@@ -159,7 +158,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 
 	// Configure colour for CaGridActivity
 	static{
-		ColourManager.getInstance().setPreferredColour("net.sf.taverna.t2.activities.cagrid.CaGridActivity", new Color(0x4b539e));
+		ColourManager.getInstance().setPreferredColour("net.sf.taverna.cagrid.activity.CaGridActivity", new Color(0x4b539e));
 	}
 	
 	
@@ -486,6 +485,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 
 		if ((anonymousAllowed) && (communicationMechanism.isAnonymousPermitted()) && anonymousPrefered) {
 			secProperties.setGSIAnonymouos(Boolean.TRUE);
+			secProperties.setRequiresProxy(false);
 		} else if (credentialsAllowed) {
 			// Set that this operation requires proxy that will be fetched later by the
 			// CaGridWSDLInvoker from the Credential Manager

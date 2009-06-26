@@ -18,25 +18,19 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.config;
+package net.sf.taverna.cagrid.activity.xmlsplitter;
 
-import javax.swing.JPanel;
 
-import net.sf.taverna.t2.workbench.configuration.Configurable;
-import net.sf.taverna.t2.workbench.configuration.ConfigurationUIFactory;
+import net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityPortsDefinitionBean;
 
-public class CaGridConfigurationFactoryUI implements ConfigurationUIFactory {
-	
-	public boolean canHandle(String uuid) {
-		return uuid.equals(CaGridConfiguration.uuid);
+public class XMLSplitterConfigurationBean extends ActivityPortsDefinitionBean {
+	String wrappedTypeXML;
+
+	public String getWrappedTypeXML() {
+		return wrappedTypeXML;
 	}
 
-	public JPanel getConfigurationPanel() {
-		return new CaGridConfigurationPanel();
+	public void setWrappedTypeXML(String wrappedTypeXML) {
+		this.wrappedTypeXML = wrappedTypeXML;
 	}
-
-	public Configurable getConfigurable() {
-		return CaGridConfiguration.getInstance();
-	}
-	
 }

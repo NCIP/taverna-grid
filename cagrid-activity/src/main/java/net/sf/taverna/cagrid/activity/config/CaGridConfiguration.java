@@ -18,7 +18,7 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  ******************************************************************************/
-package net.sf.taverna.t2.activities.cagrid.config;
+package net.sf.taverna.cagrid.activity.config;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -49,14 +49,14 @@ public class CaGridConfiguration extends AbstractConfigurable {
 	public static String PRODUCTION_INDEX_SERVICE_URL = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
 	public static String PRODUCTION_AUTHN_SERVICE_URL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
 	public static String PRODUCTION_DORIAN_SERVICE_URL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
-	public static String PRODUCTION_PROXY_LIFETIME = "12"; // 12 hours
+	public static String PRODUCTION_PROXY_LIFETIME = "12"; // 12 hours is default and maximum
 	public static String PRODUCTION_CADSR_SERVICE_URL = "http://cagrid-service.nci.nih.gov:8080/wsrf/services/cagrid/CaDSRService";
 
 	public static String TRAINING_CAGRID_NAME =  "Training CaGrid";
 	public static String TRAINING_INDEX_SERVICE_URL = "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService";
 	public static String TRAINING_AUTHN_SERVICE_URL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
 	public static String TRAINING_DORIAN_SERVICE_URL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
-	public static String TRAINING_PROXY_LIFETIME = "12"; //12 hours
+	public static String TRAINING_PROXY_LIFETIME = "12"; // 12 hours is default and maximum
 	public static String TRAINING_CADSR_SERVICE_URL = "https://cadsr.training.cagrid.org:8443/wsrf/services/cagrid/CaDSRService";
 
 	private Map<String, String> defaultPropertyMap;

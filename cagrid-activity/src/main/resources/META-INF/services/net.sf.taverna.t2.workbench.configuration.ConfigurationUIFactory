@@ -1,1 +1,1 @@
-net.sf.taverna.t2.activities.cagrid.config.CaGridConfigurationFactoryUI
+net.sf.taverna.cagrid.activity.config.CaGridConfigurationFactoryUI
