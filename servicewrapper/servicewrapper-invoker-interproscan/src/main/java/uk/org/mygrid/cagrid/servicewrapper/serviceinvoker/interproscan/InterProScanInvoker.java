@@ -142,7 +142,7 @@ public class InterProScanInvoker implements Invoker<InterProScanInput, byte[]> {
 
 			setRpcEncodedTypes(runDoc.getRunInterProScan());
 			logger.debug("runInterProScan:\n" + runDoc);
-			if (false) {
+			if (true) {
 				response = interProScan.runInterProScan(runDoc);
 			}
 			logger.debug("Received run response:\n" + response);

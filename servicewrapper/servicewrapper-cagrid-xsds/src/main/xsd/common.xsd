@@ -2,10 +2,12 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
 	xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
-	xmlns:faults="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd">
+	>
 	<!--  
+	xmlns:faults="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd"
 	<xsd:import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd"></xsd:import>
-	-->	<xsd:import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="wsrf-WS-BaseFaults-1.2-draft-01.xsd"></xsd:import>
+	<xsd:import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="basefaults.xsd"></xsd:import>
+	-->
 	
 	<xsd:element name="FASTAProteinSequence"
 		type="common:FASTAProteinSequence" />
@@ -55,7 +57,7 @@
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-	<xsd:element name="Error" type="common:Error" />
+	<!--<xsd:element name="Error" type="common:Error" />
 	<xsd:complexType name="Error" abstract="true">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -69,6 +71,7 @@
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+	-->
 	<xsd:element name="FASTANucleotideSequence"
 		type="common:FASTANucleotideSequence" />
 	<xsd:complexType name="FASTANucleotideSequence">
