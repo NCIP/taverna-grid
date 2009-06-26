@@ -22,7 +22,7 @@ package net.sf.taverna.t2.activities.cagrid.query;
 
 import static org.junit.Assert.assertNotNull;
 
-import net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridServiceDescription;
+import net.sf.taverna.cagrid.ui.servicedescriptions.CaGridServiceDescription;
 
 import org.junit.Test;
 

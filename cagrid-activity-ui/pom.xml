@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sf.taverna.t2</groupId>
+	<groupId>net.sf.taverna.cagrid</groupId>
 	<artifactId>cagrid-activity-ui</artifactId>
 	<name>Taverna 2 caGrid Activity UI</name>
-	<version>0.4-SNAPSHOT</version>
+	<version>0.5-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -81,9 +81,9 @@
 			<version>${t2.ui.impl.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.taverna.t2.activities</groupId>
+			<groupId>net.sf.taverna.cagrid</groupId>
 			<artifactId>cagrid-activity</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

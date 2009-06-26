@@ -1,3 +1,3 @@
-net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridActivityIcon
-net.sf.taverna.t2.activities.cagrid.servicedescriptions.XMLInputSplitterActivityIcon
-net.sf.taverna.t2.activities.cagrid.servicedescriptions.XMLOutputSplitterActivityIcon
+net.sf.taverna.cagrid.ui.servicedescriptions.CaGridActivityIcon
+net.sf.taverna.cagrid.ui.servicedescriptions.XMLInputSplitterActivityIcon
+net.sf.taverna.cagrid.ui.servicedescriptions.XMLOutputSplitterActivityIcon

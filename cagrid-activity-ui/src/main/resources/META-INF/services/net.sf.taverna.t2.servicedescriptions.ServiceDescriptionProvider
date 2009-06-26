@@ -1,3 +1,2 @@
-net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridServiceSearchProvider
-net.sf.taverna.t2.activities.cagrid.servicedescriptions.CaGridServiceFromWSDLProvider
-
+net.sf.taverna.cagrid.ui.servicedescriptions.CaGridServiceSearchProvider
+net.sf.taverna.cagrid.ui.servicedescriptions.CaGridServiceFromWSDLProvider
