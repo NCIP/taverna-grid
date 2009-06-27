@@ -9,7 +9,7 @@ openssl x509 -in <CERTIFICATE_FILE_PATH> -noout -text
 
 For the secure caGrid services to be invokable from Taverna, these certificates need to be installed in the user's
 Java truststore. This is needed for establishing https (http over SSL) connections to such services and for Java 
-to be able trust the service on the other end of the connection. This basically mean that when Taverna attempts 
+to be able trust the service on the other end of the connection. This basically means that when Taverna attempts 
 to open an https connection to a secure CaGrid service, Java will find the certificate of the CA that issued the 
 service's certificate among the trusted certificates in the truststore and implicitly will trust the service as well. 
 
