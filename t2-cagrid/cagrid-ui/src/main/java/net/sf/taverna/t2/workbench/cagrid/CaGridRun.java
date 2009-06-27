@@ -22,41 +22,100 @@
 package net.sf.taverna.t2.workbench.cagrid;
 
 //import java.awt.BorderLayout;
+import gov.nih.nci.cagrid.workflow.factory.client.TavernaWorkflowServiceClient;
+
+import java.rmi.RemoteException;
 import java.util.Date;
 //import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import javax.swing.JPanel;
 //import javax.swing.JTabbedPane;
 //import javax.swing.JTextArea;
+import java.io.File;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.types.URI.MalformedURIException;
+
+import workflowmanagementfactoryservice.WorkflowStatusType;
 
 import net.sf.taverna.t2.reference.T2Reference;
 
 
 //classes to invoke the caGrid service to execute a given workflow
 public class CaGridRun {
-	//workflow instance identifier
-	public int workflowid;
+	//workflow instance identifier, also used to persist EPR
+	public long workflowid;
+	public String workflowLocalName;
 	//workflow inputs
 	private Map<String, T2Reference> inputs;
-	//time for execution
-	private Date date;
+	//started time
+	public Date date;
 	//xml string that represent the execution results -- may be multiple results
 	public Map<String, String> outputMap;
 	//the container to show multiple results
 	public JPanel resultPanel;
-	public String status;// initiated, executing, completed
-	CaGridRun(){
+	
+	EndpointReferenceType workflowEPR;
+	WorkflowStatusType workflowStatusElement; //status
+	String url;
+	
+	CaGridRun(String url, String workflowName){
+		
+		try {
+			TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
+		} catch (MalformedURIException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.url = url;
+		workflowLocalName = workflowName;
 		inputs =null;
 		date = new Date();
-		Random generator = new Random();
-		workflowid = generator.nextInt();
+		workflowid = date.getTime();
 		resultPanel = new JPanel();
 		resultPanel.setName(String.valueOf(workflowid));
-		status = "initiated";
+		workflowStatusElement = WorkflowStatusType.Active;
 		outputMap = null;
+		workflowEPR =  null;
+	}
+	public EndpointReferenceType readEPRFromFile(){
+		return null;
 		
+	}
+	public boolean writeEPRToFile(){
+		if(workflowEPR==null){
+			return false;
+		}
+		else {
+			try {
+				TavernaWorkflowServiceClient.writeEprToFile(workflowEPR, String.valueOf(workflowid));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+			return true;			
+		}	
+	}
+	public boolean updateStatus(){
+		try {
+			workflowStatusElement = TavernaWorkflowServiceClient.getStatus(workflowEPR);
+		} catch (MalformedURIException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	public String toString() {
+		return workflowLocalName+"@"+date.toString();
 	}
 
 }

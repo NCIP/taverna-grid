@@ -242,7 +242,7 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 				runComponent = CaGridComponent.getInstance();
 				System.out.println("workflow is being invoked.");
 				runComponent.runWorkflow(facade, workflowInputs);
-				frame.dispose();
+				
 			
 			}
 		};

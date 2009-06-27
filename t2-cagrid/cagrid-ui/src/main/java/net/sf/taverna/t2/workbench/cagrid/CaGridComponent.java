@@ -33,15 +33,21 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FilenameFilter;
 import java.io.IOException;
 //import java.util.Date;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import java.io.File;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.io.FileUtils;
 
 
@@ -50,6 +56,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -110,11 +117,14 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
       
       private JButton refreshButton;
         
-      private JButton inputButton;
+      private JButton serviceURLButton;
+      
+      private JButton removeCaGridRunsButton;
      
       private JButton testButton;
      
       private JList runList;
+     
       
       private DefaultListModel runListModel;
       
@@ -133,11 +143,10 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
           addHeader();
           addcagridService();
           addRunButton();
-          addInputButton();
           addRefreshButton();
+          addServiceURLButton();
           checkButtons();
-          addResultPanel();
-          
+          addResultPanel();       
         //force reference service to be constructed now rather than at first workflow run
   		getReferenceService();
   		
@@ -158,53 +167,65 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			runListModel = new DefaultListModel();
 			runList = new JList(runListModel);
 			runList.setBorder(new EmptyBorder(5,5,5,5));
-			runList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-			
+			runList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		
 			runListPanel = new JPanel(new BorderLayout());
 			runListPanel.setBorder(LineBorder.createGrayLineBorder());
 			
 			JLabel worklflowRunsLabel = new JLabel("Workflow Runs");
-			worklflowRunsLabel.setBorder(new EmptyBorder(5,5,5,5));
+			worklflowRunsLabel.setBorder(new EmptyBorder(5,5,5,5));			
+			removeCaGridRunsButton = new JButton("Remove"); // button to remove previous workflow runs
+			removeCaGridRunsButton.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+			removeCaGridRunsButton.setEnabled(false);
+			removeCaGridRunsButton.setToolTipText("Remove caGrid run(s)");
+			removeCaGridRunsButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e) {
+					int[] selected = runList.getSelectedIndices();
+					for (int i = selected.length - 1; i >=0; i--){
+						CaGridRun cr = (CaGridRun) runListModel.get(selected[i]);
+						
+						//TODO delete the EPR file
+						File file = new File(new File(System.getProperty("user.dir")),String.valueOf(cr.date.getTime())+".epr");
+						file.delete();
+						System.out.println(String.valueOf(cr.date.getTime())+".epr deleted");
+						runListModel.remove(selected[i]);
+					}
+					// Set the first item as selected - if there is one
+					if (runListModel.size() > 0){
+						runList.setSelectedIndex(0);
+					}
+					else{
+						resultText.setText("");
+						resultText.revalidate();
+						
+					}
+				}
+			});
 			runListPanel.add(worklflowRunsLabel, BorderLayout.NORTH);
+			runListPanel.add(removeCaGridRunsButton, BorderLayout.BEFORE_FIRST_LINE);
 			
 			JScrollPane scrollPane = new JScrollPane(runList);
 			scrollPane.setBorder(null);
 			runListPanel.add(scrollPane, BorderLayout.CENTER);
+			//TODO loadWorkflowRunsFromStoredEPRFiles(): add CaGridRun to runList for each EPR
+			//TODO add two buttons: remove and refresh status
 			runList.addListSelectionListener(new ListSelectionListener() {
 				public void valueChanged(ListSelectionEvent e) {
 					if (!e.getValueIsAdjusting()) {
 						Object selection = runList.getSelectedValue();
 						if (selection instanceof CaGridRun) {
+							removeCaGridRunsButton.setEnabled(true);
 							CaGridRun dataflowRun = (CaGridRun) selection;
-							//TODO refresh outputPanel
-							String resultDisplayString = "";
-							if(dataflowRun.status.equals("completed")){
-								if(dataflowRun.outputMap!=null){
-									for(Iterator it = dataflowRun.outputMap.entrySet().iterator(); it.hasNext();) {
-								    Map.Entry entry = (Map.Entry) it.next();
-								    Object key = entry.getKey();
-								    Object value = entry.getValue();
-								    resultDisplayString  = resultDisplayString + (String) key + ":--" +(String) value + "\n";
-								}
-								}
-								else{
-									resultDisplayString = "Workflow succeeds to execute with no output.";
-								}
-							}
-							else if(dataflowRun.status.equals("pending")){
-								resultDisplayString = "Workflow execution is pending.";
-							}
-							else{
-								resultDisplayString = "Workflow failed to execute.";
-								
-							}
+							// update status and refresh outputPanel
+							String resultDisplayString = updateResultDisplayString(dataflowRun);
 							resultText.setText(resultDisplayString);
 							resultText.setLineWrap(true);
 							resultText.setEditable(false);
-							outputPanel.revalidate();
-			
-						revalidate();	
+							outputPanel.revalidate();			
+							revalidate();								
+						}
+						else{
+							removeCaGridRunsButton.setEnabled(false);
+							revalidate();
 							
 						}
 					}
@@ -227,7 +248,19 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			resultPanel.setBottomComponent(outputPanel);
 			add(resultPanel,c);
 			
-		
+			//TODO loadEPR
+			
+			//add runComponent to the GUI
+			ArrayList<CaGridRun> loadedRunList = loadWorkflowRunsFromStoredEPRFiles(null,(String)services.getSelectedItem());
+			if(loadedRunList!=null){
+				for(int m = 0; m < loadedRunList.size(); m++){  
+					CaGridRun   cr   =   (CaGridRun)loadedRunList.get(m); 
+					runListModel.add(0, cr);
+				}
+				System.out.println(loadedRunList.size()+" EPR loaded.");
+				runList.setSelectedIndex(0);						
+			}
+			
 	}
 	protected void addHeader() {
            GridBagConstraints c = new GridBagConstraints();
@@ -297,31 +330,34 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
            //removeButton.setEnabled(context != null);
            //editButton.setEnabled(context != null);
            
-           refreshButton.invalidate();
+          // refreshButton.invalidate();
           // removeButton.invalidate();
           // editButton.invalidate();
    }
    
-   private void addInputButton() {
+   private void addRefreshButton() {
        GridBagConstraints c = new GridBagConstraints();
        c.gridx = 1;
        c.gridy = row;
        c.anchor = GridBagConstraints.WEST;
-       inputButton = new JButton("Add Input", WorkbenchIcons.inputIcon);
-       inputButton.setEnabled(false);
-       add(inputButton, c);
+       refreshButton = new JButton("Refresh Selected Execution",WorkbenchIcons.refreshIcon);
+       refreshButton.setEnabled(true);
+       refreshButton.setActionCommand("refresh");
+       refreshButton.addActionListener(this);
+       add(refreshButton, c);
        //TODO add a tabbed dialog to configure the input?
        //each input is either a file or a string
 }
    
-   private void addRefreshButton() {
+   private void addServiceURLButton() {
            GridBagConstraints c = new GridBagConstraints();
            c.gridx = 2;
            c.gridy = row;
            c.anchor = GridBagConstraints.WEST;
-           refreshButton = new JButton("Refresh Results", WorkbenchIcons.refreshIcon);
-           refreshButton.setEnabled(false);
-           add(refreshButton, c);
+           serviceURLButton = new JButton("Add New caGrid Service URL", WorkbenchIcons.configureIcon);
+           serviceURLButton.setEnabled(false);     
+           add(serviceURLButton, c);
+           
           
    }
    
@@ -329,9 +365,10 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
  //TODO: should be executed in a new thread
    public void runWorkflow(WorkflowInstanceFacade facade, Map<String, T2Reference> inputs) {
 	   //TODO invoke caGrid workflow execution service
-		CaGridRun runComponent = new CaGridRun();
-		runListModel.add(0, runComponent);
-		runList.setSelectedIndex(0);	
+	   String url = (String) services.getSelectedItem();
+		CaGridRun runComponent = new CaGridRun(url,facade.getDataflow().getLocalName());
+		System.out.println("caGridRun initiated with url:"+url);
+		
 		//print out the information of the workflow
 		System.out.println("Workflow is running.");
 		//traverse inputports, get all strings and combine to a String[]
@@ -364,7 +401,6 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		try {
 			Element workflowDef = serialiser.serializeDataflow(dataflow);
 			XMLOutputter outputter = new XMLOutputter();
-			
 			//outputter.output(workflowDef, System.out);
 			
 			String workflowDefString = outputter.outputString(workflowDef);
@@ -372,20 +408,22 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			 File file = new File(dataflow.getLocalName());
 		      FileUtils.writeStringToFile(file, workflowDefString);	
 		      System.out.println("File name: " + file.getAbsolutePath());
-		    System.out.println("----------------Workflow Definition----------------------");
-			System.out.println(workflowDefString);
-			System.out.println("----------------End of Workflow Definition---------------");
+		    //System.out.println("----------------Workflow Definition----------------------");
+			//System.out.println(workflowDefString);
+			//System.out.println("----------------End of Workflow Definition---------------");
 			//String url = "http://128.135.125.17:51000/wsrf/services/cagrid/TavernaWorkflowService";
-			String url =  (String) services.getSelectedItem();
+			//String url =  (String) services.getSelectedItem();
 			TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
-			String workflowName = "Test1";
+			Date date = new Date();
+			String workflowName = String.valueOf(runComponent.workflowid);
 			System.out.println("\n1. Running createWorkflow ..");
 
 			//WMSOutputType wMSOutputElement =  client.createWorkflow(input);
 			EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(url, file.getAbsolutePath(), workflowName);
+			runComponent.workflowEPR = resourceEPR;
 			// 2. Start Workflow Operations Invoked.
 			//
-
+			
 			String[] inputArgs = null;
 			if(inputMap.size()>0){
 				System.out.println("number of input ports: " + inputMap.size());
@@ -404,83 +442,19 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 				System.out.println("No. "+k+" " + inputArgs[k]);
 			}
 			System.out.println("\n2. Now starting the workflow ..");
-			
 
 			//This method runs the workflow with the resource represented by the EPR.
 			// If there is no inputFile for the workflow, give "null"
+			System.out.println("Created a resource with EPR ..");
 			WorkflowStatusType workflowStatusElement =  TavernaWorkflowServiceClient.startWorkflow(inputArgs, resourceEPR);
 			//System.out.println("NULL input");
 			//WorkflowStatusType workflowStatusElement =  TavernaWorkflowServiceClient.startWorkflow(null, resourceEPR);
-			System.out.println("workflow created");
-			//poll the status
-			if (workflowStatusElement.equals(WorkflowStatusType.Done))
-			{
-				System.out.println("Workflow successfully executed..");
-			}
-			else if (workflowStatusElement.equals(WorkflowStatusType.Failed))
-			{
-				System.out.println("Workflow failed to execute.");
-			}
-			else
-			{	//TODO: need to set a timeout, what if it fails?	
-				//timeout: 4*200 seconds
-				int k=0;
-				int timeout =200;			
-				while(workflowStatusElement.equals(WorkflowStatusType.Active)&&(k<timeout)){
-					System.out.println(workflowStatusElement.getValue());
-					Thread.sleep(4000);
-					//refresh status
-					workflowStatusElement = TavernaWorkflowServiceClient.getStatus(resourceEPR);
-					k++;
-				}
-				if(k==timeout){
-					System.out.println("Workflow execution timeout: " + k*4 + " s." );
-				}
-				
-			}
-		
-		
-			// 3. Get Status operation invoked.
-			System.out.println("\n3. Checking the status of the workflow..");
-			WorkflowStatusType workflowStatus = TavernaWorkflowServiceClient.getStatus(resourceEPR);
-			if(workflowStatus.equals(WorkflowStatusType.Done))
-			{
-				System.out.println("Workflow Executions is Completed.");
-				//4. Get output of workflow.
-				System.out.println("\n4. Getting back the output string..");
-				WorkflowOutputType workflowOutput = TavernaWorkflowServiceClient.getOutput(resourceEPR);
-				outputs = workflowOutput.getOutputFile();	
-				System.out.println("This workflow has" + facade.getDataflow().getOutputPorts().size() + "output ports");
-				System.out.println("Output returned by service " + outputs.length);
-				//TODO get a list of xml strings,add to output panel
-				Map<String, String> outputMap = new HashMap <String, String>();
-				for (int j=0;j<facade.getDataflow().getOutputPorts().size();j++){
-					//TODO: sequence will mess up!
-					System.out.println("output no."+ (j+1));
-					if(j<outputs.length){
-						DataflowOutputPort op = facade.getDataflow().getOutputPorts().get(j);
-						outputMap.put(op.getName(),outputs[j]);
-					}		
-				}
-				runComponent.outputMap = outputMap;
-				runComponent.status = "completed";
-				resultDisplayString = "Workflow succeeds to execute with no output.";
-				
-			}
-			else if (workflowStatus.equals(WorkflowStatusType.Failed))
-			{
-				System.out.println("Workflow failed to execute.");
-				resultDisplayString = "Workflow failed to execute.";
-				runComponent.status = "failed";
-				runComponent.outputMap = null;
-			}
-			else if (workflowStatus.equals(WorkflowStatusType.Pending))
-			{
-				System.out.println("Workflow execution is pending.");
-				resultDisplayString = "Workflow execution is pending.";
-				runComponent.status = "pending";
-				runComponent.outputMap = null;
-			}					
+			System.out.println("workflow created");			
+			//System.out.println("Writing EPR to file ..");
+			TavernaWorkflowServiceClient.writeEprToFile(resourceEPR, workflowName);		
+			//add runComponent to the GUI
+			runListModel.add(0, runComponent);
+			runList.setSelectedIndex(0);	
 		} catch (SerializationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -491,26 +465,14 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 		
+		resultDisplayString = "workflow submitted";	
 		//show the outputMap in resultPanel
-		//traverse the outputMap
-		if(runComponent.outputMap!=null){
-			resultDisplayString = "";
-			for(Iterator it = runComponent.outputMap.entrySet().iterator(); it.hasNext();) {
-			    Map.Entry entry = (Map.Entry) it.next();
-			    Object key = entry.getKey();
-			    Object value = entry.getValue();
-			    resultDisplayString  = resultDisplayString + (String) key + ":\n" +(String) value;
-			}
-			
-		}
+		
 				
 		//JTextArea resultText = new JTextArea(resultDisplayString);
 		resultText.setText(resultDisplayString);
 		resultText.setLineWrap(true);
-		resultText.setEditable(false);
-		System.out.println("workflow output:\n" + resultDisplayString);
-		
+		resultText.setEditable(false);		
 		resultText.revalidate();
 		//outputPanel.removeAll();
 		outputPanel.revalidate();
@@ -531,6 +493,21 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 	        	//TODO test whether the caGrid execution service is online
 	        	System.out.println("testing caGrid services......successful!");
 	        	      	
+	        }
+	        if(e.getActionCommand().equals("refresh")){
+	        	Object selection = runList.getSelectedValue();
+				if (selection instanceof CaGridRun) {
+					
+					CaGridRun dataflowRun = (CaGridRun) selection;
+					// update status and refresh outputPanel
+					String resultDisplayString = updateResultDisplayString(dataflowRun);
+					resultText.setText(resultDisplayString);
+					resultText.setLineWrap(true);
+					resultText.setEditable(false);
+					outputPanel.revalidate();			
+					revalidate();								
+				}
+	        	
 	        }
 	    }
 	 //return the ReferenceService -- used to manipulate data
@@ -563,5 +540,103 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		// TODO Auto-generated method stub
 		
 	}
-
+	public String updateResultDisplayString(CaGridRun dataflowRun){
+		// update status and refresh outputPanel	
+		String resultDisplayString = "";
+		WorkflowStatusType oldStatusType = dataflowRun.workflowStatusElement;
+		dataflowRun.updateStatus();
+		if(dataflowRun.workflowStatusElement.equals(WorkflowStatusType.Done)){
+			// only update if necessary
+			if(!oldStatusType.equals(WorkflowStatusType.Done)){
+				
+				System.out.println("\n Getting back the output string..");
+				WorkflowOutputType workflowOutput = null;
+				try {
+					workflowOutput = TavernaWorkflowServiceClient.getOutput(dataflowRun.workflowEPR);
+				} catch (MalformedURIException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				String [] outputs = null;
+				outputs = workflowOutput.getOutputFile();	
+				
+				//TODO get a list of xml strings,add to output panel
+				Map<String, String> outputMap = new HashMap <String, String>();
+				for (int j=0;j<outputs.length;j++){
+					//TODO: without output port name?
+					System.out.println("output no."+ (j+1));
+					outputMap.put("OutputPort_"+j,outputs[j]);
+						
+				}
+				dataflowRun.outputMap = outputMap;
+			}
+			if(dataflowRun.outputMap!=null){
+				for(Iterator it = dataflowRun.outputMap.entrySet().iterator(); it.hasNext();) {
+			    Map.Entry entry = (Map.Entry) it.next();
+			    Object key = entry.getKey();
+			    Object value = entry.getValue();
+			    resultDisplayString  = resultDisplayString + (String) key + ":--" +(String) value + "\n";
+			}
+			}
+			else{
+				resultDisplayString = "Workflow succeeds to execute with no output.";
+			}
+		}
+		else if(dataflowRun.workflowStatusElement.equals(WorkflowStatusType.Failed)){
+			resultDisplayString = "Workflow failed to execute.";
+			
+		}
+		else if(dataflowRun.workflowStatusElement.equals(WorkflowStatusType.Active)){
+			resultDisplayString = "Workflow is running,please check back later.";
+		}
+		return resultDisplayString;
+	}
+	
+	
+	ArrayList<CaGridRun> loadWorkflowRunsFromStoredEPRFiles(File directory, String url) {	
+		File dir = new File(System.getProperty("user.dir"));
+		System.out.println("Reading EPR from dir "+ System.getProperty("user.dir"));
+		 ArrayList<CaGridRun> caGridRunList = new ArrayList<CaGridRun>();
+		EndpointReferenceType workflowEPR = new EndpointReferenceType();
+		try {
+			ExtensionFilter filter = new ExtensionFilter(".epr");
+			String[] list = dir.list(filter);
+		    File file;
+		    if (list.length == 0) return null;	   
+		    for (int i = 0; i < list.length; i++) {
+		    file = new File(dir, list[i]);
+		      System.out.print(file.getAbsolutePath() + "  loaded : ");
+		      TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
+		      workflowEPR = TavernaWorkflowServiceClient.readEprFromFile(file.getAbsolutePath());
+		      String s = file.getName();
+		      s = s.substring(0, s.length()-4);
+		      System.out.println(s);
+		      Date d = new Date(Long.parseLong(s));
+		      	      
+		      CaGridRun runComponent = new CaGridRun(url,"");
+		      runComponent.date = d;
+		      runComponent.workflowEPR = workflowEPR;
+		      caGridRunList.add(runComponent);		      
+		    }			   
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		 return caGridRunList;
+		
+	}
 }
+
+class ExtensionFilter implements FilenameFilter {
+	  private String extension;
+	  public ExtensionFilter( String extension ) {
+	    this.extension = extension;             
+	  }	  
+	  public boolean accept(File dir, String name) {
+	    return (name.endsWith(extension));
+	  }
+	}
+
