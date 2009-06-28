@@ -66,7 +66,7 @@ public class CaGridActivityContextualView extends
 		final JComponent mainFrame = super.getMainFrame();
 		JPanel flowPanel = new JPanel(new FlowLayout()); // panel with various configuration buttons
 
-		//addConfigureButton(mainFrame, flowPanel);
+		addConfigureButton(mainFrame, flowPanel);
 		addInputSplitter(mainFrame, flowPanel);
 		addOutputSplitter(mainFrame, flowPanel);
 		

@@ -28,7 +28,7 @@ import net.sf.taverna.cagrid.activity.CaGridActivity;
 import net.sf.taverna.cagrid.activity.CaGridActivityConfigurationBean;
 import net.sf.taverna.t2.workbench.ui.actions.activity.ActivityConfigurationAction;
 
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * Action to configure CaGridActivity. This action only applies to secure caGrid services
@@ -41,7 +41,7 @@ import net.sf.taverna.t2.workbench.ui.actions.activity.ActivityConfigurationActi
 @SuppressWarnings("serial")
 public class CaGridActivityConfigureAction extends ActivityConfigurationAction<CaGridActivity,CaGridActivityConfigurationBean> {
 
-	//private static Logger logger = Logger.getLogger(CaGridActivityConfigureAction.class);
+	private static Logger logger = Logger.getLogger(CaGridActivityConfigureAction.class);
 
 	private CaGridActivityConfigurationBean configurationBean;
 	private JComponent owner;
@@ -78,6 +78,7 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 				// bean and has now been set in the config. dialog
 				configurationBean.setAuthNServiceURL(authNServiceURL);
 				beanChanged = true;
+				logger.info("CaGridActivityConfiguration: Authentication Service property changed");
 			}
 		}
 		else{
@@ -85,6 +86,7 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 			if (!configurationBean.getAuthNServiceURL().equals(authNServiceURL)){
 				// Has been changed
 				beanChanged = true;
+				logger.info("CaGridActivityConfiguration: Authentication Service property changed");
 			}
 		}
 		// Dorian service
@@ -94,6 +96,7 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 				// bean and has now been set in the config. dialog
 				configurationBean.setDorianServiceURL(dorianServiceURL);
 				beanChanged = true;
+				logger.info("CaGridActivityConfiguration: Dorian Service property changed");
 			}
 		}
 		else{
@@ -101,6 +104,7 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 			if (!configurationBean.getDorianServiceURL().equals(dorianServiceURL)){
 				// Has been changed
 				beanChanged = true;
+				logger.info("CaGridActivityConfiguration: Authentication Service property changed");
 			}
 		}
 		

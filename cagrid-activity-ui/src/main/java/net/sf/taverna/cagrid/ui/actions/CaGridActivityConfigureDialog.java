@@ -22,12 +22,14 @@ package net.sf.taverna.cagrid.ui.actions;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -74,8 +76,25 @@ public class CaGridActivityConfigureDialog extends JDialog {
 
 		GridBagConstraints c = new GridBagConstraints();
 	
-		// TODO put some instructions for users to know that setting to empty string actually deletes the property
+		// Instructions for users to know that setting to empty string actually deletes the property
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		c.weightx = 1.0;
+		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		JPanel instructionsPanel = new JPanel();
+		instructionsPanel.setLayout(new BoxLayout(instructionsPanel, BoxLayout.Y_AXIS));
+		JLabel instructions = new JLabel(
+				"<html><body>Leaving Authentication or Dorian Service properties empty (or deleting them here)<br>" +
+				"means that they will be picked up from preferences for this CaGrid.</body></html>");
+		instructions.setBorder(new EmptyBorder(5,5,10,5));
+		instructions.setFont(new Font(null, Font.PLAIN, 11));
+		instructionsPanel.add(instructions);
+		configurationPanel.add(instructionsPanel, c);
 		
+		c.gridwidth = 1;
+
 		jtfAuthNServiceURL = new JTextField(35);
 		jtfAuthNServiceURL.setText(authNServiceURL);
 		
@@ -83,15 +102,17 @@ public class CaGridActivityConfigureDialog extends JDialog {
 		jtfDorianServiceURL.setText(dorianServiceURL);
 			
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = 1;
 		c.ipadx = 5;
 		c.anchor = GridBagConstraints.EAST;
 		c.weightx = 0.0;
 		c.fill = GridBagConstraints.NONE;
-		configurationPanel.add(new JLabel("Authentication Service"), c);
+		JLabel jlAuthNService = new JLabel("Authentication Service");
+		jlAuthNService.setBorder(new EmptyBorder(5,5,5,5));
+		configurationPanel.add(jlAuthNService, c);
 		
 		c.gridx = 1;
-		c.gridy = 0;
+		c.gridy = 1;
 		c.ipadx = 0;
 		c.anchor = GridBagConstraints.WEST;
 		c.weightx = 1.0;
@@ -99,15 +120,17 @@ public class CaGridActivityConfigureDialog extends JDialog {
 		configurationPanel.add(jtfAuthNServiceURL, c);
 		
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 2;
 		c.ipadx = 5;
 		c.anchor = GridBagConstraints.EAST;
 		c.weightx = 0.0;
 		c.fill = GridBagConstraints.NONE;
-		configurationPanel.add(new JLabel("Dorian Service"), c);
+		JLabel jlDorianService = new JLabel("Dorian Service");
+		jlDorianService.setBorder(new EmptyBorder(5,5,5,5));
+		configurationPanel.add(jlDorianService, c);
 		
 		c.gridx = 1;
-		c.gridy = 1;
+		c.gridy = 2;
 		c.ipadx = 0;
 		c.anchor = GridBagConstraints.WEST;
 		c.weightx = 1.0;
