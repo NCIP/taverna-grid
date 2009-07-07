@@ -42,18 +42,19 @@
 			<name>myGrid Snapshot Repository</name>
 			<url>http://www.mygrid.org.uk/maven/snapshot-repository</url>
 		</repository>
-		<repository>
+		<!--<repository>
 			<id>t2-cagrid</id>
 			<name>cagrid repository for plug-ins</name>
 			<url>http://www.mcs.anl.gov/~wtan/t2/repository/</url>
-		</repository>
+		</repository>-->
 	</repositories>
 	<dependencies>
+		<!--implicitly through cagrid-activity instead
 		<dependency>
 			<groupId>org.cagrid</groupId>
 			<artifactId>cagrid-package</artifactId>
 			<version>1.3.0</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>activity-icons-api</artifactId>
