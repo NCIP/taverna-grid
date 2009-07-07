@@ -20,9 +20,11 @@
 		</plugins>
 	</build>
 	<properties>
-		<t2.activities.version>0.6-SNAPSHOT</t2.activities.version>
-		<t2.core.version>0.6-SNAPSHOT</t2.core.version>
-		<t2.security.version>0.4-SNAPSHOT</t2.security.version>
+		<t2.activities.version>0.8</t2.activities.version>
+		 <t2.core.version>0.8</t2.core.version>
+		<t2.security.version>0.6</t2.security.version>
+		 <t2.ui.api.version>0.6</t2.ui.api.version>
+                <t2.ui.impl.version>0.8</t2.ui.impl.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -57,9 +59,9 @@
 			<version>${t2.core.version}</version>
 		</dependency>
 		<dependency>
-			<artifactId>configuration-impl</artifactId>
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
-			<version>0.4-SNAPSHOT</version>
+			<artifactId>configuration-impl</artifactId>
+			<version>${t2.ui.impl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.security</groupId>

@@ -19,9 +19,9 @@
 		</plugins>
 	</build>
 	<properties>
-		<t2.activities.version>0.6-SNAPSHOT</t2.activities.version>
-		<t2.ui.api.version>0.4-SNAPSHOT</t2.ui.api.version>
-		<t2.ui.impl.version>0.4-SNAPSHOT</t2.ui.impl.version>
+		<t2.activities.version>0.8</t2.activities.version>
+		<t2.ui.api.version>0.6</t2.ui.api.version>
+		<t2.ui.impl.version>0.8</t2.ui.impl.version>
 	</properties>
 	<repositories>
 		<repository>
