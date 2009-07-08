@@ -21,7 +21,6 @@
 package net.sf.taverna.cagrid.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 
@@ -41,7 +40,6 @@ import net.sf.taverna.cagrid.activity.config.CaGridConfiguration;
 import net.sf.taverna.cagrid.ui.actions.CaGridActivityConfigureAction;
 import net.sf.taverna.cagrid.ui.servicedescriptions.CaGridActivityIcon;
 import net.sf.taverna.t2.workbench.ui.actions.activity.HTMLBasedActivityContextualView;
-import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
 /**
