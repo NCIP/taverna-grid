@@ -45,8 +45,7 @@ public class CaGridServiceSearchProvider extends
 
 	private static final String CAGRID_SERVICE = "caGrid service";
 
-	public static final Icon cagridIcon = new ImageIcon(
-			CaGridServiceDescription.class.getResource("/cagrid.png"));
+	
 
 	public CaGridServiceSearchProvider() {
 		super(new CaGridServiceSearchProviderConfig());
@@ -80,7 +79,7 @@ public class CaGridServiceSearchProvider extends
 	}
 
 	public Icon getIcon() {
-		return cagridIcon;
+		return CaGridActivityIcon.cagridIcon;
 	}
 
 	@SuppressWarnings("serial")

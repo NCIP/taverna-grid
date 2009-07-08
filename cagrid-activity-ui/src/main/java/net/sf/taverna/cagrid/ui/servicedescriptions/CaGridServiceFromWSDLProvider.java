@@ -41,9 +41,6 @@ public class CaGridServiceFromWSDLProvider extends
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(CaGridServiceFromWSDLProvider.class);
 
-	public static final Icon caGridIcon = new ImageIcon(
-			CaGridServiceDescription.class.getResource("/cagrid.png"));
-
 	public CaGridServiceFromWSDLProvider() {
 		super(new CaGridServiceFromWSDLProviderConfig());
 	}
@@ -71,11 +68,11 @@ public class CaGridServiceFromWSDLProvider extends
 
 	@Override
 	public String toString() {
-		return getName();
+		return getName() + " " + getConfiguration().getWsdlURL();
 	}
 
 	public Icon getIcon() {
-		return caGridIcon;
+		return CaGridActivityIcon.cagridIcon;
 	}
 
 	@Override

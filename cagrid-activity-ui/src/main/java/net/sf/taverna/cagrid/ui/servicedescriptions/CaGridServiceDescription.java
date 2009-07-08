@@ -129,7 +129,7 @@ public class CaGridServiceDescription extends
 	}
 
 	public Icon getIcon() {
-		return CaGridServiceSearchProvider.cagridIcon;
+		return CaGridActivityIcon.cagridIcon;
 	}
 
 	public String getName() {

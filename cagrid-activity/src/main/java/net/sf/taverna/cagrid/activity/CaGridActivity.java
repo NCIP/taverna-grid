@@ -156,10 +156,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
 	}
 
-	// Configure colour for CaGridActivity
-	static{
-		ColourManager.getInstance().setPreferredColour("net.sf.taverna.cagrid.activity.CaGridActivity", new Color(0x4b539e));
-	}
+
 	
 	
 	public boolean isWsrfService() {
