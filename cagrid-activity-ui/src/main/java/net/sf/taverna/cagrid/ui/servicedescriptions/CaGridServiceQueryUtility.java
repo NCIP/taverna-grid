@@ -70,7 +70,7 @@ public class CaGridServiceQueryUtility {
 
 		// Get the categories for this installation
 		boolean foundSome = loadServices(indexURL, sq, services);
-		if (!foundSome || services.isEmpty()) {
+		if (!foundSome || services.isEmpty()) { // should be enough to just check foundSome but anyhow
             JOptionPane.showMessageDialog(null,
                     "caGrid services search did not find any matching services", 
                     "caGrid services search",
@@ -94,8 +94,8 @@ public class CaGridServiceQueryUtility {
 		servicesList = getEPRListByServiceQueryArray(indexURL, sq);
 		logger.info("caGrid DiscoveryClient loaded and EPR to services returned.");
 		if (servicesList == null){
-			// Something fishy happened
-			logger.error("caGrid search: resulting caGrid service list returned is null due to an error.");
+			// Did not find any - this should really be an empty array and not null
+			logger.error("caGrid search: resulting caGrid service list returned is null (empty).");
 			return foundSome;
 		}
 		else{
@@ -215,20 +215,16 @@ public class CaGridServiceQueryUtility {
 				try {
 					servicesList = client
 							.discoverServicesByResearchCenter(sq.queryValue);
-				} catch (Exception e) {
-						logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
-						e.printStackTrace();
+				}catch (RemoteResourcePropertyRetrievalException e) {
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
+					e.printStackTrace();
+				} catch (QueryInvalidException e) {
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
+					e.printStackTrace();
+				} catch (ResourcePropertyRetrievalException e) {
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
+					e.printStackTrace();
 				}
-//				 catch (RemoteResourcePropertyRetrievalException e) {
-//					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
-//					e.printStackTrace();
-//				} catch (QueryInvalidException e) {
-//					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
-//					e.printStackTrace();
-//				} catch (ResourcePropertyRetrievalException e) {
-//					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
-//					e.printStackTrace();
-//				}
 			}
 			// query by Point of Contact
 			else if (sq.queryCriteria.equals("Point Of Contact")) {
