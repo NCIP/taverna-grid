@@ -55,9 +55,11 @@ public class CaGridServiceSearcher {
 
 	       List<CaGridService> caGridServices = null;                	
 	        try {
+	    		logger.info("Starting caGrid service search for " + caGridName + " using Index Service: " + indexServiceURL);
 				caGridServices=CaGridServiceQueryUtility.load(indexServiceURL, serviceQueryList);
 	        }
 			catch (Exception ex) {
+				ex.printStackTrace();
 				callBack.fail("An error occured when contacting the Index Service - could not load caGrid services.", ex);
 				return;
 	        }
@@ -92,9 +94,14 @@ public class CaGridServiceSearcher {
 					serviceDescriptions.add(serviceDesc);
 				}
 			}
+			if (serviceDescriptions.isEmpty()){
+				callBack.fail("caGrid search found 0 services", null);
+			}
+			else{
 			logger.info("Added " + caGridServices.size() + " caGrid services to Service Panel.");
 	    	callBack.partialResults(serviceDescriptions);
 	    	callBack.finished();
+			}
 		}
 }
 

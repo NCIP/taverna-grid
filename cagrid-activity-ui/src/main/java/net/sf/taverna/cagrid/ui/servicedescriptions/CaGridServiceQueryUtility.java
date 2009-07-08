@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.log4j.Logger;
 
@@ -67,10 +69,13 @@ public class CaGridServiceQueryUtility {
 		List<CaGridService> services = new ArrayList<CaGridService>();
 
 		// Get the categories for this installation
-		boolean findServices = loadServices(indexURL, sq, services);
-		if (!findServices) {
-			throw new Exception("Unable to locate Index Service at " + indexURL);
-		}
+		boolean foundSome = loadServices(indexURL, sq, services);
+		if (!foundSome || services.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "caGrid services search did not find any matching services", 
+                    "caGrid services search",
+                    JOptionPane.INFORMATION_MESSAGE);  		
+        }
 		return services;
 	}
 
@@ -79,13 +84,18 @@ public class CaGridServiceQueryUtility {
 			List<CaGridService> services) throws Exception {
 		boolean foundSome = false;
 
-		logger.info("Starting to search for caGrid services: using " + sq.length + " additonal search criteria.");
+		if (sq.length == 0){
+			logger.info("caGrid services search is searching for all services.");
+		}
+		else{
+			logger.info("caGrid services search is using " + sq.length + " search criteria.");
+		}
 		EndpointReferenceType[] servicesList = null;
 		servicesList = getEPRListByServiceQueryArray(indexURL, sq);
 		logger.info("caGrid DiscoveryClient loaded and EPR to services returned.");
 		if (servicesList == null){
 			// Something fishy happened
-			logger.info("Resulting caGrid service list returned is null.");
+			logger.error("caGrid search: resulting caGrid service list returned is null due to an error.");
 			return foundSome;
 		}
 		else{
@@ -151,7 +161,7 @@ public class CaGridServiceQueryUtility {
 
 	public static EndpointReferenceType[] getEPRListByServiceQuery(
 			String indexURL, CaGridServiceQuery sq) {
-		EndpointReferenceType[] servicesList = null;
+		EndpointReferenceType[] servicesList  = null;
 		DiscoveryClient client = null;
 		try {
 			client = new DiscoveryClient(indexURL);
@@ -165,58 +175,64 @@ public class CaGridServiceQueryUtility {
 			try {
 				servicesList = client.getAllServices(true);
 			} catch (RemoteResourcePropertyRetrievalException e) {
-				// TODO Auto-generated catch block
+				logger.error("Error retrieving all caGrid services from the Index Service", e);
 				e.printStackTrace();
 			} catch (QueryInvalidException e) {
-				// TODO Auto-generated catch block
+				logger.error("Error retrieving all caGrid services from the Index Service", e);
 				e.printStackTrace();
 			} catch (ResourcePropertyRetrievalException e) {
-				// TODO Auto-generated catch block
+				logger.error("Error retrieving all caGrid services from the Index Service", e);
 				e.printStackTrace();
 			}
 		} else {
 
-			logger.info("Service Index URL: " + indexURL);
 			// semanticQueryingClause = indexURL.substring(n1+2);
 
-			logger.info("Service Query: " + sq.queryCriteria + "  == "
+			logger.info("caGrid service query criteria: " + sq.queryCriteria + "  == "
 					+ sq.queryValue);
 			
 			// TODO: semantic based service searching
 			// query by Search String
 			if (sq.queryCriteria.equals("Search String")) {
+				logger.info("Searching by 'Search Sting' criteria.");
 				try {
 					servicesList = client
 							.discoverServicesBySearchString(sq.queryCriteria);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Search String'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Search String'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Search String'", e);
 					e.printStackTrace();
 				}
 			}
 			// query by Research Center Name
 			else if (sq.queryCriteria.equals("Research Center")) {
+				logger.info("Searching by 'Research Center' criteria.");
 				try {
 					servicesList = client
 							.discoverServicesByResearchCenter(sq.queryValue);
-				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (Exception e) {
+						logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
+						e.printStackTrace();
 				}
+//				 catch (RemoteResourcePropertyRetrievalException e) {
+//					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
+//					e.printStackTrace();
+//				} catch (QueryInvalidException e) {
+//					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
+//					e.printStackTrace();
+//				} catch (ResourcePropertyRetrievalException e) {
+//					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Research Center'", e);
+//					e.printStackTrace();
+//				}
 			}
 			// query by Point of Contact
 			else if (sq.queryCriteria.equals("Point Of Contact")) {
+				logger.info("Searching by 'Point Of Contact' criteria.");
 				PointOfContact poc = new PointOfContact();
 				int n3 = sq.queryValue.indexOf(" ");
 				String firstName = sq.queryValue.substring(0, n3);
@@ -226,114 +242,120 @@ public class CaGridServiceQueryUtility {
 				try {
 					servicesList = client.discoverServicesByPointOfContact(poc);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Point of Contact'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Point of Contact'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Point of Contact'", e);
 					e.printStackTrace();
 				}
 			}
 			// query by Service Name
 			else if (sq.queryCriteria.equals("Service Name")) {
+				logger.info("Searching by 'Service Name' criteria.");
 				try {
 					servicesList = client.discoverServicesByName(sq.queryValue);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Service Name'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Service Name'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Service Name'", e);
 					e.printStackTrace();
 				}
 			}
 			// query by Operation Name
 			else if (sq.queryCriteria.equals("Operation Name")) {
+				logger.info("Searching by 'Operation Name' criteria.");
 				try {
 					servicesList = client
 							.discoverServicesByOperationName(sq.queryValue);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Name'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Name'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Name'", e);
 					e.printStackTrace();
 				}
 			}
 			// query by Operation Input
 			else if (sq.queryCriteria.equals("Operation Input")) {
+				logger.info("Searching by 'Operation Input' criteria.");
 				UMLClass umlClass = new UMLClass();
 				umlClass.setClassName(sq.queryValue);
 				try {
 					servicesList = client
 							.discoverServicesByOperationInput(umlClass);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Input'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Input'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Input'", e);
 					e.printStackTrace();
 				}
 			}
 			// query by Operation Output
 			else if (sq.queryCriteria.equals("Operation Output")) {
+				logger.info("Searching by 'Operation Output' criteria.");
 				UMLClass umlClass = new UMLClass();
 				umlClass.setClassName(sq.queryValue);
 				try {
 					servicesList = client
 							.discoverServicesByOperationOutput(umlClass);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Output'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Output'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Output'", e);
 					e.printStackTrace();
 				}
 			}
 			// query by Operation Class
 			else if (sq.queryCriteria.equals("Operation Class")) {
+				logger.info("Searching by 'Operation Class' criteria.");
 				UMLClass umlClass = new UMLClass();
 				umlClass.setClassName(sq.queryValue);
 				try {
 					servicesList = client
 							.discoverServicesByOperationClass(umlClass);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Class'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Class'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Operation Class'", e);
 					e.printStackTrace();
 				}
 			}
 			// discoverServicesByConceptCode("C43418")
 			else if (sq.queryCriteria.equals("Concept Code")) {
+				logger.info("Searching by 'Concept Code' criteria.");
 				try {
 					servicesList = client
 							.discoverServicesByConceptCode(sq.queryValue);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Concept Code'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Concept Code'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Concept Code'", e);
 					e.printStackTrace();
 				}
 			}
@@ -343,17 +365,18 @@ public class CaGridServiceQueryUtility {
 			// getAllDataServices
 			// discoverDataServicesByDomainModel("caCore")
 			else if (sq.queryCriteria.equals("Domain Model for Data Services")) {
+				logger.info("Searching by 'Domain Model for Data Services' criteria.");
 				try {
 					servicesList = client
 							.discoverDataServicesByDomainModel(sq.queryValue);
 				} catch (RemoteResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Domain Model for Data Services'", e);
 					e.printStackTrace();
 				} catch (QueryInvalidException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Domain Model for Data Services'", e);
 					e.printStackTrace();
 				} catch (ResourcePropertyRetrievalException e) {
-					// TODO Auto-generated catch block
+					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Domain Model for Data Services'", e);
 					e.printStackTrace();
 				}
 			}
