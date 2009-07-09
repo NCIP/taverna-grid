@@ -117,105 +117,131 @@
  <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns3:Service name="InterProScan" namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan" packageName="uk.org.mygrid.cagrid.servicewrapper.service.interproscan" xsi:type="ns3:ServiceType">
    <ns4:Methods xsi:type="ns4:MethodsType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Methods">
-    <ns4:Method isImported="true" isProvided="true" name="GetMultipleResourceProperties" xsi:type="ns4:MethodType">
-     <ns4:Output qName="void" isArray="false"/>
-     <ns5:MethodSecurity xsi:type="ns5:MethodSecurity" xmlns:ns5="gme://gov.nih.nci.cagrid.introduce/1/Security">
-      <ns5:SecuritySetting xsi:type="ns5:SecuritySetting">None</ns5:SecuritySetting>
-     </ns5:MethodSecurity>
-     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns6:GetMultipleResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns6:GetMultipleResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetMultipleResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns6="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
-     <ns4:ProviderInformation providerClass="GetMRPProvider"/>
-    </ns4:Method>
-    <ns4:Method isImported="true" isProvided="true" name="GetResourceProperty" xsi:type="ns4:MethodType">
-     <ns4:Output qName="void" isArray="false"/>
-     <ns7:MethodSecurity xsi:type="ns7:MethodSecurity" xmlns:ns7="gme://gov.nih.nci.cagrid.introduce/1/Security">
-      <ns7:SecuritySetting xsi:type="ns7:SecuritySetting">None</ns7:SecuritySetting>
-     </ns7:MethodSecurity>
-     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns8:GetResourcePropertyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns8:GetResourcePropertyResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetResourceProperty" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns8="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
-     <ns4:ProviderInformation providerClass="GetRPProvider"/>
-    </ns4:Method>
-    <ns4:Method isImported="true" isProvided="true" name="QueryResourceProperties" xsi:type="ns4:MethodType">
-     <ns4:Output qName="void" isArray="false"/>
-     <ns9:MethodSecurity xsi:type="ns9:MethodSecurity" xmlns:ns9="gme://gov.nih.nci.cagrid.introduce/1/Security">
-      <ns9:SecuritySetting xsi:type="ns9:SecuritySetting">None</ns9:SecuritySetting>
-     </ns9:MethodSecurity>
-     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns10:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns10:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns10="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
-     <ns4:ProviderInformation providerClass="QueryRPProvider"/>
-    </ns4:Method>
     <ns4:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns4:MethodType">
-     <ns4:Output qName="ns11:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
-     <ns12:MethodSecurity xsi:type="ns12:MethodSecurity" xmlns:ns12="gme://gov.nih.nci.cagrid.introduce/1/Security">
-      <ns12:SecuritySetting xsi:type="ns12:SecuritySetting">None</ns12:SecuritySetting>
-      <ns12:MethodAuthorization xsi:type="ns12:MethodAuthorization">
-       <ns12:NoAuthorization xsi:type="ns12:NoAuthorization"/>
-      </ns12:MethodAuthorization>
-     </ns12:MethodSecurity>
+     <ns4:Output qName="ns5:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns6:MethodSecurity xsi:type="ns6:MethodSecurity" xmlns:ns6="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns6:SecuritySetting xsi:type="ns6:SecuritySetting">None</ns6:SecuritySetting>
+      <ns6:MethodAuthorization xsi:type="ns6:MethodAuthorization">
+       <ns6:NoAuthorization xsi:type="ns6:NoAuthorization"/>
+      </ns6:MethodAuthorization>
+     </ns6:MethodSecurity>
      <ns4:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
      <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
     </ns4:Method>
     <ns4:Method description="Invoke InterProScan asynchronously - returns an endpoint reference to the job that will contain the results" isImported="false" isProvided="false" name="interProScan" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="ns13:InterProScanInput" description="" isArray="false" name="interProScanInput" xmlns:ns13="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
+      <ns4:Input qName="ns7:InterProScanInput" description="" isArray="false" name="interProScanInput" xmlns:ns7="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
      </ns4:Inputs>
-     <ns4:Output qName="ns14:InterProScanJobReference" description="" isArray="false" xmlns:ns14="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/types"/>
+     <ns4:Output qName="ns8:InterProScanJobReference" description="" isArray="false" xmlns:ns8="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/types"/>
      <ns4:Exceptions/>
     </ns4:Method>
    </ns4:Methods>
-   <ns15:ResourcePropertiesList xsi:type="ns15:ResourcePropertiesListType" xmlns:ns15="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns15:ResourceProperty qName="ns16:ServiceMetadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns15:ResourcePropertyType" xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
-   </ns15:ResourcePropertiesList>
+   <ns9:ResourcePropertiesList xsi:type="ns9:ResourcePropertiesListType" xmlns:ns9="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns9:ResourceProperty qName="ns10:ServiceMetadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns9:ResourcePropertyType" xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+   </ns9:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
     <ns3:Singleton xsi:type="ns3:Singleton"/>
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
-    <ns3:ResourcePropertyManagement xsi:type="ns3:ResourcePropertyManagement"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
   <ns3:Service name="InterProScanJob" namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job" packageName="uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job" xsi:type="ns3:ServiceType">
-   <ns17:Methods xsi:type="ns17:MethodsType" xmlns:ns17="gme://gov.nih.nci.cagrid.introduce/1/Methods">
-    <ns17:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns17:MethodType">
-     <ns17:Output qName="ns18:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+   <ns11:Methods xsi:type="ns11:MethodsType" xmlns:ns11="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns11:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns11:MethodType">
+     <ns11:Output qName="ns12:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns13:MethodSecurity xsi:type="ns13:MethodSecurity" xmlns:ns13="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns13:SecuritySetting xsi:type="ns13:SecuritySetting">None</ns13:SecuritySetting>
+      <ns13:MethodAuthorization xsi:type="ns13:MethodAuthorization">
+       <ns13:NoAuthorization xsi:type="ns13:NoAuthorization"/>
+      </ns13:MethodAuthorization>
+     </ns13:MethodSecurity>
+     <ns11:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns11:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns11:Method>
+    <ns11:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns11:MethodType">
+     <ns11:Output qName="void" isArray="false"/>
+     <ns11:ImportInformation fromIntroduce="false" inputMessage="ns14:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns14:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns14="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns11:ProviderInformation providerClass="DestroyProvider"/>
+    </ns11:Method>
+    <ns11:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns11:MethodType">
+     <ns11:Output qName="void" isArray="false"/>
+     <ns11:ImportInformation fromIntroduce="false" inputMessage="ns15:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns15:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns15="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns11:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns11:Method>
+    <ns11:Method isImported="true" isProvided="true" name="Subscribe" xsi:type="ns11:MethodType">
+     <ns11:Output qName="void" isArray="false"/>
+     <ns11:ImportInformation fromIntroduce="false" inputMessage="ns16:SubscribeRequest" namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" outputMessage="ns16:SubscribeResponse" packageName="org.oasis.wsn" portTypeName="NotificationProducer" wsdlFile="../wsrf/notification/WS-BaseN.wsdl" xmlns:ns16="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl"/>
+     <ns11:ProviderInformation providerClass="SubscribeProvider"/>
+    </ns11:Method>
+    <ns11:Method isImported="true" isProvided="true" name="GetMultipleResourceProperties" xsi:type="ns11:MethodType">
+     <ns11:Output qName="void" isArray="false"/>
+     <ns17:MethodSecurity xsi:type="ns17:MethodSecurity" xmlns:ns17="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns17:SecuritySetting xsi:type="ns17:SecuritySetting">None</ns17:SecuritySetting>
+     </ns17:MethodSecurity>
+     <ns11:ImportInformation fromIntroduce="false" inputMessage="ns18:GetMultipleResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns18:GetMultipleResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetMultipleResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns18="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns11:ProviderInformation providerClass="GetMRPProvider"/>
+    </ns11:Method>
+    <ns11:Method isImported="true" isProvided="true" name="GetResourceProperty" xsi:type="ns11:MethodType">
+     <ns11:Output qName="void" isArray="false"/>
      <ns19:MethodSecurity xsi:type="ns19:MethodSecurity" xmlns:ns19="gme://gov.nih.nci.cagrid.introduce/1/Security">
       <ns19:SecuritySetting xsi:type="ns19:SecuritySetting">None</ns19:SecuritySetting>
-      <ns19:MethodAuthorization xsi:type="ns19:MethodAuthorization">
-       <ns19:NoAuthorization xsi:type="ns19:NoAuthorization"/>
-      </ns19:MethodAuthorization>
      </ns19:MethodSecurity>
-     <ns17:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
-     <ns17:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
-    </ns17:Method>
-    <ns17:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns17:MethodType">
-     <ns17:Output qName="void" isArray="false"/>
-     <ns17:ImportInformation fromIntroduce="false" inputMessage="ns20:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns20:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns20="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
-     <ns17:ProviderInformation providerClass="DestroyProvider"/>
-    </ns17:Method>
-    <ns17:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns17:MethodType">
-     <ns17:Output qName="void" isArray="false"/>
-     <ns17:ImportInformation fromIntroduce="false" inputMessage="ns21:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns21:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns21="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
-     <ns17:ProviderInformation providerClass="SetTerminationTimeProvider"/>
-    </ns17:Method>
-    <ns17:Method isImported="true" isProvided="true" name="Subscribe" xsi:type="ns17:MethodType">
-     <ns17:Output qName="void" isArray="false"/>
-     <ns17:ImportInformation fromIntroduce="false" inputMessage="ns22:SubscribeRequest" namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" outputMessage="ns22:SubscribeResponse" packageName="org.oasis.wsn" portTypeName="NotificationProducer" wsdlFile="../wsrf/notification/WS-BaseN.wsdl" xmlns:ns22="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl"/>
-     <ns17:ProviderInformation providerClass="SubscribeProvider"/>
-    </ns17:Method>
-   </ns17:Methods>
-   <ns23:ResourcePropertiesList xsi:type="ns23:ResourcePropertiesListType" xmlns:ns23="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns23:ResourceProperty qName="ns24:InterProScanInput" description="" fileLocation="InterProScanJob_interProScanInput.xml" populateFromFile="false" register="false" xsi:type="ns23:ResourcePropertyType" xmlns:ns24="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
-    <ns23:ResourceProperty qName="ns25:InterProScanOutput" description="" fileLocation="InterProScanJob_interProScanOutput.xml" populateFromFile="false" register="false" xsi:type="ns23:ResourcePropertyType" xmlns:ns25="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
-    <ns23:ResourceProperty qName="ns26:Fault" description="" fileLocation="InterProScanJob_fault.xml" populateFromFile="false" register="false" xsi:type="ns23:ResourcePropertyType" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"/>
-    <ns23:ResourceProperty qName="ns27:CurrentTime" populateFromFile="false" register="false" xsi:type="ns23:ResourcePropertyType" xmlns:ns27="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns23:ResourceProperty qName="ns28:TerminationTime" populateFromFile="false" register="false" xsi:type="ns23:ResourcePropertyType" xmlns:ns28="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-   </ns23:ResourcePropertiesList>
+     <ns11:ImportInformation fromIntroduce="false" inputMessage="ns20:GetResourcePropertyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns20:GetResourcePropertyResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetResourceProperty" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns20="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns11:ProviderInformation providerClass="GetRPProvider"/>
+    </ns11:Method>
+    <ns11:Method isImported="true" isProvided="true" name="QueryResourceProperties" xsi:type="ns11:MethodType">
+     <ns11:Output qName="void" isArray="false"/>
+     <ns21:MethodSecurity xsi:type="ns21:MethodSecurity" xmlns:ns21="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns21:SecuritySetting xsi:type="ns21:SecuritySetting">None</ns21:SecuritySetting>
+     </ns21:MethodSecurity>
+     <ns11:ImportInformation fromIntroduce="false" inputMessage="ns22:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns22:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns22="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns11:ProviderInformation providerClass="QueryRPProvider"/>
+    </ns11:Method>
+    <ns11:Method description="" isImported="false" isProvided="false" name="getInputs" xsi:type="ns11:MethodType">
+     <ns11:Inputs/>
+     <ns11:Output qName="ns23:InterProScanInput" description="" isArray="false" xmlns:ns23="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
+     <ns11:Exceptions/>
+    </ns11:Method>
+    <ns11:Method description="" isImported="false" isProvided="false" name="getStatus" xsi:type="ns11:MethodType">
+     <ns11:Inputs>
+      <ns11:Input qName="xsd:string" description="" isArray="false" name="string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns11:Inputs>
+     <ns11:Output qName="void" description="" isArray="false"/>
+     <ns11:Exceptions/>
+    </ns11:Method>
+    <ns11:Method description="" isImported="false" isProvided="false" name="getOutputs" xsi:type="ns11:MethodType">
+     <ns11:Inputs>
+      <ns11:Input qName="ns24:InterProScanOutput" description="" isArray="false" name="interProScanOutput" xmlns:ns24="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
+     </ns11:Inputs>
+     <ns11:Output qName="void" description="" isArray="false"/>
+     <ns11:Exceptions/>
+    </ns11:Method>
+    <ns11:Method description="" isImported="false" isProvided="false" name="getError" xsi:type="ns11:MethodType">
+     <ns11:Inputs>
+      <ns11:Input qName="ns25:Fault" description="" isArray="false" name="fault" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"/>
+     </ns11:Inputs>
+     <ns11:Output qName="void" description="" isArray="false"/>
+     <ns11:Exceptions/>
+    </ns11:Method>
+   </ns11:Methods>
+   <ns26:ResourcePropertiesList xsi:type="ns26:ResourcePropertiesListType" xmlns:ns26="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns26:ResourceProperty qName="ns27:InterProScanInput" description="" fileLocation="InterProScanJob_interProScanInput.xml" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns27="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
+    <ns26:ResourceProperty qName="ns28:InterProScanOutput" description="" fileLocation="InterProScanJob_interProScanOutput.xml" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns28="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
+    <ns26:ResourceProperty qName="ns29:Fault" description="" fileLocation="InterProScanJob_fault.xml" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns29="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"/>
+    <ns26:ResourceProperty qName="ns30:CurrentTime" description="" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns30="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns26:ResourceProperty qName="ns31:TerminationTime" description="" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns31="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns26:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Lifetime xsi:type="ns3:Lifetime"/>
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
     <ns3:Notification xsi:type="ns3:Notification"/>
-    <ns3:Secure xsi:type="ns3:Secure"/>
+    <ns3:ResourcePropertyManagement xsi:type="ns3:ResourcePropertyManagement"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns29:Extensions xsi:type="ns29:ExtensionsType" xmlns:ns29="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns29:Extension name="cagrid_metadata" version="1.3" xsi:type="ns29:ExtensionType"/>
- </ns29:Extensions>
+ <ns32:Extensions xsi:type="ns32:ExtensionsType" xmlns:ns32="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns32:Extension name="cagrid_metadata" version="1.3" xsi:type="ns32:ExtensionType"/>
+ </ns32:Extensions>
 </ns1:ServiceDescription>

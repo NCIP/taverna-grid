@@ -18,5 +18,19 @@ public interface InterProScanJobI {
 
   public org.oasis.wsn.SubscribeResponse subscribe(org.oasis.wsn.Subscribe params) throws RemoteException ;
 
+  public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException ;
+
+  public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
+
+  public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
+
+  public uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput getInputs() throws RemoteException ;
+
+  public void getStatus(java.lang.String string) throws RemoteException ;
+
+  public void getOutputs(uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput interProScanOutput) throws RemoteException ;
+
+  public void getError(gov.nih.nci.cagrid.metadata.service.Fault fault) throws RemoteException ;
+
 }
 
