@@ -8,8 +8,7 @@
 		namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
 		schemaLocation="common.xsd">
 	</xsd:import>
-	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"></xsd:import>
-	<xsd:element name="Alignment" type="ncbiblast:Alignment" />
+	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"></xsd:import>
 	<xsd:complexType name="Alignment">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -77,9 +76,7 @@
 			<xsd:element name="querySequenceFragment"
 				type="ncbiblast:SequenceFragment" minOccurs="1" maxOccurs="1" />
 		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:element name="SequenceSimilarity"
-		type="ncbiblast:SequenceSimilarity" />
+	</xsd:complexType>
 	<xsd:complexType name="SequenceSimilarity">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -133,9 +130,7 @@
 			<xsd:element name="Alignments" type="ncbiblast:Alignment"
 				minOccurs="1" maxOccurs="unbounded" />
 		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:element name="SequenceFragment"
-		type="ncbiblast:SequenceFragment" />
+	</xsd:complexType>
 	<xsd:complexType name="SequenceFragment">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -171,9 +166,7 @@
 				</xsd:annotation>
 			</xsd:element>
 		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:element name="NCBIBLASTOutput"
-		type="ncbiblast:NCBIBLASTOutput" />
+	</xsd:complexType>
 	<xsd:complexType name="NCBIBLASTOutput">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -197,29 +190,7 @@
 				type="ncbiblast:SequenceSimilarity" minOccurs="0"
 				maxOccurs="unbounded" />
 		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:element name="WrappedNCBIBLASTService"
-		type="ncbiblast:WrappedNCBIBLASTService" />
-	<xsd:complexType name="WrappedNCBIBLASTService">
-		<xsd:annotation>
-			<xsd:documentation>
-				Represents Taverbna-wrapping of the NCBI BLAST service
-				to be used by caGrid clients.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="description" type="xsd:string"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Service description - dummy attribute as classes
-						with no attributes cannot be uploaded to caDSR.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:element name="NCBIBLASTInput" type="ncbiblast:NCBIBLASTInput" />
+	</xsd:complexType>
 	<xsd:complexType name="NCBIBLASTInput">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -245,9 +216,7 @@
 				name="ProteinOrNucleotideSequenceRepresentation"
 				type="common:SequenceRepresentation" minOccurs="1" maxOccurs="1" />
 		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:element name="NCBIBLASTInputParameters"
-		type="ncbiblast:NCBIBLASTInputParameters" />
+	</xsd:complexType>
 	<xsd:complexType name="NCBIBLASTInputParameters">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -437,4 +406,12 @@
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
+
+	<xsd:element name="NCBIBlastInput"
+		type="ncbiblast:NCBIBLASTInput">
+	</xsd:element>
+	
+    <xsd:element name="NCBIBlastOutput"
+    	type="ncbiblast:NCBIBLASTOutput">
+    </xsd:element>
 </xsd:schema>
