@@ -70,6 +70,34 @@ public class InterProScanJobAuthorization implements PDP {
 	public void authorizeSubscribe(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeGetMultipleResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetResourceProperty(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeQueryResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetInputs(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetStatus(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetOutputs(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetError(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -89,6 +117,27 @@ public class InterProScanJobAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("subscribe")){
 			authorizeSubscribe(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getMultipleResourceProperties")){
+			authorizeGetMultipleResourceProperties(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getResourceProperty")){
+			authorizeGetResourceProperty(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("queryResourceProperties")){
+			authorizeQueryResourceProperties(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getInputs")){
+			authorizeGetInputs(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getStatus")){
+			authorizeGetStatus(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getOutputs")){
+			authorizeGetOutputs(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getError")){
+			authorizeGetError(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

@@ -55,18 +55,6 @@ public class InterProScanAuthorization implements PDP {
 		}
 	}
 					
-	public void authorizeGetMultipleResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
-		
-	}
-	   				
-	public void authorizeGetResourceProperty(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
-		
-	}
-	   				
-	public void authorizeQueryResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
-		
-	}
-	   				
 	public void authorizeGetServiceSecurityMetadata(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
@@ -82,16 +70,7 @@ public class InterProScanAuthorization implements PDP {
 		if(!operation.getNamespaceURI().equals(getServiceNamespace())){
 		  return false;
 		}
-		if(operation.getLocalPart().equals("getMultipleResourceProperties")){
-			authorizeGetMultipleResourceProperties(peerSubject, context, operation);
-			return true;
-		} else if(operation.getLocalPart().equals("getResourceProperty")){
-			authorizeGetResourceProperty(peerSubject, context, operation);
-			return true;
-		} else if(operation.getLocalPart().equals("queryResourceProperties")){
-			authorizeQueryResourceProperties(peerSubject, context, operation);
-			return true;
-		} else if(operation.getLocalPart().equals("getServiceSecurityMetadata")){
+		if(operation.getLocalPart().equals("getServiceSecurityMetadata")){
 			authorizeGetServiceSecurityMetadata(peerSubject, context, operation);
 			return true;
 		} else if(operation.getLocalPart().equals("interProScan")){

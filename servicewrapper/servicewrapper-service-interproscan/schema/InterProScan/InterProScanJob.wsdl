@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns2="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns0="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan" xmlns:ns8="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/types" xmlns:ns1="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns3="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/types" xmlns:ns2="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:ns9="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" name="InterProScanJob" targetNamespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns2="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns3="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:ns0="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan" xmlns:ns8="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/types" xmlns:ns1="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns3="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/types" xmlns:ns2="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:ns9="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" name="InterProScanJob" targetNamespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="./../wsrf/notification/WS-BaseN.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" location="./../wsrf/lifetime/WS-ResourceLifetime.wsdl" />
   <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
   <!--============================================================
 
                       T Y P E S
@@ -24,6 +25,66 @@
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <element name="GetInputsRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetInputsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:InterProScanInput" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetStatusRequest">
+        <complexType>
+          <sequence>
+            <element name="string" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetStatusResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetOutputsRequest">
+        <complexType>
+          <sequence>
+            <element name="interProScanOutput">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:InterProScanOutput" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetOutputsResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetErrorRequest">
+        <complexType>
+          <sequence>
+            <element name="fault">
+              <complexType>
+                <sequence>
+                  <element ref="ns6:Fault" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetErrorResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
       <element name="InterProScanJobResourceProperties">
         <complexType>
           <sequence>
@@ -38,12 +99,52 @@
     </schema>
   </types>
   <!--  place service messages here -->
+  <message name="GetInputsRequest">
+    <part name="parameters" element="tns:GetInputsRequest" />
+  </message>
+  <message name="GetInputsResponse">
+    <part name="parameters" element="tns:GetInputsResponse" />
+  </message>
+  <message name="GetStatusRequest">
+    <part name="parameters" element="tns:GetStatusRequest" />
+  </message>
+  <message name="GetStatusResponse">
+    <part name="parameters" element="tns:GetStatusResponse" />
+  </message>
+  <message name="GetOutputsRequest">
+    <part name="parameters" element="tns:GetOutputsRequest" />
+  </message>
+  <message name="GetOutputsResponse">
+    <part name="parameters" element="tns:GetOutputsResponse" />
+  </message>
+  <message name="GetErrorRequest">
+    <part name="parameters" element="tns:GetErrorRequest" />
+  </message>
+  <message name="GetErrorResponse">
+    <part name="parameters" element="tns:GetErrorResponse" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
                       
   ============================================================-->
   <portType name="InterProScanJobPortType" wsrp:ResourceProperties="tns:InterProScanJobResourceProperties">
+    <operation name="getInputs">
+      <input message="tns:GetInputsRequest" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/GetInputsRequest" />
+      <output message="tns:GetInputsResponse" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/GetInputsResponse" />
+    </operation>
+    <operation name="getStatus">
+      <input message="tns:GetStatusRequest" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/GetStatusRequest" />
+      <output message="tns:GetStatusResponse" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/GetStatusResponse" />
+    </operation>
+    <operation name="getOutputs">
+      <input message="tns:GetOutputsRequest" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/GetOutputsRequest" />
+      <output message="tns:GetOutputsResponse" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/GetOutputsResponse" />
+    </operation>
+    <operation name="getError">
+      <input message="tns:GetErrorRequest" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/GetErrorRequest" />
+      <output message="tns:GetErrorResponse" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/GetErrorResponse" />
+    </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
@@ -69,6 +170,27 @@
       <wsdl:fault name="TopicPathDialectUnknownFault" message="wsntw:TopicPathDialectUnknownFault" />
       <wsdl:fault name="InvalidTopicExpressionFault" message="wsntw:InvalidTopicExpressionFault" />
       <wsdl:fault name="TopicNotSupportedFault" message="wsntw:TopicNotSupportedFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
+      <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
+      <wsdl:output name="GetMultipleResourcePropertiesResponse" message="wsrpw:GetMultipleResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetResourceProperty">
+      <wsdl:input name="GetResourcePropertyRequest" message="wsrpw:GetResourcePropertyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourceProperty" />
+      <wsdl:output name="GetResourcePropertyResponse" message="wsrpw:GetResourcePropertyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourcePropertyResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="QueryResourceProperties">
+      <wsdl:input name="QueryResourcePropertiesRequest" message="wsrpw:QueryResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourceProperties" />
+      <wsdl:output name="QueryResourcePropertiesResponse" message="wsrpw:QueryResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+      <wsdl:fault name="UnknownQueryExpressionDialectFault" message="wsrpw:UnknownQueryExpressionDialectFault" />
+      <wsdl:fault name="InvalidQueryExpressionFault" message="wsrpw:InvalidQueryExpressionFault" />
+      <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
     </wsdl:operation>
   </portType>
 </definitions>
