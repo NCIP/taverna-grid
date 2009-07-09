@@ -1,38 +1,46 @@
 package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.apache.xmlbeans.XmlBeans;
+import java.util.List;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.ac.ebi.www.wsinterproscan.Data;
 import uk.ac.ebi.www.wsinterproscan.InputParams;
-import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.Invoker;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 
 
 public class InterProScanInvokerTest {
 
-	private static final String ISO_8859_1 = "ISO-8859-1";
+	private static final Namespace INTERPROSCAN_NS = Namespace.getNamespace("http://www.ebi.ac.uk/schema"); // sic
 	private static final String EXPIRED_JOB_ID = "iprscan-20090529-1051066486";
-	private Invoker<InterProScanInput, byte[]> invoker;
+	private InterProScanInvoker invoker;
 
 	@Before
 	public void findInvoker() throws InvokerException {
-		invoker = new InterProScanInvoker();		
+		invoker = new DummyInterProScanInvoker();		
+	//	invoker = new InterProScanInvokerImpl();		
+		
+		// Only use the real InterProScanInvoker in integration tests		
 	}
 
 	
-	@Ignore("For now")
+	@SuppressWarnings("unchecked")
 	@Test
 	public void invokeInterProScan() throws Exception {
 		InterProScanInput analyticalServiceInput = new InterProScanInput();
 		InputParams inputParams = uk.ac.ebi.www.wsinterproscan.InputParams.Factory.newInstance();
 		inputParams.setEmail("mannen@soiland-reyes.com");
-		//inputParams.setAsync(true);
 		inputParams.setSeqtype("P");
+		inputParams.setApp("PatternScan");
 		analyticalServiceInput.setParams(inputParams);
 		
 		Data[] content = new Data[1];
@@ -42,32 +50,58 @@ public class InterProScanInvokerTest {
 		analyticalServiceInput.setContent(content);
 		
 		String jobID = invoker.runJob(analyticalServiceInput);
-		String status = "RUNNING";
-		while (status.equals("RUNNING")) {
-			Thread.sleep(1500);
-			status = invoker.checkStatus(jobID);
-			System.out.println(status);
+		String status = invoker.checkStatus(jobID);
+		assertTrue("Expected status RUNNING/PENDING, but was " + status, status
+				.equals("RUNNING")
+				|| status.equals("PENDING"));
+		
+		try {
+			invoker.poll(jobID);
+			fail("premature poll did not fail");
+		} catch (InvokerException ex) {
+			// expected			
 		}
-		byte[] poll = invoker.poll(jobID);
 		
-		String pollXML = new String(poll, ISO_8859_1);	
-		System.out.println(pollXML);
+		while (status.equals("RUNNING") || status.equals("PENDING")) {
+			Thread.sleep(450);
+			status = invoker.checkStatus(jobID);
+		}
+		assertEquals("Status was not DONE", "DONE", status);
 		
-		assertTrue(pollXML.startsWith("<?xml"));
-		assertTrue(pollXML.contains("sp|P01174|WAP_RAT"));
-		assertTrue(pollXML.contains("GO:0030414"));
+		Document pollXML = invoker.poll(jobID);
+		Element rootElement = pollXML.getRootElement();
+		assertEquals("EBIInterProScanResults", rootElement.getName());
+		assertEquals(INTERPROSCAN_NS,
+				rootElement.getNamespace());
+		
+		
+		Element protein = rootElement.getChild("interpro_matches", INTERPROSCAN_NS).getChild("protein", INTERPROSCAN_NS);
+		assertNotNull("Protein element not returned from service", protein);
+		
+		// What we searched for
+		assertEquals("sp|P01174|WAP_RAT", protein.getAttributeValue("id"));
+		
+		String matchID = "PS00317";
+		boolean found = false;		
+		for (Element interpro : (List<Element>)protein.getChildren("interpro", INTERPROSCAN_NS)) {
+			for (Element match : (List<Element>)interpro.getChildren("match", INTERPROSCAN_NS)) {				
+				if (match.getAttributeValue("id").equals(matchID)) {
+					found = true;
+				}
+			}
+		}
+		assertTrue("Did not find interpro match " + matchID, found);
+		
 	}
 	
-	@Ignore("For now")
 	@Test
 	public void getStatusNotFound() throws Exception {
 		assertEquals("NOT_FOUND", invoker.checkStatus(EXPIRED_JOB_ID));
 	}
 
-	@Ignore("For now")
 	@Test(expected=InvokerException.class)
 	public void pollExpiredFails() throws Exception {
-		byte[] poll = invoker.poll(EXPIRED_JOB_ID);
+		invoker.poll(EXPIRED_JOB_ID);
 	}
 	
 }

@@ -1,80 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<deployment xmlns="http://xml.apache.org/axis/wsdd/"
-	xmlns:aggr="http://mds.globus.org/aggregator/types" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="defaultServerConfig">
-	<service name="SERVICE-INSTANCE-PREFIX/InterProScanJob"
-		provider="Handler" use="literal" style="document">
-		<parameter name="className"
-			value="uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.InterProScanJobProviderImpl" />
-		<wsdlFile>share/schema/InterProScan/InterProScanJob_service.wsdl
-		</wsdlFile>
-		<parameter name="securityDescriptor" value="ETC-PATH/InterProScanJob-security-desc.xml" />
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
-		<parameter name="scope" value="Application" />
-		<parameter name="providers"
-			value=" gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl DestroyProvider SetTerminationTimeProvider SubscribeProvider GetMRPProvider GetRPProvider QueryRPProvider" />
-		<parameter name="loadOnStartup" value="true" />
-		<parameter name="securityMetadata"
-			value="ETC-PATH/InterProScanJob-security-metadata.xml" />
-		<parameter name="interproscanjob-etcDirectoryPath" value="ETC-PATH" />
-		<parameter name="interproscanjob-serviceName" value="InterProScanJob" />
-	</service>
-	<service name="SERVICE-INSTANCE-PREFIX/InterProScan" provider="Handler"
-		use="literal" style="document">
-		<parameter name="className"
-			value="uk.org.mygrid.cagrid.servicewrapper.service.interproscan.service.globus.InterProScanProviderImpl" />
-		<wsdlFile>share/schema/InterProScan/InterProScan_service.wsdl
-		</wsdlFile>
-		<parameter name="securityDescriptor" value="ETC-PATH/InterProScan-security-desc.xml" />
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
-		<parameter name="scope" value="Application" />
-		<parameter name="providers"
-			value=" gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl" />
-		<parameter name="loadOnStartup" value="true" />
-		<parameter name="securityMetadata"
-			value="ETC-PATH/InterProScan-security-metadata.xml" />
-		<parameter name="interproscan-etcDirectoryPath" value="ETC-PATH" />
-		<parameter name="interproscan-serviceName" value="InterProScan" />
-	</service>
-	<typeMapping name="AggregatorContent" qname="aggr:AggregatorContent"
-		type="java:org.globus.mds.aggregator.types.AggregatorContent"
-		serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-		deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-		encodingStyle="" />
-
-	<!--
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:aggr="http://mds.globus.org/aggregator/types" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="defaultServerConfig">
+  <service name="SERVICE-INSTANCE-PREFIX/InterProScanJob" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.InterProScanJobProviderImpl" />
+    <wsdlFile>share/schema/InterProScan/InterProScanJob_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/InterProScanJob-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl DestroyProvider SetTerminationTimeProvider SubscribeProvider GetMRPProvider GetRPProvider QueryRPProvider" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/InterProScanJob-security-metadata.xml" />
+    <parameter name="interproscanjob-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="interproscanjob-serviceName" value="InterProScanJob" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/InterProScan" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="uk.org.mygrid.cagrid.servicewrapper.service.interproscan.service.globus.InterProScanProviderImpl" />
+    <wsdlFile>share/schema/InterProScan/InterProScan_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/InterProScan-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/InterProScan-security-metadata.xml" />
+    <parameter name="interproscan-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="interproscan-serviceName" value="InterProScan" />
+  </service>
+  <typeMapping name="AggregatorContent" qname="aggr:AggregatorContent" type="java:org.globus.mds.aggregator.types.AggregatorContent" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+  <!--
 		Each of the concrete subclasses must be listed here to support
 		polymorphism
 	-->
-	<typeMapping
-		xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
-		qname="ns:ProteinSequenceIdentifier"
-		type="java:uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier"
-		serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-		deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-		encodingStyle="" />
-		<typeMapping
-		xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
-		qname="ns:FASTAProteinSequence"
-		type="java:uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence"
-		serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-		deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-		encodingStyle="" />
-	<typeMapping
-		xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
-		qname="ns:NucleotideSequenceIdentifier"
-		type="java:uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier"
-		serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-		deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-		encodingStyle="" />
-	<typeMapping
-		xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
-		qname="ns:FASTANucleotideSequence"
-		type="java:uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence"
-		serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-		deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-		encodingStyle="" />
+  <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:ProteinSequenceIdentifier" type="java:uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+  <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:FASTAProteinSequence" type="java:uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+  <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:NucleotideSequenceIdentifier" type="java:uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+  <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:FASTANucleotideSequence" type="java:uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
 </deployment>
 

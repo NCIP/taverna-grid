@@ -127,34 +127,30 @@ public class InterProScanJobClient extends InterProScanJobClientBase implements 
     }
   }
 
-  public void getStatus(java.lang.String string) throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getStatus");
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusRequest();
-    params.setString(string);
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusResponse boxedResult = portType.getStatus(params);
+    return boxedResult.getJobStatus();
     }
   }
 
-  public void getOutputs(uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput interProScanOutput) throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput getOutputs() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getOutputs");
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsRequest();
-    uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsRequestInterProScanOutput interProScanOutputContainer = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsRequestInterProScanOutput();
-    interProScanOutputContainer.setInterProScanOutput(interProScanOutput);
-    params.setInterProScanOutput(interProScanOutputContainer);
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsResponse boxedResult = portType.getOutputs(params);
+    return boxedResult.getInterProScanOutput();
     }
   }
 
-  public void getError(gov.nih.nci.cagrid.metadata.service.Fault fault) throws RemoteException {
+  public gov.nih.nci.cagrid.metadata.service.Fault getError() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getError");
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorRequest();
-    uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorRequestFault faultContainer = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorRequestFault();
-    faultContainer.setFault(fault);
-    params.setFault(faultContainer);
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorResponse boxedResult = portType.getError(params);
+    return boxedResult.getFault();
     }
   }
 

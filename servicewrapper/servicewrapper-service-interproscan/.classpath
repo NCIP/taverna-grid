@@ -117,5 +117,6 @@
 	<classpathentry kind="lib" path="lib/xmlbeans-2.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/xmlParserAPIs-2.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/XmlSchema-1.4.2.jar"/>
+	<classpathentry kind="lib" path="lib/servicewrapper-wsdl-interproscan-0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

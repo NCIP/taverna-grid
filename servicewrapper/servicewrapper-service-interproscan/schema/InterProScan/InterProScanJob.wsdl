@@ -39,50 +39,38 @@
       </element>
       <element name="GetStatusRequest">
         <complexType>
-          <sequence>
-            <element name="string" type="xs:string" minOccurs="1" maxOccurs="1" />
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="GetStatusResponse">
         <complexType>
-          <sequence />
+          <sequence>
+            <element ref="ns1:JobStatus" minOccurs="1" maxOccurs="1" />
+          </sequence>
         </complexType>
       </element>
       <element name="GetOutputsRequest">
         <complexType>
-          <sequence>
-            <element name="interProScanOutput">
-              <complexType>
-                <sequence>
-                  <element ref="ns0:InterProScanOutput" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="GetOutputsResponse">
         <complexType>
-          <sequence />
+          <sequence>
+            <element ref="ns0:InterProScanOutput" minOccurs="1" maxOccurs="1" />
+          </sequence>
         </complexType>
       </element>
       <element name="GetErrorRequest">
         <complexType>
-          <sequence>
-            <element name="fault">
-              <complexType>
-                <sequence>
-                  <element ref="ns6:Fault" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
-          </sequence>
+          <sequence />
         </complexType>
       </element>
       <element name="GetErrorResponse">
         <complexType>
-          <sequence />
+          <sequence>
+            <element ref="ns6:Fault" minOccurs="1" maxOccurs="1" />
+          </sequence>
         </complexType>
       </element>
       <element name="InterProScanJobResourceProperties">
@@ -93,6 +81,8 @@
             <element ref="ns6:Fault" />
             <element ref="ns9:CurrentTime" />
             <element ref="ns9:TerminationTime" />
+            <element ref="ns0:JobID" />
+            <element ref="ns1:JobStatus" />
           </sequence>
         </complexType>
       </element>

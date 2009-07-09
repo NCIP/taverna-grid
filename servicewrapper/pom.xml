@@ -18,6 +18,8 @@
 		<module>servicewrapper-invoker-api</module>
 		<module>servicewrapper-invoker-interproscan</module>
 		<module>servicewrapper-invoker-ncbiblast</module>
+		<module>servicewrapper-wsdl-interproscan</module>
+		<module>servicewrapper-wsdl-ncbiblast</module>
 	</modules>
 	
 	<properties>

@@ -10,6 +10,4 @@ import javax.xml.namespace.QName;
  */
 public interface InterProScanJobConstants extends InterProScanJobConstantsBase {
 	
-	public static final QName JOB_ID = new QName(SERVICE_NS, "JobID");
-	
 }
