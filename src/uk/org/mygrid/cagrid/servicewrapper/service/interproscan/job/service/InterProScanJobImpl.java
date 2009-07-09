@@ -9,6 +9,7 @@ import org.jdom.Document;
 import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
 import uk.org.mygrid.cagrid.domain.interproscan.Protein;
+import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.converter.InterProScanConverter;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.invoker.InvokerFactory;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InterProScanInvoker;
@@ -24,6 +25,8 @@ public class InterProScanJobImpl extends InterProScanJobImplBase {
 	private static Logger logger = Logger.getLogger(InterProScanJobImpl.class);
 
 	private InterProScanInvoker invoker = InvokerFactory.getInvoker();
+	
+	private InterProScanConverter converter = new InterProScanConverter();
 
 	public InterProScanJobImpl() throws RemoteException {
 		super();
@@ -105,16 +108,11 @@ public class InterProScanJobImpl extends InterProScanJobImplBase {
 		}
 		logger.info("Data returned for " + jobID + " is: \n" + data);
 		
-		InterProScanOutput output = convertInterProScanOutput(data);
+		InterProScanOutput output = converter.convertInterProScanOutput(data);
 		return output;
 		
 	}
 
-	protected InterProScanOutput convertInterProScanOutput(Document data) {
-		InterProScanOutput output = new InterProScanOutput();
-		output.setProtein(new Protein("asdasd", "asdasd", BigInteger.valueOf(123)));
-		return output;
-	}
 
 	public gov.nih.nci.cagrid.metadata.service.Fault getError()
 			throws RemoteException {

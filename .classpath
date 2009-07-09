@@ -118,5 +118,6 @@
 	<classpathentry kind="lib" path="lib/xmlParserAPIs-2.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/XmlSchema-1.4.2.jar"/>
 	<classpathentry kind="lib" path="lib/servicewrapper-wsdl-interproscan-0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
