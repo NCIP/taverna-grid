@@ -1,23 +1,12 @@
 <ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./interproscan.xsd" namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan" packageName="uk.org.mygrid.cagrid.domain.interproscan" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="Classification" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="DatabaseMatch" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="InterProScanInput" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="InterProScanInputParameters" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="InterProScanOutput" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Protein" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="ProteinSignatureLocation" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="ProteinSignatureMatch" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="JobID" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./common.xsd" namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" packageName="uk.org.mygrid.cagrid.domain.common" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="FASTANucleotideSequence" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="FASTAProteinSequence" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="NucleotideSequenceIdentifier" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="NucleotideSequenceRepresentation" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="ProteinSequenceIdentifier" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="ProteinSequenceRepresentation" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="SequenceRepresentation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="JobStatus" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./valuedomains.xsd" namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" packageName="uk.org.mygrid.cagrid.valuedomains" xsi:type="ns2:NamespaceType"/>
   <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
@@ -204,34 +193,30 @@
      <ns11:Exceptions/>
     </ns11:Method>
     <ns11:Method description="" isImported="false" isProvided="false" name="getStatus" xsi:type="ns11:MethodType">
-     <ns11:Inputs>
-      <ns11:Input qName="xsd:string" description="" isArray="false" name="string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-     </ns11:Inputs>
-     <ns11:Output qName="void" description="" isArray="false"/>
+     <ns11:Inputs/>
+     <ns11:Output qName="ns24:JobStatus" description="" isArray="false" xmlns:ns24="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
      <ns11:Exceptions/>
     </ns11:Method>
     <ns11:Method description="" isImported="false" isProvided="false" name="getOutputs" xsi:type="ns11:MethodType">
-     <ns11:Inputs>
-      <ns11:Input qName="ns24:InterProScanOutput" description="" isArray="false" name="interProScanOutput" xmlns:ns24="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
-     </ns11:Inputs>
-     <ns11:Output qName="void" description="" isArray="false"/>
+     <ns11:Inputs/>
+     <ns11:Output qName="ns25:InterProScanOutput" description="" isArray="false" xmlns:ns25="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
      <ns11:Exceptions/>
     </ns11:Method>
     <ns11:Method description="" isImported="false" isProvided="false" name="getError" xsi:type="ns11:MethodType">
-     <ns11:Inputs>
-      <ns11:Input qName="ns25:Fault" description="" isArray="false" name="fault" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"/>
-     </ns11:Inputs>
-     <ns11:Output qName="void" description="" isArray="false"/>
+     <ns11:Inputs/>
+     <ns11:Output qName="ns26:Fault" description="" isArray="false" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"/>
      <ns11:Exceptions/>
     </ns11:Method>
    </ns11:Methods>
-   <ns26:ResourcePropertiesList xsi:type="ns26:ResourcePropertiesListType" xmlns:ns26="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns26:ResourceProperty qName="ns27:InterProScanInput" description="" fileLocation="InterProScanJob_interProScanInput.xml" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns27="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
-    <ns26:ResourceProperty qName="ns28:InterProScanOutput" description="" fileLocation="InterProScanJob_interProScanOutput.xml" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns28="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
-    <ns26:ResourceProperty qName="ns29:Fault" description="" fileLocation="InterProScanJob_fault.xml" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns29="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"/>
-    <ns26:ResourceProperty qName="ns30:CurrentTime" description="" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns30="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns26:ResourceProperty qName="ns31:TerminationTime" description="" populateFromFile="false" register="false" xsi:type="ns26:ResourcePropertyType" xmlns:ns31="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-   </ns26:ResourcePropertiesList>
+   <ns27:ResourcePropertiesList xsi:type="ns27:ResourcePropertiesListType" xmlns:ns27="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns27:ResourceProperty qName="ns28:InterProScanInput" description="" fileLocation="InterProScanJob_interProScanInput.xml" populateFromFile="false" register="false" xsi:type="ns27:ResourcePropertyType" xmlns:ns28="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
+    <ns27:ResourceProperty qName="ns29:InterProScanOutput" description="" fileLocation="InterProScanJob_interProScanOutput.xml" populateFromFile="false" register="false" xsi:type="ns27:ResourcePropertyType" xmlns:ns29="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
+    <ns27:ResourceProperty qName="ns30:Fault" description="" fileLocation="InterProScanJob_fault.xml" populateFromFile="false" register="false" xsi:type="ns27:ResourcePropertyType" xmlns:ns30="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"/>
+    <ns27:ResourceProperty qName="ns31:CurrentTime" description="" populateFromFile="false" register="false" xsi:type="ns27:ResourcePropertyType" xmlns:ns31="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns27:ResourceProperty qName="ns32:TerminationTime" description="" populateFromFile="false" register="false" xsi:type="ns27:ResourcePropertyType" xmlns:ns32="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns27:ResourceProperty qName="ns33:JobID" description="" fileLocation="InterProScanJob_jobID.xml" populateFromFile="false" register="false" xsi:type="ns27:ResourcePropertyType" xmlns:ns33="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"/>
+    <ns27:ResourceProperty qName="ns34:JobStatus" description="" fileLocation="InterProScanJob_jobStatus.xml" populateFromFile="false" register="false" xsi:type="ns27:ResourcePropertyType" xmlns:ns34="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
+   </ns27:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Lifetime xsi:type="ns3:Lifetime"/>
@@ -241,7 +226,7 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns32:Extensions xsi:type="ns32:ExtensionsType" xmlns:ns32="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns32:Extension name="cagrid_metadata" version="1.3" xsi:type="ns32:ExtensionType"/>
- </ns32:Extensions>
+ <ns35:Extensions xsi:type="ns35:ExtensionsType" xmlns:ns35="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns35:Extension name="cagrid_metadata" version="1.3" xsi:type="ns35:ExtensionType"/>
+ </ns35:Extensions>
 </ns1:ServiceDescription>

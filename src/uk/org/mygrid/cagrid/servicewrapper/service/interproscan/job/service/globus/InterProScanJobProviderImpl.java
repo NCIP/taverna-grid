@@ -34,19 +34,19 @@ public class InterProScanJobProviderImpl{
 
     public uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusResponse getStatus(uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusRequest params) throws RemoteException {
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusResponse boxedResult = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusResponse();
-    impl.getStatus(params.getString());
+    boxedResult.setJobStatus(impl.getStatus());
     return boxedResult;
   }
 
     public uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsResponse getOutputs(uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsRequest params) throws RemoteException {
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsResponse boxedResult = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetOutputsResponse();
-    impl.getOutputs(params.getInterProScanOutput().getInterProScanOutput());
+    boxedResult.setInterProScanOutput(impl.getOutputs());
     return boxedResult;
   }
 
     public uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorResponse getError(uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorRequest params) throws RemoteException {
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorResponse boxedResult = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetErrorResponse();
-    impl.getError(params.getFault().getFault());
+    boxedResult.setFault(impl.getError());
     return boxedResult;
   }
 

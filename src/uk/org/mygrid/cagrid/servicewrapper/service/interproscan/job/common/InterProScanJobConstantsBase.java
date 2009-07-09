@@ -17,5 +17,7 @@ public interface InterProScanJobConstantsBase {
 	public static final QName FAULT = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service", "Fault");
 	public static final QName CURRENTTIME = new QName("http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd", "CurrentTime");
 	public static final QName TERMINATIONTIME = new QName("http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd", "TerminationTime");
+	public static final QName JOBID = new QName("gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan", "JobID");
+	public static final QName JOBSTATUS = new QName("gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common", "JobStatus");
 	
 }
