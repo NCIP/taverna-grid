@@ -90,14 +90,12 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  */
 public abstract class InterProScanJobResourceBase extends ReflectionResource implements Resource
                                                   ,TopicListAccessor
-                                                  ,SecureResource
                                                   ,RemoveCallback
                                                   {
 
 	static final Log logger = LogFactory.getLog(InterProScanJobResourceBase.class);
 
 	private InterProScanJobResourceConfiguration configuration;
-	private ResourceSecurityDescriptor desc;
 	private ResourceKey key;
 
 	// this can be used to cancel the registration renewal
@@ -120,7 +118,6 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
                            
         // Call the super initialize on the ReflectionResource                  
 	    super.initialize(resourceBean,resourceElementQName,id);
-		this.desc = null;
 		this.topicList = new SimpleTopicList(this);
 
         // create the topics for each resource property
@@ -208,22 +205,7 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	
 
 
-	
-    /**
-     * Sets the security descriptor for this resource.  The default resource
-     * security will be null so it will fall back to method level then service
-     * level security.  If you want to protect this particular instance of this
-     * resource then provide a resource security descriptor to this resource
-     * through this method.
-     */
-	public void setSecurityDescriptor(ResourceSecurityDescriptor desc) {
-		this.desc = desc;
-	}
-	
-	
-	public ResourceSecurityDescriptor getSecurityDescriptor() {
-		return this.desc;
-	}  
+	  
 
 	
 	public InterProScanJobResourceConfiguration getConfiguration() {
