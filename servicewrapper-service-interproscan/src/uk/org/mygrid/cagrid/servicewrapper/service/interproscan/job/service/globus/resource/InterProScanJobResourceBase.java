@@ -203,6 +203,28 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 		prop.set(0, fault);
 	}
 	
+	
+	
+	public java.lang.String getJobID(){
+		return ((InterProScanJobResourceProperties) getResourceBean()).getJobID();
+	}
+	
+	public void setJobID(java.lang.String jobID ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBID);
+		prop.set(0, jobID);
+	}
+	
+	
+	
+	public uk.org.mygrid.cagrid.domain.common.JobStatus getJobStatus(){
+		return ((InterProScanJobResourceProperties) getResourceBean()).getJobStatus();
+	}
+	
+	public void setJobStatus(uk.org.mygrid.cagrid.domain.common.JobStatus jobStatus ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBSTATUS);
+		prop.set(0, jobStatus);
+	}
+	
 
 
 	  

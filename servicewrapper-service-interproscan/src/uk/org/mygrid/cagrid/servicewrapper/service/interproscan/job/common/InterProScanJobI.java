@@ -26,11 +26,11 @@ public interface InterProScanJobI {
 
   public uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput getInputs() throws RemoteException ;
 
-  public void getStatus(java.lang.String string) throws RemoteException ;
+  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException ;
 
-  public void getOutputs(uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput interProScanOutput) throws RemoteException ;
+  public uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput getOutputs() throws RemoteException ;
 
-  public void getError(gov.nih.nci.cagrid.metadata.service.Fault fault) throws RemoteException ;
+  public gov.nih.nci.cagrid.metadata.service.Fault getError() throws RemoteException ;
 
 }
 

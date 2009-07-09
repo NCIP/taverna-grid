@@ -1,75 +1,168 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains"
+	xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains">
 	<xsd:simpleType name="Matrix">
 		<xsd:annotation>
-			<xsd:documentation>List of supported scoring (comparison) matrices to use when searching the database. Includes: BLOSUM45, BLOSUM50, BLOSUM62, BLOSUM80, BLOSUM90, PAM30, PAM70, PAM250. </xsd:documentation>
+			<xsd:documentation>List of supported scoring (comparison)
+				matrices to use when searching the database. Includes: BLOSUM45,
+				BLOSUM50, BLOSUM62, BLOSUM80, BLOSUM90, PAM30, PAM70, PAM250.
+			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="BLOSUM45"/>
-			<xsd:enumeration value="BLOSUM50"/>
-			<xsd:enumeration value="BLOSUM62"/>
-			<xsd:enumeration value="BLOSUM80"/>
-			<xsd:enumeration value="BLOSUM90"/>
-			<xsd:enumeration value="PAM30"/>
-			<xsd:enumeration value="PAM70"/>
-			<xsd:enumeration value="PAM250"/>
+			<xsd:enumeration value="BLOSUM45" />
+			<xsd:enumeration value="BLOSUM50" />
+			<xsd:enumeration value="BLOSUM62" />
+			<xsd:enumeration value="BLOSUM80" />
+			<xsd:enumeration value="BLOSUM90" />
+			<xsd:enumeration value="PAM30" />
+			<xsd:enumeration value="PAM70" />
+			<xsd:enumeration value="PAM250" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="BLASTProgram">
 		<xsd:annotation>
-			<xsd:documentation>List of supported BLAST programs. Includes BLASTN, BLASTP and BLASTX. </xsd:documentation>
+			<xsd:documentation>List of supported BLAST programs. Includes
+				BLASTN, BLASTP and BLASTX. </xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="BLASTN">
 				<xsd:annotation>
-					<xsd:documentation>Compares a nucleotide query sequence against a nucleotide sequence database.</xsd:documentation>
+					<xsd:documentation>Compares a nucleotide query sequence
+						against a nucleotide sequence database.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 			<xsd:enumeration value="BLASTP">
 				<xsd:annotation>
-					<xsd:documentation>Compares a protein query sequence against a protein sequence database.</xsd:documentation>
+					<xsd:documentation>Compares a protein query sequence
+						against a protein sequence database.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 			<xsd:enumeration value="BLASTX">
 				<xsd:annotation>
-					<xsd:documentation>Compares the six-frame conceptual translation products of a nucleotide query sequence (both strands) against a protein sequence database.</xsd:documentation>
+					<xsd:documentation>Compares the six-frame conceptual
+						translation products of a nucleotide query sequence (both strands)
+						against a protein sequence database.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="SignatureMethod">
 		<xsd:annotation>
-			<xsd:documentation>List of available InterPro signature methods.</xsd:documentation>
+			<xsd:documentation>List of available InterPro signature methods.
+				See http://www.ebi.ac.uk/Tools/InterProScan/help.html#APPLICATIONS
+			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="BLASTPRODOM"/>
-			<xsd:enumeration value="GENE3D"/>
-			<xsd:enumeration value="HMMPANTHER"/>
-			<xsd:enumeration value="HMMPIR"/>
-			<xsd:enumeration value="HMMPFAM"/>
-			<xsd:enumeration value="HMMSMART"/>
-			<xsd:enumeration value="SIGNALP"/>
-			<xsd:enumeration value="TMHMM"/>
-			<xsd:enumeration value="HMMTIGR"/>
-			<xsd:enumeration value="FPRINTSCAN"/>
-			<xsd:enumeration value="SCANREGEXP"/>
-			<xsd:enumeration value="PROFILESCAN"/>
-			<xsd:enumeration value="SUPERFAMILY"/>
+			<xsd:enumeration value="BlastProDom">
+				<xsd:annotation>
+					<xsd:documentation>Scans the families in the ProDom database.
+						ProDom is a comprehensive set of protein domain families
+						automatically generated from the UniProtKB/Swiss-Prot and
+						UniProtKB/TrEMBL sequence databases using psi-blast. In
+						InterProScan the blastpgb program is used to scan the database.
+						BLASTPGP performs gapped blastp searches and can be used to
+						perform iterative searches in PSI-BLAST and PHI-BLAST mode.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Gene3D" />
+			<xsd:enumeration value="FPrintScan">
+				<xsd:annotation>
+					<xsd:documentation>
+						Scans against the fingerprints in the PRINTS
+						database. These
+						fingerprints are groups of motifs that together are
+						more potent
+						than single motifs by making use of the biological
+						context
+						inherent in a multiple motif method.					
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HMMPanther" />
+			<xsd:enumeration value="HMMPfam">
+				<xsd:annotation>
+					<xsd:documentation>
+						Scans the hidden markov models (HMMs) that are
+						present in the PFAM
+						Protein families database
+			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HMMPIR">
+				<xsd:annotation>
+					<xsd:documentation>Scans the hidden markov models (HMMs) that
+						are present in the PIR Protein Sequence Database (PSD) of
+						functionally annotated protein sequences, PIR-PSD.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HMMSmart">
+				<xsd:annotation>
+					<xsd:documentation>
+						Scans the hidden markov models (HMMs) that are
+						present in the SMART
+						domain/domain families database.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+
+			<xsd:enumeration value="HMMTigr">
+				<xsd:annotation>
+					<xsd:documentation>Scans the hidden markov models (HMMs) that
+						are present in the TIGRFAMs protein families database
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PatternScan">
+				<xsd:annotation>
+					<xsd:documentation>PatternScan is a new version of the
+						PROSITE pattern search software which uses new code developed by
+						the PROSITE team</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ProfileScan">
+				<xsd:annotation>
+					<xsd:documentation>Scans against PROSITE profiles. These
+						profiles are based on weight matrices and are more sensitive for
+						the detection of divergent protein families</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<!--
+				<xsd:enumeration value="ScanRegExp"> <xsd:annotation>
+				<xsd:documentation>Scans against the regular expressions in the
+				PROSITE protein families and domains database. N.B. This tool is
+				deprecated and users should use PatternScan instead.
+				</xsd:documentation> </xsd:annotation> </xsd:enumeration>
+			-->
+			<xsd:enumeration value="SignalPHMM" />
+			<xsd:enumeration value="TMHMM" />
+			<xsd:enumeration value="SuperFamily">
+				<xsd:annotation>
+					<xsd:documentation>SUPERFAMILY is a library of profile
+						hidden Markov models that represent all proteins of known
+						structure.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="SignatureStatus">
 		<xsd:annotation>
-			<xsd:documentation>Status of the found signature - can be known or unknown.</xsd:documentation>
+			<xsd:documentation>Status of the found signature - can be known
+				or unknown.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="KNOWN">
 				<xsd:annotation>
-					<xsd:documentation>Denotes the feature is known</xsd:documentation>
+					<xsd:documentation>Denotes the feature is known
+					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 			<xsd:enumeration value="UNKNOWN">
 				<xsd:annotation>
-					<xsd:documentation>Denotes the feature is unknown</xsd:documentation>
+					<xsd:documentation>Denotes the feature is unknown
+					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 		</xsd:restriction>
