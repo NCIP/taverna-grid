@@ -26,13 +26,26 @@ import gov.nih.nci.cagrid.metadata.security.Operation;
 import gov.nih.nci.cagrid.metadata.security.ProtectionLevelType;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata;
 import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
+//import gov.nih.nci.cagrid.syncgts.bean.SyncDescription;
+//import gov.nih.nci.cagrid.syncgts.bean.SyncReport;
+//import gov.nih.nci.cagrid.syncgts.core.SyncGTS;
+//import gov.nih.nci.cagrid.syncgts.core.SyncGTSDefault;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.File;
+//import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
 import java.rmi.RemoteException;
 import java.security.Security;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +72,9 @@ import org.xml.sax.SAXException;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.ReferenceServiceException;
 import net.sf.taverna.t2.reference.T2Reference;
+import net.sf.taverna.t2.security.credentialmanager.CMException;
+import net.sf.taverna.t2.security.credentialmanager.CMUtil;
+import net.sf.taverna.t2.security.credentialmanager.CredentialManager;
 import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workflowmodel.OutputPort;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousActivity;
@@ -95,7 +111,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	private CaGridActivityConfigurationBean configurationBean;
 	private WSDLParser parser;
 	private Map<String, Integer> outputDepth = new HashMap<String, Integer>();
-	private boolean isWsrfService = false;
+	private boolean isWsrfService = true;
 	private String endpointReferenceInputPortName;
 	
 	private static Logger logger = Logger.getLogger(CaGridActivity.class);
@@ -122,6 +138,82 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			ClassUtils.setDefaultClassLoader(classLoader);			
 		}
 	}
+	
+	/**
+	 * Sync with the CaGrid Trust Fabric Service. This method will fetch the latest
+	 * CaGrid CA certificates and update the truststore to be used for creating
+	 * https (http over SSL) connections from inside Taverna. 
+	 * <p>
+	 * Synchronisation will be done upon Taverna startup only if previous synchronisation
+	 * is older that a week. We feel that this is good enough and that there is no need to 
+	 * throttle Taverna with synching each time it is (re)started.
+	 */ 
+/*	protected static void syncGTS() {
+		
+		// TODO This method is not finished yet - we do the one-time certificate loading
+		// in method loadCaGridCAsCertificates()
+		
+		try {
+			logger
+					.info("Attempting to sync caGrid trusted certificates with SyncGTS service.");
+			File securityConfDirectory = CMUtil
+					.getSecurityConfigurationDirectory();
+			File cagridSecurityConfDirectory = new File(securityConfDirectory,
+					"cagrid");
+			if (!cagridSecurityConfDirectory.exists()) {
+				cagridSecurityConfDirectory.mkdir();
+			}
+			// SyncGTS directory
+			File syncGTSDirectory = new File(cagridSecurityConfDirectory,
+					"syncGTS");
+			if (!syncGTSDirectory.exists()) {
+				syncGTSDirectory.mkdir();
+			}
+
+			final String syncDescriptionFileName = "sync-description.xml";
+			File syncDescriptionFile = new File(syncGTSDirectory,
+					syncDescriptionFileName);
+			if (!syncDescriptionFile.exists()) {
+				// Save the sync-description.xml file to this directory
+				InputStream syncDescription = CaGridActivity.class
+						.getResourceAsStream(syncDescriptionFileName);
+				FileOutputStream out = null;
+				try {
+					out = new FileOutputStream(syncDescriptionFile);
+					int c;
+					while ((c = syncDescription.read()) != -1) {
+						out.write(c);
+					}
+				} catch (Exception ex) {
+					// Ignore
+				} finally {
+					if (out != null) {
+						out.close();
+					}
+				}
+			}
+
+			SyncGTSDefault.setServiceSyncDescriptionLocation(syncGTSDirectory
+					+ File.separator + syncDescriptionFileName);
+			SyncDescription description = SyncGTSDefault.getSyncDescription();
+			try {
+				SyncGTS sync = SyncGTS.getInstance();
+				SyncReport report = sync.syncOnce(description);
+				System.out.println(report.getSyncDescription());
+				logger
+						.info("Successfully synced caGrid trusted certificates with SyncGTS service.");
+			} catch (Exception e) {
+				logger
+						.error("Error syncing caGrid trusted certificates with SyncGTS service. Using the last cached ones.");
+				e.printStackTrace();
+			}
+		} catch (Exception ex) {
+			logger
+					.error("Error syncing caGrid trusted certificates with SyncGTS service. Using the last cached ones.");
+			ex.printStackTrace();
+		}
+	}*/
+
 	
 	/**
 	 * This static block is needed in case some of the caGrid services require
@@ -175,18 +267,22 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	@Override
 	public void configure(CaGridActivityConfigurationBean bean)
 			throws ActivityConfigurationException {
+		// Are we re-configuring the activity or configuring for the first time?
 		if (this.configurationBean != null) {
-			throw new IllegalStateException(
-					"Reconfiguring CaGrid activity not yet implemented");
+//			throw new IllegalStateException(
+//					"Reconfiguring CaGrid activity not yet implemented");
+			this.configurationBean = bean;
 		}
-		this.configurationBean = bean;
-		try {
-			parseWSDL();
-			configurePorts();
-		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-			throw new ActivityConfigurationException(
-					"Failed to configure CaGridActivity", ex);
+		else{
+			this.configurationBean = bean;
+			try {
+				parseWSDL();
+				configurePorts();
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(null, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+				throw new ActivityConfigurationException(
+						"Failed to configure CaGridActivity", ex);
+			}
 		}
 	}
 
@@ -636,9 +732,86 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		synchronized(CaGridActivity.class){
 			if (! securityInitialized) {
 				initializeAxisClassLoader();
+				//syncGTS();
 				setHostNameVerifier();
+				loadCaGridCAsCertificates();
 			}
 		}
 	}
 
+	private static void loadCaGridCAsCertificates() {
+
+		// If not already done, import the caGrid Trusted CAs' certificates into Taverna's truststore
+		// Security config directory
+		File secConfigDirectory = CMUtil.getSecurityConfigurationDirectory();
+		
+		// Get the Keystore file
+		File caCertsLoadedFile = new File(secConfigDirectory,"trusted-caGridCAs.loaded"); 
+
+		if (!caCertsLoadedFile.exists()){			
+			JOptionPane.showMessageDialog(null, "caGrid plugin is loading trusted certificates \n of caGrid CAs into Credential Manager.", "CaGrid plugin message", JOptionPane.INFORMATION_MESSAGE);   			
+			List<String> certificateResources = new ArrayList<String>();
+			certificateResources.add("/trusted-certificates/1c3f2ca8.0");
+			certificateResources.add("/trusted-certificates/62f4fd66.0");
+			certificateResources.add("/trusted-certificates/68907d53.0");
+			certificateResources.add("/trusted-certificates/8e3e7e54.0");
+			certificateResources.add("/trusted-certificates/d1b603c3.0");
+			certificateResources.add("/trusted-certificates/ed524cf5.0");
+			certificateResources.add("/trusted-certificates/f3b3491b.0");
+
+			CredentialManager cm = null;
+			try {
+				cm = CredentialManager.getInstance();
+			} catch(CMException cmex){
+					// We are in deep trouble here - something wrong with Credential Manager
+				String exMessage = "Failed to instantiate Credential Manager - cannot load caGrid CAs' certificates.";
+				JOptionPane.showMessageDialog(null, exMessage, "CaGrid plugin message", JOptionPane.ERROR_MESSAGE);   			
+				cmex.printStackTrace();
+				logger.error(exMessage);
+				return;
+			}
+
+			for (String certificateResource : certificateResources){
+				InputStream certStream = null;
+				try {
+					certStream = CaGridActivity.class.getResourceAsStream(certificateResource);
+					CertificateFactory cf = CertificateFactory.getInstance("X.509");
+					// The following should be able to load PKCS #7 certificate chain files
+					// as well as ASN.1 DER or PEM-encoded (sequences of) certificates
+					Collection<? extends Certificate> chain = cf.generateCertificates(certStream);
+					// Use only the first cert in the chain - we know there will be only one inside 
+					X509Certificate cert = (X509Certificate) chain.iterator().next();
+					cm.saveTrustedCertificate(cert);
+				} 
+				catch (Exception ex) {
+					String exMessage = "Failed to load caGrid CA's certificate " + certificateResource;
+					logger.error(exMessage, ex);
+				} 
+				finally {
+					if (certStream != null) {
+						try {
+							certStream.close();
+						} catch (Exception ex) {
+							// ignore
+						}
+					}
+				}
+			}
+			Writer out = null;
+		    try {
+				out = new BufferedWriter(new FileWriter(caCertsLoadedFile));
+				out.write("true"); // just write anything to the file
+			} catch (IOException e) {
+				// ignore
+			}
+			if (out != null){
+				try {
+					out.close();
+				} catch (Exception ex) {
+					// ignore
+				}
+			}
+		}
+	}
+	
 }
