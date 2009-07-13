@@ -1,5 +1,5 @@
 #Introduce Properties
-#Thu Jul 09 11:28:48 BST 2009
+#Mon Jul 13 08:51:18 BST 2009
 introduce.skeleton.services.list=InterProScan,InterProScanJob
 introduce.skeleton.extensions=cagrid_metadata
 introduce.skeleton.timestamp=1246027812874

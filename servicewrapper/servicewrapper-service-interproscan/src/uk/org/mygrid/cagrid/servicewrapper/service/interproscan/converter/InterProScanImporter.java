@@ -41,7 +41,7 @@ public class InterProScanImporter {
 		databaseMatch.setId(dbMatchElem.getAttributeValue(ID));
 		databaseMatch.setSignatureName(dbMatchElem.getAttributeValue(NAME));
 
-		databaseMatch.setDatabaseName(new Database(dbMatchElem
+		databaseMatch.setDatabase(new Database(dbMatchElem
 				.getAttributeValue("dbname")));
 
 		List<ProteinSignatureLocation> locations = new ArrayList<ProteinSignatureLocation>();

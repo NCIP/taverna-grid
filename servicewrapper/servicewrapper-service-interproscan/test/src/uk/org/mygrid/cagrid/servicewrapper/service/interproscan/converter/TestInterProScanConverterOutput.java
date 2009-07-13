@@ -85,7 +85,7 @@ public class TestInterProScanConverterOutput {
 		assertEquals("Wrong ID for database match 0", "G3DSA:4.10.75.10",
 				databaseMatches[0].getId());
 		assertEquals("Wrong database for database match 0", new Database("GENE3D"),
-				databaseMatches[0].getDatabaseName());
+				databaseMatches[0].getDatabase());
 		// TODO: Should it be null or "" instead?
 		assertEquals("Wrong signature for database match 0", "no description",
 				databaseMatches[0].getSignatureName());
@@ -93,21 +93,21 @@ public class TestInterProScanConverterOutput {
 		assertEquals("Wrong ID for database match 1", "PF00095",
 				databaseMatches[1].getId());
 		assertEquals("Wrong database for database match 1", new Database("PFAM"),
-				databaseMatches[1].getDatabaseName());
+				databaseMatches[1].getDatabase());
 		assertEquals("Wrong signature for database match 1", "WAP",
 				databaseMatches[1].getSignatureName());
 
 		assertEquals("Wrong ID for database match 2", "SM00217",
 				databaseMatches[2].getId());
 		assertEquals("Wrong database for database match 2", new Database("SMART"),
-				databaseMatches[2].getDatabaseName());
+				databaseMatches[2].getDatabase());
 		assertEquals("Wrong signature for database match 2", "WAP",
 				databaseMatches[2].getSignatureName());
 
 		assertEquals("Wrong ID for database match 3", "SSF57256",
 				databaseMatches[3].getId());
 		assertEquals("Wrong database for database match 3", new Database("SUPERFAMILY"),
-				databaseMatches[3].getDatabaseName());
+				databaseMatches[3].getDatabase());
 		assertEquals("Wrong signature for database match 3", "Elafin-like",
 				databaseMatches[3].getSignatureName());
 
@@ -137,7 +137,7 @@ public class TestInterProScanConverterOutput {
 		assertEquals("Invalid location end", BigInteger.valueOf(128),
 				location00.getEnd());
 		assertEquals("Invalid location eValue", 9.5e-05, location00
-				.getEValue());
+				.getEValue(), 1e-06);
 		assertEquals("Invalid location status", SignatureStatus.KNOWN,
 				location00.getStatus());
 		assertEquals("Invalid location evidence", SignatureMethod.Gene3D,
@@ -166,19 +166,19 @@ public class TestInterProScanConverterOutput {
 				.getProteinSignatureLocations()[1];
 		assertEquals("Invalid location evidence", SignatureMethod.SuperFamily,
 				location31.getSignatureMethod());
-		assertEquals("Invalid location eValue", 0.004, location31.getEValue());
+		assertEquals("Invalid location eValue", 0.004, location31.getEValue(), 0.0001);
 
 		// <location start="48" end="61" score="NA" status="?"
 		// evidence="ScanRegExp" />
 		ProteinSignatureLocation weirdLocation = protMatches[2]
 				.getDatabaseMatches()[1].getProteinSignatureLocations()[0];
 		// FIXME: Should probably be made optional in schema so it can be null here
-		assertEquals("Invalid location eValue", 0, weirdLocation.getEValue());
+		assertEquals("Invalid location eValue", 0.0, weirdLocation.getEValue(), 0.0);
 		assertEquals("Invalid location status", SignatureStatus.UNKNOWN,
 				weirdLocation.getStatus());
+		assertEquals("Invalid location evidence", SignatureMethod.ScanRegExp,
+				weirdLocation.getSignatureMethod());
 		// FIXME: What to do about unknown signature methods?
-//		assertEquals("Invalid location evidence", "ScanRegex",
-//				weirdLocation.getSignatureMethod());
 		
 		
 		
