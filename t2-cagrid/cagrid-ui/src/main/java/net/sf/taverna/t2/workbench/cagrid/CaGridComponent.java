@@ -49,7 +49,8 @@ import java.io.File;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.io.FileUtils;
-
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.*;
 
 //import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -96,6 +97,7 @@ import net.sf.taverna.t2.workflowmodel.serialization.SerializationException;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializerImpl;
 import net.sf.taverna.t2.workbench.icons.WorkbenchIcons;
+import net.sf.taverna.t2.reference.impl.WriteQueueAspect;
 
 public class CaGridComponent extends JPanel implements UIComponentSPI, ActionListener {
 
@@ -420,6 +422,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 
 			//WMSOutputType wMSOutputElement =  client.createWorkflow(input);
 			EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(url, file.getAbsolutePath(), workflowName);
+			//EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(url, "D:/03 T Workbench/Taverna Workbench 2.1.b2/caArray_SVM-090703.t2flow", workflowName);
 			runComponent.workflowEPR = resourceEPR;
 			// 2. Start Workflow Operations Invoked.
 			//
@@ -511,6 +514,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 	        }
 	    }
 	 //return the ReferenceService -- used to manipulate data
+	 /*
 		public ReferenceService getReferenceService() {
 			String context = ReferenceConfiguration.getInstance().getProperty(
 					ReferenceConfiguration.REFERENCE_SERVICE_CONTEXT);
@@ -520,6 +524,30 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 						context);
 				referenceService = (ReferenceService) appContext
 						.getBean("t2reference.service.referenceService");
+			}
+			return referenceService;
+
+		}
+		*/
+	 public ReferenceService getReferenceService() {
+			String context = ReferenceConfiguration.getInstance().getProperty(
+					ReferenceConfiguration.REFERENCE_SERVICE_CONTEXT);
+			if (!context.equals(referenceContext)) {
+				referenceContext = context;
+				ApplicationContext appContext = new RavenAwareClassPathXmlApplicationContext(context);
+				
+				referenceService = (ReferenceService) appContext
+						.getBean("t2reference.service.referenceService");
+				
+				try {
+					WriteQueueAspect cache = (WriteQueueAspect) appContext
+					.getBean("t2reference.cache.cacheAspect");
+					ReferenceServiceShutdown.setReferenceServiceCache(cache);
+				} catch (NoSuchBeanDefinitionException e) {
+//					ReferenceServiceShutdown.setReferenceServiceCache(null);
+				} catch (ClassCastException e) {
+//					ReferenceServiceShutdown.setReferenceServiceCache(null);
+				}
 			}
 			return referenceService;
 
@@ -545,6 +573,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		String resultDisplayString = "";
 		WorkflowStatusType oldStatusType = dataflowRun.workflowStatusElement;
 		dataflowRun.updateStatus();
+		System.out.println("Workflow Status Updated.");
 		if(dataflowRun.workflowStatusElement.equals(WorkflowStatusType.Done)){
 			// only update if necessary
 			if(!oldStatusType.equals(WorkflowStatusType.Done)){
@@ -578,7 +607,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			    Map.Entry entry = (Map.Entry) it.next();
 			    Object key = entry.getKey();
 			    Object value = entry.getValue();
-			    resultDisplayString  = resultDisplayString + (String) key + ":--" +(String) value + "\n";
+			    resultDisplayString  = resultDisplayString + (String) key + ":--" + "\n\r" + (String) value + "\n\r";
 			}
 			}
 			else{
@@ -590,7 +619,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			
 		}
 		else if(dataflowRun.workflowStatusElement.equals(WorkflowStatusType.Active)){
-			resultDisplayString = "Workflow is running,please check back later.";
+			resultDisplayString = "Workflow is still running,please check back later.";
 		}
 		return resultDisplayString;
 	}

@@ -151,10 +151,11 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 			}
 
 			if (dataflowCopy != null) {
-				//if provenance turned on then add an IntermediateProvLayer to each Processor
+				//always turn off provenance 
 				final ReferenceService referenceService = runComponent.getReferenceService();
 				ReferenceContext referenceContext = null;
 				ProvenanceConnector provenanceConnector = null;
+				/*
 				if (ProvenanceConfiguration.getInstance().getProperty("enabled").equalsIgnoreCase("yes")) {
 					//TODO find out the type of ProvenanceConnector and return it
 					String connectorType = ProvenanceConfiguration.getInstance().getProperty("connector");
@@ -165,6 +166,7 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 						}
 					}
 				}
+				*/
 				
 				//2: create instance facade
 				

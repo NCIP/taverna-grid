@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>net.sf.taverna.t2</groupId>
 		<artifactId>t2-cagrid</artifactId>
-		<version>0.4-SNAPSHOT</version>
+		<version>0.9</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.taverna.t2.ui-components</groupId>
@@ -95,12 +95,13 @@
 			<version>${t2.ui.components.version}</version>
 		</dependency>
 
-
+<!--  only service's client jars depends on globus-package?
 	<dependency>
 			<groupId>org.globus</groupId>
 			<artifactId>globus-package</artifactId>
 			<version>4.0.3</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.taverna-cagrid</groupId>
 			<artifactId>TavernaWorkflowService-client</artifactId>
