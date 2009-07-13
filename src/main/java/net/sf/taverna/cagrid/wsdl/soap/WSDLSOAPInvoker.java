@@ -60,7 +60,6 @@ import org.apache.axis.attachments.AttachmentPart;
 import org.apache.axis.client.Call;
 import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.message.SOAPEnvelope;
-import org.apache.axis.transport.http.HTTPTransport;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
