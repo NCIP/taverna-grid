@@ -1,21 +1,21 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.interproscan.integration;
 
+import gov.nih.nci.cagrid.common.Utils;
+
+import java.io.StringReader;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axis.encoding.Deserializer;
+import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.globus.wsrf.NotifyCallback;
 import org.globus.wsrf.container.ContainerException;
 import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType;
-import org.oasis.wsrf.properties.GetResourcePropertyResponse;
+import org.globus.wsrf.utils.XmlUtils;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
-import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInputParameters;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
@@ -46,44 +46,34 @@ public class ClientTest {
 
 		final InterProScanJobClient jobClient = new InterProScanJobClient(
 				interProJob.getEndpointReference());
-		// Object status = jobClient.getStatus();
-		// System.out.println("First status: " + status);
-		
 		final Object lock = new Object();
 		jobClient.subscribe(InterProScanJobConstants.INTERPROSCANOUTPUT,
-//		jobClient.subscribe(InterProScanJobConstants.JOBSTATUS,
 				new NotifyCallback() {
 					@Override
 					public void deliver(List topicPath,
 							EndpointReferenceType producer, Object message) {
-						try {
 							ResourcePropertyValueChangeNotificationType changeMessage = ((ResourcePropertyValueChangeNotificationElementType) message)
 									.getResourcePropertyValueChangeNotification();
-							
-							String status = changeMessage.getNewValue().get_any()[0].getValue();
-							System.err.println("It's a " + changeMessage.getNewValue().get_any()[0]);
-							JobStatus jobStatus = JobStatus.fromValue(status);
-							// or simply a second call with..
-							// jobStatus = jobClient.getJobStatus();
-							
-							if (jobStatus.equals(JobStatus.done)) {
-								InterProScanOutput outputs = jobClient
-										.getOutputs();
+							MessageElement messageElement = changeMessage.getNewValue().get_any()[0];
+							StringReader reader = new StringReader(XmlUtils
+									.toString(messageElement));
+							InterProScanOutput outputs;
+							try {
+								outputs = (InterProScanOutput) Utils.deserializeObject(reader,
+												InterProScanOutput.class);
 								System.out.println("Protein: "
 										+ outputs.getProtein().getId());
-								synchronized(lock) {
-									lock.notifyAll();
-								}
+							} catch (Exception e) {
+								System.err.println("Could not deserialise InterProScanOutput " + messageElement);
 							}
-						} catch (Exception ex) {
-							ex.printStackTrace();
-						}
+							synchronized (lock) {
+								lock.notifyAll();
+							}
 					}
 				});
 
-		synchronized(lock) {
-			lock.wait(50* 1000);
+		synchronized (lock) {
+			lock.wait(50 * 1000);
 		}
 	}
-
 }
