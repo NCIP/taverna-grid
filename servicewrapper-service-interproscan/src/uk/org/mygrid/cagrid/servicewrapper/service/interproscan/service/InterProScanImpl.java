@@ -35,9 +35,7 @@ public class InterProScanImpl extends InterProScanImplBase {
 		super();
 	}
 
-	public uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types.InterProScanJobReference interProScan(
-			uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput interProScanInput)
-			throws RemoteException {
+  public uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types.InterProScanJobReference interProScan(uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput interProScanInput) throws RemoteException {
 
 		// TODO: Submit job
 

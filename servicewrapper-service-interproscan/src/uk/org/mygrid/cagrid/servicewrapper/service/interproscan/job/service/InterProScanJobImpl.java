@@ -30,8 +30,7 @@ public class InterProScanJobImpl extends InterProScanJobImplBase {
 		super();
 	}
 
-	public uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput getInputs()
-			throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput getInputs() throws RemoteException {
 		try {
 			return getResourceHome().getAddressedResource()
 					.getInterProScanInput();
@@ -41,8 +40,7 @@ public class InterProScanJobImpl extends InterProScanJobImplBase {
 		}
 	}
 
-	public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus()
-			throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException {
 		String jobID;
 		try {
 			jobID = getResourceHome().getAddressedResource().getJobID();
@@ -73,8 +71,7 @@ public class InterProScanJobImpl extends InterProScanJobImplBase {
 		return jobStatus;
 	}
 
-	public uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput getOutputs()
-			throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput getOutputs() throws RemoteException {
 		try {
 			InterProScanOutput interProScanOutput = getResourceHome().getAddressedResource()
 					.getInterProScanOutput();
@@ -111,9 +108,7 @@ public class InterProScanJobImpl extends InterProScanJobImplBase {
 		
 	}
 
-
-	public gov.nih.nci.cagrid.metadata.service.Fault getError()
-			throws RemoteException {
+  public gov.nih.nci.cagrid.metadata.service.Fault getError() throws RemoteException {
 		try {
 			return getResourceHome().getAddressedResource().getFault();
 		} catch (Exception e) {
