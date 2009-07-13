@@ -34,6 +34,10 @@ public class DummyInterProScanInvoker implements InterProScanInvoker  {
 		if (! checkStatus(jobID).equals("DONE")) {
 			throw new InvokerException();
 		}
+		return getDummyOutput();
+	}
+
+	public Document getDummyOutput() {
 		try {
 			InputStream resourceAsStream = getClass().getResourceAsStream(DUMMY_OUTPUT);
 			SAXBuilder saxBuilder = new SAXBuilder();
