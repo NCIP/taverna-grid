@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="src" path="build/stubs-InterProScan/src"/>
+	<classpathentry kind="src" path="test/resources"/>
 	<classpathentry kind="lib" path="C:/Users/stain/cagrid/ws-core-4.0.3/lib/addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/stain/cagrid/ws-core-4.0.3/lib/axis.jar"/>
 	<classpathentry kind="lib" path="C:/Users/stain/cagrid/ws-core-4.0.3/lib/axis-url.jar"/>
@@ -109,7 +110,7 @@
 	<classpathentry kind="lib" path="lib/mail-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/neethi-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/servicewrapper-invoker-api-0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/servicewrapper-invoker-interproscan-0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/servicewrapper-invoker-interproscan-0.1-SNAPSHOT.jar" sourcepath="/servicewrapper-invoker-interproscan"/>
 	<classpathentry kind="lib" path="lib/servicewrapper-service-0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/woden-api-1.0M8.jar"/>
 	<classpathentry kind="lib" path="lib/woden-impl-dom-1.0M8.jar"/>
@@ -118,6 +119,6 @@
 	<classpathentry kind="lib" path="lib/xmlParserAPIs-2.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/XmlSchema-1.4.2.jar"/>
 	<classpathentry kind="lib" path="lib/servicewrapper-wsdl-interproscan-0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="test/lib/junit-4.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
