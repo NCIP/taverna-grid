@@ -15,6 +15,7 @@ public class DummyInterProScanInvoker implements InterProScanInvoker  {
 	private static final String DUMMY_OUTPUT = "wap_rat_output.xml";
 	private static final String DUMMY_JOB_ID = "dummy-job-id";
 	private long lastRun;
+	private InterProScanInput lastInput;
 
 	public String checkStatus(String jobID) throws InvokerException {
 		if (! jobID.equals(DUMMY_JOB_ID)) {
@@ -48,11 +49,16 @@ public class DummyInterProScanInvoker implements InterProScanInvoker  {
 			throw new RuntimeException("Can't parse " + DUMMY_OUTPUT, e);
 		}
 	}
+	
+	public InterProScanInput getLastInput() {
+		return lastInput;
+	}
 
 	public String runJob(InterProScanInput input) throws InvokerException {
 		if (! input.getParams().getEmail().contains("@")) {
 			throw new InvokerException("Invalid email");
 		}
+		lastInput = input;
 		lastRun = now();
 		return DUMMY_JOB_ID;
 	}
