@@ -155,7 +155,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="databaseName" type="interproscan:Database"
+			<xsd:element name="database" type="interproscan:Database"
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>

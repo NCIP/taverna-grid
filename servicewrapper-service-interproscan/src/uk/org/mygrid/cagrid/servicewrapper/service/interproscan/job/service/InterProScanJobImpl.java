@@ -1,6 +1,5 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service;
 
-import java.math.BigInteger;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
@@ -8,7 +7,6 @@ import org.jdom.Document;
 
 import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
-import uk.org.mygrid.cagrid.domain.interproscan.Protein;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.converter.InterProScanConverter;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.invoker.InvokerFactory;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
