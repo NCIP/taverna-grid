@@ -31,7 +31,6 @@ import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
 //import gov.nih.nci.cagrid.syncgts.core.SyncGTS;
 //import gov.nih.nci.cagrid.syncgts.core.SyncGTSDefault;
 
-import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 //import java.io.FileOutputStream;
@@ -75,7 +74,6 @@ import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.security.credentialmanager.CMException;
 import net.sf.taverna.t2.security.credentialmanager.CMUtil;
 import net.sf.taverna.t2.security.credentialmanager.CredentialManager;
-import net.sf.taverna.t2.workbench.ui.impl.configuration.colour.ColourManager;
 import net.sf.taverna.t2.workflowmodel.OutputPort;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousActivity;
 import net.sf.taverna.t2.workflowmodel.processor.activity.ActivityConfigurationException;
@@ -87,7 +85,6 @@ import net.sf.taverna.cagrid.activity.OutputPortTypeDescriptorActivity;
 import net.sf.taverna.cagrid.wsdl.parser.TypeDescriptor;
 import net.sf.taverna.cagrid.wsdl.parser.UnknownOperationException;
 import net.sf.taverna.cagrid.wsdl.parser.WSDLParser;
-
 
 /**
  * An asynchronous Activity that can invoke caGrid WSDL based web-services.
