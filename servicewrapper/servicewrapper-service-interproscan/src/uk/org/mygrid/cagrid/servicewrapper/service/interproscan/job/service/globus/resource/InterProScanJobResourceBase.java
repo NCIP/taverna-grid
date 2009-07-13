@@ -89,6 +89,7 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  * 
  */
 public abstract class InterProScanJobResourceBase extends ReflectionResource implements Resource
+                                                  ,PersistenceCallback
                                                   ,TopicListAccessor
                                                   ,RemoveCallback
                                                   {
@@ -102,10 +103,20 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
     private AdvertisementClient registrationClient;
     
     private URL baseURL;
+    //used to persist the resource properties
+    private PersistenceHelper resourcePropertyPersistenceHelper = null;
+    //used to persist notifications
+    private FilePersistenceHelper resourcePersistenceHelper = null;
     private TopicList topicList;
     private boolean beingLoaded = false;
     
     public InterProScanJobResourceBase() {
+        try {
+            resourcePropertyPersistenceHelper = new gov.nih.nci.cagrid.introduce.servicetools.XmlPersistenceHelper(InterProScanJobResourceProperties.class,InterProScanConfiguration.getConfiguration());
+            resourcePersistenceHelper = new FilePersistenceHelper(this.getClass(),InterProScanConfiguration.getConfiguration(),".resource");
+        } catch (Exception ex) {
+            logger.warn("Unable to initialize resource properties persistence helper", ex);
+        }
     }
 
 
@@ -143,6 +154,8 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 		// register the service to the index service
 		refreshRegistration(true);
 		
+        //call the first store to persist the resource
+        store();
 	}
 	
 	
@@ -165,6 +178,12 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
             }
         }	
 
+        //call the first store to persist the resource
+        try {
+            store();
+        } catch (ResourceException e) {
+            throw new RuntimeException(e);
+        }
 	}
 
 
@@ -179,6 +198,8 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	public void setInterProScanInput(uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput interProScanInput ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.INTERPROSCANINPUT);
 		prop.set(0, interProScanInput);
+        //call the first store to persist the resource
+        store();
 	}
 	
 	
@@ -190,6 +211,8 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	public void setInterProScanOutput(uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput interProScanOutput ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.INTERPROSCANOUTPUT);
 		prop.set(0, interProScanOutput);
+        //call the first store to persist the resource
+        store();
 	}
 	
 	
@@ -201,6 +224,8 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	public void setFault(gov.nih.nci.cagrid.metadata.service.Fault fault ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.FAULT);
 		prop.set(0, fault);
+        //call the first store to persist the resource
+        store();
 	}
 	
 	
@@ -212,6 +237,8 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	public void setJobID(java.lang.String jobID ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBID);
 		prop.set(0, jobID);
+        //call the first store to persist the resource
+        store();
 	}
 	
 	
@@ -223,6 +250,8 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	public void setJobStatus(uk.org.mygrid.cagrid.domain.common.JobStatus jobStatus ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBSTATUS);
 		prop.set(0, jobStatus);
+        //call the first store to persist the resource
+        store();
 	}
 	
 
@@ -429,9 +458,114 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
         return this.topicList;
     }
 
-    public void remove() throws ResourceException {
+    public void remove() throws ResourceException {     
+		resourcePropertyPersistenceHelper.remove(this);
     }
 
+
+
+    /**
+     * Should be overloaded by developer in order to recover the objects they
+     * they wrote the persistence file when storeResource was called. Remember
+     * that the objects must be read in the same order they were written.
+     * 
+     * @param resourceKey
+     * @param ois
+     * @throws Exception
+     */
+    public void loadResource(ResourceKey resourceKey, ObjectInputStream ois) throws Exception {
+
+    }
+
+
+
+    public void load(ResourceKey resourceKey) throws ResourceException, NoSuchResourceException, InvalidResourceKeyException {
+	  beingLoaded = true;
+       //first we will recover the resource properties and initialize the resource
+	   InterProScanJobResourceProperties props = (InterProScanJobResourceProperties)resourcePropertyPersistenceHelper.load(InterProScanJobResourceProperties.class, resourceKey.getValue());
+       this.initialize(props, InterProScanJobConstants.RESOURCE_PROPERTY_SET, resourceKey.getValue());
+       
+        //next we will recover the resource itself
+        File file = resourcePersistenceHelper.getKeyAsFile(this.getClass(), resourceKey.getValue());
+        if (!file.exists()) {
+            beingLoaded = false;
+            throw new NoSuchResourceException();
+        }
+        FileInputStream fis = null;
+        int value = 0;
+        try {
+            fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            SubscriptionPersistenceUtils.loadSubscriptionListeners(
+                this.getTopicList(), ois);
+			loadResource(resourceKey,ois);
+        } catch (Exception e) {
+            beingLoaded = false;
+            throw new ResourceException("Failed to load resource", e);
+        } finally {
+            if (fis != null) {
+                try { fis.close(); } catch (Exception ee) {}
+            }
+        } 
+       
+       beingLoaded = false;
+    }
+
+
+
+    /**
+     * This method should be overloaded by the developer in the Resource class
+     * if they want to persist extra information from there implementation in
+     * the persistence file that the base resource is using to persist itself.
+     * 
+     * @param oos
+     *            Object output stream that can be written to. Make sure to read
+     *            back in the same order
+     * @throws ResourceException
+     */
+    public void storeResource(ObjectOutputStream oos) throws ResourceException {
+
+    }
+
+
+    public void store() throws ResourceException {
+      if(!beingLoaded){
+        //store the resource properties
+        resourcePropertyPersistenceHelper.store(this);
+        
+        FileOutputStream fos = null;
+        File tmpFile = null;
+
+        try {
+            tmpFile = File.createTempFile(
+                this.getClass().getName(), ".tmp",
+                resourcePersistenceHelper.getStorageDirectory());
+            fos = new FileOutputStream(tmpFile);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            SubscriptionPersistenceUtils.storeSubscriptionListeners(
+                this.getTopicList(), oos);
+			storeResource(oos);
+        } catch (Exception e) {
+            if (tmpFile != null) {
+                tmpFile.delete();
+            }
+            throw new ResourceException("Failed to store resource", e);
+        } finally {
+            if (fos != null) {
+                try { fos.close();} catch (Exception ee) {}
+            }
+        }
+
+        File file = resourcePersistenceHelper.getKeyAsFile(this.getClass(), getID());
+        if (file.exists()) {
+            file.delete();
+        }
+        if (!tmpFile.renameTo(file)) {
+            tmpFile.delete();
+            throw new ResourceException("Failed to store resource");
+        }
+        }
+    }
 	
 	
 }

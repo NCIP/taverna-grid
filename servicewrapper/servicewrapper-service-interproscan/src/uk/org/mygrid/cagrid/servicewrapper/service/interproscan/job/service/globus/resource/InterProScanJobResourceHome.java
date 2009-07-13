@@ -27,6 +27,11 @@ public class InterProScanJobResourceHome extends ResourceHomeImpl {
         private static final UUIDGen UUIDGEN = UUIDGenFactory.getUUIDGen();
 
 
+    @SuppressWarnings("unchecked")
+	public Iterable<ResourceKey> getResourceKeys() {
+    	return resources.keySet();
+    }
+        
 	/**
  	* Creates a new Resource, adds it to the list of resources managed by this resource home,
  	* and returns the key to the resource.
