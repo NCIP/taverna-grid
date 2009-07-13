@@ -172,8 +172,7 @@ public class TestInterProScanConverterOutput {
 		// evidence="ScanRegExp" />
 		ProteinSignatureLocation weirdLocation = protMatches[2]
 				.getDatabaseMatches()[1].getProteinSignatureLocations()[0];
-		// FIXME: Should probably be made optional in schema so it can be null here
-		assertEquals("Invalid location eValue", 0.0, weirdLocation.getEValue(), 0.0);
+		assertNull("Invalid location eValue", weirdLocation.getEValue());
 		assertEquals("Invalid location status", SignatureStatus.UNKNOWN,
 				weirdLocation.getStatus());
 		assertEquals("Invalid location evidence", SignatureMethod.ScanRegExp,

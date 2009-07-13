@@ -99,8 +99,7 @@ public class InterProScanImporter {
 
 		String score = locationElem.getAttributeValue("score");
 		if (score.equalsIgnoreCase("NA")) {
-			// FIXME: Should be null!
-			location.setEValue(0);
+			location.setEValue(null);
 		} else {
 			location.setEValue(Double.parseDouble(score));
 		}
