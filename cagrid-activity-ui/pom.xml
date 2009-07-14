@@ -2,22 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>net.sf.taverna</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.1.2009-02-12</version>
+    </parent>
+
 	<groupId>net.sf.taverna.cagrid</groupId>
 	<artifactId>cagrid-activity-ui</artifactId>
 	<name>Taverna 2 caGrid Activity UI</name>
 	<version>0.5-SNAPSHOT</version>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 	<properties>
 		<t2.activities.version>0.8</t2.activities.version>
 		<t2.ui.api.version>0.6</t2.ui.api.version>
@@ -42,19 +36,8 @@
 			<name>myGrid Snapshot Repository</name>
 			<url>http://www.mygrid.org.uk/maven/snapshot-repository</url>
 		</repository>
-		<!--<repository>
-			<id>t2-cagrid</id>
-			<name>cagrid repository for plug-ins</name>
-			<url>http://www.mcs.anl.gov/~wtan/t2/repository/</url>
-		</repository>-->
 	</repositories>
 	<dependencies>
-		<!--implicitly through cagrid-activity instead
-		<dependency>
-			<groupId>org.cagrid</groupId>
-			<artifactId>cagrid-package</artifactId>
-			<version>1.3.0</version>
-		</dependency>-->
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>activity-icons-api</artifactId>
@@ -93,4 +76,9 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+  <scm>
+        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity-ui/</connection>
+        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity-ui/</developerConnection>
+        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity-ui/</url>
+    </scm>
 </project>
