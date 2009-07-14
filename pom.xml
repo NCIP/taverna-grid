@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>net.sf.taverna</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.1.2009-02-12</version>
+    </parent>
 	<groupId>net.sf.taverna.cagrid</groupId>
 	<artifactId>cagrid-wsdl-generic</artifactId>
+	<version>0.2</version>
 	<name>Taverna's wsdl-generic tailored for caGrid</name>
 	<description>Taverna's wsdl-generic tailored for caGrid. 
 	Depends on Axis 1.2 from Globus package rather than Axis 1.4 as normal wsdl-generic.
 	</description>
-	<version>0.2-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -71,4 +75,9 @@
 			<url>http://www.mygrid.org.uk/maven/repository</url>
 		</repository>
 	</repositories>
+  <scm>
+        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-wsdl-generic-0.2</connection>
+        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-wsdl-generic-0.2</developerConnection>
+        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-wsdl-generic-0.2</url>
+    </scm>
 </project>
