@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sf.taverna.t2</groupId>
+	<groupId>net.sf.taverna.cagrid</groupId>
 	<artifactId>cagrid-activity-ui</artifactId>
-	<name>Taverna 2 caGrid Activity UI.</name>
-	<version>0.3-SNAPSHOT</version>
+	<name>Taverna 2 caGrid Activity UI</name>
+	<version>0.5-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -18,28 +18,10 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<properties>
-		<t2.platform.version>0.2</t2.platform.version>
-		<t2.reference.version>0.2</t2.reference.version>
-		
-		<t2.core.version>0.4</t2.core.version>
-		
-		<t2.workbench.version>0.2</t2.workbench.version>
-		<t2.workbench.perspective.version>1.9</t2.workbench.perspective.version>
-		
-		<t2.ui.version>0.4</t2.ui.version>
-		<t2.io.version>0.4</t2.io.version>
-		<t2.observer.version>0.4</t2.observer.version>
-		<t2.partition.version>0.4</t2.partition.version>
-		<t2.spidiscovery.version>0.4</t2.spidiscovery.version>
-		
-		<raven.version>1.9</raven.version>
-		<t2.security.version>0.2</t2.security.version>
-
-		<taverna.version>1.7.2.0</taverna.version>
-
-		<t2.activities.version>0.4</t2.activities.version>
+		<t2.activities.version>0.8</t2.activities.version>
+		<t2.ui.api.version>0.6</t2.ui.api.version>
+		<t2.ui.impl.version>0.8</t2.ui.impl.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -60,44 +42,49 @@
 			<name>myGrid Snapshot Repository</name>
 			<url>http://www.mygrid.org.uk/maven/snapshot-repository</url>
 		</repository>
-		<repository>
+		<!--<repository>
 			<id>t2-cagrid</id>
 			<name>cagrid repository for plug-ins</name>
 			<url>http://www.mcs.anl.gov/~wtan/t2/repository/</url>
-		</repository>
+		</repository>-->
 	</repositories>
 	<dependencies>
-	<dependency>
+		<!--implicitly through cagrid-activity instead
+		<dependency>
 			<groupId>org.cagrid</groupId>
 			<artifactId>cagrid-package</artifactId>
-			<version>1.2-0</version>
+			<version>1.3.0</version>
+		</dependency>-->
+		<dependency>
+			<groupId>net.sf.taverna.t2.ui-api</groupId>
+			<artifactId>activity-icons-api</artifactId>
+			<version>${t2.ui.api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.globus</groupId>
-			<artifactId>globus-package</artifactId>
-			<version>4.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.taverna.t2.workbench</groupId>
+			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>activity-palette-api</artifactId>
-			<version>${t2.workbench.version}</version>
-		</dependency> 
-		  <!-- 
-		<dependency>
-			<groupId>net.sf.taverna</groupId>
-			<artifactId>wsdl-generic</artifactId>
-			<version>1.2</version>		
-		</dependency>
-		 -->
-		<dependency>
-			<groupId>net.sf.taverna.t2.workbench</groupId>
-			<artifactId>contextual-views-impl</artifactId>
-			<version>${t2.workbench.version}</version>
+			<version>${t2.ui.api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.taverna.t2.workbench</groupId>
+			<groupId>net.sf.taverna.t2.ui-impl</groupId>
+			<artifactId>activity-palette-impl</artifactId>
+			<version>${t2.ui.impl.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>contextual-views-api</artifactId>
-			<version>${t2.workbench.version}</version>
+			<version>${t2.ui.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.t2.ui-impl</groupId>
+			<artifactId>contextual-views-impl</artifactId>
+			<version>${t2.ui.impl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.cagrid</groupId>
+			<artifactId>cagrid-activity</artifactId>
+			<version>0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -105,27 +92,5 @@
 			<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>net.sf.taverna.t2.workbench</groupId>
-			<artifactId>activity-palette-impl</artifactId>
-			<version>${t2.workbench.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.taverna.t2.activities</groupId>
-			<artifactId>wsdl-activity</artifactId>
-			<version>${t2.activities.version}</version>
-			<!-- 
-			<scope>test</scope>
-<exclusions>
-    <exclusion>
-      <groupId>axis</groupId>
-      <artifactId>axis</artifactId>
-    </exclusion>
-  </exclusions>
-   -->
-		</dependency>
-		
-		
 	</dependencies>
 </project>
