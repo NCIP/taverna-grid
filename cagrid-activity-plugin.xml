@@ -1,0 +1,24 @@
+</plugin>
+	    <plugin>
+        <provider>cagrid.taverna.sf.net</provider>
+        <identifier>net.sf.taverna.cagrid.cagrid-plugin</identifier>
+        <version>0.1-SNAPSHOT</version>
+        <name>CaGrid Activity Plugin</name>
+        <description>Taverna 2 caGrid Activity and UI</description>
+        <enabled>true</enabled>
+        <repositories>
+            <repository>file:/Users/alex/.m2/repository/</repository>
+        </repositories>
+        <profile>
+            <dependency>
+                <groupId>net.sf.taverna.cagrid</groupId>
+                <artifactId>cagrid-activity-ui</artifactId>
+                <version>0.5-SNAPSHOT</version>
+            </dependency>
+        </profile>
+        <compatibility>
+            <application>
+                <version>2.1-SNAPSHOT</version>
+            </application>
+        </compatibility>
+</plugin>
