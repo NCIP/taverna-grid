@@ -8,7 +8,7 @@
     </parent>
 	<groupId>net.sf.taverna.cagrid</groupId>
 	<artifactId>cagrid-wsdl-generic</artifactId>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<name>Taverna's wsdl-generic tailored for caGrid</name>
 	<description>Taverna's wsdl-generic tailored for caGrid. 
 	Depends on Axis 1.2 from Globus package rather than Axis 1.4 as normal wsdl-generic.
@@ -76,8 +76,8 @@
 		</repository>
 	</repositories>
   <scm>
-        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-wsdl-generic-0.2</connection>
-        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-wsdl-generic-0.2</developerConnection>
-        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-wsdl-generic-0.2</url>
+        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-wsdl-generic/</connection>
+        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-wsdl-generic/</developerConnection>
+        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-wsdl-generic/</url>
     </scm>
 </project>
