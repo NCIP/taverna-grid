@@ -94,6 +94,11 @@
 			<artifactId>reference-ui</artifactId>
 			<version>${t2.ui.components.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.t2.ui-components</groupId>
+			<artifactId>run-ui</artifactId>
+			<version>${t2.ui.components.version}</version>
+		</dependency>
 
 <!--  only service's client jars depends on globus-package?
 	<dependency>

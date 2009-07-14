@@ -50,7 +50,7 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.*;
+
 
 //import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -87,6 +87,7 @@ import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.workbench.reference.config.ReferenceConfiguration;
 //import net.sf.taverna.t2.workbench.run.DataflowRun;
+import net.sf.taverna.t2.workbench.run.DataflowRunsComponent;
 
 import net.sf.taverna.t2.workbench.ui.zaria.UIComponentSPI;
 import net.sf.taverna.t2.workflowmodel.Dataflow;
@@ -150,7 +151,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
           checkButtons();
           addResultPanel();       
         //force reference service to be constructed now rather than at first workflow run
-  		getReferenceService();
+  		//getReferenceService();
   		
 		
 	}
@@ -530,6 +531,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		}
 		*/
 	 public ReferenceService getReferenceService() {
+		 /*
 			String context = ReferenceConfiguration.getInstance().getProperty(
 					ReferenceConfiguration.REFERENCE_SERVICE_CONTEXT);
 			if (!context.equals(referenceContext)) {
@@ -549,6 +551,9 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 //					ReferenceServiceShutdown.setReferenceServiceCache(null);
 				}
 			}
+			*/
+			final ReferenceService referenceService =
+				DataflowRunsComponent.getInstance().getReferenceService();
 			return referenceService;
 
 		}
