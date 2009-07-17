@@ -739,11 +739,16 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 	private static void loadCaGridCAsCertificates() {
 
 		// If not already done, import the caGrid Trusted CAs' certificates into Taverna's truststore
-		// Security config directory
+		// Get the location of Taverna's security configuration directory
 		File secConfigDirectory = CMUtil.getSecurityConfigurationDirectory();
 		
-		// Get the Keystore file
-		File caCertsLoadedFile = new File(secConfigDirectory,"trusted-caGridCAs.loaded"); 
+		File caGridSecConfigDirectory = new File(secConfigDirectory,"cagrid");
+		if (!caGridSecConfigDirectory.exists()) {
+			caGridSecConfigDirectory.mkdir();
+		}
+		
+		// Get the file which existence implies that caGrid trusted CAs have been loaded
+		File caCertsLoadedFile = new File(caGridSecConfigDirectory,"trustedCAsLoaded.txt"); 
 
 		if (!caCertsLoadedFile.exists()){			
 			JOptionPane.showMessageDialog(null, "caGrid plugin is loading trusted certificates \n of caGrid CAs into Credential Manager.", "CaGrid plugin message", JOptionPane.INFORMATION_MESSAGE);   			
@@ -760,7 +765,7 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			try {
 				cm = CredentialManager.getInstance();
 			} catch(CMException cmex){
-					// We are in deep trouble here - something wrong with Credential Manager
+				// We are in deep trouble here - something's wrong with Credential Manager
 				String exMessage = "Failed to instantiate Credential Manager - cannot load caGrid CAs' certificates.";
 				JOptionPane.showMessageDialog(null, exMessage, "CaGrid plugin message", JOptionPane.ERROR_MESSAGE);   			
 				cmex.printStackTrace();
