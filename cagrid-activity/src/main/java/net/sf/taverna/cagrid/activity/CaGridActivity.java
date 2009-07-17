@@ -63,6 +63,8 @@ import org.apache.axis.EngineConfiguration;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.axis.utils.ClassUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.cagrid.gaards.saml.encoding.SAMLSerializerFactory;
 import org.globus.axis.gsi.GSIConstants;
@@ -748,17 +750,11 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		// If not already done, import the caGrid Trusted CAs' certificates into Taverna's truststore
 		// Get the location of Taverna's security configuration directory
 		File secConfigDirectory = CMUtil.getSecurityConfigurationDirectory();
-		
 		File caGridSecConfigDirectory = new File(secConfigDirectory,"cagrid");
-		if (!caGridSecConfigDirectory.exists()) {
-			caGridSecConfigDirectory.mkdir();
-		}
-		
+		caGridSecConfigDirectory.mkdirs();
 		// Tructes CAs folder
 		File trustedCertsDirectory = new File(caGridSecConfigDirectory,"trusted-certificates");
-		if (!trustedCertsDirectory.exists()) {
-			trustedCertsDirectory.mkdir();
-		}
+		trustedCertsDirectory.mkdirs();
 		
 		// Set the system property read by Globus to determine the location 
 		// of the folder containing the caGrid trusted CAs' certificates 
@@ -770,13 +766,13 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		if (!caCertsLoadedFile.exists()){			
 			JOptionPane.showMessageDialog(null, "caGrid plugin is loading trusted certificates \n of caGrid CAs into Credential Manager.", "CaGrid plugin message", JOptionPane.INFORMATION_MESSAGE);   			
 			List<String> certificateResources = new ArrayList<String>();
-			certificateResources.add("/trusted-certificates/1c3f2ca8.0");
-			certificateResources.add("/trusted-certificates/62f4fd66.0");
-			certificateResources.add("/trusted-certificates/68907d53.0");
-			certificateResources.add("/trusted-certificates/8e3e7e54.0");
-			certificateResources.add("/trusted-certificates/d1b603c3.0");
-			certificateResources.add("/trusted-certificates/ed524cf5.0");
-			certificateResources.add("/trusted-certificates/f3b3491b.0");
+			certificateResources.add("1c3f2ca8.0");
+			certificateResources.add("62f4fd66.0");
+			certificateResources.add("68907d53.0");
+			certificateResources.add("8e3e7e54.0");
+			certificateResources.add("d1b603c3.0");
+			certificateResources.add("ed524cf5.0");
+			certificateResources.add("f3b3491b.0");
 
 			CredentialManager cm = null;
 			try {
@@ -790,66 +786,59 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 				return;
 			}
 
-			for (String certificateResource : certificateResources){
+			for (String certificate : certificateResources){
 				InputStream certStream = null;
 				try {
-					certStream = CaGridActivity.class.getResourceAsStream(certificateResource);
+					String certificateResourcePath = "/trusted-certificates/" + certificate;
+					certStream = CaGridActivity.class.getResourceAsStream(certificateResourcePath);
 					CertificateFactory cf = CertificateFactory.getInstance("X.509");
 					// The following should be able to load PKCS #7 certificate chain files
 					// as well as ASN.1 DER or PEM-encoded (sequences of) certificates
 					Collection<? extends Certificate> chain = cf.generateCertificates(certStream);
+					certStream.close();
 					// Use only the first cert in the chain - we know there will be only one inside 
 					X509Certificate cert = (X509Certificate) chain.iterator().next();
 					// Save to Credential Manager's Truststore
 					cm.saveTrustedCertificate(cert);
 					// Save to the trusted-certificates directory inside cagrid security conf directory
-					File certificateFile = new File(trustedCertsDirectory, certificateResource.substring(certificateResource.indexOf("/trusted-certificates/")));
+					File certificateFile = new File(trustedCertsDirectory, certificate);
 					InputStream	certStreamNew = null;
 					BufferedOutputStream fOut = null;
 					try {
 						// Reload the certificate resource
 						certStreamNew = CaGridActivity.class
-								.getResourceAsStream(certificateResource);
+								.getResourceAsStream(certificateResourcePath);
 						fOut = new BufferedOutputStream(new FileOutputStream(
 								certificateFile));
-						byte[] buffer = new byte[32 * 1024];
-						int bytesRead = 0;
-						while ((bytesRead = certStreamNew.read(buffer)) != -1) {
-							fOut.write(buffer, 0, bytesRead);
-						}
+						IOUtils.copy(certStreamNew, fOut);
 					} catch (Exception ex) {
-						String exMessage = "Failed to save caGrid CA's certificate " + certificateResource + " to cagrid security folder for globus.";
+						String exMessage = "Failed to save caGrid CA's certificate "
+								+ certificate
+								+ " to cagrid security folder "
+								+ certificateFile + " for globus.";
 						logger.error(exMessage, ex);
 					} finally {
-						if (certStreamNew != null) {
-							try {
-								certStreamNew.close();
-							} catch (Exception ex) {
-								// ignore
-							}
-						}
 						if (fOut != null) {
 							try {
 								fOut.close();
 							} catch (Exception ex) {
-								// ignore
+								logger.error("Can't close certificate resource " + certificateFile, ex);
+							}
+						}
+						if (certStreamNew != null) {
+							try {
+								certStreamNew.close();
+							} catch (Exception ex) {
+								logger.error("Can't close certificate resource " + certificate, ex);
 							}
 						}
 					}
 				} 
 				catch (Exception ex) {
-					String exMessage = "Failed to load or save caGrid CA's certificate " + certificateResource + " to Truststore.";
+					String exMessage = "Failed to load or save caGrid CA's certificate "
+							+ certificate + " to Truststore.";
 					logger.error(exMessage, ex);
-				} 
-				finally {
-					if (certStream != null) {
-						try {
-							certStream.close();
-						} catch (Exception ex) {
-							// ignore
-						}
-					}
-				}
+				} 				
 			}
 			Writer out = null;
 		    try {
