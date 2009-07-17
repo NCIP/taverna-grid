@@ -34,6 +34,8 @@ import gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadataOperations;
 import java.io.BufferedWriter;
 import java.io.File;
 //import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -736,8 +738,13 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		}
 	}
 
+	/**
+	 * Load the trusted caGrid CAs' certificates and store them in 
+	 * the Truststore and in a special folder (inside Taverna's security 
+	 * conf folder) so that globus can look them up as well.
+	 */
 	private static void loadCaGridCAsCertificates() {
-
+	
 		// If not already done, import the caGrid Trusted CAs' certificates into Taverna's truststore
 		// Get the location of Taverna's security configuration directory
 		File secConfigDirectory = CMUtil.getSecurityConfigurationDirectory();
@@ -746,6 +753,16 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		if (!caGridSecConfigDirectory.exists()) {
 			caGridSecConfigDirectory.mkdir();
 		}
+		
+		// Tructes CAs folder
+		File trustedCertsDirectory = new File(caGridSecConfigDirectory,"trusted-certificates");
+		if (!trustedCertsDirectory.exists()) {
+			trustedCertsDirectory.mkdir();
+		}
+		
+		// Set the system property read by Globus to determine the location 
+		// of the folder containing the caGrid trusted CAs' certificates 
+		System.setProperty("X509_CERT_DIR", trustedCertsDirectory.getAbsolutePath());
 		
 		// Get the file which existence implies that caGrid trusted CAs have been loaded
 		File caCertsLoadedFile = new File(caGridSecConfigDirectory,"trustedCAsLoaded.txt"); 
@@ -783,10 +800,45 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 					Collection<? extends Certificate> chain = cf.generateCertificates(certStream);
 					// Use only the first cert in the chain - we know there will be only one inside 
 					X509Certificate cert = (X509Certificate) chain.iterator().next();
+					// Save to Credential Manager's Truststore
 					cm.saveTrustedCertificate(cert);
+					// Save to the trusted-certificates directory inside cagrid security conf directory
+					File certificateFile = new File(trustedCertsDirectory, certificateResource.substring(certificateResource.indexOf("/trusted-certificates/")));
+					InputStream	certStreamNew = null;
+					BufferedOutputStream fOut = null;
+					try {
+						// Reload the certificate resource
+						certStreamNew = CaGridActivity.class
+								.getResourceAsStream(certificateResource);
+						fOut = new BufferedOutputStream(new FileOutputStream(
+								certificateFile));
+						byte[] buffer = new byte[32 * 1024];
+						int bytesRead = 0;
+						while ((bytesRead = certStreamNew.read(buffer)) != -1) {
+							fOut.write(buffer, 0, bytesRead);
+						}
+					} catch (Exception ex) {
+						String exMessage = "Failed to save caGrid CA's certificate " + certificateResource + " to cagrid security folder for globus.";
+						logger.error(exMessage, ex);
+					} finally {
+						if (certStreamNew != null) {
+							try {
+								certStreamNew.close();
+							} catch (Exception ex) {
+								// ignore
+							}
+						}
+						if (fOut != null) {
+							try {
+								fOut.close();
+							} catch (Exception ex) {
+								// ignore
+							}
+						}
+					}
 				} 
 				catch (Exception ex) {
-					String exMessage = "Failed to load caGrid CA's certificate " + certificateResource;
+					String exMessage = "Failed to load or save caGrid CA's certificate " + certificateResource + " to Truststore.";
 					logger.error(exMessage, ex);
 				} 
 				finally {
