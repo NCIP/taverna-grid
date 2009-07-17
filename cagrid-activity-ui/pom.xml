@@ -10,7 +10,7 @@
 	<groupId>net.sf.taverna.cagrid</groupId>
 	<artifactId>cagrid-activity-ui</artifactId>
 	<name>Taverna 2 caGrid Activity UI</name>
-	<version>0.6-SNAPSHOT</version>
+	<version>0.6</version>
 	<properties>
 		<t2.activities.version>0.8</t2.activities.version>
 		<t2.ui.api.version>0.6</t2.ui.api.version>
@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>net.sf.taverna.cagrid</groupId>
 			<artifactId>cagrid-activity</artifactId>
-			<version>0.2</version>
+			<version>0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -76,8 +76,8 @@
 		</dependency>
 	</dependencies>
   <scm>
-        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity-ui/</connection>
-        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity-ui/</developerConnection>
-        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity-ui/</url>
+        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-activity-ui-0.6</connection>
+        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-activity-ui-0.6</developerConnection>
+        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-activity-ui-0.6</url>
     </scm>
 </project>
