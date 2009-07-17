@@ -9,7 +9,7 @@
 
 	<groupId>net.sf.taverna.cagrid</groupId>
 	<artifactId>cagrid-activity</artifactId>
-	<version>0.3</version>
+	<version>0.4-SNAPSHOT</version>
 	<name>CaGrid Activity</name>
 	<description>Activity for invoking caGrid services. Based on Taverna's WSDL Activity.</description>
 	<build>
@@ -81,8 +81,8 @@
 		</dependency>
 	</dependencies>
   <scm>
-        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-activity-0.3</connection>
-        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-activity-0.3</developerConnection>
-        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/tags/cagrid-activity-0.3</url>
+        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity/</connection>
+        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity/</developerConnection>
+        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity/</url>
     </scm>
 </project>
