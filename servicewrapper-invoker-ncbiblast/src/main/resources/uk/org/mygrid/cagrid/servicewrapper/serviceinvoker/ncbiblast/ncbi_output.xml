@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<EBIApplicationResult xmlns="http://www.ebi.ac.uk/schema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://www.ebi.ac.uk/schema/ApplicationResult.xsd">
+<Header>
+    <program name="NCBI-blastp" version="2.2.17 [Aug-26-2007]" citation="PMID:9254694"/>
+    <commandLine command="/ebi/extserv/bin/ncbi-blast/blastall -p blastp
+-d $IDATA_CURRENT/blastdb/uniprot -i /ebi/extserv/blast-work/interactive/
+/blast-20081216-1227145899.input -M BLOSUM62
+-b 50 -v 50 -e 1.0 -X 0 -G 11 -E 1 -a 16 -L 1,137 -m 0 -gt -F F -C F "/>
+    <parameters>
+        <sequences total="1">
+            <sequence number="1" name="Sequence" type="p" length="137"/>
+        </sequences>
+        <databases total="1" sequences="7226283" letters="2365401343">
+            <database number="1" name="uniprot" type="p"
+                      created="2008-11-25T00:14:00+00:00"/>
+        </databases>
+        <gapOpen>11</gapOpen>
+        <gapExtension>1</gapExtension>
+    </parameters>
+</Header>
+<SequenceSimilaritySearchResult>
+    <hits total="2">
+        <hit number="1" database="uniprot" id="WAP_RAT" ac="P01174" length="137"
+description="Whey acidic protein OS=Rattus norvegicus GN=Wap PE=1 SV=2">
+            <alignments total="1">
+                <alignment number="1">
+                    <score>763</score>
+                    <bits>298</bits>
+                    <expectation>8e-80</expectation>
+                    <identity>100</identity>
+                    <positives>100</positives>
+                    <querySeq start="1" end="137">MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTVISFQ</querySeq>
+                    <pattern>MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTVISFQ</pattern>
+                    <matchSeq start="1" end="137">MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTVISFQ</matchSeq>
+                </alignment>
+            </alignments>
+        </hit>
+        <hit number="2" database="uniprot" id="Q3UQ94_MOUSE" ac="Q3UQ94" length="140"
+description="Putative uncharacterized protein OS=Mus musculus GN=Wap PE=2 SV=1">
+            <alignments total="1">
+                <alignment number="1">
+                    <score>465</score>
+                    <bits>183</bits>
+                    <expectation>3e-45</expectation>
+                    <identity>66</identity>
+                    <positives>75</positives>
+                    <querySeq start="1" end="134">MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAA-GPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTVI</querySeq>
+                    <pattern>MRC ISLVLGLLALEVALA+NL+E VFNSVQSM    S  ETECI CQTNEECAQN MCCP SCGR+ KTPVNI V KAG CPWN +QMI++ GPCP    CS D +CSG MKCC   C+M+C  P P+  ++I
+</pattern>
+                    <matchSeq start="1" end="135">MRCLISLVLGLLALEVALAQNLEEQVFNSVQSMFPKASPIEGTECIICQTNEECAQNAMCCPGSCGRTRKTPVNIGVPKAGFCPWNLLQMISSTGPCPMKIECSSDRECSGNMKCCNVDCVMTCTPPVPEVWSII</matchSeq>
+                </alignment>
+            </alignments>
+        </hit>
+</hits>
+</SequenceSimilaritySearchResult>
+</EBIApplicationResult>
