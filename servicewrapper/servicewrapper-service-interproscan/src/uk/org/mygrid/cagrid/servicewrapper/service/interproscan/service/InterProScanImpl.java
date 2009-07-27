@@ -10,16 +10,13 @@ import uk.ac.ebi.www.wsinterproscan.Data;
 import uk.ac.ebi.www.wsinterproscan.InputParams;
 import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
-import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier;
 import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier;
 import uk.org.mygrid.cagrid.domain.common.ProteinSequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.common.SequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInputParameters;
-import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.invoker.InterProScanJobUtils;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.invoker.InvokerFactory;
-import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.invoker.JobMonitor;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.resource.InterProScanJobResource;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.resource.InterProScanJobResourceHome;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types.InterProScanJobReference;
@@ -44,8 +41,6 @@ public class InterProScanImpl extends InterProScanImplBase {
 
 	private InterProScanInvoker invoker = InvokerFactory.getInvoker();
 
-	private InterProScanJobUtils jobUtils = new InterProScanJobUtils();
-	
 	public InterProScanImpl() throws RemoteException {
 		super();
 	}
@@ -137,7 +132,6 @@ public class InterProScanImpl extends InterProScanImplBase {
 		InterProScanJobReference jobResourceRef;
 		try {
 			InterProScanJobResourceHome resourceHome = getInterProScanJobResourceHome();
-			JobMonitor.monitorJobs(resourceHome);
 			ResourceKey resourceKey = resourceHome.createResource();
 			resource = resourceHome.getResource(resourceKey);
 			resource.setInterProScanInput(interProScanInput);

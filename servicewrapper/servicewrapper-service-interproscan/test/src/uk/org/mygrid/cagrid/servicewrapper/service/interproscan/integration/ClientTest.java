@@ -1,38 +1,34 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.interproscan.integration;
 
-import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.metadata.service.Fault;
 
-import java.io.StringReader;
-import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.axis.message.MessageElement;
-import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.axis.types.URI.MalformedURIException;
-import org.globus.wsrf.NotifyCallback;
-import org.globus.wsrf.container.ContainerException;
-import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType;
-import org.globus.wsrf.utils.XmlUtils;
-import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
-
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
+import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInputParameters;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProScanClient;
-import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.client.InterProScanJobClient;
-import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.common.InterProScanJobConstants;
-import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types.InterProScanJobReference;
+import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProScanClientUtils;
+import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.JobCallBack;
 import uk.org.mygrid.cagrid.valuedomains.SignatureMethod;
 
 public class ClientTest {
 
-	public static void main(String[] args) throws MalformedURIException,
-			RemoteException, ContainerException, InterruptedException {
+	private static final int TIMEOUT_SECONDS = 60;
+
+	public static void main(String[] args) throws Exception {
+		new ClientTest().main();
+	}
+
+	List<InterProScanOutput> output = new ArrayList<InterProScanOutput>();
+
+	private void main() throws Exception {
 		InterProScanClient interproscan = new InterProScanClient(
-				"http://130.88.193.109:8080/wsrf/services/cagrid/InterProScan");
-		InterProScanInput input;
-		input = new InterProScanInput();
+				"http://127.0.0.1:8080/wsrf/services/cagrid/InterProScan");
+		InterProScanInput input = new InterProScanInput();
 		input.setSequenceRepresentation(new FASTAProteinSequence(
 				"uniprot:wap_rat"));
 		InterProScanInputParameters params = new InterProScanInputParameters();
@@ -42,38 +38,45 @@ public class ClientTest {
 		params.setSignatureMethod(new SignatureMethod[] { SignatureMethod.PatternScan });
 
 		input.setInterProScanInputParameters(params);
-		InterProScanJobReference interProJob = interproscan.interProScan(input);
+		
+		InterProScanClientUtils clientUtils = new InterProScanClientUtils(
+				interproscan);
+		
+		System.out.println("synchronously");
+		InterProScanOutput interProScanOut = clientUtils.interProScanSync(input, TIMEOUT_SECONDS * 1000);
+		System.out.println("Protein " + interProScanOut.getProtein().getId());
+		
 
-		final InterProScanJobClient jobClient = new InterProScanJobClient(
-				interProJob.getEndpointReference());
-		final Object lock = new Object();
-		jobClient.subscribe(InterProScanJobConstants.INTERPROSCANOUTPUT,
-				new NotifyCallback() {
-					@Override
-					public void deliver(List topicPath,
-							EndpointReferenceType producer, Object message) {
-							ResourcePropertyValueChangeNotificationType changeMessage = ((ResourcePropertyValueChangeNotificationElementType) message)
-									.getResourcePropertyValueChangeNotification();
-							MessageElement messageElement = changeMessage.getNewValue().get_any()[0];
-							StringReader reader = new StringReader(XmlUtils
-									.toString(messageElement));
-							InterProScanOutput outputs;
-							try {
-								outputs = (InterProScanOutput) Utils.deserializeObject(reader,
-												InterProScanOutput.class);
-								System.out.println("Protein: "
-										+ outputs.getProtein().getId());
-							} catch (Exception e) {
-								System.err.println("Could not deserialise InterProScanOutput " + messageElement);
-							}
-							synchronized (lock) {
-								lock.notifyAll();
-							}
-					}
-				});
+		System.out.println("asynchronously");
+		clientUtils.interProScanAsync(input, new JobCallBack<InterProScanOutput>() {
+			@Override
+			public void jobStatusChanged(JobStatus oldValue, JobStatus newValue) {
+				System.out.println("Job status is " + newValue);
+			}
+			@Override
+			public void jobOutputReceived(InterProScanOutput jobOutput) {
+				System.out.println("Job output received: " + jobOutput);
+				synchronized (output) {
+					output.add(jobOutput);
+					output.notifyAll();
+				}
+			}
+			@Override
+			public void jobError(Fault fault) {
+				System.err.println("Fault: " + fault);				
+			}
+		});
 
-		synchronized (lock) {
-			lock.wait(50 * 1000);
+		synchronized (output) {
+			output.wait(TIMEOUT_SECONDS * 1000);
+			if (!output.isEmpty()) {
+				InterProScanOutput interProScanOutput = output.get(output
+						.size() - 1);
+				System.out.println("Protein " + interProScanOutput.getProtein().getId());
+			} else {
+				System.err.println("Time out");
+			}
 		}
+
 	}
 }
