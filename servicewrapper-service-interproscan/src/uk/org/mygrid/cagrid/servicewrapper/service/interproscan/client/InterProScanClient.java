@@ -16,6 +16,8 @@ import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 
 import org.globus.gsi.GlobusCredential;
 
+import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput;
+import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.stubs.InterProScanPortType;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.stubs.service.InterProScanServiceAddressingLocator;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.common.InterProScanI;
@@ -54,27 +56,6 @@ public class InterProScanClient extends InterProScanClientBase implements InterP
 		System.out.println(InterProScanClient.class.getName() + " -url <service url>");
 	}
 	
-	public static void main(String [] args){
-	    System.out.println("Running the Grid Service Client");
-		try{
-		if(!(args.length < 2)){
-			if(args[0].equals("-url")){
-			  InterProScanClient client = new InterProScanClient(args[1]);
-			  // place client calls here if you want to use this main as a
-			  // test....
-			} else {
-				usage();
-				System.exit(1);
-			}
-		} else {
-			usage();
-			System.exit(1);
-		}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
 
   public uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types.InterProScanJobReference interProScan(uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput interProScanInput) throws RemoteException {
     synchronized(portTypeMutex){

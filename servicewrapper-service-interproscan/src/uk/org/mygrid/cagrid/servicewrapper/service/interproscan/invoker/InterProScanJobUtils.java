@@ -14,6 +14,12 @@ import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.glob
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InterProScanInvoker;
 
+/**
+ * Utility methods for updating an InterProScan job resource.
+ * 
+ * @author Stian Soiland-Reyes
+ *
+ */
 public class InterProScanJobUtils {
 
 	private static Logger logger = Logger.getLogger(InterProScanJobUtils.class);
@@ -22,6 +28,12 @@ public class InterProScanJobUtils {
 
 	private InterProScanConverter converter = new InterProScanConverter();
 
+	/**
+	 * Update the {@link JobStatus} of the given job.
+	 * 
+	 * @param job
+	 * @throws RemoteException
+	 */
 	public void updateStatus(InterProScanJobResource job)
 			throws RemoteException {
 		if (isFinished(job) && job.getInterProScanOutput() != null
@@ -58,6 +70,14 @@ public class InterProScanJobUtils {
 		job.setJobStatus(jobStatus);
 	}
 
+	/**
+	 * Update the outputs of a given job. If the job status is not
+	 * {@link JobStatus#done}, or the output has already been fetched, this
+	 * method does nothing.
+	 * 
+	 * @param job
+	 * @throws RemoteException
+	 */
 	public void updateOutputs(InterProScanJobResource job)
 			throws RemoteException {
 		if (!job.getJobStatus().equals(JobStatus.done)
@@ -85,6 +105,16 @@ public class InterProScanJobUtils {
 		job.setInterProScanOutput(output);
 	}
 
+	/**
+	 * Check if a job is finished. A job is considered finish if it has a job
+	 * status (not updated), and the status is either {@link JobStatus#error},
+	 * {@link JobStatus#not_found} or {@link JobStatus#done} - in which case it
+	 * also need to have a
+	 * {@link InterProScanJobResource#getInterProScanOutput()}.
+	 * 
+	 * @param job
+	 * @return <code>true</code> if the job is considered finished.
+	 */
 	public boolean isFinished(InterProScanJobResource job) {
 		JobStatus jobStatus = job.getJobStatus();
 		if (jobStatus == null) {
@@ -101,6 +131,14 @@ public class InterProScanJobUtils {
 		return false;
 	}
 
+	/**
+	 * Update faults. Currently does not do much, as faults are set on
+	 * occurance. If the {@link InterProScanJobResource#getInterProScanOutput()}
+	 * is not null, the current fault is removed.
+	 * 
+	 * @param job
+	 * @throws RemoteException
+	 */
 	public void updateFault(InterProScanJobResource job) throws RemoteException {
 		if (job.getInterProScanOutput() != null) {
 			// No fault anymore
