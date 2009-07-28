@@ -13,15 +13,15 @@ http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 
-gme\://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan=uk.org.mygrid.cagrid.domain.interproscan
-http\://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/types=uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types
-gme\://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common=uk.org.mygrid.cagrid.domain.common
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
-http\://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/types=uk.org.mygrid.cagrid.servicewrapper.service.interproscan.stubs.types
 gme\://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains=uk.org.mygrid.cagrid.valuedomains
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
+gme\://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common=uk.org.mygrid.cagrid.domain.common
+http\://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/types=uk.org.mygrid.cagrid.servicewrapper.service.interproscan.stubs.types
+gme\://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan=uk.org.mygrid.cagrid.domain.interproscan
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
+http\://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan/Job/types=uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common
 
 
 
