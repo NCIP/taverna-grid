@@ -148,7 +148,6 @@ public class InterProScanClientUtils {
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
 		public void deliver(List topicPath, EndpointReferenceType producer,
 				Object message) {
 			ResourcePropertyValueChangeNotificationType changeMessage = ((ResourcePropertyValueChangeNotificationElementType) message)

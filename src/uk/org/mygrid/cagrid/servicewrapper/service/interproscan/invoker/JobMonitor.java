@@ -139,7 +139,6 @@ public class JobMonitor implements Runnable {
 	 * scheduled check is due, update its job status. If the job status is
 	 * {@link JobStatus#done} - also update its output document.
 	 */
-	@Override
 	public void run() {
 		while (true) {
 			Set<ResourceKey> jobs;
