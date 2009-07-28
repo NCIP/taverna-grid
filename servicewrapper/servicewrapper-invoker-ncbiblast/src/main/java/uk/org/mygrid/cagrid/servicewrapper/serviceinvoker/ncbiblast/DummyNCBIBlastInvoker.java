@@ -12,7 +12,7 @@ import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 
 public class DummyNCBIBlastInvoker implements NCBIBlastInvoker {
 
-	private static final String DUMMY_OUTPUT = "ncbi_output.xml";
+	private static final String DUMMY_OUTPUT = "ncbiblast.xml";
 	private static final String DUMMY_JOB_ID = "dummy-job-id";
 	private long lastRun;
 	private NCBIBlastInput lastInput;
