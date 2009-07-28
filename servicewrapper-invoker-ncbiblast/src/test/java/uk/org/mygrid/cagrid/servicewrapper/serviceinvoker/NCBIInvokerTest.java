@@ -5,20 +5,19 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.List;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.jdom.output.DOMOutputter;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.ac.ebi.schema.EBIApplicationResultDocument;
+import uk.ac.ebi.schema.THit;
 import uk.ac.ebi.www.wsncbiblast.Data;
-import uk.ac.ebi.www.wsncbiblast.InputParams;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.DummyNCBIBlastInvoker;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInput;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInvoker;
-import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInvokerImpl;
 
 public class NCBIInvokerTest {
 
@@ -28,8 +27,8 @@ public class NCBIInvokerTest {
 
 	@Before
 	public void findInvoker() throws InvokerException {
-	//	invoker = new DummyNCBIBlastInvoker();		
-		invoker = new NCBIBlastInvokerImpl();		
+		invoker = new DummyNCBIBlastInvoker();		
+//		invoker = new NCBIBlastInvokerImpl();		
 		
 		// Only use the real InterProScanInvoker in integration tests		
 	}
@@ -85,6 +84,13 @@ public class NCBIInvokerTest {
 		assertEquals("WAP_RAT", hit.getAttributeValue("id"));
 		Element alignment = hit.getChild("alignments", NCBIBLAST_NS).getChild("alignment", NCBIBLAST_NS);
 		assertEquals("Unexpected number of bits in hit", "298", alignment.getChildText("bits", NCBIBLAST_NS));
+		
+		DOMOutputter domOutputter = new DOMOutputter();
+		EBIApplicationResultDocument appResults = EBIApplicationResultDocument.Factory.parse(domOutputter.output(pollXML));
+		THit thit = appResults.getEBIApplicationResult().getSequenceSimilaritySearchResult().getHits().getHitArray(0);
+		assertEquals("WAP_RAT", thit.getId());
+		// Why is "bits" a floating point number?
+		assertEquals("Unexpected number of bits in hit", 298.0, thit.getAlignments().getAlignmentArray(0).getBits(), 0.1);
 		
 	}
 	
