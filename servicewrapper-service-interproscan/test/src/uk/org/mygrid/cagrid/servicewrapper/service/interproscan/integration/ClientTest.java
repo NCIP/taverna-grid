@@ -49,11 +49,9 @@ public class ClientTest {
 
 		System.out.println("asynchronously");
 		clientUtils.interProScanAsync(input, new JobCallBack<InterProScanOutput>() {
-			@Override
 			public void jobStatusChanged(JobStatus oldValue, JobStatus newValue) {
 				System.out.println("Job status is " + newValue);
 			}
-			@Override
 			public void jobOutputReceived(InterProScanOutput jobOutput) {
 				System.out.println("Job output received: " + jobOutput);
 				synchronized (output) {
@@ -61,7 +59,6 @@ public class ClientTest {
 					output.notifyAll();
 				}
 			}
-			@Override
 			public void jobError(Fault fault) {
 				System.err.println("Fault: " + fault);				
 			}
