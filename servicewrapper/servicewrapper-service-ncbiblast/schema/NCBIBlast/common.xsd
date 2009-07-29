@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+	targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
+	xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common">
+
+	<xsd:complexType name="FASTAProteinSequence">
+		<xsd:annotation>
+			<xsd:documentation>
+				FASTA-formatted protein sequence.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:ProteinSequenceRepresentation">
+				<xsd:sequence>
+					<xsd:element name="sequence" type="xsd:string"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								FASTA-formatted protein sequence.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ProteinSequenceRepresentation"
+		abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				An abstract class that represents a protein. It
+				has two concrete subclasses: (1) FASTAProteinSequence to
+				represent the
+				case where the actual protein sequence is
+				known and being passed, and
+				(2)
+				ProteinSequenceIdentifier (in format db:id) to represent
+				the case
+				where the sequence identified in a certain
+				database is given and the
+				sequence has first to be
+				fetched from a protein database (such as
+				uniprot) before
+				the InterProScan or BLAST search can be performed on
+				that sequence.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:SequenceRepresentation">
+				<xsd:sequence />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--
+	<xsd:element name="Error" type="common:Error" />
+	<xsd:complexType name="Error" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation> An
+				error returned by the wrapped service in case something goes wrong
+				during invocation, e.g. wrong input parameters passed, analytical
+				service down, etc. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="faults:BaseFaultType">
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	-->
+	<xsd:complexType name="FASTANucleotideSequence">
+		<xsd:annotation>
+			<xsd:documentation>
+				FASTA-formatted nucleotide sequence.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:NucleotideSequenceRepresentation">
+				<xsd:sequence>
+					<xsd:element name="sequence" type="xsd:string"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								FASTA-formatted nucleotide sequence.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="NucleotideSequenceRepresentation"
+		abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				An abstract class that represents a nucleotide. It
+				has two concrete subclasses: (1) FASTANucleotideSequence to
+				represent the case where the actual protein sequence is
+				known and
+				being passed, and (2)
+				NucleotideSequenceIdentifier (in format db:id)
+				to
+				represent the case where the sequence identified in a
+				certain
+				database is given and the sequence has first to
+				be fetched from a
+				nucleotide database
+				(such as ncbi) before the BLAST search can be
+				performed on that
+				sequence.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:SequenceRepresentation">
+				<xsd:sequence />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ProteinSequenceIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>
+				Protein identifier in format 'db:id'.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:ProteinSequenceRepresentation">
+				<xsd:sequence>
+					<xsd:element name="sequenceId" type="xsd:string"
+						minOccurs="1" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="NucleotideSequenceIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>
+				Nucleotide identifier in format 'db:id'.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:NucleotideSequenceRepresentation">
+				<xsd:sequence>
+					<xsd:element name="sequenceId" type="xsd:string"
+						minOccurs="1" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="SequenceRepresentation"
+		abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				Abstract class to represent a protein or
+				nucleotide.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence />
+	</xsd:complexType>
+
+
+	<xsd:simpleType name="JobStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="pending">
+				<xsd:annotation>
+					<xsd:documentation>The job is in a queue waiting processing
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="running">
+				<xsd:annotation>
+					<xsd:documentation>The job is currently being processed
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="done">
+				<xsd:annotation>
+					<xsd:documentation>The job has finished, and the results can
+						then be retrieved.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="error">
+				<xsd:annotation>
+					<xsd:documentation>The job failed or no results where found
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="not_found">
+				<xsd:annotation>
+					<xsd:documentation>The job is no longer available (job results
+						are deleted after 24 h)
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="JobStatus" type="common:JobStatus"></xsd:element>
+</xsd:schema>
