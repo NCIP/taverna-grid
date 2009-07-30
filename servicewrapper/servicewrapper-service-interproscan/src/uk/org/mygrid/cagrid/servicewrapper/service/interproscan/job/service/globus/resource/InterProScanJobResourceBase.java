@@ -230,19 +230,6 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	
 	
 	
-	public java.lang.String getJobID(){
-		return ((InterProScanJobResourceProperties) getResourceBean()).getJobID();
-	}
-	
-	public void setJobID(java.lang.String jobID ) throws ResourceException {
-        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBID);
-		prop.set(0, jobID);
-        //call the first store to persist the resource
-        store();
-	}
-	
-	
-	
 	public uk.org.mygrid.cagrid.domain.common.JobStatus getJobStatus(){
 		return ((InterProScanJobResourceProperties) getResourceBean()).getJobStatus();
 	}
@@ -250,6 +237,19 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	public void setJobStatus(uk.org.mygrid.cagrid.domain.common.JobStatus jobStatus ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBSTATUS);
 		prop.set(0, jobStatus);
+        //call the first store to persist the resource
+        store();
+	}
+	
+	
+	
+	public java.lang.String getJobID(){
+		return ((InterProScanJobResourceProperties) getResourceBean()).getJobID();
+	}
+	
+	public void setJobID(java.lang.String jobID ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBID);
+		prop.set(0, jobID);
         //call the first store to persist the resource
         store();
 	}
