@@ -28,7 +28,7 @@ public class NCBIBlastProviderImpl{
 
     public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.NcbiBlastResponse ncbiBlast(uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.NcbiBlastRequest params) throws RemoteException {
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.NcbiBlastResponse boxedResult = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.NcbiBlastResponse();
-    boxedResult.setNCBIBlastReference(impl.ncbiBlast(params.getNCBIBlastInput().getNCBIBlastInput()));
+    boxedResult.setNCBIBlastJobReference(impl.ncbiBlast(params.getNCBIBlastInput().getNCBIBlastInput()));
     return boxedResult;
   }
 

@@ -241,6 +241,19 @@ public abstract class NCBIBlastJobResourceBase extends ReflectionResource implem
         store();
 	}
 	
+	
+	
+	public java.lang.String getJobID(){
+		return ((NCBIBlastJobResourceProperties) getResourceBean()).getJobID();
+	}
+	
+	public void setJobID(java.lang.String jobID ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.JOBID);
+		prop.set(0, jobID);
+        //call the first store to persist the resource
+        store();
+	}
+	
 
 
 	  
