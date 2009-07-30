@@ -328,12 +328,5 @@
 	<xsd:element name="InterProScanOutput" type="interproscan:InterProScanOutput">
 	</xsd:element>
 
-    <xsd:element name="JobID" type="interproscan:JobID"></xsd:element>
 
-	<xsd:simpleType name="JobID">
-		<xsd:annotation>
-			<xsd:documentation>External EBI job ID</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string"></xsd:restriction>
-	</xsd:simpleType>
 </xsd:schema>
