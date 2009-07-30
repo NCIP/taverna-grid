@@ -10,8 +10,19 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<dependencySets>
 		<dependencySet>
-			
+			<useTransitiveFiltering>true</useTransitiveFiltering>
+			<useStrictFiltering>true</useStrictFiltering>
+			<excludes>
+			<!-- Artifacts typically already found in a caGrid container -->
+				<exclude>*commons-logging*</exclude>
+				<exclude>*geronimo-activation*</exclude>
+				<exclude>*geronimo-javamail*</exclude>
+				<exclude>*servlet-api*</exclude>
+				<exclude>*wsdl4j*</exclude>
+				<exclude>*xalan*</exclude>
+				<exclude>*xercesImpl*</exclude>
+				<exclude>*xml-apis*</exclude>				
+			</excludes>
 		</dependencySet>
 	</dependencySets>
-
 </assembly>
