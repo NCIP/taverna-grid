@@ -16,11 +16,13 @@ import uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier;
 import uk.org.mygrid.cagrid.domain.common.ProteinSequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.common.SequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInputParameters;
+import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.converter.InterProScanConverter;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.invoker.InvokerFactory;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.resource.InterProScanJobResource;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.resource.InterProScanJobResourceHome;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types.InterProScanJobReference;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
+import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InterProScanInput;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InterProScanInvoker;
 import uk.org.mygrid.cagrid.valuedomains.SignatureMethod;
 
@@ -40,6 +42,8 @@ public class InterProScanImpl extends InterProScanImplBase {
 	static Logger logger = Logger.getLogger(InterProScanImpl.class);
 
 	private InterProScanInvoker invoker = InvokerFactory.getInvoker();
+	
+	private InterProScanConverter converter = new InterProScanConverter();
 
 	public InterProScanImpl() throws RemoteException {
 		super();
@@ -47,87 +51,8 @@ public class InterProScanImpl extends InterProScanImplBase {
 
   public uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.types.InterProScanJobReference interProScan(uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput interProScanInput) throws RemoteException {
 
-		// TODO: Submit job
-
-		InterProScanInputParameters origParams = interProScanInput
-				.getInterProScanInputParameters();
-
-		uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InterProScanInput input = new uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InterProScanInput();
-		InputParams params = uk.ac.ebi.www.wsinterproscan.InputParams.Factory
-				.newInstance();
-		if (params == null) {
-			logger.warn("Parameters required");
-			throw new RemoteException("Parameters required");
-		}
-		if (origParams.getEmail() == null) {
-			logger.warn("Email required");
-			throw new RemoteException("Email required");
-		}
-		params.setEmail(origParams.getEmail());
-		if (origParams.getUseCRC() != null) {
-			params.setCrc(origParams.getUseCRC());
-		}
-		StringBuffer apps = new StringBuffer();
-		if (origParams.getSignatureMethod() != null) {
-			for (SignatureMethod signatureMethod : origParams
-					.getSignatureMethod()) {
-				if (apps.length() > 0) {
-					apps.append(' ');
-				}
-				apps.append(signatureMethod.getValue());
-			}
-		}
-		if (apps.length() > 0) {
-			params.setApp(apps.toString());
-		}
-		input.setParams(params);
-
-		SequenceRepresentation seqRep = interProScanInput
-				.getSequenceRepresentation();
-		if (seqRep == null) {
-			logger.warn("Sequence representation required");
-			throw new RemoteException("Sequence representation required");
-		}
-		if (seqRep instanceof ProteinSequenceRepresentation) {
-			params.setSeqtype("P");
-		} else if (seqRep instanceof NucleotideSequenceRepresentation) {
-			params.setSeqtype("N");
-		} else {
-			logger.warn("Unsupported sequence representation type "
-					+ seqRep.getClass());
-			throw new RemoteException(
-					"Unsupported sequence representation type "
-							+ seqRep.getClass());
-		}
-
-		Data[] content = new Data[1];
-		content[0] = Data.Factory.newInstance();
-
-		if (seqRep instanceof FASTANucleotideSequence) {
-			content[0].setContent(((FASTANucleotideSequence) seqRep)
-					.getSequence());
-			content[0].setType("sequence");
-		} else if (seqRep instanceof FASTAProteinSequence) {
-			content[0]
-					.setContent(((FASTAProteinSequence) seqRep).getSequence());
-			content[0].setType("sequence");
-		} else if (seqRep instanceof ProteinSequenceIdentifier) {
-			content[0].setContent(((ProteinSequenceIdentifier) seqRep)
-					.getSequenceId());
-			content[0].setType("sequence"); // oddly enough..
-		} else if (seqRep instanceof NucleotideSequenceIdentifier) {
-			content[0].setContent(((NucleotideSequenceIdentifier) seqRep)
-					.getSequenceId());
-			content[0].setType("sequence"); // oddly enough..
-		} else {
-			logger.warn("Unsupported sequence representation type "
-					+ seqRep.getClass());
-			throw new RemoteException(
-					"Unsupported sequence representation type "
-							+ seqRep.getClass());
-		}
-		input.setContent(content);
-
+		InterProScanInput input = converter.convertInterProScanInput(interProScanInput);
+		
 		final InterProScanJobResource resource;
 		InterProScanJobReference jobResourceRef;
 		try {

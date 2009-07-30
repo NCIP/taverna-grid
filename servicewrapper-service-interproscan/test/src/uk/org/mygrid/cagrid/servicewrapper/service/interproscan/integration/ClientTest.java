@@ -47,7 +47,13 @@ public class ClientTest {
 		System.out.println("Protein " + interProScanOut.getProtein().getId());
 		
 
+		if (System.getProperty("GLOBUS_LOCATION") == null) {
+			// Set -DGLOBUS_LOCATION=/Users/bob/ws-core-4.0.3 to do 
+			// asynchronous
+			return;
+		}
 		System.out.println("asynchronously");
+		
 		clientUtils.interProScanAsync(input, new JobCallBack<InterProScanOutput>() {
 			public void jobStatusChanged(JobStatus oldValue, JobStatus newValue) {
 				System.out.println("Job status is " + newValue);
@@ -67,9 +73,9 @@ public class ClientTest {
 		synchronized (output) {
 			output.wait(TIMEOUT_SECONDS * 1000);
 			if (!output.isEmpty()) {
-				InterProScanOutput interProScanOutput = output.get(output
+				InterProScanOutput out = output.get(output
 						.size() - 1);
-				System.out.println("Protein " + interProScanOutput.getProtein().getId());
+				System.out.println("Protein " + out.getProtein().getId());
 			} else {
 				System.err.println("Time out");
 			}
