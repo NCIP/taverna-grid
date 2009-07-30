@@ -2,7 +2,7 @@
  <ns1:serviceDescription>
   <ns2:Service description="" name="NCBIBlast" version="1.3" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
    <ns2:pointOfContactCollection>
-    <ns3:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role="" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+    <ns3:PointOfContact affiliation="Software engineer" email="soiland-reyes@cs.manchester.ac.uk" firstName="Stian" lastName="Soiland Reyes" phoneNumber="" role="Developer" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
    </ns2:pointOfContactCollection>
    <ns2:serviceContextCollection>
     <ns2:ServiceContext description="" name="NCBIBlast">
@@ -28,7 +28,7 @@
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns5:NCBIBlastInput" dimensionality="1" index="0" isArray="false" isRequired="false" name="nCBIBlastInput" xmlns:ns5="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns6:NCBIBlastReference" dimensionality="1" isArray="false" xmlns:ns6="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/types"/>
+       <ns2:Output qName="ns6:NCBIBlastJobReference" dimensionality="1" isArray="false" xmlns:ns6="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/Job/types"/>
        <ns2:faultCollection/>
       </ns2:Operation>
      </ns2:operationCollection>
@@ -95,6 +95,7 @@
       <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service}Fault"/>
       <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
       <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+      <ns2:ContextProperty description="" name="{gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common}JobID"/>
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
    </ns2:serviceContextCollection>
@@ -103,10 +104,11 @@
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns13:ResearchCenter displayName="" shortName="" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns13:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
+  <ns13:ResearchCenter displayName="InterProScan" shortName="interproscan" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns13:Address country="United Kingdom" locality="Manchester" postalCode="M13 9PL" stateProvince="" street1="Oxford Road" street2=""/>
+   <ns13:ResearchCenterDescription description="" homepageURL="" imageURL="" rssNewsURL=""/>
    <ns13:pointOfContactCollection>
-    <ns13:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
+    <ns13:PointOfContact affiliation="Software engineer" email="soiland-reyes@cs.manchester.ac.uk" firstName="Stian" lastName="Soiland Reyes" phoneNumber="" role="Developer"/>
    </ns13:pointOfContactCollection>
   </ns13:ResearchCenter>
  </ns1:hostingResearchCenter>

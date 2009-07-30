@@ -5,6 +5,7 @@
    <ns2:SchemaElement type="NCBIBlastOutput" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./common.xsd" namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" packageName="uk.org.mygrid.cagrid.domain.common" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="JobID" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="JobStatus" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./valuedomains.xsd" namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" packageName="uk.org.mygrid.cagrid.valuedomains" xsi:type="ns2:NamespaceType"/>
@@ -144,13 +145,14 @@
      <ns4:Inputs>
       <ns4:Input qName="ns13:NCBIBlastInput" description="" isArray="false" name="nCBIBlastInput" xmlns:ns13="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"/>
      </ns4:Inputs>
-     <ns4:Output qName="ns14:NCBIBlastReference" description="" isArray="false" xmlns:ns14="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/types"/>
+     <ns4:Output qName="ns14:NCBIBlastJobReference" description="" isArray="false" xmlns:ns14="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/Job/types"/>
      <ns4:Exceptions/>
     </ns4:Method>
    </ns4:Methods>
    <ns15:ResourcePropertiesList xsi:type="ns15:ResourcePropertiesListType" xmlns:ns15="gme://gov.nih.nci.cagrid.introduce/1/Resources">
     <ns15:ResourceProperty qName="ns16:ServiceMetadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns15:ResourcePropertyType" xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
    </ns15:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
     <ns3:Singleton xsi:type="ns3:Singleton"/>
@@ -236,8 +238,9 @@
     <ns33:ResourceProperty qName="ns35:NCBIBlastOutput" description="" fileLocation="NCBIBlastJob_nCBIBlastOutput.xml" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns35="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"/>
     <ns33:ResourceProperty qName="ns36:JobStatus" description="" fileLocation="NCBIBlastJob_jobStatus.xml" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns36="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
     <ns33:ResourceProperty qName="ns37:Fault" description="" fileLocation="NCBIBlastJob_fault.xml" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns37="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"/>
-    <ns33:ResourceProperty qName="ns38:CurrentTime" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns38="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns33:ResourceProperty qName="ns39:TerminationTime" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns39="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns33:ResourceProperty qName="ns38:CurrentTime" description="" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns38="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns33:ResourceProperty qName="ns39:TerminationTime" description="" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns39="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns33:ResourceProperty qName="ns40:JobID" description="" fileLocation="NCBIBlastJob_jobID.xml" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns40="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
    </ns33:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
@@ -249,7 +252,7 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns40:Extensions xsi:type="ns40:ExtensionsType" xmlns:ns40="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns40:Extension name="cagrid_metadata" version="1.3" xsi:type="ns40:ExtensionType"/>
- </ns40:Extensions>
+ <ns41:Extensions xsi:type="ns41:ExtensionsType" xmlns:ns41="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns41:Extension name="cagrid_metadata" version="1.3" xsi:type="ns41:ExtensionType"/>
+ </ns41:Extensions>
 </ns1:ServiceDescription>

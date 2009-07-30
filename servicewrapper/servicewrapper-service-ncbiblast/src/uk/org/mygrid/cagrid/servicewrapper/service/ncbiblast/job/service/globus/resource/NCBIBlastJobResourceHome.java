@@ -1,8 +1,10 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.service.globus.resource;
 
+import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.invoker.JobMonitor;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.common.NCBIBlastJobConstants;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.NCBIBlastJobResourceProperties;
 
+import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.impl.ResourceHomeImpl;
@@ -25,7 +27,13 @@ import org.apache.axis.components.uuid.UUIDGenFactory;
  */
 public class NCBIBlastJobResourceHome extends ResourceHomeImpl {
         private static final UUIDGen UUIDGEN = UUIDGenFactory.getUUIDGen();
+		private JobMonitor jobMonitor;
 
+        public NCBIBlastJobResourceHome() {
+        	jobMonitor = JobMonitor.getMonitorFor(this);
+        	
+        }
+        
 
 	/**
  	* Creates a new Resource, adds it to the list of resources managed by this resource home,
@@ -82,6 +90,26 @@ public class NCBIBlastJobResourceHome extends ResourceHomeImpl {
         thisResource = (NCBIBlastJobResource) ResourceContext.getResourceContext().getResource();
         return thisResource;
     }
+    
+
+	@Override
+	public Resource find(ResourceKey key) throws ResourceException {
+		Resource resource = super.find(key);
+		jobMonitor.monitorJob(key);
+		return resource;
+	}
+
+	@Override
+	protected void add(ResourceKey key, Resource resource) {
+		super.add(key, resource);
+		jobMonitor.monitorJob(key);
+	}
+
+	@Override
+	public void remove(ResourceKey key) throws ResourceException {
+		super.remove(key);
+		jobMonitor.stopMonitoring(key);
+	}
 
 	
 }

@@ -82,6 +82,7 @@
             <element ref="ns6:Fault" />
             <element ref="ns9:CurrentTime" />
             <element ref="ns9:TerminationTime" />
+            <element ref="ns1:JobID" />
           </sequence>
         </complexType>
       </element>
