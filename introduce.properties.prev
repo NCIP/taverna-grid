@@ -1,11 +1,11 @@
 #Introduce Properties
-#Tue Jul 28 12:48:04 WEST 2009
+#Thu Jul 30 13:53:27 BST 2009
 introduce.skeleton.services.list=InterProScan,InterProScanJob
 introduce.skeleton.extensions=cagrid_metadata
-introduce.skeleton.timestamp=1247493862308
+introduce.skeleton.timestamp=1248956306837
 introduce.skeleton.service.name=InterProScan
 introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
-introduce.skeleton.destination.dir=/Users/stain/Documents/cagrid-workspace/servicewrapper/servicewrapper-service-interproscan
+introduce.skeleton.destination.dir=W\:\\src\\cagrid-workspace\\servicewrapper\\servicewrapper-service-interproscan
 introduce.skeleton.namespace.domain=http\://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/InterProScan
 introduce.soap.binding.excludes=\ 
-introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata

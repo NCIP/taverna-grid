@@ -195,4 +195,13 @@
 	</xsd:simpleType>
 
 	<xsd:element name="JobStatus" type="common:JobStatus"></xsd:element>
+	
+	    <xsd:element name="JobID" type="common:JobID"></xsd:element>
+
+	<xsd:simpleType name="JobID">
+		<xsd:annotation>
+			<xsd:documentation>External EBI job ID</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"></xsd:restriction>
+	</xsd:simpleType>
 </xsd:schema>

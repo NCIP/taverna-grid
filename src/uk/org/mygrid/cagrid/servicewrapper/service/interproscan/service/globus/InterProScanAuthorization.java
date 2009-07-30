@@ -62,6 +62,18 @@ public class InterProScanAuthorization implements PDP {
 	public void authorizeInterProScan(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeGetMultipleResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetResourceProperty(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeQueryResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -75,6 +87,15 @@ public class InterProScanAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("interProScan")){
 			authorizeInterProScan(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getMultipleResourceProperties")){
+			authorizeGetMultipleResourceProperties(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getResourceProperty")){
+			authorizeGetResourceProperty(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("queryResourceProperties")){
+			authorizeQueryResourceProperties(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;
