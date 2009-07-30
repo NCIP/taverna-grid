@@ -21,9 +21,9 @@
 		<module>servicewrapper-wsdl-interproscan</module>
 		<module>servicewrapper-wsdl-ncbiblast</module>
 	</modules>
-	
 	<properties>
 		<axis2.version>1.4.1</axis2.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
 	</properties>
 
 	<repositories>
