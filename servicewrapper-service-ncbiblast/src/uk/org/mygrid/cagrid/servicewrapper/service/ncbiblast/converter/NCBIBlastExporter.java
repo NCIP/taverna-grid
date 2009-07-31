@@ -80,7 +80,7 @@ public class NCBIBlastExporter {
 		if (blastProgram == null) {
 			throw new ConverterException("Parameter BlastProgram is required");
 		}
-		params.setProgram(blastProgram.getValue());
+		params.setProgram(blastProgram.getValue().toLowerCase());
 
 		String databaseName = inputParams.getDatabaseName();
 		if (databaseName == null || databaseName.isEmpty()) {
