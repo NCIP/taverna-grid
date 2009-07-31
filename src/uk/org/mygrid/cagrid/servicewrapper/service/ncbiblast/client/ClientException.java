@@ -8,24 +8,24 @@ public class ClientException extends RuntimeException {
 	private final NCBIBlastJobReference jobReference;
 
 	public ClientException(NCBIBlastJobReference jobReference) {
-		super();
+		super("(" + jobReference +")");
 		this.jobReference = jobReference;
 	}
 
 	public ClientException(String message, Throwable cause,
 			NCBIBlastJobReference jobReference) {
-		super(message, cause);
+		super(message + " (" + jobReference +")", cause);
 		this.jobReference = jobReference;
 	}
 
 	public ClientException(String message, NCBIBlastJobReference jobReference) {
-		super(message);
+		super(message + " (" + jobReference +")");
 		this.jobReference = jobReference;
 	}
 
 	public ClientException(Throwable cause,
 			NCBIBlastJobReference jobReference) {
-		super(cause);
+		super("(" + jobReference +")", cause);
 		this.jobReference = jobReference;
 	}
 
