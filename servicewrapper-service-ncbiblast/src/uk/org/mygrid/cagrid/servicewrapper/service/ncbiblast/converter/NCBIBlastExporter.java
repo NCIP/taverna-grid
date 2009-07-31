@@ -73,7 +73,7 @@ public class NCBIBlastExporter {
 
 		BigInteger alignmentsToOutput = inputParams.getAlignmentsToOutput();
 		if (alignmentsToOutput != null) {
-			params.setAlign(alignmentsToOutput.intValue());
+			params.setNumal(alignmentsToOutput.intValue());
 		}
 
 		BLASTProgram blastProgram = inputParams.getBlastProgram();
@@ -144,7 +144,7 @@ public class NCBIBlastExporter {
 			params.setOpengap(openGap.intValue());
 		}
 		
-		// TODO: params.setNumal(?)
+		// TODO: params.setAlign(?)
 		return params;
 	}
 

@@ -41,42 +41,46 @@ public class ClientTest {
 		NCBIBlastClientUtils clientUtils = new NCBIBlastClientUtils(
 				client);
 		
-		System.out.println("synchronously");
+		
+		System.out.println("synchronously");		
 		NCBIBLASTOutput ncbiBlastOut = clientUtils.ncbiBlastSync(input, TIMEOUT_SECONDS * 1000);
 		System.out.println("Accession " + ncbiBlastOut.getSequenceSimilarities(0).getAccessionNumber());
 		
 
-		if (System.getProperty("GLOBUS_LOCATION") == null) {
+		if (System.getProperty("GLOBUS_LOCATION") != null) {
 			// Set -DGLOBUS_LOCATION=/Users/bob/ws-core-4.0.3 to do 
 			// asynchronous
-			return;
-		}
-
-		System.out.println("asynchronously");
-		clientUtils.ncbiBlastAsync(input, new JobCallBack<NCBIBLASTOutput>() {
-			public void jobStatusChanged(JobStatus oldValue, JobStatus newValue) {
-				System.out.println("Job status is " + newValue);
-			}
-			public void jobOutputReceived(NCBIBLASTOutput jobOutput) {
-				System.out.println("Job output received: " + jobOutput);
-				synchronized (output) {
-					output.add(jobOutput);
-					output.notifyAll();
+			System.out.println("asynchronously");
+			clientUtils.ncbiBlastAsync(input, new JobCallBack<NCBIBLASTOutput>() {
+				public void jobStatusChanged(JobStatus oldValue, JobStatus newValue) {
+					System.out.println("Job status is " + newValue);
 				}
-			}
-			public void jobError(Fault fault) {
-				System.err.println("Fault: " + fault);				
-			}
-		});
+				public void jobOutputReceived(NCBIBLASTOutput jobOutput) {
+					System.out.println("Job output received: " + jobOutput);
+					synchronized (output) {
+						output.add(jobOutput);
+						output.notifyAll();
+					}
+				}
+				public void jobError(Fault fault) {
+					System.err.println("Fault: " + fault);				
+				}
+			});
+		}
+		
+	
+		
+		if (System.getProperty("GLOBUS_LOCATION") != null) {
 
-		synchronized (output) {
-			output.wait(TIMEOUT_SECONDS * 1000);
-			if (!output.isEmpty()) {
-				NCBIBLASTOutput blastOut = output.get(output
-						.size() - 1);
-				System.out.println("Accession " + blastOut.getSequenceSimilarities(0).getAccessionNumber());
-			} else {
-				System.err.println("Time out");
+			synchronized (output) {
+				output.wait(TIMEOUT_SECONDS * 1000);
+				if (!output.isEmpty()) {
+					NCBIBLASTOutput blastOut = output.get(output
+							.size() - 1);
+					System.out.println("Accession " + blastOut.getSequenceSimilarities(0).getAccessionNumber());
+				} else {
+					System.err.println("Time out");
+				}
 			}
 		}
 

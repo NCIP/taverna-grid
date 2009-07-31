@@ -60,8 +60,9 @@ public class NCBIBlastImpl extends NCBIBlastImplBase {
 			logger.warn("Can't submit job", e1);
 			throw new RemoteException("Can't submit job", e1);
 		}
-		resource.setJobID(jobID);
 		logger.info("Submitted interproscan job " + jobID);
+		resource.setJobID(jobID);
+		resource.store();
 		return jobResourceRef;
 	}
 

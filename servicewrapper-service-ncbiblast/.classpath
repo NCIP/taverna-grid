@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="src" path="build/stubs-NCBIBlast/src"/>
+	<classpathentry kind="src" path="test/resources"/>
 	<classpathentry kind="lib" path="C:/Users/stain/cagrid/ws-core-4.0.3/lib/addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/stain/cagrid/ws-core-4.0.3/lib/axis.jar"/>
 	<classpathentry kind="lib" path="C:/Users/stain/cagrid/ws-core-4.0.3/lib/axis-url.jar"/>
