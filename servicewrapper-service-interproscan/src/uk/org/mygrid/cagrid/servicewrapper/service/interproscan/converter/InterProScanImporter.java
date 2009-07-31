@@ -141,9 +141,11 @@ public class InterProScanImporter {
 	}
 
 	public SignatureMethod importSignatureMethod(String evidence) {
-		if (evidence.equals("superfamily")) {
+		if (evidence.equalsIgnoreCase("superfamily")) {
 			// In lowercase from EBI for some reason
-			evidence = "SuperFamily";
+			return SignatureMethod.SuperFamily;
+		} else if(evidence.equalsIgnoreCase("signalp")) {
+			return SignatureMethod.SignalPHMM;
 		}
 
 		try {
