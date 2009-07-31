@@ -1,6 +1,7 @@
 package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
@@ -13,6 +14,7 @@ import javax.xml.namespace.QName;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.axis2.util.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
@@ -99,6 +101,9 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 			// but actual response is in <result> - need to extract XML manually.
 			String base64 = poll.getPollResponse().getDomNode().getFirstChild().getFirstChild().getNodeValue();
 			byte[] response = Base64.decode(base64);
+			
+			File outFile = File.createTempFile("ncbiblast", ".xml");
+			FileUtils.writeByteArrayToFile(outFile, response);
 			
 			InputStream byteStream = new ByteArrayInputStream(response);
 			org.jdom.Document doc = saxBuilder.build(byteStream);
