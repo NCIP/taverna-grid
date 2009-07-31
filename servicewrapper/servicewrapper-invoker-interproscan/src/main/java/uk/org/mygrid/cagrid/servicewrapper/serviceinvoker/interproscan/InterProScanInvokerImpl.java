@@ -1,6 +1,7 @@
 package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
@@ -12,6 +13,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
@@ -91,6 +93,9 @@ public class InterProScanInvokerImpl implements InterProScanInvoker {
 			PollResponseDocument poll = interProScan.poll(pollDoc);
 			logger.debug("Received poll response for " + jobID + ":\n" + poll);
 			byte[] response = poll.getPollResponse().getResult();
+			File outFile = File.createTempFile("interproscan", ".xml");
+			FileUtils.writeByteArrayToFile(outFile, response);
+
 			InputStream byteStream = new ByteArrayInputStream(response);
 			org.jdom.Document doc = saxBuilder.build(byteStream);
 			return doc;
