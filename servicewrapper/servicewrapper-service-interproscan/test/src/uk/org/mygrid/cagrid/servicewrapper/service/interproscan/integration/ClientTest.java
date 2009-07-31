@@ -5,8 +5,8 @@ import gov.nih.nci.cagrid.metadata.service.Fault;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.common.JobStatus;
+import uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInputParameters;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
@@ -29,7 +29,7 @@ public class ClientTest {
 		InterProScanClient interproscan = new InterProScanClient(
 				"http://127.0.0.1:8080/wsrf/services/cagrid/InterProScan");
 		InterProScanInput input = new InterProScanInput();
-		input.setSequenceRepresentation(new FASTAProteinSequence(
+		input.setSequenceRepresentation(new ProteinSequenceIdentifier(
 				"uniprot:wap_rat"));
 		InterProScanInputParameters params = new InterProScanInputParameters();
 		params.setEmail("mannen@soiland-reyes.com");

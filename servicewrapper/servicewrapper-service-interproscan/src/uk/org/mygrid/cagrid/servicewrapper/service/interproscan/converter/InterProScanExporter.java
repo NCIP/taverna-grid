@@ -103,13 +103,22 @@ public class InterProScanExporter {
 				if (apps.length() > 0) {
 					apps.append(' ');
 				}
-				apps.append(signatureMethod.getValue());
+				apps.append(exportSignatureMethod(signatureMethod));
 			}
 		}
 		if (apps.length() > 0) {
 			params.setApp(apps.toString());
 		}
 		return params;
+	}
+
+	private String exportSignatureMethod(SignatureMethod signatureMethod) {
+		if (signatureMethod.equals(SignatureMethod.SignalPHMM)) {
+			return "signalp";
+		} else if (signatureMethod.equals(SignatureMethod.SuperFamily)) {
+			return "superfamily";
+		}
+		return signatureMethod.getValue();
 	}
 
 }
