@@ -22,7 +22,7 @@ import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
  * @author Stian Soiland-Reyes
  * 
  */
-public class TestBlst2Database extends CommonTest {
+public class TestBlst02Database extends CommonTest {
 
 	@Test(expected = AxisFault.class)
 	public void failsEmptyProgram() throws Exception {
