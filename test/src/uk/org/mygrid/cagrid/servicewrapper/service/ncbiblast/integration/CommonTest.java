@@ -5,11 +5,13 @@ import java.rmi.RemoteException;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.junit.Before;
 
+import schema.EBIApplicationResult;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInputParameters;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.client.NCBIBlastClient;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.client.NCBIBlastClientUtils;
+import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.client.NCBIBlastJobClient;
 import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
 
 public class CommonTest {
@@ -18,8 +20,8 @@ public class CommonTest {
 			"uniprot:wap_rat");
 	// 100 ms
 	public static final int SHORT_TIMEOUT = 100;
-	// 3 minutes
-	public static final int LONG_TIMEOUT = 3 * 60 * 1000;
+	// 1 minutes
+	public static final int LONG_TIMEOUT = 1 * 60 * 1000;
 
 	public static final FASTAProteinSequence SIMPLE_PROT_SEQUENCE = new FASTAProteinSequence(
 			"CQTNEECAQNDMCCPSSCGRSCKTPVNIE");
@@ -43,6 +45,16 @@ public class CommonTest {
 
 		clientUtils = new NCBIBlastClientUtils(client);
 		
+	}
+	
+
+	public String getCommandLine() throws RemoteException, Exception {
+		NCBIBlastJobClient jobClient = clientUtils.getJobClientForInput(input);
+		EBIApplicationResult originalOutput = clientUtils
+				.getOriginalOutput(jobClient);
+		String cmdLine = originalOutput.getHeader().getCommandLine()
+				.getCommand();
+		return cmdLine;
 	}
 
 }

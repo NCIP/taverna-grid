@@ -23,7 +23,7 @@ import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
  * @author Stian Soiland-Reyes
  * 
  */
-public class TestBlst4Alignments extends CommonTest {
+public class TestBlst04Alignments extends CommonTest {
 
 
 

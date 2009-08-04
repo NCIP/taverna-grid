@@ -21,7 +21,7 @@ import uk.org.mygrid.cagrid.valuedomains.Matrix;
  * @author Stian Soiland-Reyes
  * 
  */
-public class TestBlst3Matrix extends CommonTest {
+public class TestBlst03Matrix extends CommonTest {
 
 
 	@Test(expected = AxisFault.class)

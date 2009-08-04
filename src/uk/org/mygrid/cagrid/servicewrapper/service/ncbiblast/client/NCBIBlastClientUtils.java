@@ -6,7 +6,9 @@ import gov.nih.nci.cagrid.metadata.service.Fault;
 import java.io.StringReader;
 import java.rmi.RemoteException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -18,8 +20,10 @@ import org.globus.wsrf.NotifyCallback;
 import org.globus.wsrf.container.ContainerException;
 import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType;
 import org.globus.wsrf.utils.XmlUtils;
+import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 
+import schema.EBIApplicationResult;
 import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
@@ -29,19 +33,19 @@ import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCB
 
 public class NCBIBlastClientUtils {
 
-	private static Logger logger = Logger
-			.getLogger(NCBIBlastClientUtils.class);
+	private static Logger logger = Logger.getLogger(NCBIBlastClientUtils.class);
 
 	private static final int DEFAULT_REFRESH_MS = 500;
 
 	protected final NCBIBlastClient client;
 
+	private Map<NCBIBLASTInput, NCBIBlastJobClient> jobClients = new HashMap<NCBIBLASTInput, NCBIBlastJobClient>();
+
 	/**
 	 * Construct a NCBIBlastClientUtils.
 	 * 
 	 * @param client
-	 *            The initialized NCBIBlastClient to use for the job
-	 *            submission
+	 *            The initialized NCBIBlastClient to use for the job submission
 	 * @param timeoutMs
 	 *            The timeout
 	 * @param refreshMs
@@ -50,20 +54,24 @@ public class NCBIBlastClientUtils {
 		this.client = client;
 	}
 
-	public NCBIBLASTOutput ncbiBlastSync(
-			NCBIBLASTInput nCBIBlastInput, int timeoutMs)
-			throws RemoteException, ClientException {
-		return ncbiBlastSync(nCBIBlastInput, timeoutMs,
-				DEFAULT_REFRESH_MS);
+	public NCBIBlastJobClient getJobClientForInput(NCBIBLASTInput input) {
+		synchronized (jobClients) {
+			return jobClients.get(input);
+		}
 	}
 
-	public NCBIBLASTOutput ncbiBlastSync(
-			NCBIBLASTInput nCBIBlastInput, int timeoutMs, int refreshMs)
-			throws RemoteException, ClientException {
+	public NCBIBLASTOutput ncbiBlastSync(NCBIBLASTInput nCBIBlastInput,
+			int timeoutMs) throws RemoteException, ClientException {
+		return ncbiBlastSync(nCBIBlastInput, timeoutMs, DEFAULT_REFRESH_MS);
+	}
+
+	public NCBIBLASTOutput ncbiBlastSync(NCBIBLASTInput nCBIBlastInput,
+			int timeoutMs, int refreshMs) throws RemoteException,
+			ClientException {
 		Calendar timeout = Calendar.getInstance();
 		timeout.add(Calendar.MILLISECOND, timeoutMs);
-		
-		NCBIBlastJobReference job = client.ncbiBlast(nCBIBlastInput);		
+
+		NCBIBlastJobReference job = client.ncbiBlast(nCBIBlastInput);
 		NCBIBlastJobClient jobClient;
 		try {
 			jobClient = new NCBIBlastJobClient(job.getEndpointReference());
@@ -71,6 +79,9 @@ public class NCBIBlastClientUtils {
 			throw new RuntimeException(
 					"Unexpected malformed URI in job endpoint reference: "
 							+ job.getEndpointReference(), e);
+		}
+		synchronized (jobClients) {
+			jobClients.put(nCBIBlastInput, jobClient);
 		}
 		JobStatus status = JobStatus.pending;
 		while (timeout.after(Calendar.getInstance())) {
@@ -99,6 +110,19 @@ public class NCBIBlastClientUtils {
 				job);
 	}
 
+	public EBIApplicationResult getOriginalOutput(NCBIBlastJobClient jobClient)
+			throws RemoteException, Exception {
+		GetResourcePropertyResponse resourceResp = jobClient
+				.getResourceProperty(NCBIBlastJobConstants.EBIAPPLICATIONRESULT);
+		MessageElement messageElement = resourceResp.get_any()[0];
+		StringReader reader = new StringReader(XmlUtils
+				.toString(messageElement));
+		EBIApplicationResult originalOutput = (EBIApplicationResult) Utils
+				.deserializeObject(reader, EBIApplicationResult.class);
+		return originalOutput;
+	}
+
+	@SuppressWarnings("unchecked")
 	public void ncbiBlastAsync(NCBIBLASTInput nCBIBlastInput,
 			JobCallBack callback) {
 		NCBIBlastJobReference job;
@@ -110,8 +134,7 @@ public class NCBIBlastClientUtils {
 		NCBIBlastJobClient jobClient;
 		try {
 			try {
-				jobClient = new NCBIBlastJobClient(job
-						.getEndpointReference());
+				jobClient = new NCBIBlastJobClient(job.getEndpointReference());
 			} catch (MalformedURIException e) {
 				throw new RuntimeException(
 						"Unexpected malformed URI in job endpoint reference: "
@@ -119,14 +142,17 @@ public class NCBIBlastClientUtils {
 			} catch (RemoteException e) {
 				throw new ClientException("Can't make job client", e, job);
 			}
+			synchronized (jobClients) {
+				jobClients.put(nCBIBlastInput, jobClient);
+			}
+
 			CallbackProxy callBackProxy = new CallbackProxy(callback);
 			try {
 				jobClient.subscribe(NCBIBlastJobConstants.NCBIBLASTOUTPUT,
 						callBackProxy);
 				jobClient.subscribe(NCBIBlastJobConstants.JOBSTATUS,
 						callBackProxy);
-				jobClient.subscribe(NCBIBlastJobConstants.FAULT,
-						callBackProxy);
+				jobClient.subscribe(NCBIBlastJobConstants.FAULT, callBackProxy);
 			} catch (RemoteException e) {
 				throw new ClientException("Can't subscribe to job changes", e,
 						job);
@@ -160,8 +186,7 @@ public class NCBIBlastClientUtils {
 			Class<?> valueClass;
 			if (topic.equals(NCBIBlastJobConstants.JOBSTATUS)) {
 				valueClass = JobStatus.class;
-			} else if (topic
-					.equals(NCBIBlastJobConstants.NCBIBLASTOUTPUT)) {
+			} else if (topic.equals(NCBIBlastJobConstants.NCBIBLASTOUTPUT)) {
 				valueClass = NCBIBLASTOutput.class;
 			} else if (topic.equals(NCBIBlastJobConstants.FAULT)) {
 				valueClass = Fault.class;
@@ -201,7 +226,7 @@ public class NCBIBlastClientUtils {
 				callback.jobStatusChanged((JobStatus) oldValue,
 						(JobStatus) newValue);
 			} else if (valueClass == NCBIBLASTOutput.class) {
-				callback.jobOutputReceived((NCBIBLASTOutput)newValue);
+				callback.jobOutputReceived((NCBIBLASTOutput) newValue);
 			} else {
 				callback.jobError((Fault) newValue);
 			}

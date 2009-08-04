@@ -19,27 +19,23 @@ public class NCBIBlastJobImpl extends NCBIBlastJobImplBase {
 		super();
 	}
 
-	public gov.nih.nci.cagrid.metadata.service.Fault getError()
-			throws RemoteException {
+  public gov.nih.nci.cagrid.metadata.service.Fault getError() throws RemoteException {
 		NCBIBlastJobResource job = getJob();
 		jobUtils.updateFault(job);
 		return getJob().getFault();
 	}
 
-	public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput getInputs()
-			throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput getInputs() throws RemoteException {
 		return getJob().getNCBIBlastInput();
 	}
 
-	public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput getOutputs()
-			throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput getOutputs() throws RemoteException {
 		NCBIBlastJobResource job = getJob();
 		jobUtils.updateOutputs(job);
 		return job.getNCBIBlastOutput();
 	}
 
-	public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus()
-			throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException {
 		NCBIBlastJobResource job = getJob();
 		jobUtils.updateStatus(job);
 		return job.getJobStatus();
