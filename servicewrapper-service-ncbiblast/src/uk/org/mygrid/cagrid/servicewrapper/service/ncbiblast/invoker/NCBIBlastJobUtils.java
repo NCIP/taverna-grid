@@ -1,12 +1,16 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.invoker;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.metadata.service.Fault;
 
+import java.io.StringReader;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
 import org.jdom.Document;
+import org.jdom.output.XMLOutputter;
 
+import schema.EBIApplicationResult;
 import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.converter.NCBIBlastConverter;
@@ -98,7 +102,22 @@ public class NCBIBlastJobUtils {
 			logger.warn("Can't poll for jobID " + jobID, e);
 			throw new RemoteException("Can't poll for jobID " + jobID, e);
 		}
-		logger.info("Data returned for " + jobID + " is: \n" + data);
+
+		
+
+		XMLOutputter xmlOutputter = new XMLOutputter();
+		String dataString = xmlOutputter.outputString(data);
+		StringReader xmlReader = new StringReader(dataString);
+		EBIApplicationResult eBIApplicationResult;
+		try {
+			eBIApplicationResult = (EBIApplicationResult) Utils.deserializeObject(xmlReader, 
+					EBIApplicationResult.class);
+			job.setEBIApplicationResult(eBIApplicationResult);
+		} catch (Exception e) {
+			logger.warn("Could not parse/serialize returned data:\n" + dataString);
+		}
+		
+		logger.info("Data returned for " + jobID + " is: \n" + dataString);
 		NCBIBLASTOutput output = converter.convertNCBIBlastOutput(data);
 		job.setNCBIBlastOutput(output);
 	}

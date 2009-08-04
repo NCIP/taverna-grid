@@ -2,13 +2,13 @@
 <EBIApplicationResult xmlns="http://www.ebi.ac.uk/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.ebi.ac.uk/schema/ApplicationResult.xsd">
 <Header>
 	<program name="NCBI-blastp" version="2.2.20 [Feb-08-2009]" citation="PMID:9254694"/>
-	<commandLine command="/ebi/extserv/bin/ncbi-blast-2.2.20/bin/blastall -p blastp -d $IDATA_CURRENT/blastdb/uniprot -i /ebi/extserv/blast-work/interactive//blast-20090731-1552573291.input -M BLOSUM62 -b 50 -v 100 -e 10 -X 0 -G 11 -E 1 -a 16 -L 1,137 -m 0 -gt -F F -C F "/>
+	<commandLine command="/ebi/extserv/bin/ncbi-blast-2.2.20/bin/blastall -p blastp -d $IDATA_CURRENT/blastdb/uniprot -i /ebi/extserv/blast-work/interactive//blast-20090803-1557488723.input -M BLOSUM62 -b 50 -v 100 -e 10 -X 0 -G 11 -E 1 -a 16 -L 1,137 -m 0 -gt -F F -C F "/>
 	<parameters>
 		<sequences total="1">
 			<sequence number="1" name="Sequence" type="p" length="137"/>
 		</sequences>
-		<databases total="1" sequences="9260488" letters="3013137558">
-			<database number="1" name="uniprot" type="p" created="2009-07-07T00:53:00+01:00"/>
+		<databases total="1" sequences="9450285" letters="3078117896">
+			<database number="1" name="uniprot" type="p" created="2009-07-28T00:05:00+01:00"/>
 		</databases>
 		<gapOpen>11</gapOpen>
 		<gapExtension>1</gapExtension>
@@ -119,7 +119,7 @@
 				<alignment number="1">
 					<score>172</score>
 					<bits>70.9</bits>
-					<expectation>3e-11</expectation>
+					<expectation>4e-11</expectation>
 					<identity>37</identity>
 					<positives>51</positives>
 					<querySeq start="46" end="133">INCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTV</querySeq>
@@ -149,7 +149,7 @@
 				<alignment number="4">
 					<score>128</score>
 					<bits>53.9</bits>
-					<expectation>4e-06</expectation>
+					<expectation>5e-06</expectation>
 					<identity>34</identity>
 					<positives>48</positives>
 					<querySeq start="48" end="119">CQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGC</querySeq>
@@ -159,7 +159,7 @@
 				<alignment number="5">
 					<score>97</score>
 					<bits>42.0</bits>
-					<expectation>0.017</expectation>
+					<expectation>0.018</expectation>
 					<identity>38</identity>
 					<positives>49</positives>
 					<querySeq start="81" end="133">GRCPWNPIQMIAAGPCPKDN--PCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTV</querySeq>
@@ -221,7 +221,7 @@
 				<alignment number="2">
 					<score>92</score>
 					<bits>40.0</bits>
-					<expectation>0.066</expectation>
+					<expectation>0.067</expectation>
 					<identity>31</identity>
 					<positives>43</positives>
 					<querySeq start="54" end="129">CAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDN---PCSIDSDCSGTMKCCKNGCIMSCMDPEPK</querySeq>
@@ -279,7 +279,7 @@
 				<alignment number="3">
 					<score>82</score>
 					<bits>36.2</bits>
-					<expectation>0.95</expectation>
+					<expectation>0.97</expectation>
 					<identity>40</identity>
 					<positives>66</positives>
 					<querySeq start="47" end="73">NCQTNEECAQNDMCCPSSCGRSCKTPV</querySeq>
@@ -303,7 +303,7 @@
 				<alignment number="2">
 					<score>79</score>
 					<bits>35.0</bits>
-					<expectation>2.1</expectation>
+					<expectation>2.2</expectation>
 					<identity>34</identity>
 					<positives>44</positives>
 					<querySeq start="78" end="129">QKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPK</querySeq>
@@ -326,85 +326,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="16" database="uniprot" id="B6PXM0_BRAFL" ac="B6PXM0" length="114" description="Putative uncharacterized protein (Fragment) OS=Branchiostoma floridae GN=BRAFLDRAFT_143311 PE=4 SV=1">
-			<alignments total="2">
-				<alignment number="1">
-					<score>158</score>
-					<bits>65.5</bits>
-					<expectation>1e-09</expectation>
-					<identity>34</identity>
-					<positives>52</positives>
-					<querySeq start="34" end="126">CSDDSFSEDTEC-INCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
-					<pattern>C  +S  ED  C + C ++ +CA ++ CC + CG+ C +P  + V K   CP     + +  P   +  C+ D +C GT KCC NGC   C+ P</pattern>
-					<matchSeq start="28" end="114">CPLESSFEDMSCEVRCNSDWDCAHSEKCCSNGCGQVCVSPT-VHV-KNHTCP-----LTSDMPQTCETECAHDGECPGTHKCCSNGCASVCVSP</matchSeq>
-				</alignment>
-				<alignment number="2">
-					<score>102</score>
-					<bits>43.9</bits>
-					<expectation>0.005</expectation>
-					<identity>31</identity>
-					<positives>41</positives>
-					<querySeq start="53" end="126">ECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
-					<pattern>+C     CC S C   C  P     +K G CP       +      +  C+ D DC+ + KCC NGC   C+ P</pattern>
-					<matchSeq start="1" end="67">DCPGAHKCCFSGCTTQCLAP---STKKFGSCPLES----SFEDMSCEVRCNSDWDCAHSEKCCSNGCGQVCVSP</matchSeq>
-				</alignment>
-			</alignments>
-		</hit>
-		<hit number="17" database="uniprot" id="B6PU62_BRAFL" ac="B6PU62" length="1786" description="Putative uncharacterized protein OS=Branchiostoma floridae GN=BRAFLDRAFT_110999 PE=4 SV=1">
-			<alignments total="5">
-				<alignment number="1">
-					<score>158</score>
-					<bits>65.5</bits>
-					<expectation>1e-09</expectation>
-					<identity>33</identity>
-					<positives>44</positives>
-					<querySeq start="40" end="126">SEDTEC-INCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQ----------KAGRCP------WNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
-					<pattern>S  TEC + C ++ +C  +  CC   C R+C   V++ VQ          K+GRCP      W P+  I+         CS D DC G  KCC  GC   C  P</pattern>
-					<matchSeq start="357" end="452">SPSTECNVECSSDMDCVDSHKCCGDGCIRTCVPAVDMSVQQTFTRQQTGSKSGRCPNLMQTYWTPLMCISE--------CSDDMDCDGEDKCCSTGCGQVCFSP</matchSeq>
-				</alignment>
-				<alignment number="2">
-					<score>119</score>
-					<bits>50.4</bits>
-					<expectation>5e-05</expectation>
-					<identity>33</identity>
-					<positives>48</positives>
-					<querySeq start="47" end="124">NCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCM</querySeq>
-					<pattern>+C T+ +CA    CC +    +C  P  +E  K G CP        +  C  +  CS D DC  + KCC +GCI +C+</pattern>
-					<matchSeq start="315" end="388">SCVTDSDCAGTTKCCHNGYAFTCMRPWILE--KPGVCPAMAPYTSPSTECNVE--CSSDMDCVDSHKCCGDGCIRTCV</matchSeq>
-				</alignment>
-				<alignment number="3">
-					<score>110</score>
-					<bits>47.0</bits>
-					<expectation>5e-04</expectation>
-					<identity>32</identity>
-					<positives>43</positives>
-					<querySeq start="34" end="126">CSDDSFSEDTECINCQTNEECAQNDMCCPSSC--GR-SCKT---PVNIE-----VQKAGRCPWNPI-QMIAAGPCPKDNP-----------CSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
-					<pattern>C+D    E+T+     ++ E  Q D C   +C  GR  C T   P+ +E     V   G+C  N +      G CP  +P           C  DSDC+GT KCC NG   +CM P</pattern>
-					<matchSeq start="229" end="340">CTDTIELEETQF----SHGESWQRDPCTTCTCMNGRVRCHTQSCPMTVEHGCRAVHVQGQCCPNVVCNQGKVGQCPVVSPTLTEEMSMTDSCVTDSDCAGTTKCCHNGYAFTCMRP</matchSeq>
-				</alignment>
-				<alignment number="4">
-					<score>77</score>
-					<bits>34.3</bits>
-					<expectation>3.6</expectation>
-					<identity>26</identity>
-					<positives>51</positives>
-					<querySeq start="31" end="74">QSMCSDDSFSEDTECIN-CQTNEECAQNDMCCPSSCGRSCKTPVN</querySeq>
-					<pattern> + +C    +     C++ C  ++ CA N +CC + C R+C   V+</pattern>
-					<matchSeq start="1027" end="1071">EQVCPHIKYGTFGRCVDECSHDDMCAPNQLCCSNGCARTCMESVS</matchSeq>
-				</alignment>
-				<alignment number="5">
-					<score>76</score>
-					<bits>33.9</bits>
-					<expectation>4.7</expectation>
-					<identity>27</identity>
-					<positives>39</positives>
-					<querySeq start="2" end="125">RCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTEC---INCQTNEECAQNDMC---CPSSC---GRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMD</querySeq>
-					<pattern> +C  S V  +   +V+L +    + F + Q  C      E  EC    + Q    C +N   C   CP         C+T    E+ +   CP   I+    G C  +  CS D  C+     CC NGC  +CM+</pattern>
-					<matchSeq start="948" end="1068">KCKPSAVSEVCQTDVSLCKIFCPYGFMTNQDGC------ETCECRLPTSVQITSVC-RNRPCHKFCPHGFLTDSSGCQTCTCAELPEQV-CPH--IKYGTFGRCVDE--CSHDDMCAPNQLCCSNGCARTCME</matchSeq>
-				</alignment>
-			</alignments>
-		</hit>
-		<hit number="18" database="uniprot" id="WFDC2_HUMAN" ac="Q14508" length="124" description="WAP four-disulfide core domain protein 2 OS=Homo sapiens GN=WFDC2 PE=1 SV=2">
+		<hit number="16" database="uniprot" id="WFDC2_HUMAN" ac="Q14508" length="124" description="WAP four-disulfide core domain protein 2 OS=Homo sapiens GN=WFDC2 PE=1 SV=2">
 			<alignments total="2">
 				<alignment number="1">
 					<score>157</score>
@@ -419,7 +341,7 @@
 				<alignment number="2">
 					<score>83</score>
 					<bits>36.6</bits>
-					<expectation>0.73</expectation>
+					<expectation>0.74</expectation>
 					<identity>34</identity>
 					<positives>50</positives>
 					<querySeq start="78" end="129">QKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPK</querySeq>
@@ -428,12 +350,12 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="19" database="uniprot" id="A7J9L4_9MAMM" ac="A7J9L4" length="124" description="WAP four-disulfide core domain 2 OS=Tachyglossus aculeatus GN=WFDC-2 PE=2 SV=1">
+		<hit number="17" database="uniprot" id="A7J9L4_9MAMM" ac="A7J9L4" length="124" description="WAP four-disulfide core domain 2 OS=Tachyglossus aculeatus GN=WFDC-2 PE=2 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>156</score>
 					<bits>64.7</bits>
-					<expectation>2e-09</expectation>
+					<expectation>3e-09</expectation>
 					<identity>37</identity>
 					<positives>51</positives>
 					<querySeq start="42" end="126">DTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGC-IMSCMDP</querySeq>
@@ -452,12 +374,12 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="20" database="uniprot" id="B6NKR7_BRAFL" ac="B6NKR7" length="194" description="Putative uncharacterized protein (Fragment) OS=Branchiostoma floridae GN=BRAFLDRAFT_174863 PE=4 SV=1">
+		<hit number="18" database="uniprot" id="C3XYU0_BRAFL" ac="C3XYU0" length="194" description="Putative uncharacterized protein (Fragment) OS=Branchiostoma floridae GN=BRAFLDRAFT_174863 PE=4 SV=1">
 			<alignments total="3">
 				<alignment number="1">
 					<score>156</score>
 					<bits>64.7</bits>
-					<expectation>2e-09</expectation>
+					<expectation>3e-09</expectation>
 					<identity>35</identity>
 					<positives>46</positives>
 					<querySeq start="26" end="132">VFNSVQSMCSDDSFSEDTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPT</querySeq>
@@ -486,7 +408,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="21" database="uniprot" id="WFDC2_RABIT" ac="Q28631" length="123" description="WAP four-disulfide core domain protein 2 OS=Oryctolagus cuniculus GN=WFDC2 PE=1 SV=2">
+		<hit number="19" database="uniprot" id="WFDC2_RABIT" ac="Q28631" length="123" description="WAP four-disulfide core domain protein 2 OS=Oryctolagus cuniculus GN=WFDC2 PE=1 SV=2">
 			<alignments total="2">
 				<alignment number="1">
 					<score>153</score>
@@ -510,12 +432,12 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="22" database="uniprot" id="Q8VE57_MOUSE" ac="Q8VE57" length="126" description="WAP four-disulfide core domain 5 OS=Mus musculus GN=Wfdc5 PE=2 SV=1">
+		<hit number="20" database="uniprot" id="Q8VE57_MOUSE" ac="Q8VE57" length="126" description="WAP four-disulfide core domain 5 OS=Mus musculus GN=Wfdc5 PE=2 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>151</score>
 					<bits>62.8</bits>
-					<expectation>9e-09</expectation>
+					<expectation>1e-08</expectation>
 					<identity>31</identity>
 					<positives>49</positives>
 					<querySeq start="1" end="126">MRCSISLVLG-LLALEVALARNLQEHVFNSVQSMCSDDSF-SEDTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
@@ -524,7 +446,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="23" database="uniprot" id="Q4KXB6_MOUSE" ac="Q4KXB6" length="126" description="Putative uncharacterized protein OS=Mus musculus GN=Wfdc5 PE=2 SV=1">
+		<hit number="21" database="uniprot" id="Q4KXB6_MOUSE" ac="Q4KXB6" length="126" description="Putative uncharacterized protein OS=Mus musculus GN=Wfdc5 PE=2 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>150</score>
@@ -538,7 +460,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="24" database="uniprot" id="A4K2R9_GORGO" ac="A4K2R9" length="132" description="Secretory leukocyte peptidase inhibitor OS=Gorilla gorilla gorilla GN=SLPI PE=4 SV=1">
+		<hit number="22" database="uniprot" id="A4K2R9_GORGO" ac="A4K2R9" length="132" description="Secretory leukocyte peptidase inhibitor OS=Gorilla gorilla gorilla GN=SLPI PE=4 SV=1">
 			<alignments total="3">
 				<alignment number="1">
 					<score>150</score>
@@ -553,7 +475,7 @@
 				<alignment number="2">
 					<score>76</score>
 					<bits>33.9</bits>
-					<expectation>4.7</expectation>
+					<expectation>4.8</expectation>
 					<identity>42</identity>
 					<positives>65</positives>
 					<querySeq start="48" end="73">CQTNEECAQNDMCCPSSCGRSCKTPV</querySeq>
@@ -563,7 +485,7 @@
 				<alignment number="3">
 					<score>75</score>
 					<bits>33.5</bits>
-					<expectation>6.2</expectation>
+					<expectation>6.3</expectation>
 					<identity>33</identity>
 					<positives>45</positives>
 					<querySeq start="93" end="132">AGPCP----------KDNPCSIDSDCSGTMKCCKNGCIMSCMDP-EPKSPT</querySeq>
@@ -572,21 +494,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="25" database="uniprot" id="B6NKQ3_BRAFL" ac="B6NKQ3" length="90" description="Putative uncharacterized protein (Fragment) OS=Branchiostoma floridae GN=BRAFLDRAFT_231443 PE=4 SV=1">
-			<alignments total="1">
-				<alignment number="1">
-					<score>150</score>
-					<bits>62.4</bits>
-					<expectation>1e-08</expectation>
-					<identity>37</identity>
-					<positives>55</positives>
-					<querySeq start="48" end="125">CQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMD</querySeq>
-					<pattern>C ++ +C +   CC + CG +C   +++     G CP +   M+  G C +   CS D+DCSG  KCC NGC  +CMD</pattern>
-					<matchSeq start="17" end="86">CSSDADCRRGQRCCSNGCGHAC---MDLYTSTVGECP-DTTGMV--GACAEF--CSSDADCSGGQKCCSNGCGHACMD</matchSeq>
-				</alignment>
-			</alignments>
-		</hit>
-		<hit number="26" database="uniprot" id="A4K2V7_PONAB" ac="A4K2V7" length="132" description="Secretory leukocyte peptidase inhibitor OS=Pongo abelii GN=SLPI PE=4 SV=1">
+		<hit number="23" database="uniprot" id="A4K2V7_PONAB" ac="A4K2V7" length="132" description="Secretory leukocyte peptidase inhibitor OS=Pongo abelii GN=SLPI PE=4 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>149</score>
@@ -600,7 +508,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="27" database="uniprot" id="WFDC2_PIG" ac="Q8MI69" length="123" description="WAP four-disulfide core domain protein 2 OS=Sus scrofa GN=WFDC2 PE=2 SV=1">
+		<hit number="24" database="uniprot" id="WFDC2_PIG" ac="Q8MI69" length="123" description="WAP four-disulfide core domain protein 2 OS=Sus scrofa GN=WFDC2 PE=2 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>148</score>
@@ -624,7 +532,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="28" database="uniprot" id="WFDC5_LEMCA" ac="A4K2S3" length="123" description="WAP four-disulfide core domain protein 5 OS=Lemur catta GN=WFDC5 PE=3 SV=1">
+		<hit number="25" database="uniprot" id="WFDC5_LEMCA" ac="A4K2S3" length="123" description="WAP four-disulfide core domain protein 5 OS=Lemur catta GN=WFDC5 PE=3 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>147</score>
@@ -638,7 +546,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="29" database="uniprot" id="A4K2Y0_SAIBB" ac="A4K2Y0" length="132" description="Secretory leukocyte peptidase inhibitor OS=Saimiri boliviensis boliviensis GN=SLPI PE=4 SV=1">
+		<hit number="26" database="uniprot" id="A4K2Y0_SAIBB" ac="A4K2Y0" length="132" description="Secretory leukocyte peptidase inhibitor OS=Saimiri boliviensis boliviensis GN=SLPI PE=4 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>146</score>
@@ -652,7 +560,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="30" database="uniprot" id="A4K2Q2_COLGU" ac="A4K2Q2" length="132" description="Secretory leukocyte peptidase inhibitor OS=Colobus guereza GN=SLPI PE=4 SV=1">
+		<hit number="27" database="uniprot" id="A4K2Q2_COLGU" ac="A4K2Q2" length="132" description="Secretory leukocyte peptidase inhibitor OS=Colobus guereza GN=SLPI PE=4 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>146</score>
@@ -666,7 +574,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="31" database="uniprot" id="A4K2P4_PANTR" ac="A4K2P4" length="132" description="Secretory leukocyte peptidase inhibitor OS=Pan troglodytes GN=SLPI PE=4 SV=1">
+		<hit number="28" database="uniprot" id="A4K2P4_PANTR" ac="A4K2P4" length="132" description="Secretory leukocyte peptidase inhibitor OS=Pan troglodytes GN=SLPI PE=4 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>145</score>
@@ -681,7 +589,7 @@
 				<alignment number="2">
 					<score>75</score>
 					<bits>33.5</bits>
-					<expectation>6.2</expectation>
+					<expectation>6.3</expectation>
 					<identity>33</identity>
 					<positives>45</positives>
 					<querySeq start="93" end="132">AGPCP----------KDNPCSIDSDCSGTMKCCKNGCIMSCMDP-EPKSPT</querySeq>
@@ -690,7 +598,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="32" database="uniprot" id="O44131_CAEEL" ac="O44131" length="2224" description="Putative uncharacterized protein OS=Caenorhabditis elegans GN=C08G9.2 PE=2 SV=2">
+		<hit number="29" database="uniprot" id="O44131_CAEEL" ac="O44131" length="2224" description="Putative uncharacterized protein OS=Caenorhabditis elegans GN=C08G9.2 PE=2 SV=2">
 			<alignments total="9">
 				<alignment number="1">
 					<score>145</score>
@@ -735,7 +643,7 @@
 				<alignment number="5">
 					<score>93</score>
 					<bits>40.4</bits>
-					<expectation>0.050</expectation>
+					<expectation>0.052</expectation>
 					<identity>55</identity>
 					<positives>62</positives>
 					<querySeq start="102" end="130">CSIDSDCSGTMKCCKNGCIMSCMDPEPKS</querySeq>
@@ -755,7 +663,7 @@
 				<alignment number="7">
 					<score>87</score>
 					<bits>38.1</bits>
-					<expectation>0.25</expectation>
+					<expectation>0.26</expectation>
 					<identity>27</identity>
 					<positives>41</positives>
 					<querySeq start="52" end="124">EECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNP------------CSIDSDCSGTMKCCKNGCIMSCM</querySeq>
@@ -775,7 +683,7 @@
 				<alignment number="9">
 					<score>80</score>
 					<bits>35.4</bits>
-					<expectation>1.6</expectation>
+					<expectation>1.7</expectation>
 					<identity>27</identity>
 					<positives>48</positives>
 					<querySeq start="46" end="88">INCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPI</querySeq>
@@ -784,7 +692,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="33" database="uniprot" id="B2R5H8_HUMAN" ac="B2R5H8" length="132" description="Secretory leukocyte peptidase inhibitor OS=Homo sapiens GN=SLPI PE=2 SV=1">
+		<hit number="30" database="uniprot" id="B2R5H8_HUMAN" ac="B2R5H8" length="132" description="Secretory leukocyte peptidase inhibitor OS=Homo sapiens GN=SLPI PE=2 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>145</score>
@@ -799,7 +707,7 @@
 				<alignment number="2">
 					<score>75</score>
 					<bits>33.5</bits>
-					<expectation>6.2</expectation>
+					<expectation>6.3</expectation>
 					<identity>33</identity>
 					<positives>45</positives>
 					<querySeq start="93" end="132">AGPCP----------KDNPCSIDSDCSGTMKCCKNGCIMSCMDP-EPKSPT</querySeq>
@@ -808,7 +716,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="34" database="uniprot" id="SLPI_HUMAN" ac="P03973" length="132" description="Antileukoproteinase OS=Homo sapiens GN=SLPI PE=1 SV=2">
+		<hit number="31" database="uniprot" id="SLPI_HUMAN" ac="P03973" length="132" description="Antileukoproteinase OS=Homo sapiens GN=SLPI PE=1 SV=2">
 			<alignments total="2">
 				<alignment number="1">
 					<score>145</score>
@@ -823,7 +731,7 @@
 				<alignment number="2">
 					<score>75</score>
 					<bits>33.5</bits>
-					<expectation>6.2</expectation>
+					<expectation>6.3</expectation>
 					<identity>33</identity>
 					<positives>45</positives>
 					<querySeq start="93" end="132">AGPCP----------KDNPCSIDSDCSGTMKCCKNGCIMSCMDP-EPKSPT</querySeq>
@@ -832,7 +740,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="35" database="uniprot" id="B9EPP9_SALSA" ac="B9EPP9" length="145" description="Whey acidic protein OS=Salmo salar GN=WAP PE=2 SV=1">
+		<hit number="32" database="uniprot" id="B9EPP9_SALSA" ac="B9EPP9" length="145" description="Whey acidic protein OS=Salmo salar GN=WAP PE=2 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>144</score>
@@ -847,7 +755,7 @@
 				<alignment number="2">
 					<score>83</score>
 					<bits>36.6</bits>
-					<expectation>0.73</expectation>
+					<expectation>0.74</expectation>
 					<identity>36</identity>
 					<positives>45</positives>
 					<querySeq start="77" end="133">VQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTV</querySeq>
@@ -856,7 +764,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="36" database="uniprot" id="B6NKP7_BRAFL" ac="B6NKP7" length="95" description="Putative uncharacterized protein OS=Branchiostoma floridae GN=BRAFLDRAFT_231486 PE=4 SV=1">
+		<hit number="33" database="uniprot" id="C3XYV3_BRAFL" ac="C3XYV3" length="95" description="Putative uncharacterized protein OS=Branchiostoma floridae GN=BRAFLDRAFT_231486 PE=4 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>144</score>
@@ -870,7 +778,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="37" database="uniprot" id="B3GK01_BUBBU" ac="B3GK01" length="131" description="Secretory leukocyte protease inhibitor OS=Bubalus bubalis PE=2 SV=1">
+		<hit number="34" database="uniprot" id="B3GK01_BUBBU" ac="B3GK01" length="131" description="Secretory leukocyte protease inhibitor OS=Bubalus bubalis PE=2 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>143</score>
@@ -884,7 +792,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="38" database="uniprot" id="A4K2X1_AOTNA" ac="A4K2X1" length="132" description="Secretory leukocyte peptidase inhibitor OS=Aotus nancymaae GN=SLPI PE=4 SV=1">
+		<hit number="35" database="uniprot" id="A4K2X1_AOTNA" ac="A4K2X1" length="132" description="Secretory leukocyte peptidase inhibitor OS=Aotus nancymaae GN=SLPI PE=4 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>143</score>
@@ -898,7 +806,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="39" database="uniprot" id="A4K2Y8_CERAE" ac="A4K2Y8" length="132" description="Secretory leukocyte peptidase inhibitor OS=Cercopithecus aethiops GN=SLPI PE=4 SV=1">
+		<hit number="36" database="uniprot" id="A4K2Y8_CERAE" ac="A4K2Y8" length="132" description="Secretory leukocyte peptidase inhibitor OS=Cercopithecus aethiops GN=SLPI PE=4 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>142</score>
@@ -912,7 +820,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="40" database="uniprot" id="WFDC2_CANFA" ac="Q28894" length="124" description="WAP four-disulfide core domain protein 2 OS=Canis familiaris GN=WFDC2 PE=2 SV=1">
+		<hit number="37" database="uniprot" id="WFDC2_CANFA" ac="Q28894" length="124" description="WAP four-disulfide core domain protein 2 OS=Canis familiaris GN=WFDC2 PE=2 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>142</score>
@@ -927,7 +835,7 @@
 				<alignment number="2">
 					<score>88</score>
 					<bits>38.5</bits>
-					<expectation>0.19</expectation>
+					<expectation>0.20</expectation>
 					<identity>37</identity>
 					<positives>51</positives>
 					<querySeq start="76" end="129">EVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPK</querySeq>
@@ -936,31 +844,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="41" database="uniprot" id="B6LJI0_BRAFL" ac="B6LJI0" length="93" description="Putative uncharacterized protein (Fragment) OS=Branchiostoma floridae GN=BRAFLDRAFT_207809 PE=4 SV=1">
-			<alignments total="2">
-				<alignment number="1">
-					<score>141</score>
-					<bits>58.9</bits>
-					<expectation>1e-07</expectation>
-					<identity>36</identity>
-					<positives>50</positives>
-					<querySeq start="48" end="126">CQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPW-NPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
-					<pattern>CQT+  C+ +  CC + CG +C  P +    K G+CP  +       GPC     C+ D  C G  KCC  GC + C+DP</pattern>
-					<matchSeq start="19" end="93">CQTDGHCSHDRKCCFNGCGHTCAEPGS---DKPGQCPAPDDDDDDDTGPCWCH--CTSDHHCHGNQKCCSVGCSLQCVDP</matchSeq>
-				</alignment>
-				<alignment number="2">
-					<score>79</score>
-					<bits>35.0</bits>
-					<expectation>2.1</expectation>
-					<identity>34</identity>
-					<positives>41</positives>
-					<querySeq start="94" end="131">GPCPKD--------NPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSP</querySeq>
-					<pattern>G CP          + C  D  CS   KCC NGC  +C +P    P</pattern>
-					<matchSeq start="3" end="48">GDCPDQRTLWPVCSDQCQTDGHCSHDRKCCFNGCGHTCAEPGSDKP</matchSeq>
-				</alignment>
-			</alignments>
-		</hit>
-		<hit number="42" database="uniprot" id="Q7KPX3_TRITR" ac="Q7KPX3" length="399" description="Putative porin (Fragment) OS=Trichuris trichiura GN=TT95 PE=4 SV=1">
+		<hit number="38" database="uniprot" id="Q7KPX3_TRITR" ac="Q7KPX3" length="399" description="Putative porin (Fragment) OS=Trichuris trichiura GN=TT95 PE=4 SV=1">
 			<alignments total="6">
 				<alignment number="1">
 					<score>140</score>
@@ -1024,7 +908,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="43" database="uniprot" id="Q27087_TRITR" ac="Q27087" length="475" description="Tt52 protein (Fragment) OS=Trichuris trichiura GN=Tt52 PE=2 SV=2">
+		<hit number="39" database="uniprot" id="Q27087_TRITR" ac="Q27087" length="475" description="Tt52 protein (Fragment) OS=Trichuris trichiura GN=Tt52 PE=2 SV=2">
 			<alignments total="8">
 				<alignment number="1">
 					<score>140</score>
@@ -1069,7 +953,7 @@
 				<alignment number="5">
 					<score>118</score>
 					<bits>50.1</bits>
-					<expectation>6e-05</expectation>
+					<expectation>7e-05</expectation>
 					<identity>34</identity>
 					<positives>44</positives>
 					<querySeq start="48" end="129">CQTNEECAQNDMCCPSSCGRSCKTPV--NIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPK</querySeq>
@@ -1108,7 +992,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="44" database="uniprot" id="O44397_TRITR" ac="O44397" length="903" description="Putative porin OS=Trichuris trichiura GN=TT95 PE=2 SV=1">
+		<hit number="40" database="uniprot" id="O44397_TRITR" ac="O44397" length="903" description="Putative porin OS=Trichuris trichiura GN=TT95 PE=2 SV=1">
 			<alignments total="16">
 				<alignment number="1">
 					<score>140</score>
@@ -1233,7 +1117,7 @@
 				<alignment number="13">
 					<score>110</score>
 					<bits>47.0</bits>
-					<expectation>5e-04</expectation>
+					<expectation>6e-04</expectation>
 					<identity>29</identity>
 					<positives>41</positives>
 					<querySeq start="48" end="126">CQTNEECAQNDMCCPSSCGRSCKTPVNI--EVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
@@ -1272,7 +1156,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="45" database="uniprot" id="B6MBF0_BRAFL" ac="B6MBF0" length="94" description="Putative uncharacterized protein (Fragment) OS=Branchiostoma floridae GN=BRAFLDRAFT_222537 PE=4 SV=1">
+		<hit number="41" database="uniprot" id="C3YJV7_BRAFL" ac="C3YJV7" length="94" description="Putative uncharacterized protein (Fragment) OS=Branchiostoma floridae GN=BRAFLDRAFT_222537 PE=4 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>140</score>
@@ -1287,7 +1171,7 @@
 				<alignment number="2">
 					<score>79</score>
 					<bits>35.0</bits>
-					<expectation>2.1</expectation>
+					<expectation>2.2</expectation>
 					<identity>34</identity>
 					<positives>41</positives>
 					<querySeq start="94" end="131">GPCPKD--------NPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSP</querySeq>
@@ -1296,7 +1180,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="46" database="uniprot" id="WAP_MACEU" ac="Q9N0L8" length="191" description="Whey acidic protein OS=Macropus eugenii GN=WAP PE=1 SV=1">
+		<hit number="42" database="uniprot" id="WAP_MACEU" ac="Q9N0L8" length="191" description="Whey acidic protein OS=Macropus eugenii GN=WAP PE=1 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>140</score>
@@ -1320,7 +1204,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="47" database="uniprot" id="SLPI_SHEEP" ac="Q6V9X0" length="132" description="Antileukoproteinase OS=Ovis aries GN=SLPI PE=3 SV=1">
+		<hit number="43" database="uniprot" id="SLPI_SHEEP" ac="Q6V9X0" length="132" description="Antileukoproteinase OS=Ovis aries GN=SLPI PE=3 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>140</score>
@@ -1334,7 +1218,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="48" database="uniprot" id="Q8TCV5-2" ac="Q8TCV5" length="123" description="Isoform 2 of WAP four-disulfide core domain protein 5 OS=Homo sapiens GN=WFDC5">
+		<hit number="44" database="uniprot" id="Q8TCV5-2" ac="Q8TCV5" length="123" description="Isoform 2 of WAP four-disulfide core domain protein 5 OS=Homo sapiens GN=WFDC5">
 			<alignments total="1">
 				<alignment number="1">
 					<score>139</score>
@@ -1348,7 +1232,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="49" database="uniprot" id="A7J9L5_ORNAN" ac="A7J9L5" length="124" description="WAP four-disulfide core domain 2 OS=Ornithorhynchus anatinus GN=WFDC-2 PE=2 SV=1">
+		<hit number="45" database="uniprot" id="A7J9L5_ORNAN" ac="A7J9L5" length="124" description="WAP four-disulfide core domain 2 OS=Ornithorhynchus anatinus GN=WFDC-2 PE=2 SV=1">
 			<alignments total="2">
 				<alignment number="1">
 					<score>139</score>
@@ -1372,7 +1256,7 @@
 				</alignment>
 			</alignments>
 		</hit>
-		<hit number="50" database="uniprot" id="A6H749_BOVIN" ac="A6H749" length="131" description="MATN4 protein OS=Bos taurus GN=MATN4 PE=2 SV=1">
+		<hit number="46" database="uniprot" id="A6H749_BOVIN" ac="A6H749" length="131" description="MATN4 protein OS=Bos taurus GN=MATN4 PE=2 SV=1">
 			<alignments total="1">
 				<alignment number="1">
 					<score>139</score>
@@ -1383,6 +1267,62 @@
 					<querySeq start="43" end="126">TECIN-----CQTNEECAQNDMCCPSSCGRSCKTPVNIE---VQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
 					<pattern>T+C+      C+++ +C     CC  +CG  C  PVN+     +K G CP    + +   P    N C  D  C GT+KCC   C   C+ P</pattern>
 					<matchSeq start="40" end="128">TQCLGDEKPKCRSDWQCPHKKKCCLDTCGTECLDPVNVTNPVKKKPGTCPLVHGRCLMLKPL---NHCETDDQCVGTLKCCNAVCGKVCLSP</matchSeq>
+				</alignment>
+			</alignments>
+		</hit>
+		<hit number="47" database="uniprot" id="WFDC5_PONAB" ac="A4K2V3" length="123" description="WAP four-disulfide core domain protein 5 OS=Pongo abelii GN=WFDC5 PE=3 SV=1">
+			<alignments total="1">
+				<alignment number="1">
+					<score>139</score>
+					<bits>58.2</bits>
+					<expectation>2e-07</expectation>
+					<identity>29</identity>
+					<positives>45</positives>
+					<querySeq start="1" end="126">MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECI-----NCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
+					<pattern>MR    L+LG L   +A+   L   VF   +   S     +D  C+      C  + +C     CC  +C R C   V++   K G CP + ++ ++    P ++ C  DSDCSG  +CC + C   C DP</pattern>
+					<matchSeq start="1" end="120">MRIQSLLLLGAL---LAVGSQLPA-VFGRKKGEKSGGCPPDDGPCLLSVPDQCVEDSQCPLTRKCCYRACFRQCVPRVSV---KLGSCPEDQLRCLS----PMNHLCHKDSDCSGKKRCCHSACGRDCRDP</matchSeq>
+				</alignment>
+			</alignments>
+		</hit>
+		<hit number="48" database="uniprot" id="WFDC5_PANTR" ac="A4K2N9" length="123" description="WAP four-disulfide core domain protein 5 OS=Pan troglodytes GN=WFDC5 PE=3 SV=1">
+			<alignments total="1">
+				<alignment number="1">
+					<score>139</score>
+					<bits>58.2</bits>
+					<expectation>2e-07</expectation>
+					<identity>29</identity>
+					<positives>45</positives>
+					<querySeq start="1" end="126">MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECI-----NCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
+					<pattern>MR    L+LG L   +A+   L   VF   +   S     +D  C+      C  + +C     CC  +C R C   V++   K G CP + ++ ++    P ++ C  DSDCSG  +CC + C   C DP</pattern>
+					<matchSeq start="1" end="120">MRTQSLLLLGAL---LAVGSQLPA-VFGRKKGEKSGGCPPDDGPCLLSVPDQCVEDSQCPLTRKCCYRACFRQCVPRVSV---KLGSCPEDQLRCLS----PMNHLCHKDSDCSGKKRCCHSACGRDCRDP</matchSeq>
+				</alignment>
+			</alignments>
+		</hit>
+		<hit number="49" database="uniprot" id="WFDC5_HUMAN" ac="Q8TCV5" length="224" description="WAP four-disulfide core domain protein 5 OS=Homo sapiens GN=WFDC5 PE=2 SV=1">
+			<alignments total="1">
+				<alignment number="1">
+					<score>139</score>
+					<bits>58.2</bits>
+					<expectation>2e-07</expectation>
+					<identity>29</identity>
+					<positives>45</positives>
+					<querySeq start="1" end="126">MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECI-----NCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
+					<pattern>MR    L+LG L   +A+   L   VF   +   S     +D  C+      C  + +C     CC  +C R C   V++   K G CP + ++ ++    P ++ C  DSDCSG  +CC + C   C DP</pattern>
+					<matchSeq start="1" end="120">MRTQSLLLLGAL---LAVGSQLPA-VFGRKKGEKSGGCPPDDGPCLLSVPDQCVEDSQCPLTRKCCYRACFRQCVPRVSV---KLGSCPEDQLRCLS----PMNHLCHKDSDCSGKKRCCHSACGRDCRDP</matchSeq>
+				</alignment>
+			</alignments>
+		</hit>
+		<hit number="50" database="uniprot" id="WFDC5_CERAE" ac="A4K2Y3" length="123" description="WAP four-disulfide core domain protein 5 OS=Cercopithecus aethiops GN=WFDC5 PE=3 SV=1">
+			<alignments total="1">
+				<alignment number="1">
+					<score>139</score>
+					<bits>58.2</bits>
+					<expectation>2e-07</expectation>
+					<identity>30</identity>
+					<positives>48</positives>
+					<querySeq start="40" end="126">SEDTECI-----NCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDP</querySeq>
+					<pattern>++D  C+      C  + +C     CC  +C R C   V++   K G CP + ++ ++    P ++ C  DSDCSG  +CC + C   C DP</pattern>
+					<matchSeq start="36" end="120">ADDGPCLLSVPDQCVEDSQCPLTRKCCYRACFRQCVPRVSV---KPGSCPQDQLRCLS----PVNHQCHKDSDCSGKKRCCHSACGRDCRDP</matchSeq>
 				</alignment>
 			</alignments>
 		</hit>

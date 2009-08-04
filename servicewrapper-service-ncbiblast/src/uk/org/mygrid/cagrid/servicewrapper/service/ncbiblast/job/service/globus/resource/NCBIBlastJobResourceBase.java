@@ -254,6 +254,32 @@ public abstract class NCBIBlastJobResourceBase extends ReflectionResource implem
         store();
 	}
 	
+	
+	
+	public schema.EBIApplicationResult getEBIApplicationResult(){
+		return ((NCBIBlastJobResourceProperties) getResourceBean()).getEBIApplicationResult();
+	}
+	
+	public void setEBIApplicationResult(schema.EBIApplicationResult eBIApplicationResult ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.EBIAPPLICATIONRESULT);
+		prop.set(0, eBIApplicationResult);
+        //call the first store to persist the resource
+        store();
+	}
+	
+	
+	
+	public java.lang.String getEBIApplicationError(){
+		return ((NCBIBlastJobResourceProperties) getResourceBean()).getEBIApplicationError();
+	}
+	
+	public void setEBIApplicationError(java.lang.String eBIApplicationError ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.EBIAPPLICATIONERROR);
+		prop.set(0, eBIApplicationError);
+        //call the first store to persist the resource
+        store();
+	}
+	
 
 
 	  

@@ -21,7 +21,7 @@ import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
  * @author Stian Soiland-Reyes
  * 
  */
-public class TestBlst1Program extends CommonTest {
+public class TestBlst01Program extends CommonTest {
 
 	@Test(expected = AxisFault.class)
 	public void failsEmptyProgram() throws Exception {
