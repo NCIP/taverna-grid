@@ -1,5 +1,8 @@
 <ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./InterProScanResult.xsd" namespace="http://www.ebi.ac.uk/schema" packageName="schema" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="EBIInterProScanResults" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
   <ns2:Namespace location="./interproscan.xsd" namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan" packageName="uk.org.mygrid.cagrid.domain.interproscan" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="InterProScanInput" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="InterProScanOutput" xsi:type="ns2:SchemaElementType"/>
@@ -241,6 +244,7 @@
     <ns33:ResourceProperty qName="ns38:TerminationTime" description="" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns38="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
     <ns33:ResourceProperty qName="ns39:JobStatus" description="" fileLocation="InterProScanJob_jobStatus.xml" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns39="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
     <ns33:ResourceProperty qName="ns40:JobID" description="" fileLocation="InterProScanJob_jobID.xml" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns40="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
+    <ns33:ResourceProperty qName="ns41:EBIInterProScanResults" description="" fileLocation="InterProScanJob_eBIInterProScanResults.xml" populateFromFile="false" register="false" xsi:type="ns33:ResourcePropertyType" xmlns:ns41="http://www.ebi.ac.uk/schema"/>
    </ns33:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
@@ -252,7 +256,7 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns41:Extensions xsi:type="ns41:ExtensionsType" xmlns:ns41="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns41:Extension name="cagrid_metadata" version="1.3" xsi:type="ns41:ExtensionType"/>
- </ns41:Extensions>
+ <ns42:Extensions xsi:type="ns42:ExtensionsType" xmlns:ns42="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns42:Extension name="cagrid_metadata" version="1.3" xsi:type="ns42:ExtensionType"/>
+ </ns42:Extensions>
 </ns1:ServiceDescription>

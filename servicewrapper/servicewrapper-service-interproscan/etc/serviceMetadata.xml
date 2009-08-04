@@ -96,6 +96,7 @@
       <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
       <ns2:ContextProperty description="" name="{gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common}JobStatus"/>
       <ns2:ContextProperty description="" name="{gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common}JobID"/>
+      <ns2:ContextProperty description="" name="{http://www.ebi.ac.uk/schema}EBIInterProScanResults"/>
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
    </ns2:serviceContextCollection>
