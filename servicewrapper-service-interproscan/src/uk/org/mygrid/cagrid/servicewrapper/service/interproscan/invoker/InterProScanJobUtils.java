@@ -1,10 +1,13 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.interproscan.invoker;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.metadata.service.Fault;
 
+import java.io.StringReader;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
+import org.globus.wsrf.utils.XmlUtils;
 import org.jdom.Document;
 
 import uk.org.mygrid.cagrid.domain.common.JobStatus;
@@ -100,6 +103,8 @@ public class InterProScanJobUtils {
 			logger.warn("Can't poll for jobID " + jobID, e);
 			throw new RemoteException("Can't poll for jobID " + jobID, e);
 		}
+
+		
 		logger.info("Data returned for " + jobID + " is: \n" + data);
 		InterProScanOutput output = converter.convertInterProScanOutput(data);
 		job.setInterProScanOutput(output);

@@ -254,6 +254,19 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
         store();
 	}
 	
+	
+	
+	public schema.EBIInterProScanResults getEBIInterProScanResults(){
+		return ((InterProScanJobResourceProperties) getResourceBean()).getEBIInterProScanResults();
+	}
+	
+	public void setEBIInterProScanResults(schema.EBIInterProScanResults eBIInterProScanResults ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.EBIINTERPROSCANRESULTS);
+		prop.set(0, eBIInterProScanResults);
+        //call the first store to persist the resource
+        store();
+	}
+	
 
 
 	  

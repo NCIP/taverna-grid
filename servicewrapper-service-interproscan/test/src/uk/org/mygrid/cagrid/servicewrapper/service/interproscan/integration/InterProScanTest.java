@@ -202,7 +202,7 @@ public class InterProScanTest {
 		input4.setSequenceRepresentation(new ProteinSequenceIdentifier("uniprot:wap_rat"));		
 		InterProScanInputParameters params4 = new InterProScanInputParameters();
 		params4.setEmail("mannen@soiland-reyes.com");
-		params4.setSignatureMethod(new SignatureMethod[] { new SignatureMethod("Dummy") }); // Incorrect signature method
+		params4.setSignatureMethod(new SignatureMethod[] { new SignatureMethod("Dummy"){} }); // Incorrect signature method
 		input4.setInterProScanInputParameters(params4);
 		
 		// Print out the input parameters
