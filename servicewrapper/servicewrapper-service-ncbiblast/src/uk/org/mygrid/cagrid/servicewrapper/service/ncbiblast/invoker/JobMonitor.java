@@ -165,6 +165,7 @@ public class JobMonitor implements Runnable {
 					job = jobResourceHome.getResource(jobKey);
 				} catch (ResourceException e) {
 					logger.warn("Could not look up job resource for " + jobKey);
+					stopMonitoring(jobKey);
 					continue;
 				}
 				if (job.getJobID() == null) {
