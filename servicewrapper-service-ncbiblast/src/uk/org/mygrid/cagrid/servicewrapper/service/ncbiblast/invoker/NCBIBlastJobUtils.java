@@ -114,7 +114,7 @@ public class NCBIBlastJobUtils {
 					EBIApplicationResult.class);
 			job.setEBIApplicationResult(eBIApplicationResult);
 		} catch (Exception e) {
-			logger.warn("Could not parse/serialize returned data:\n" + dataString);
+			logger.warn("Could not parse/serialize returned data:\n" + dataString, e);
 		}
 		
 		logger.info("Data returned for " + jobID + " is: \n" + dataString);
