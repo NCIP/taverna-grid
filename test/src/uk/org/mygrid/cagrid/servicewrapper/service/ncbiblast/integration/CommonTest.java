@@ -1,11 +1,15 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.integration;
 
+import java.math.BigInteger;
 import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import schema.EBIApplicationResult;
+import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInputParameters;
@@ -26,6 +30,11 @@ public class CommonTest {
 	public static final FASTAProteinSequence SIMPLE_PROT_SEQUENCE = new FASTAProteinSequence(
 			"CQTNEECAQNDMCCPSSCGRSCKTPVNIE");
 
+
+	
+	public static final FASTANucleotideSequence FAKE_NUCLEOTIDE_SEQUENCE = new FASTANucleotideSequence("TAGGAGAGAGAGAGAGACCCCCCCCCCCCCCAGAGAGAGACAGGCAGCAGATTACGATGGTGGTGTGTGAC");
+	
+	
 	protected NCBIBlastClient client;
 	protected NCBIBlastClientUtils clientUtils;
 	protected NCBIBLASTInputParameters params;
@@ -46,7 +55,12 @@ public class CommonTest {
 		clientUtils = new NCBIBlastClientUtils(client);
 		
 	}
-	
+
+	@After
+	public void sleep() throws InterruptedException {
+		// To avoid hammering the service
+		Thread.sleep(500);
+	}
 
 	public String getCommandLine() throws RemoteException, Exception {
 		NCBIBlastJobClient jobClient = clientUtils.getJobClientForInput(input);
@@ -55,6 +69,15 @@ public class CommonTest {
 		String cmdLine = originalOutput.getHeader().getCommandLine()
 				.getCommand();
 		return cmdLine;
+	}
+
+
+	public void setNucleotideParams() {
+		params.setBlastProgram(BLASTProgram.BLASTN);
+		params.setDatabaseName("em_rel_std_syn");		
+		params.setAlignmentsToOutput(BigInteger.ONE);
+		input.setProteinOrNucleotideSequenceRepresentation(
+						FAKE_NUCLEOTIDE_SEQUENCE);
 	}
 
 }

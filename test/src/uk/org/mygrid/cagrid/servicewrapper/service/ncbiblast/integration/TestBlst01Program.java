@@ -37,10 +37,46 @@ public class TestBlst01Program extends CommonTest {
 	}
 
 	@Test(expected = AxisFault.class)
-	public void failsWrongProgram() throws Exception {
+	public void failsWrongProgramBlastN() throws Exception {
 		// Our input is a protein id and can't be run against BLASTN
 		params.setBlastProgram(BLASTProgram.BLASTN);
 		clientUtils.ncbiBlastSync(input, SHORT_TIMEOUT);
 	}
 
+	@Test(expected = AxisFault.class)
+	public void failsWrongProgramBlastP() throws Exception {
+		// Our input is a nucleotide sequence and can't be run against BLASTP
+		input.setProteinOrNucleotideSequenceRepresentation(
+				FAKE_NUCLEOTIDE_SEQUENCE);
+		params.setBlastProgram(BLASTProgram.BLASTP);
+		clientUtils.ncbiBlastSync(input, SHORT_TIMEOUT);
+	}
+
+
+	@Test()
+	public void blastP() throws Exception {
+		params.setBlastProgram(BLASTProgram.BLASTP);
+		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+	}
+
+	@Test
+	public void blastX() throws Exception {
+		// Need to use BLASTN to test match
+		params.setBlastProgram(BLASTProgram.BLASTX);
+		input.setProteinOrNucleotideSequenceRepresentation(
+						FAKE_NUCLEOTIDE_SEQUENCE);
+		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+
+	}
+
+
+	@Test
+	public void blastN() throws Exception {
+		// Need to use BLASTN to test match
+		params.setBlastProgram(BLASTProgram.BLASTN);
+		params.setDatabaseName("em_rel");
+		input.setProteinOrNucleotideSequenceRepresentation(
+						FAKE_NUCLEOTIDE_SEQUENCE);
+		clientUtils.ncbiBlastSync(input, 5*LONG_TIMEOUT);
+	}
 }
