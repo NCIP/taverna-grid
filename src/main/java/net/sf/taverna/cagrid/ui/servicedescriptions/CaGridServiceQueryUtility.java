@@ -20,8 +20,6 @@
  ******************************************************************************/
 package net.sf.taverna.cagrid.ui.servicedescriptions;
 
-//Comments: do not use CaGrid client API, use pure WS client instead
-
 import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.ServiceMetadata;
@@ -36,20 +34,25 @@ import gov.nih.nci.cagrid.metadata.service.ServiceContext;
 import gov.nih.nci.cagrid.metadata.service.ServiceContextOperationCollection;
 import gov.nih.nci.cagrid.metadata.service.ServiceServiceContextCollection;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import net.sf.taverna.cagrid.wsdl.parser.WSDLParser;
+import net.sf.taverna.t2.servicedescriptions.ServiceDescriptionProvider.FindServiceDescriptionsCallBack;
+
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.log4j.Logger;
 
 /**
- * An agent to query Index Service to determine the available categories and
- * services.
+ * An agent to query Index Service to determine the available 
+ * services and add them to Tavern's Service Panel.
  * 
  * @author Wei Tan
+ * @author Alex Nenadic
  * 
  */
 
@@ -57,105 +60,176 @@ public class CaGridServiceQueryUtility {
 
 	private static Logger logger = Logger.getLogger(CaGridServiceQueryUtility.class);
 
-	// private static Logger logger =
-	// Logger.getLogger(CaGridServiceQueryUtility.class);
-
 	/**
-	 * Returns a list of GT4 services, containing a list of their operations.
-	 * Throws Exception if a service cannot be found.
+	 *  Load services & operations by caGrid discovery service API and 
+	 *  add the found services (i.e. their operations) to the Service Panel.
 	 */
-	public static List<CaGridService> load(String indexURL, CaGridServiceQuery[] sq)
-			throws Exception {
-		List<CaGridService> services = new ArrayList<CaGridService>();
-
-		// Get the categories for this installation
-		boolean foundSome = loadServices(indexURL, sq, services);
-		if (!foundSome || services.isEmpty()) { // should be enough to just check foundSome but anyhow
+	public static void loadServices(String caGridName, String indexServiceURL, CaGridServiceQuery[] sq,
+			FindServiceDescriptionsCallBack callBack) throws Exception {
+		
+		if (sq.length == 0){
+			logger.info("Searching for all services in " + caGridName);
+		}
+		else{
+			logger.info("Searching for services in " + caGridName + ". Using " + sq.length + " search criteria.");
+		}
+		EndpointReferenceType[] servicesList = null;
+		servicesList = getEPRListByServiceQueryArray(indexServiceURL, sq);
+		
+		logger.info("caGrid DiscoveryClient loaded and EPRs to services returned.");
+		
+		if (servicesList == null || servicesList.length==0){ // servicesList is returned as null and not empty array for some reason, but check anyway
             JOptionPane.showMessageDialog(null,
                     "caGrid services search did not find any matching services", 
                     "caGrid services search",
-                    JOptionPane.INFORMATION_MESSAGE);  		
-        }
-		return services;
-	}
-
-	// Load services & operations by caGrid discovery service API
-	private static boolean loadServices(String indexURL, CaGridServiceQuery[] sq,
-			List<CaGridService> services) throws Exception {
-		boolean foundSome = false;
-
-		if (sq.length == 0){
-			logger.info("caGrid services search is searching for all services.");
-		}
-		else{
-			logger.info("caGrid services search is using " + sq.length + " search criteria.");
-		}
-		EndpointReferenceType[] servicesList = null;
-		servicesList = getEPRListByServiceQueryArray(indexURL, sq);
-		logger.info("caGrid DiscoveryClient loaded and EPR to services returned.");
-		if (servicesList == null){
-			// Did not find any - this should really be an empty array and not null
+                    JOptionPane.INFORMATION_MESSAGE);  
 			logger.error("caGrid search: resulting caGrid service list returned is null (empty).");
-			return foundSome;
 		}
 		else{
+			logger.info("Discovered "+ servicesList.length + " caGrid EPRs.");
+			
+			// Counter of operations added to Taverna's Service Panel as services
+			int serviceCounter = 0;
+			
 			for (EndpointReferenceType epr : servicesList) {
-				if (epr != null) {
-					foundSome = true;
-					// Add a service node
-					String serviceAddress = epr.getAddress().toString();					
-					// TODO add more metadata to s -- like research institute,
-					// operation class?
-					CaGridService service = new CaGridService(serviceAddress + "?wsdl",
-							serviceAddress);
-					//System.out.println(serviceAddress + "?wsdl");
-					try {
-						ServiceMetadata serviceMetadata = MetadataUtils
-								.getServiceMetadata(epr);
-						ServiceMetadataServiceDescription serviceDes = serviceMetadata
-								.getServiceDescription();
+				String serviceAddress = epr.getAddress().toString();					
+				String wsdlURL = serviceAddress + "?wsdl";
+					
+				// Find serviceName from the URI
+				URI uri = URI.create(epr.getAddress().toString());
+				URI parentURI = uri.resolve(".");
+				URI relativeURI = parentURI.relativize(uri);
+				String serviceName = relativeURI.getPath();		
+				
+				URI wsdlURI = URI.create(wsdlURL);
 
-						// ServiceContextOperationCollection s =
-						// serviceDes.getService().getServiceContextCollection().getServiceContext(0).getOperationCollection();
-
-						ServiceServiceContextCollection srvContxCol = serviceDes
-								.getService().getServiceContextCollection();
-						ServiceContext[] srvContxs = srvContxCol
-								.getServiceContext();
-
-						service.setResearchCenterName(serviceMetadata
-								.getHostingResearchCenter().getResearchCenter()
-								.getDisplayName());
-						for (ServiceContext srvcontx : srvContxs) {
-							ServiceContextOperationCollection operationCollection = srvcontx.getOperationCollection();
-							if (operationCollection != null){
-								Operation[] ops = srvcontx
-										.getOperationCollection()
-										.getOperation();
-
-								// TODO: portType is no longer needed??
-								for (Operation op : ops) {
-									// add an operation node
-									// print out the name of an operation
-									String operationName = op.getName();
-									// OperationInputParameterCollection opp =
-									// op.getInputParameterCollection();
-
-									service.addOperation(operationName);
-									// System.out.println(operationName);
+				logger.info("Discovered caGrid service: "+ wsdlURL);
+					
+				// We'll just parse the wsdl here as using the commented out method below
+				// we get the operations that are not from this wsdl but from the related
+				// job resource
+				try {
+					ServiceMetadata serviceMetadata = MetadataUtils.getServiceMetadata(epr);	
+					ServiceMetadataServiceDescription serviceMetadataDesc = serviceMetadata.getServiceDescription();
+					ServiceServiceContextCollection srvContxCol = serviceMetadataDesc.getService().getServiceContextCollection();						
+					ServiceContext[] srvContxs = srvContxCol.getServiceContext();
+					List<CaGridServiceDescription> serviceDescriptions = new ArrayList<CaGridServiceDescription>();
+					for (ServiceContext srvcontx : srvContxs) {
+						ServiceContextOperationCollection operationCollection = srvcontx.getOperationCollection();
+						String srvcontxServiceName = srvcontx.getName();
+						if (operationCollection != null){
+							Operation[] ops = srvcontx.getOperationCollection().getOperation();
+							for (Operation op : ops) {
+								// Add an operation as Taverna's ServiceDescription in Service Panel
+								CaGridServiceDescription serviceDesc = new CaGridServiceDescription();
+								serviceDesc.setOperation(op.getName());
+								serviceDesc.setUse(op.getName());
+								//CaGrid services are all DOCUMENT style
+								serviceDesc.setStyle("document");
+								serviceDesc.setURI(URI.create(wsdlURL));
+								serviceDesc.setResearchCenter(serviceMetadata
+										.getHostingResearchCenter().getResearchCenter()
+										.getDisplayName());	
+								serviceDesc.setCaGridName(caGridName);
+								serviceDesc.setIndexServiceURL(indexServiceURL);
+								if (!srvcontxServiceName.equals(serviceName)){
+									// This is a helper service
+									serviceDesc.setHelperService(true);
+									serviceDesc.setHelperServiceName(srvcontxServiceName);
+									// The helper service has its own wsdl URL different from the one
+									// of the master service
+									serviceDesc.setURI(parentURI.resolve(srvcontxServiceName + "?wsdl"));
+									serviceDesc.setMasterURI(wsdlURI);
 								}
+								logger.info("Adding operation "+ op.getName()+" under caGrid service "+ wsdlURL);
+								serviceDescriptions.add(serviceDesc);
+								serviceCounter++;
 							}
-
 						}
-						services.add(service);
 					}
-					catch (Exception e) {
-						e.printStackTrace();
+					callBack.partialResults(serviceDescriptions);
+				}
+				catch (Exception e) {
+					// This service probably did not have the getResourceProperty method defined
+					// so getServiceMetadata failed - do the old fashioned wsdl parsing
+					
+					WSDLParser parser = null;
+					try{
+						parser = new WSDLParser(wsdlURL);
+						List<CaGridServiceDescription> serviceDescriptions = new ArrayList<CaGridServiceDescription>();
+						List<javax.wsdl.Operation> operations = parser.getOperations();
+						for (javax.wsdl.Operation operation : operations) {
+							CaGridServiceDescription serviceDesc = new CaGridServiceDescription();
+							serviceDesc.setOperation(operation.getName());
+							serviceDesc.setUse(operation.getName());
+							//CaGrid services are all DOCUMENT style
+							serviceDesc.setStyle("document");
+							serviceDesc.setURI(URI.create(wsdlURL));
+							serviceDesc.setCaGridName(caGridName);
+							serviceDesc.setIndexServiceURL(indexServiceURL);
+							
+							WSDLParser.flushCache(wsdlURL);
+
+							// We cannot discover the helper services from the wsdl document
+							// so we are not setting them here at all
+							
+							// Security properties of the service will be set later
+							// at the time of invoking the activity
+							
+							logger.info("Adding operation "+ operation.getName() +" under caGrid service "+ wsdlURL);
+							serviceDescriptions.add(serviceDesc);
+							serviceCounter++;
+						}
+						callBack.partialResults(serviceDescriptions);
+					}
+					catch (Exception ex){
+						// Ignore - skip to the next EPR
 					}
 				}
 
+				// This was the original code for obtaining operations of a wsdl service from
+				// service metadata etc, now replaced by the code above
+				//CaGridService service = new CaGridService(serviceAddress + "?wsdl", serviceAddress);
+				/*try {
+					ServiceMetadata serviceMetadata = MetadataUtils
+							.getServiceMetadata(epr);
+					ServiceMetadataServiceDescription serviceDes = serviceMetadata
+							.getServiceDescription();
+						// ServiceContextOperationCollection s =
+					// serviceDes.getService().getServiceContextCollection().getServiceContext(0).getOperationCollection();
+						ServiceServiceContextCollection srvContxCol = serviceDes
+							.getService().getServiceContextCollection();
+					ServiceContext[] srvContxs = srvContxCol
+							.getServiceContext();
+						service.setResearchCenterName(serviceMetadata
+							.getHostingResearchCenter().getResearchCenter()
+							.getDisplayName());
+					for (ServiceContext srvcontx : srvContxs) {
+						ServiceContextOperationCollection operationCollection = srvcontx.getOperationCollection();
+						if (operationCollection != null){
+							Operation[] ops = srvcontx
+									.getOperationCollection()
+									.getOperation();
+								// TODO: portType is no longer needed??
+							for (Operation op : ops) {
+								// add an operation node
+								// print out the name of an operation
+								String operationName = op.getName();
+								// OperationInputParameterCollection opp =
+								// op.getInputParameterCollection();
+									service.addOperation(operationName);
+								// System.out.println(operationName);
+							}
+						}
+						}
+					services.add(service);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}*/
 			}
-			return foundSome;
+			logger.info("Added " + serviceCounter + " caGrid services to Service Panel.");
+	    	callBack.finished();
 		}
 	}
 
