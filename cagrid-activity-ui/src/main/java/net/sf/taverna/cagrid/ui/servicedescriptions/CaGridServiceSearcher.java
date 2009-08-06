@@ -20,9 +20,9 @@
  ******************************************************************************/
 package net.sf.taverna.cagrid.ui.servicedescriptions;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+//import java.net.URI;
+//import java.util.ArrayList;
+//import java.util.List;
 
 import net.sf.taverna.cagrid.activity.CaGridActivity;
 import net.sf.taverna.t2.servicedescriptions.ServiceDescriptionProvider.FindServiceDescriptionsCallBack;
@@ -53,55 +53,15 @@ public class CaGridServiceSearcher {
 	public void findServiceDescriptionsAsync(
 			FindServiceDescriptionsCallBack callBack) {
 
-	       List<CaGridService> caGridServices = null;                	
 	        try {
 	    		logger.info("Starting caGrid service search for " + caGridName + " using Index Service: " + indexServiceURL);
-				caGridServices=CaGridServiceQueryUtility.load(indexServiceURL, serviceQueryList);
+				CaGridServiceQueryUtility.loadServices(caGridName, indexServiceURL, serviceQueryList, callBack);
 	        }
 			catch (Exception ex) {
 				ex.printStackTrace();
 				callBack.fail("An error occured when contacting the Index Service - could not load caGrid services.", ex);
 				return;
 	        }
-
-			List<CaGridServiceDescription> serviceDescriptions = new ArrayList<CaGridServiceDescription>();
-			logger.info("Discovered "+ caGridServices.size() + " caGrid services.");
-			for(CaGridService caGridService : caGridServices){
-												      						
-				List<String> operationNames = caGridService.getOperations();
-				logger.info("Discovered caGrid service: "+ caGridService.getServiceName() + 
-						" and its " + operationNames.size() + " operation(s).");
-				
-				for (String operation : operationNames) {
-					logger.info("Adding operation: "+ operation + " for caGrid service " + caGridService.getServiceName());
-
-					CaGridServiceDescription serviceDesc = new CaGridServiceDescription();
-					
-					serviceDesc.setOperation(operation);
-					serviceDesc.setUse(operation);
-					//CaGrid services are all DOCUMENT style
-					serviceDesc.setStyle("document");
-					serviceDesc.setURI(URI.create(caGridService.getServiceName()+"?wsdl"));
-					if(!caGridService.getResearchCenterName().equals("")){
-						serviceDesc.setResearchCenter(caGridService.getResearchCenterName());	
-					}
-					
-					serviceDesc.setCaGridName(caGridName);
-					serviceDesc.setIndexServiceURL(indexServiceURL);
-					
-					// Security properties of the item will be set later
-					// at the time of adding the activity to the diagram
-					serviceDescriptions.add(serviceDesc);
-				}
-			}
-			if (serviceDescriptions.isEmpty()){
-				callBack.fail("caGrid search found 0 services", null);
-			}
-			else{
-			logger.info("Added " + caGridServices.size() + " caGrid services to Service Panel.");
-	    	callBack.partialResults(serviceDescriptions);
-	    	callBack.finished();
-			}
 		}
 }
 

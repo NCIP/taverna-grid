@@ -39,12 +39,21 @@ public class CaGridServiceDescription extends
 	private String style;
 	private String operation;
 	private String researchCenter;
+	
+	// Has this service been discovered as part of another 
+	// caGrid service (i.e. is this a helper service used to query job resource?)
+	private boolean isHelperService = false;
+	private String helperServiceName;
+	// For helper services - we need the URI of the original service
+	// this was the helper service for in order to render the string that
+	// will appear in the Service Panel
+	private URI masterURI;
 
 	// Name of the caGrid the service belongs to
 	private String caGridName;
 	// Index Service URL identifies the caGrid the service belongs to
 	private String indexServiceURL;
-	
+
 	public Class<? extends Activity<CaGridActivityConfigurationBean>> getActivityClass() {
 		return CaGridActivity.class;
 	}
@@ -128,6 +137,30 @@ public class CaGridServiceDescription extends
 		this.indexServiceURL = indexServiceURL;
 	}
 
+	public void setHelperService(boolean isHelperService) {
+		this.isHelperService = isHelperService;
+	}
+
+	public boolean isHelperService() {
+		return isHelperService;
+	}
+
+	public void setHelperServiceName(String helperServiceName) {
+		this.helperServiceName = helperServiceName;
+	}
+
+	public String getHelperServiceName() {
+		return helperServiceName;
+	}
+	
+	public void setMasterURI(URI masterURI) {
+		this.masterURI = masterURI;		
+	}
+	
+	public URI getMasterURI() {
+		return masterURI;
+	}
+	
 	public Icon getIcon() {
 		return CaGridActivityIcon.cagridIcon;
 	}
@@ -138,10 +171,22 @@ public class CaGridServiceDescription extends
 	
 	@SuppressWarnings("unchecked")
 	public List<? extends Comparable> getPath() {
-		if ((researchCenter!= null) && (!researchCenter.equals("")))
-			return Arrays.asList(caGridName, researchCenter, "WSDL @ "+ getURI());
-		else
-			return Arrays.asList(caGridName, "WSDL @ " + getURI());
+		if ((researchCenter!= null) && (!researchCenter.equals(""))){
+			if (isHelperService){
+				return Arrays.asList(caGridName, researchCenter, "WSDL @ "+ getMasterURI(), helperServiceName);
+			}
+			else{
+				return Arrays.asList(caGridName, researchCenter, "WSDL @ "+ getURI());
+			}
+		}
+		else{
+			if (isHelperService){
+				return Arrays.asList(caGridName, "WSDL @ " + getMasterURI(), helperServiceName);
+			}
+			else{
+				return Arrays.asList(caGridName, "WSDL @ " + getURI());
+			}
+		}
 
 	}
 
