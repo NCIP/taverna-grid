@@ -52,7 +52,7 @@ public class CaGridConfiguration extends AbstractConfigurable {
 	public static String PRODUCTION_PROXY_LIFETIME = "12"; // 12 hours is default and maximum
 	public static String PRODUCTION_CADSR_SERVICE_URL = "http://cagrid-service.nci.nih.gov:8080/wsrf/services/cagrid/CaDSRService";
 
-	public static String TRAINING_CAGRID_NAME =  "Training CaGrid";
+	public static String TRAINING_CAGRID_NAME =  "Training CaGrid 1.3";
 	public static String TRAINING_INDEX_SERVICE_URL = "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService";
 	public static String TRAINING_AUTHN_SERVICE_URL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
 	public static String TRAINING_DORIAN_SERVICE_URL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
