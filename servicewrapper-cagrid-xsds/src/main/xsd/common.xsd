@@ -145,6 +145,21 @@
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+
+	<xsd:complexType name="Database">
+		<xsd:annotation>
+			<xsd:documentation>A sequence database</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	 <xsd:element name="Database"
+    	type="common:Database">
+    </xsd:element>
+
+
 	<xsd:complexType name="SequenceRepresentation"
 		abstract="true">
 		<xsd:annotation>
@@ -196,7 +211,7 @@
 
 	<xsd:element name="JobStatus" type="common:JobStatus"></xsd:element>
 	
-	    <xsd:element name="JobID" type="common:JobID"></xsd:element>
+    <xsd:element name="JobID" type="common:JobID"></xsd:element>
 
 	<xsd:simpleType name="JobID">
 		<xsd:annotation>
