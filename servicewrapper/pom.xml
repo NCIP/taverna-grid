@@ -20,6 +20,7 @@
 		<module>servicewrapper-invoker-ncbiblast</module>
 		<module>servicewrapper-wsdl-interproscan</module>
 		<module>servicewrapper-wsdl-ncbiblast</module>
+		<module>servicewrapper-wsdl-wublast</module>
 	</modules>
 	<properties>
 		<axis2.version>1.4.1</axis2.version>
