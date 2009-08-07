@@ -74,6 +74,10 @@ public class NCBIBlastAuthorization implements PDP {
 	public void authorizeNcbiBlast(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeGetDatabases(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -96,6 +100,9 @@ public class NCBIBlastAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("ncbiBlast")){
 			authorizeNcbiBlast(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getDatabases")){
+			authorizeGetDatabases(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

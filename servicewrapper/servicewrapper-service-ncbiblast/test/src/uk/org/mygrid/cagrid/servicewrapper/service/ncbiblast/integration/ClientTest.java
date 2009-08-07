@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.metadata.service.Fault;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.org.mygrid.cagrid.domain.common.Database;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
@@ -34,7 +35,7 @@ public class ClientTest {
 		NCBIBLASTInputParameters params = new NCBIBLASTInputParameters();
 		params.setEmail("mannen@soiland-reyes.com");
 
-		params.setDatabaseName("uniprot");
+		params.setDatabase(new Database("uniprot"));
 		params.setBlastProgram(BLASTProgram.BLASTP);
 		input.setNCBIBLASTInputParameters(params);
 		

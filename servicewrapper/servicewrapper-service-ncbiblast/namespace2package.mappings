@@ -22,8 +22,8 @@ gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.m
 gme\://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains=uk.org.mygrid.cagrid.valuedomains
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
 http\://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/Job/types=uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types
-gme\://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast=uk.org.mygrid.cagrid.domain.ncbiblast
 http\://www.ebi.ac.uk/schema=schema
+gme\://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast=uk.org.mygrid.cagrid.domain.ncbiblast
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 
