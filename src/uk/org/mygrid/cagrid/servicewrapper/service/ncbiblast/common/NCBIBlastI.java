@@ -25,5 +25,11 @@ public interface NCBIBlastI {
    */
   public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCBIBlastJobReference ncbiBlast(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput nCBIBlastInput) throws RemoteException ;
 
+  /**
+   * Get supported databases
+   *
+   */
+  public uk.org.mygrid.cagrid.domain.common.Database[] getDatabases() throws RemoteException ;
+
 }
 

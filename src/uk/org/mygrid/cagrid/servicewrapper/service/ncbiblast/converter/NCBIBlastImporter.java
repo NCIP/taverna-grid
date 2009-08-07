@@ -15,6 +15,7 @@ import uk.ac.ebi.schema.THit;
 import uk.ac.ebi.schema.TMatchSeq;
 import uk.ac.ebi.schema.TQuerySeq;
 import uk.ac.ebi.schema.TSSSR;
+import uk.org.mygrid.cagrid.domain.common.Database;
 import uk.org.mygrid.cagrid.domain.ncbiblast.Alignment;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceFragment;
@@ -43,7 +44,7 @@ public class NCBIBlastImporter {
 			SequenceSimilarity sequenceSimilarity = new SequenceSimilarity();
 			similarities.add(sequenceSimilarity);
 			sequenceSimilarity.setId(hit.getId());
-			sequenceSimilarity.setDatabaseName(hit.getDatabase());
+			sequenceSimilarity.setDatabase(new Database(hit.getDatabase()));
 			sequenceSimilarity.setAccessionNumber(hit.getAc());
 			sequenceSimilarity.setSequenceLength(BigInteger.valueOf(hit
 					.getLength()));

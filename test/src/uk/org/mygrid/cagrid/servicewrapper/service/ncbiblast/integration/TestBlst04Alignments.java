@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
 
-import org.apache.axis.AxisFault;
 import org.junit.Test;
 
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
@@ -37,6 +36,10 @@ public class TestBlst04Alignments extends CommonTest {
 		params.setAlignmentsToOutput(BigInteger.valueOf(INVALID_ALIGNMENTS));
 		input.setProteinOrNucleotideSequenceRepresentation(SIMPLE_PROT_SEQUENCE);
 		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		String commandLine = getCommandLine();
+		assertTrue("Wrong alignments on command line: " +commandLine, 
+				commandLine.contains(" -b 5 "));
+
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("Should not have got ", similarities.length > 0);
 		assertEquals("Unexpected minimum number of alignments", 
@@ -50,6 +53,10 @@ public class TestBlst04Alignments extends CommonTest {
 		input.setProteinOrNucleotideSequenceRepresentation(SIMPLE_PROT_SEQUENCE);
 		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
+		String commandLine = getCommandLine();
+		assertTrue("Wrong alignments on command line: " +commandLine, 
+				commandLine.contains(" -b " + TINY_ALIGNMENTS + " "));
+
 		assertEquals("Invalid number of similarities", TINY_ALIGNMENTS, similarities.length);
 	}
 
@@ -58,9 +65,15 @@ public class TestBlst04Alignments extends CommonTest {
 		params.setAlignmentsToOutput(null);
 		input.setProteinOrNucleotideSequenceRepresentation(SIMPLE_PROT_SEQUENCE);
 		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		String commandLine = getCommandLine();
+		assertTrue("Wrong alignments on command line: " +commandLine, 
+				commandLine.contains(" -b 50 "));
+		
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("No similarities found", similarities.length > 0);
 		assertEquals("Invalid number of similarities", DEFAULT_ALIGNMENTS, similarities.length);
+		
+		
 	}
 
 }

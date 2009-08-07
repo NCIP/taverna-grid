@@ -94,7 +94,7 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="databaseName" type="xsd:string"
+			<xsd:element name="database" type="common:Database"
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
@@ -243,7 +243,7 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="databaseName" type="xsd:string"
+			<xsd:element name="database" type="common:Database"
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
@@ -415,4 +415,9 @@
     <xsd:element name="NCBIBlastOutput"
     	type="ncbiblast:NCBIBLASTOutput">
     </xsd:element>
+    
+   
+    
+    
+    
 </xsd:schema>

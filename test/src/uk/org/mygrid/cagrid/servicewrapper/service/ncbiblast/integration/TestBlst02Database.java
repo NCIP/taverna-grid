@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.apache.axis.AxisFault;
 import org.junit.Test;
 
+import uk.org.mygrid.cagrid.domain.common.Database;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
 
@@ -25,27 +26,46 @@ import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
 public class TestBlst02Database extends CommonTest {
 
 	@Test(expected = AxisFault.class)
-	public void failsEmptyProgram() throws Exception {
-		params.setDatabaseName(null);
-		clientUtils.ncbiBlastSync(input, SHORT_TIMEOUT);
+	public void failsNullDatabase() throws Exception {
+		params.setDatabase(null);
+		clientUtils.ncbiBlastSync(input, SHORT_TIMEOUT);	
 	}
 
 	@Test(expected = AxisFault.class)
-	public void failsInvalidProgram() throws Exception {
-		params.setDatabaseName("invalidDatabase");
+	public void failsInnerNullDatabase() throws Exception {
+		params.setDatabase(new Database());
+		clientUtils.ncbiBlastSync(input, SHORT_TIMEOUT);
+	}
+	
+	@Test(expected = AxisFault.class)
+	public void failsInvalidDatabase() throws Exception {
+		params.setDatabase(new Database("invalidDatabase"));
+		clientUtils.ncbiBlastSync(input, SHORT_TIMEOUT);
+	}
+	
+
+	@Test(expected = AxisFault.class)
+	public void failsEmptyDatabase() throws Exception {
+		params.setDatabase(new Database(""));
 		clientUtils.ncbiBlastSync(input, SHORT_TIMEOUT);
 	}
 
 	@Test
 	public void usesSpecificDatabase() throws Exception {
-		String databaseName = "uniprot";
-		params.setDatabaseName(databaseName);
+		String uniprot = "uniprot";
+		Database uniprotDb = new Database(uniprot);
+		params.setDatabase(uniprotDb);
 		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		
+		String commandLine = getCommandLine();
+		// A bit fragile test, the database is just a path on the command line
+		assertTrue("Wrong database on command line: " +commandLine, 
+				commandLine.contains("/blastdb/" + uniprot +" "));
+		
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("No similarities found", similarities.length > 0);
 		for (SequenceSimilarity similarity : similarities) {
-			assertEquals("Different database name", databaseName, similarity.getDatabaseName());
-			System.out.println(similarity.getAlignments(0).getQuerySequenceFragment().getSequence());
+			assertEquals("Different database name", uniprotDb, similarity.getDatabase());
 		}
 	}
 	

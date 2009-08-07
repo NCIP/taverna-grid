@@ -6,9 +6,9 @@ import java.rmi.RemoteException;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import schema.EBIApplicationResult;
+import uk.org.mygrid.cagrid.domain.common.Database;
 import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
@@ -20,11 +20,13 @@ import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
 
 public class CommonTest {
 
-	private static final FASTAProteinSequence PROT_SEQUENCE_ID = new FASTAProteinSequence(
+	public static final Database PROTEIN_DATABASE = new Database("uniprot");
+	public static final Database NUCLEOTIDE_DATABASE = new Database("em_rel_std_syn");
+	public static final FASTAProteinSequence PROT_SEQUENCE_ID = new FASTAProteinSequence(
 			"uniprot:wap_rat");
 	// 100 ms
 	public static final int SHORT_TIMEOUT = 100;
-	// 1 minutes
+	// 1 minute
 	public static final int LONG_TIMEOUT = 1 * 60 * 1000;
 
 	public static final FASTAProteinSequence SIMPLE_PROT_SEQUENCE = new FASTAProteinSequence(
@@ -48,7 +50,7 @@ public class CommonTest {
 		input.setProteinOrNucleotideSequenceRepresentation(PROT_SEQUENCE_ID);
 		params = new NCBIBLASTInputParameters();
 		params.setEmail("mannen@soiland-reyes.com");
-		params.setDatabaseName("uniprot");
+		params.setDatabase(PROTEIN_DATABASE);
 		params.setBlastProgram(BLASTProgram.BLASTP);
 		input.setNCBIBLASTInputParameters(params);
 
@@ -74,7 +76,7 @@ public class CommonTest {
 
 	public void setNucleotideParams() {
 		params.setBlastProgram(BLASTProgram.BLASTN);
-		params.setDatabaseName("em_rel_std_syn");		
+		params.setDatabase(NUCLEOTIDE_DATABASE);		
 		params.setAlignmentsToOutput(BigInteger.ONE);
 		input.setProteinOrNucleotideSequenceRepresentation(
 						FAKE_NUCLEOTIDE_SEQUENCE);
