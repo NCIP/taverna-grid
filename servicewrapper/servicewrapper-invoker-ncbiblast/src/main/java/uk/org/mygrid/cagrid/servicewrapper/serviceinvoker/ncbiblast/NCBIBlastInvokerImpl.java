@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -16,6 +18,7 @@ import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.axis2.util.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
 import org.jdom.JDOMException;
@@ -36,8 +39,14 @@ import uk.ac.ebi.www.wsncbiblast.PollResponseDocument;
 import uk.ac.ebi.www.wsncbiblast.RunNCBIBlastDocument;
 import uk.ac.ebi.www.wsncbiblast.RunNCBIBlastResponseDocument;
 import uk.ac.ebi.www.wsncbiblast.WSArrayofData;
+import uk.ac.ebi.www.wswublast.GetDatabasesDocument;
+import uk.ac.ebi.www.wswublast.GetDatabasesResponseDocument;
+import uk.ac.ebi.www.wswublast.OutData;
+import uk.ac.ebi.www.wswublast.WSArrayofoutData;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
-import uk.org.mygrid.cagrid.servicewrapper.wsdl.interproscan.WSNCBIBlastServiceStub;
+import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.SequenceDatabase.SequenceType;
+import uk.org.mygrid.cagrid.servicewrapper.wsdl.ncbiblast.WSNCBIBlastServiceStub;
+import uk.org.mygrid.cagrid.servicewrapper.wsdl.wublast.WSWUBlastServiceStub;
 
 @SuppressWarnings("deprecation")
 public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
@@ -46,11 +55,16 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 
 	private WSNCBIBlastServiceStub ncbiBlast;
 
+	private WSWUBlastServiceStub wuBlast;
+
 	public NCBIBlastInvokerImpl() throws InvokerException {
 		try {
 			ncbiBlast = new WSNCBIBlastServiceStub();
+			wuBlast = new WSWUBlastServiceStub();
 			// To avoid 411 Error: Length Required
 			ncbiBlast._getServiceClient().getOptions().setProperty(
+					HTTPConstants.CHUNKED, false);
+			wuBlast._getServiceClient().getOptions().setProperty(
 					HTTPConstants.CHUNKED, false);
 		} catch (AxisFault e) {
 			logger.error("Could not initialize InterProScan service stub", e);
@@ -58,7 +72,6 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 					"Could not initialize InterProScan service stub", e);
 		}
 	}
-	
 
 	private static final String TYPE = "type";
 
@@ -67,7 +80,6 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 	private static final String POLL_TYPE = "toolxml";
 
 	private SAXBuilder saxBuilder = new SAXBuilder();
-	
 
 	public String checkStatus(String jobID) throws InvokerException {
 		CheckStatusDocument statusDoc = CheckStatusDocument.Factory
@@ -93,18 +105,20 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 		logger.info("Polling for " + jobID);
 		logger.debug("poll\n" + pollDoc);
 		try {
-			
+
 			PollResponseDocument poll = ncbiBlast.poll(pollDoc);
 			logger.debug("Received poll response for " + jobID + ":\n" + poll);
-			
+
 			// FIXME: WSDL says <part name="output" type="xsd:base64Binary" />
-			// but actual response is in <result> - need to extract XML manually.
-			String base64 = poll.getPollResponse().getDomNode().getFirstChild().getFirstChild().getNodeValue();
+			// but actual response is in <result> - need to extract XML
+			// manually.
+			String base64 = poll.getPollResponse().getDomNode().getFirstChild()
+					.getFirstChild().getNodeValue();
 			byte[] response = Base64.decode(base64);
-			
+
 			File outFile = File.createTempFile("ncbiblast", ".xml");
 			FileUtils.writeByteArrayToFile(outFile, response);
-			
+
 			InputStream byteStream = new ByteArrayInputStream(response);
 			org.jdom.Document doc = saxBuilder.build(byteStream);
 			return doc;
@@ -137,13 +151,13 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 
 			// Determine array type
 			QName arrayType = Data.type.getName();
-			
-			
-			
+
 			Element el = (Element) content.getDomNode();
-			String prefix = findPrefix(arrayType.getNamespaceURI(), el.getOwnerDocument());
-			content.setArrayType(prefix + ":" + arrayType.getLocalPart()
-					+ "[]");
+			String prefix = findPrefix(arrayType.getNamespaceURI(), el
+					.getOwnerDocument());
+			content
+					.setArrayType(prefix + ":" + arrayType.getLocalPart()
+							+ "[]");
 
 			// Add analyticalServiceInput.getContent()
 			for (Data data : analyticalServiceInput.getContent()) {
@@ -209,12 +223,11 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 	private Map<Document, Map<String, String>> documentNamespacePrefixes = new WeakHashMap<Document, Map<String, String>>();
 
 	private long prefixCounter = 0;
-	
+
 	private String findPrefix(String namespaceURI, Document ownerDocument) {
 		Map<String, String> prefixes;
 		synchronized (documentNamespacePrefixes) {
-			prefixes = documentNamespacePrefixes
-					.get(ownerDocument);
+			prefixes = documentNamespacePrefixes.get(ownerDocument);
 			if (prefixes == null) {
 				prefixes = new HashMap<String, String>();
 				documentNamespacePrefixes.put(ownerDocument, prefixes);
@@ -224,15 +237,65 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 		if (prefix == null) {
 			Element element = ownerDocument.getDocumentElement();
 			String schemaNS = namespaceURI;
-			synchronized(this) {
+			synchronized (this) {
 				prefix = "ns" + prefixCounter++;
 			}
 			element.setAttribute("xmlns:" + prefix, schemaNS);
-			synchronized(prefixes) {
+			synchronized (prefixes) {
 				prefixes.put(namespaceURI, prefix);
 			}
 		}
 		return prefix;
+	}
+
+	public List<SequenceDatabase> getDatabases() throws InvokerException {
+		List<SequenceDatabase> databases = new ArrayList<SequenceDatabase>();
+		GetDatabasesDocument getDatabasesDocument = GetDatabasesDocument.Factory
+				.newInstance();
+		getDatabasesDocument.addNewGetDatabases();
+		GetDatabasesResponseDocument responseDocument;
+		try {
+			responseDocument = wuBlast.getDatabases(getDatabasesDocument);
+		} catch (RemoteException e) {
+			String msg = "Could not get databases";
+			logger.warn(msg, e);
+			throw new InvokerException(msg, e);
+		}
+		WSArrayofoutData dataArray = responseDocument.getGetDatabasesResponse()
+				.getResult();
+		for (XmlObject item : dataArray.selectChildren("", "item")) {
+			OutData data;
+			try {
+				data = OutData.Factory.parse(item.copy().getDomNode());
+			} catch (XmlException e) {
+				String msg = "Could not parse database response";
+				logger.warn(msg, e);
+				throw new InvokerException(msg, e);
+			}
+			String name = data.getName();
+			SequenceDatabase db = new SequenceDatabase();
+			if (name == null || name.isEmpty()) {
+				logger.warn("Invalid database:\n" + data);
+				continue;
+			}
+			db.setName(name);
+			db.setDisplayName(data.getPrintName());
+			String dataType = data.getDataType();
+			if (dataType == null) {
+				logger.warn("Invalid database:\n" + data);
+				continue;
+			}
+			if (dataType.equalsIgnoreCase("protein")) {
+				db.setSequenceType(SequenceType.protein);
+			}
+			if (dataType.equalsIgnoreCase("nucleotide")) {
+				db.setSequenceType(SequenceType.nucleotide);
+			} else {
+				logger.warn("Unknown data sequence type " + dataType);
+			}
+			databases.add(db);
+		}
+		return databases;
 	}
 
 }
