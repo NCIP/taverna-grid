@@ -1,9 +1,12 @@
 package uk.org.mygrid.cagrid.servicewrapper.serviceinvoker;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -18,6 +21,9 @@ import uk.ac.ebi.www.wsncbiblast.Data;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.DummyNCBIBlastInvoker;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInput;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInvoker;
+import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInvokerImpl;
+import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.SequenceDatabase;
+import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.SequenceDatabase.SequenceType;
 
 public class NCBIInvokerTest {
 
@@ -30,11 +36,10 @@ public class NCBIInvokerTest {
 		invoker = new DummyNCBIBlastInvoker();		
 //		invoker = new NCBIBlastInvokerImpl();		
 		
-		// Only use the real InterProScanInvoker in integration tests		
+		// Only use the real NCBIBlastInvokerImpl in integration tests		
 	}
 
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void invokeInterProScan() throws Exception {
 		NCBIBlastInput analyticalServiceInput = new NCBIBlastInput();
@@ -104,4 +109,13 @@ public class NCBIInvokerTest {
 		invoker.poll(EXPIRED_JOB_ID);
 	}
 	
+	@Test
+	public void getDatabases() throws Exception {
+		List<SequenceDatabase> databases = invoker.getDatabases();
+		System.out.println(databases);
+		assertTrue("Did not contain protein db uniprot", databases.contains(new SequenceDatabase("uniprot", SequenceType.protein)));
+		assertTrue("Did not contain protein db swissprot", databases.contains(new SequenceDatabase("uniprot", SequenceType.protein)));
+		assertTrue("Did not contain nucleotide db em_rel_env", databases.contains(new SequenceDatabase("em_rel_env", SequenceType.nucleotide)));
+		assertFalse("Claimed to contain nucleotide db uniprot", databases.contains(new SequenceDatabase("uniprot", SequenceType.nucleotide)));
+	}		
 }
