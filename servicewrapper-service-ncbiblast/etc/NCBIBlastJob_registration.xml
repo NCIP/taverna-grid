@@ -15,14 +15,14 @@
       <agg:GetMultipleResourcePropertiesPollType
 			xmlns:ns4="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/types"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			xmlns:ns2="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
+			xmlns:ns1="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
 			xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"
-			xmlns:ns3="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains"
+			xmlns:ns2="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains"
 			xmlns:ns10="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"
 			xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
 			xmlns:ns9="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/Job/types"
-			xmlns:ns1="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"
-			xmlns:ns0="http://www.ebi.ac.uk/schema"
+			xmlns:ns3="http://www.ebi.ac.uk/schema"
+			xmlns:ns0="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"
 			xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"
 			xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
         <!-- Specifies that the index should refresh information

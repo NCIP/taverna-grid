@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:ns4="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/types" xmlns:ns2="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns3="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:ns10="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns9="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/Job/types" xmlns:ns1="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:ns0="http://www.ebi.ac.uk/schema" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" name="NCBIBlast" targetNamespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:ns4="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/types" xmlns:ns1="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns2="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:ns10="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns9="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/Job/types" xmlns:ns3="http://www.ebi.ac.uk/schema" xmlns:ns0="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" name="NCBIBlast" targetNamespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
@@ -20,8 +20,8 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
       <import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/Job/types" schemaLocation="./NCBIBlastJobTypes.xsd" />
-      <import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" schemaLocation="./ncbiblast.xsd" />
       <import namespace="http://www.ebi.ac.uk/schema" schemaLocation="./ApplicationResult.xsd" />
+      <import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" schemaLocation="./ncbiblast.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
       <element name="NcbiBlastRequest">
@@ -30,7 +30,7 @@
             <element name="nCBIBlastInput">
               <complexType>
                 <sequence>
-                  <element ref="ns1:NCBIBlastInput" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:NCBIBlastInput" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -41,6 +41,18 @@
         <complexType>
           <sequence>
             <element ref="ns9:NCBIBlastJobReference" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetDatabasesRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetDatabasesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns1:Database" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -60,6 +72,12 @@
   <message name="NcbiBlastResponse">
     <part name="parameters" element="tns:NcbiBlastResponse" />
   </message>
+  <message name="GetDatabasesRequest">
+    <part name="parameters" element="tns:GetDatabasesRequest" />
+  </message>
+  <message name="GetDatabasesResponse">
+    <part name="parameters" element="tns:GetDatabasesResponse" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
@@ -69,6 +87,10 @@
     <operation name="ncbiBlast">
       <input message="tns:NcbiBlastRequest" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/NcbiBlastRequest" />
       <output message="tns:NcbiBlastResponse" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/NcbiBlastResponse" />
+    </operation>
+    <operation name="getDatabases">
+      <input message="tns:GetDatabasesRequest" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/GetDatabasesRequest" />
+      <output message="tns:GetDatabasesResponse" wsa:Action="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/GetDatabasesResponse" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />

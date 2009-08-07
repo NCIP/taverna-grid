@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import uk.org.mygrid.cagrid.domain.common.Database;
 import uk.org.mygrid.cagrid.domain.ncbiblast.Alignment;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
@@ -24,8 +25,7 @@ import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
 public class TestBlst15Comparison extends CommonTest {
 	@Test
 	public void findPatterns() throws Exception {
-		String databaseName = "uniprot";
-		params.setDatabaseName(databaseName);
+		params.setDatabase(new Database("uniprot"));
 		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("No similarities found", similarities.length > 0);

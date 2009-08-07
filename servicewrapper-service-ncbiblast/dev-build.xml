@@ -197,6 +197,7 @@
 		<junit dir="${basedir}" printsummary="yes" showoutput="true">
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
+			<formatter type="plain" usefile="true" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${test.src.dir}">
 					<include name="**/Test*.java" />

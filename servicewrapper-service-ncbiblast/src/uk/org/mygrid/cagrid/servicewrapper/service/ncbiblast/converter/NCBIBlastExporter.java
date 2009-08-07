@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import uk.ac.ebi.www.wsncbiblast.Data;
 import uk.ac.ebi.www.wsncbiblast.InputParams;
+import uk.org.mygrid.cagrid.domain.common.Database;
 import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier;
@@ -82,11 +83,11 @@ public class NCBIBlastExporter {
 		}
 		params.setProgram(blastProgram.getValue().toLowerCase());
 
-		String databaseName = inputParams.getDatabaseName();
-		if (databaseName == null || databaseName.isEmpty()) {
+		Database database = inputParams.getDatabase();
+		if (database == null || database.getName() == null || database.getName().isEmpty()) {
 			throw new ConverterException("Parameter DatabaseName is required");
 		}
-		params.setDatabase(databaseName);
+		params.setDatabase(database.getName());
 
 		String email = inputParams.getEmail();
 		if (email == null || email.isEmpty()) {

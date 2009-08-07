@@ -1,6 +1,6 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.integration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.axis.AxisFault;
 import org.junit.Test;
@@ -24,6 +24,7 @@ import uk.org.mygrid.cagrid.valuedomains.Matrix;
 public class TestBlst03Matrix extends CommonTest {
 
 
+	@SuppressWarnings("serial")
 	@Test(expected = AxisFault.class)
 	public void failsInvalidMatrix() throws Exception {
 		params.setMatrix(new Matrix("invalidMatrix"){});
@@ -33,29 +34,27 @@ public class TestBlst03Matrix extends CommonTest {
 	
 	@Test()
 	public void emptyUsesDefault() throws Exception {
-		System.out.println("Using default (BLOSUM62)");
-
 		params.setMatrix(null);
 		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("No similarities found", similarities.length > 0);
-		// TODO: How to check it actually used BLOSUM62? It seems to have an evalue of 1.0E-79
-		// on first hit..
-		assertEquals(1.0E-79 , similarities[0].getAlignments(0).getEValue(), 1.0E-82);
 		
-		// CQTNEECAQNDMCCPSSCGRSCKTPVNIE
+		String commandLine = getCommandLine();
+		assertTrue("Wrong matrix on command line: " +commandLine, 
+				commandLine.contains(" -M BLOSUM62 "));
+		
 	}
 	
 	@Test
-	public void otherMatrix() throws Exception {
-		System.out.println("Using PAM30");
+	public void matrixPAM30() throws Exception {
 		params.setMatrix(Matrix.PAM30);
 		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("No similarities found", similarities.length > 0);
-		// At least it should be different from what we get from BLOSUM62!
-		assertEquals(1.0E-128 , similarities[0].getAlignments(0).getEValue(), 1.0E-130);
 
+		String commandLine = getCommandLine();
+		assertTrue("Wrong matrix on command line: " +commandLine, 
+				commandLine.contains(" -M PAM30 "));
 	}
 
 

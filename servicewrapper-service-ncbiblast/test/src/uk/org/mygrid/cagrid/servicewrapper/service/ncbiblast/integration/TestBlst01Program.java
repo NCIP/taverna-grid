@@ -1,5 +1,7 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.integration;
 
+import static org.junit.Assert.assertTrue;
+
 import org.apache.axis.AxisFault;
 import org.junit.Test;
 
@@ -29,6 +31,7 @@ public class TestBlst01Program extends CommonTest {
 		clientUtils.ncbiBlastSync(input, 100);
 	}
 
+	@SuppressWarnings("serial")
 	@Test(expected = AxisFault.class)
 	public void failsInvalidProgram() throws Exception {
 		params.setBlastProgram(new BLASTProgram("invalidProgram") {
@@ -49,34 +52,40 @@ public class TestBlst01Program extends CommonTest {
 		input.setProteinOrNucleotideSequenceRepresentation(
 				FAKE_NUCLEOTIDE_SEQUENCE);
 		params.setBlastProgram(BLASTProgram.BLASTP);
-		clientUtils.ncbiBlastSync(input, SHORT_TIMEOUT);
+		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		String commandLine = getCommandLine();
+		assertTrue("Wrong program on command line: " +commandLine, commandLine.contains(" -p blastp "));
 	}
 
 
 	@Test()
-	public void blastP() throws Exception {
+	public void blastP() throws Exception { 
 		params.setBlastProgram(BLASTProgram.BLASTP);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		String commandLine = getCommandLine();
+		assertTrue("Wrong program on command line: " +commandLine, commandLine.contains(" -p blastp "));
 	}
 
 	@Test
 	public void blastX() throws Exception {
-		// Need to use BLASTN to test match
 		params.setBlastProgram(BLASTProgram.BLASTX);
 		input.setProteinOrNucleotideSequenceRepresentation(
 						FAKE_NUCLEOTIDE_SEQUENCE);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
-
+		String commandLine = getCommandLine();
+		assertTrue("Wrong program on command line: " +commandLine, commandLine.contains(" -p blastx "));
 	}
 
 
 	@Test
 	public void blastN() throws Exception {
-		// Need to use BLASTN to test match
 		params.setBlastProgram(BLASTProgram.BLASTN);
-		params.setDatabaseName("em_rel");
+		params.setDatabase(NUCLEOTIDE_DATABASE);
 		input.setProteinOrNucleotideSequenceRepresentation(
 						FAKE_NUCLEOTIDE_SEQUENCE);
+		// Takes a bit longer to run
 		clientUtils.ncbiBlastSync(input, 5*LONG_TIMEOUT);
+		String commandLine = getCommandLine();
+		assertTrue("Wrong program on command line: " +commandLine, commandLine.contains(" -p blastn "));
 	}
 }
