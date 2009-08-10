@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import schema.EBIApplicationResult;
-import uk.org.mygrid.cagrid.domain.common.Database;
+import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
 import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
@@ -20,8 +20,8 @@ import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
 
 public class CommonTest {
 
-	public static final Database PROTEIN_DATABASE = new Database("uniprot");
-	public static final Database NUCLEOTIDE_DATABASE = new Database("em_rel_std_syn");
+	public static final SequenceDatabase PROTEIN_DATABASE = new SequenceDatabase("uniprot", null);
+	public static final SequenceDatabase NUCLEOTIDE_DATABASE = new SequenceDatabase("em_rel_std_syn", null);
 	public static final FASTAProteinSequence PROT_SEQUENCE_ID = new FASTAProteinSequence(
 			"uniprot:wap_rat");
 	// 100 ms
@@ -31,11 +31,8 @@ public class CommonTest {
 
 	public static final FASTAProteinSequence SIMPLE_PROT_SEQUENCE = new FASTAProteinSequence(
 			"CQTNEECAQNDMCCPSSCGRSCKTPVNIE");
-
-
 	
 	public static final FASTANucleotideSequence FAKE_NUCLEOTIDE_SEQUENCE = new FASTANucleotideSequence("TAGGAGAGAGAGAGAGACCCCCCCCCCCCCCAGAGAGAGACAGGCAGCAGATTACGATGGTGGTGTGTGAC");
-	
 	
 	protected NCBIBlastClient client;
 	protected NCBIBlastClientUtils clientUtils;
@@ -53,9 +50,7 @@ public class CommonTest {
 		params.setDatabase(PROTEIN_DATABASE);
 		params.setBlastProgram(BLASTProgram.BLASTP);
 		input.setNCBIBLASTInputParameters(params);
-
-		clientUtils = new NCBIBlastClientUtils(client);
-		
+		clientUtils = new NCBIBlastClientUtils(client);	
 	}
 
 	@After
@@ -68,11 +63,13 @@ public class CommonTest {
 		NCBIBlastJobClient jobClient = clientUtils.getJobClientForInput(input);
 		EBIApplicationResult originalOutput = clientUtils
 				.getOriginalOutput(jobClient);
+		if (originalOutput == null) {
+			return "(no command line)";
+		}
 		String cmdLine = originalOutput.getHeader().getCommandLine()
 				.getCommand();
 		return cmdLine;
 	}
-
 
 	public void setNucleotideParams() {
 		params.setBlastProgram(BLASTProgram.BLASTN);

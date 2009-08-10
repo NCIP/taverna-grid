@@ -97,12 +97,12 @@ public class NCBIBlastClient extends NCBIBlastClientBase implements NCBIBlastI {
     }
   }
 
-  public uk.org.mygrid.cagrid.domain.common.Database[] getDatabases() throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.common.SequenceDatabase[] getDatabases() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getDatabases");
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesRequest();
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesResponse boxedResult = portType.getDatabases(params);
-    return boxedResult.getDatabase();
+    return boxedResult.getSequenceDatabase();
     }
   }
 

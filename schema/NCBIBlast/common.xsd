@@ -146,17 +146,18 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="Database">
+	<xsd:complexType name="SequenceDatabase">
 		<xsd:annotation>
-			<xsd:documentation>A sequence database</xsd:documentation>
+			<xsd:documentation>A sequence database, either a NucleotideSequenceDatabase or ProteinSequenceDatabase. 
+A sequence database is identified by it's databaseId element.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="name" type="xsd:string"></xsd:element>
-		</xsd:sequence>
+			<xsd:element name="databaseId" type="xsd:string"></xsd:element>
+			<xsd:element name="description" type="xsd:string" minOccurs="0"></xsd:element>		</xsd:sequence>
 	</xsd:complexType>
 	
-	 <xsd:element name="Database"
-    	type="common:Database">
+	 <xsd:element name="SequenceDatabase"
+    	type="common:SequenceDatabase">
     </xsd:element>
 
 
@@ -219,4 +220,22 @@
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string"></xsd:restriction>
 	</xsd:simpleType>
+
+	<xsd:complexType name="NucleotideSequenceDatabase">
+        <xsd:annotation>
+        	<xsd:documentation>A nucleotide sequence database</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="common:SequenceDatabase"></xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+    <xsd:complexType name="ProteinSequenceDatabase">
+        <xsd:annotation>
+        	<xsd:documentation>A protein sequence database</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="common:SequenceDatabase"></xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
 </xsd:schema>

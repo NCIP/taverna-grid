@@ -6,11 +6,11 @@ import org.apache.log4j.Logger;
 
 import uk.ac.ebi.www.wsncbiblast.Data;
 import uk.ac.ebi.www.wsncbiblast.InputParams;
-import uk.org.mygrid.cagrid.domain.common.Database;
 import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier;
 import uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier;
+import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
 import uk.org.mygrid.cagrid.domain.common.SequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInputParameters;
@@ -83,11 +83,12 @@ public class NCBIBlastExporter {
 		}
 		params.setProgram(blastProgram.getValue().toLowerCase());
 
-		Database database = inputParams.getDatabase();
-		if (database == null || database.getName() == null || database.getName().isEmpty()) {
+		SequenceDatabase database = inputParams.getDatabase();
+		if (database == null || database.getDatabaseId() == null
+				|| database.getDatabaseId().isEmpty()) {
 			throw new ConverterException("Parameter DatabaseName is required");
 		}
-		params.setDatabase(database.getName());
+		params.setDatabase(database.getDatabaseId());
 
 		String email = inputParams.getEmail();
 		if (email == null || email.isEmpty()) {
@@ -104,7 +105,7 @@ public class NCBIBlastExporter {
 		if (expectedThreshold != null) {
 			params.setExp(expectedThreshold.floatValue());
 		}
-		
+
 		BigInteger extendGap = inputParams.getExtendGap();
 		if (extendGap != null) {
 			params.setExtendgap(extendGap.intValue());
@@ -144,9 +145,10 @@ public class NCBIBlastExporter {
 		if (openGap != null) {
 			params.setOpengap(openGap.intValue());
 		}
-		
+
 		// TODO: params.setAlign(?)
 		return params;
 	}
+
 
 }

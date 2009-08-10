@@ -7,7 +7,9 @@ import java.io.StringReader;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
+import org.jdom.Attribute;
 import org.jdom.Document;
+import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
 
 import schema.EBIApplicationResult;
@@ -32,6 +34,10 @@ public class NCBIBlastJobUtils {
 
 	private NCBIBlastConverter converter = new NCBIBlastConverter();
 
+	public NCBIBlastJobUtils() {
+		converter.setInvoker(invoker);
+	}
+	
 	/**
 	 * Update the {@link JobStatus} of the given job.
 	 * 
@@ -104,7 +110,14 @@ public class NCBIBlastJobUtils {
 		}
 
 		
-
+		// Fix some XSI declaration bug
+		Namespace xsi = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+		Attribute schemaLoc = new Attribute("schemaLocation", 
+				"http://www.ebi.ac.uk/schema http://www.ebi.ac.uk/schema/ApplicationResult.xsd", 
+				xsi);
+		data.getRootElement().setAttribute(schemaLoc);
+		data.getRootElement().removeAttribute("noNamespaceSchemaLocation", xsi);
+		
 		XMLOutputter xmlOutputter = new XMLOutputter();
 		String dataString = xmlOutputter.outputString(data);
 		StringReader xmlReader = new StringReader(dataString);

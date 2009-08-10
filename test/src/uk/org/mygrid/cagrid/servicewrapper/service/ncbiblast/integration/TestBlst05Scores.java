@@ -13,7 +13,7 @@ import org.junit.Test;
  * 
  * Test empty/null: Should use the default value
  * 
- * Test invalid value: Should produce error
+ * Test invalid value: Should use the minimum value 5
  * 
  * 
  * 

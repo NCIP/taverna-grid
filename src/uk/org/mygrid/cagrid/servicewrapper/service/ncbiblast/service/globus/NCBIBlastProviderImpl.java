@@ -34,7 +34,7 @@ public class NCBIBlastProviderImpl{
 
     public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesResponse getDatabases(uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesRequest params) throws RemoteException {
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesResponse boxedResult = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesResponse();
-    boxedResult.setDatabase(impl.getDatabases());
+    boxedResult.setSequenceDatabase(impl.getDatabases());
     return boxedResult;
   }
 

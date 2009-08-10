@@ -195,6 +195,8 @@
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<!--<test name="uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.integration.TestBlst02Database" todir="${junit.results.dir}">
+			</test>-->
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
 			<formatter type="plain" usefile="true" />
@@ -204,6 +206,7 @@
 					<include name="**/*TestCase.java" />
 				</fileset>
 			</batchtest>
+			
 		</junit>
 	</target>
 
