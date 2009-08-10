@@ -5,9 +5,9 @@
    <ns2:SchemaElement type="NCBIBlastOutput" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./common.xsd" namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" packageName="uk.org.mygrid.cagrid.domain.common" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="Database" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="JobID" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="JobStatus" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SequenceDatabase" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./valuedomains.xsd" namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" packageName="uk.org.mygrid.cagrid.valuedomains" xsi:type="ns2:NamespaceType"/>
   <ns2:Namespace location="./ApplicationResult.xsd" namespace="http://www.ebi.ac.uk/schema" packageName="schema" xsi:type="ns2:NamespaceType">
@@ -155,7 +155,7 @@
     </ns4:Method>
     <ns4:Method description="Get supported databases" isImported="false" isProvided="false" name="getDatabases" xsi:type="ns4:MethodType">
      <ns4:Inputs/>
-     <ns4:Output qName="ns15:Database" description="" isArray="true" xmlns:ns15="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
+     <ns4:Output qName="ns15:SequenceDatabase" description="" isArray="true" xmlns:ns15="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
      <ns4:Exceptions/>
     </ns4:Method>
    </ns4:Methods>

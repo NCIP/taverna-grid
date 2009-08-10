@@ -1,0 +1,14 @@
+Testsuite: uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.integration.TestBlst01Program
+Tests run: 7, Failures: 1, Errors: 0, Time elapsed: 164.56 sec
+
+Testcase: failsEmptyProgram took 17.233 sec
+Testcase: failsInvalidProgram took 0.82 sec
+Testcase: failsWrongProgramBlastN took 4.066 sec
+Testcase: failsWrongProgramBlastP took 36.39 sec
+	FAILED
+Expected exception: org.apache.axis.AxisFault
+junit.framework.AssertionFailedError: Expected exception: org.apache.axis.AxisFault
+
+Testcase: blastP took 38.91 sec
+Testcase: blastX took 35.56 sec
+Testcase: blastN took 30.919 sec

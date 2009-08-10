@@ -105,7 +105,6 @@
 	<classpathentry kind="lib" path="lib/httpcore-nio-4.0-beta1.jar"/>
 	<classpathentry kind="lib" path="lib/jakarta-regexp-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jaxen-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jibx-bind-1.1.5.jar"/>
 	<classpathentry kind="lib" path="lib/jibx-run-1.1.5.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>

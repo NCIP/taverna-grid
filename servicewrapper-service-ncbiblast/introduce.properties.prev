@@ -1,8 +1,8 @@
 #Introduce Properties
-#Thu Aug 06 15:12:41 BST 2009
+#Mon Aug 10 14:37:02 BST 2009
 introduce.skeleton.services.list=NCBIBlast,NCBIBlastJob
 introduce.skeleton.extensions=cagrid_metadata
-introduce.skeleton.timestamp=1249567635739
+introduce.skeleton.timestamp=1249896496219
 introduce.skeleton.service.name=NCBIBlast
 introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
 introduce.skeleton.destination.dir=W\:\\src\\cagrid-workspace\\servicewrapper\\servicewrapper-service-ncbiblast

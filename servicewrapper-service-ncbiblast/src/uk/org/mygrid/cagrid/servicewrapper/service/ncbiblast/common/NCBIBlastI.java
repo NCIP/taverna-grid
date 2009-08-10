@@ -29,7 +29,7 @@ public interface NCBIBlastI {
    * Get supported databases
    *
    */
-  public uk.org.mygrid.cagrid.domain.common.Database[] getDatabases() throws RemoteException ;
+  public uk.org.mygrid.cagrid.domain.common.SequenceDatabase[] getDatabases() throws RemoteException ;
 
 }
 

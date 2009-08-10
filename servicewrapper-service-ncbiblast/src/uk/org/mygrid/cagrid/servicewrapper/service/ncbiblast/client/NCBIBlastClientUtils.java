@@ -114,7 +114,12 @@ public class NCBIBlastClientUtils {
 			throws RemoteException, Exception {
 		GetResourcePropertyResponse resourceResp = jobClient
 				.getResourceProperty(NCBIBlastJobConstants.EBIAPPLICATIONRESULT);
-		MessageElement messageElement = resourceResp.get_any()[0];
+		MessageElement[] messageElements = resourceResp.get_any();
+		if (messageElements == null) {
+			logger.warn("No output document");
+			return null;
+		}
+		MessageElement messageElement = messageElements[0];
 		StringReader reader = new StringReader(XmlUtils
 				.toString(messageElement));
 		EBIApplicationResult originalOutput = (EBIApplicationResult) Utils
