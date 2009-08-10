@@ -15,7 +15,7 @@ import uk.ac.ebi.schema.TInterPro;
 import uk.ac.ebi.schema.TMatch;
 import uk.ac.ebi.schema.TProtein;
 import uk.ac.ebi.schema.TMatch.Location;
-import uk.org.mygrid.cagrid.domain.interproscan.Database;
+import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
 import uk.org.mygrid.cagrid.domain.interproscan.DatabaseMatch;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
 import uk.org.mygrid.cagrid.domain.interproscan.Protein;
@@ -36,8 +36,8 @@ public class InterProScanImporter {
 		databaseMatch.setId(match.getId());
 		databaseMatch.setSignatureName(match.getName());
 
-		databaseMatch.setDatabase(new Database(match
-				.getDbname()));
+		databaseMatch.setDatabase(new SequenceDatabase(match
+				.getDbname(), match.getDbname()));
 
 		List<ProteinSignatureLocation> locations = new ArrayList<ProteinSignatureLocation>();
 		for (Location locationArray : match.getLocationArray()) {

@@ -30,20 +30,20 @@
 			<xsd:enumeration value="BLASTN">
 				<xsd:annotation>
 					<xsd:documentation>Compares a nucleotide query sequence
-						against a nucleotide sequence database.</xsd:documentation>
+						against a nucleotide sequence database (NucleotideSequenceDatabase</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 			<xsd:enumeration value="BLASTP">
 				<xsd:annotation>
 					<xsd:documentation>Compares a protein query sequence
-						against a protein sequence database.</xsd:documentation>
+						against a protein sequence database (ProteinSequenceDatabase).</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 			<xsd:enumeration value="BLASTX">
 				<xsd:annotation>
 					<xsd:documentation>Compares the six-frame conceptual
 						translation products of a nucleotide query sequence (both strands)
-						against a protein sequence database.</xsd:documentation>
+						against a protein sequence database (ProteinSequenceDatabase).</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 		</xsd:restriction>
