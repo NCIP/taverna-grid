@@ -156,7 +156,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="database" type="common:Database"
+			<xsd:element name="database" type="common:SequenceDatabase"
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>

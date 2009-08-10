@@ -287,11 +287,10 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 			}
 			if (dataType.equalsIgnoreCase("protein")) {
 				db.setSequenceType(SequenceType.protein);
-			}
-			if (dataType.equalsIgnoreCase("nucleotide")) {
+			} else if (dataType.equalsIgnoreCase("nucleotide")) {
 				db.setSequenceType(SequenceType.nucleotide);
 			} else {
-				logger.warn("Unknown data sequence type " + dataType);
+				logger.warn("Unknown data sequence type  " + dataType);
 			}
 			databases.add(db);
 		}
