@@ -39,7 +39,7 @@ public class TestNCBIBlastConverter {
 		// <hit number="1" database="uniprot" id="WAP_RAT" ac="P01174" length="137" 
 		// description="Whey acidic protein OS=Rattus norvegicus GN=Wap PE=1 SV=2">
 		SequenceSimilarity hit1 = converted.getSequenceSimilarities()[0];
-		assertEquals("Invalid database name", "uniprot", hit1.getDatabase().getName());
+		assertEquals("Invalid database name", "uniprot", hit1.getDatabase().getDatabaseId());
 		assertEquals("Invalid identifier", "WAP_RAT", hit1.getId());
 		assertEquals("Invalid accession number", "P01174", hit1.getAccessionNumber());
 		assertEquals("Invalid sequence length", BigInteger.valueOf(137), hit1.getSequenceLength());

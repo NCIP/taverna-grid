@@ -5,7 +5,7 @@ import gov.nih.nci.cagrid.metadata.service.Fault;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.org.mygrid.cagrid.domain.common.Database;
+import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
 import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
 import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
@@ -35,7 +35,7 @@ public class ClientTest {
 		NCBIBLASTInputParameters params = new NCBIBLASTInputParameters();
 		params.setEmail("mannen@soiland-reyes.com");
 
-		params.setDatabase(new Database("uniprot"));
+		params.setDatabase(new SequenceDatabase("uniprot", null));
 		params.setBlastProgram(BLASTProgram.BLASTP);
 		input.setNCBIBLASTInputParameters(params);
 		
@@ -48,9 +48,9 @@ public class ClientTest {
 		System.out.println("Accession " + ncbiBlastOut.getSequenceSimilarities(0).getAccessionNumber());
 		
 
-		if (System.getProperty("GLOBUS_LOCATION") != null) {
-			// Set -DGLOBUS_LOCATION=/Users/bob/ws-core-4.0.3 to do 
-			// asynchronous
+		if (System.getProperty("GLOBUS_LOCATION") == null) {
+			System.err.println("Set -DGLOBUS_LOCATION=/Users/bob/cagrid/ws-core-4.0.3 to do asynchronous client calls");
+		} else {
 			System.out.println("asynchronously");
 			clientUtils.ncbiBlastAsync(input, new JobCallBack<NCBIBLASTOutput>() {
 				public void jobStatusChanged(JobStatus oldValue, JobStatus newValue) {

@@ -94,7 +94,7 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="database" type="common:Database"
+			<xsd:element name="database" type="common:SequenceDatabase"
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
@@ -238,16 +238,19 @@
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
-						BLAST program to use. Valid values are: BLASTN,
-						BLASTP and BLASTX.
+	BLAST program to use. Valid values are: BLASTN,
+	BLASTP and BLASTX. If the program is BLASTN, the database must be a
+	NucleotideSequenceDatabase, otherwise a ProteinSequenceDatabase.
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="database" type="common:Database"
+			<xsd:element name="database" type="common:SequenceDatabase"
 				minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
-						Database to search.
+	Database to search. If the program is BLASTN, the database must be a
+	NucleotideSequenceDatabase, otherwise a ProteinSequenceDatabase.
+	Available databases can be found from the getDatabases() method.
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
@@ -264,7 +267,8 @@
 				maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>
-						E-mail address of the user.
+						E-mail address of the user submitting this job. Used by EBI 
+						to keep statistics.
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>

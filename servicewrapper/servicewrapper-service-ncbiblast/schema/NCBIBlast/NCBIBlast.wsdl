@@ -52,7 +52,7 @@
       <element name="GetDatabasesResponse">
         <complexType>
           <sequence>
-            <element ref="ns1:Database" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:SequenceDatabase" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>

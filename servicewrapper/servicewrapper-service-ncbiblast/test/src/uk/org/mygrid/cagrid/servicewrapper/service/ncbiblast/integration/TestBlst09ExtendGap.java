@@ -26,7 +26,7 @@ public class TestBlst09ExtendGap extends CommonTest {
 
 	@Test
 	public void defaultExtendGap() throws Exception {
-		params.setOpenGap(null);
+		params.setExtendGap(null);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		String cmdLine = getCommandLine();
 		assertTrue(
