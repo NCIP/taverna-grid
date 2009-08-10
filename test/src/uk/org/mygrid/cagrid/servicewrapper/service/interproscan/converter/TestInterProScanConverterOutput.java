@@ -1,6 +1,7 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.interproscan.converter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.math.BigInteger;
 
@@ -8,7 +9,7 @@ import org.jdom.Document;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.org.mygrid.cagrid.domain.interproscan.Database;
+import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
 import uk.org.mygrid.cagrid.domain.interproscan.DatabaseMatch;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
 import uk.org.mygrid.cagrid.domain.interproscan.ProteinSignatureLocation;
@@ -84,7 +85,7 @@ public class TestInterProScanConverterOutput {
 		// <match id="G3DSA:4.10.75.10" name="no description" dbname="GENE3D">
 		assertEquals("Wrong ID for database match 0", "G3DSA:4.10.75.10",
 				databaseMatches[0].getId());
-		assertEquals("Wrong database for database match 0", new Database("GENE3D"),
+		assertEquals("Wrong database for database match 0", new SequenceDatabase("GENE3D", "GENE3D"),
 				databaseMatches[0].getDatabase());
 		// TODO: Should it be null or "" instead?
 		assertEquals("Wrong signature for database match 0", "no description",
@@ -92,21 +93,21 @@ public class TestInterProScanConverterOutput {
 
 		assertEquals("Wrong ID for database match 1", "PF00095",
 				databaseMatches[1].getId());
-		assertEquals("Wrong database for database match 1", new Database("PFAM"),
+		assertEquals("Wrong database for database match 1", new SequenceDatabase("PFAM", "PFAM"),
 				databaseMatches[1].getDatabase());
 		assertEquals("Wrong signature for database match 1", "WAP",
 				databaseMatches[1].getSignatureName());
 
 		assertEquals("Wrong ID for database match 2", "SM00217",
 				databaseMatches[2].getId());
-		assertEquals("Wrong database for database match 2", new Database("SMART"),
+		assertEquals("Wrong database for database match 2", new SequenceDatabase("SMART", "SMART"),
 				databaseMatches[2].getDatabase());
 		assertEquals("Wrong signature for database match 2", "WAP",
 				databaseMatches[2].getSignatureName());
 
 		assertEquals("Wrong ID for database match 3", "SSF57256",
 				databaseMatches[3].getId());
-		assertEquals("Wrong database for database match 3", new Database("SUPERFAMILY"),
+		assertEquals("Wrong database for database match 3", new SequenceDatabase("SUPERFAMILY", "SUPERFAMILY"),
 				databaseMatches[3].getDatabase());
 		assertEquals("Wrong signature for database match 3", "Elafin-like",
 				databaseMatches[3].getSignatureName());

@@ -411,9 +411,9 @@ public class InterProScanTest {
 			DatabaseMatch[] databaseMatches = proteinSignatureMatch.getDatabaseMatches();
 			System.out.println("Match: " + proteinSignatureMatch.getName());
 			for (DatabaseMatch databaseMatch : databaseMatches){
-				foundDatabases.add(databaseMatch.getDatabase().getName().toLowerCase());
+				foundDatabases.add(databaseMatch.getDatabase().getDatabaseId().toLowerCase());
 				ProteinSignatureLocation[] proteinSignatureLocations = databaseMatch.getProteinSignatureLocations();
-				System.out.println("In database: " + databaseMatch.getDatabase().getName() + "; Number of occurrence(s): " + proteinSignatureLocations.length );
+				System.out.println("In database: " + databaseMatch.getDatabase().getDatabaseId() + "; Number of occurrence(s): " + proteinSignatureLocations.length );
 				for (ProteinSignatureLocation location : proteinSignatureLocations) {
 					foundSignatureMethods.add(location.getSignatureMethod().getValue().toLowerCase());
 					System.out.println("Sequence location start-end: " + location.getStart() + "-" + location.getEnd() + "; Signature method used: " + location.getSignatureMethod().getValue());

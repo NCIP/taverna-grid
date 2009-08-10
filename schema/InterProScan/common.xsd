@@ -145,6 +145,22 @@
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+
+	<xsd:complexType name="SequenceDatabase">
+		<xsd:annotation>
+			<xsd:documentation>A sequence database, either a NucleotideSequenceDatabase or ProteinSequenceDatabase. 
+A sequence database is identified by it's databaseId element.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="databaseId" type="xsd:string"></xsd:element>
+			<xsd:element name="description" type="xsd:string" minOccurs="0"></xsd:element>		</xsd:sequence>
+	</xsd:complexType>
+	
+	 <xsd:element name="SequenceDatabase"
+    	type="common:SequenceDatabase">
+    </xsd:element>
+
+
 	<xsd:complexType name="SequenceRepresentation"
 		abstract="true">
 		<xsd:annotation>
@@ -196,7 +212,7 @@
 
 	<xsd:element name="JobStatus" type="common:JobStatus"></xsd:element>
 	
-	    <xsd:element name="JobID" type="common:JobID"></xsd:element>
+    <xsd:element name="JobID" type="common:JobID"></xsd:element>
 
 	<xsd:simpleType name="JobID">
 		<xsd:annotation>
@@ -204,4 +220,22 @@
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string"></xsd:restriction>
 	</xsd:simpleType>
+
+	<xsd:complexType name="NucleotideSequenceDatabase">
+        <xsd:annotation>
+        	<xsd:documentation>A nucleotide sequence database</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="common:SequenceDatabase"></xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+    <xsd:complexType name="ProteinSequenceDatabase">
+        <xsd:annotation>
+        	<xsd:documentation>A protein sequence database</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="common:SequenceDatabase"></xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
 </xsd:schema>
