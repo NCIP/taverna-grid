@@ -35,5 +35,9 @@
   <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:FASTAProteinSequence" type="java:uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
   <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:NucleotideSequenceIdentifier" type="java:uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
   <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:FASTANucleotideSequence" type="java:uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+
+  <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:ProteinSequenceDatabase" type="java:uk.org.mygrid.cagrid.domain.common.ProteinSequenceDatabase" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+  <typeMapping xmlns:ns="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" qname="ns:NucleotideSequenceDatabase" type="java:uk.org.mygrid.cagrid.domain.common.NucleotideSequenceDatabase" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+
 </deployment>
 
