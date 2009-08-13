@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * BLST7: filter parameter
  * 
- * Default: false
+ * Default: false for protein searches (BLASTP/BLASTX)
  * 
  * Test empty/null: Should use the default value
  * 

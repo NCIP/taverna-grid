@@ -140,7 +140,6 @@
 				</xsd:annotation>
 			</xsd:enumeration>
 			<xsd:enumeration value="SignalPHMM" />
-			<xsd:enumeration value="TMHMM" />
 			<xsd:enumeration value="SuperFamily">
 				<xsd:annotation>
 					<xsd:documentation>SUPERFAMILY is a library of profile
@@ -148,6 +147,7 @@
 						structure.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
+			<xsd:enumeration value="TMHMM" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="SignatureStatus">
