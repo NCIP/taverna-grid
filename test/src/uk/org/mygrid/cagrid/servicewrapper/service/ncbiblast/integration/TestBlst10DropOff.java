@@ -9,11 +9,11 @@ import org.junit.Test;
 /**
  * BLST10: dropoff parameter
  * 
- * Default: No default
+ * Default: 0
  * 
- * Test empty/null: Should produce error
+ * Test empty/null: Should use default value
  * 
- * Test invalid value: Should produce error
+ * Test invalid value: Should use default value
  * 
  * 
  * 
