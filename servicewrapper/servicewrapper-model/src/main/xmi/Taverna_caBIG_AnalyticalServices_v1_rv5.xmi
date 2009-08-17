@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2009-08-17 22:22:56">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2009-08-17 22:29:19">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -489,7 +489,7 @@
 																</UML:Collaboration>
 																<UML:Package name="common" xmi.id="EAPK_ECA214ED_1EEA_42d5_BC83_506256C60D96" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_CF3DE0F6_C43F_4d95_AAD0_57E91B2D7011"/>
+																		<UML:Stereotype xmi.idref="EAID_572AD93C_5728_4fd7_8C38_C716703D3C41"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="created" value="2009-01-22 00:00:00"/>
@@ -1626,7 +1626,7 @@
 																</UML:Package>
 																<UML:Package name="interproscan" xmi.id="EAPK_E6AB33C6_E45F_4bf9_AC41_8D477B28A3CF" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_CF3DE0F6_C43F_4d95_AAD0_57E91B2D7011"/>
+																		<UML:Stereotype xmi.idref="EAID_572AD93C_5728_4fd7_8C38_C716703D3C41"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="created" value="2009-01-21 00:00:00"/>
@@ -3957,7 +3957,7 @@
 																</UML:Package>
 																<UML:Package name="ncbiblast" xmi.id="EAPK_4CFBA0EB_7117_4387_85E0_7ABE20B1A989" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_CF3DE0F6_C43F_4d95_AAD0_57E91B2D7011"/>
+																		<UML:Stereotype xmi.idref="EAID_572AD93C_5728_4fd7_8C38_C716703D3C41"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="created" value="2009-01-21 00:00:00"/>
@@ -6646,7 +6646,7 @@
 														</UML:Package>
 														<UML:Package name="valuedomains" xmi.id="EAPK_00F62BB7_5A0E_4d41_8AEB_FE03DA2E9943" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 															<UML:ModelElement.stereotype>
-																<UML:Stereotype xmi.idref="EAID_CF3DE0F6_C43F_4d95_AAD0_57E91B2D7011"/>
+																<UML:Stereotype xmi.idref="EAID_572AD93C_5728_4fd7_8C38_C716703D3C41"/>
 															</UML:ModelElement.stereotype>
 															<UML:ModelElement.taggedValue>
 																<UML:TaggedValue tag="created" value="2009-02-25 00:00:00"/>
@@ -8025,7 +8025,7 @@
 						</UML:Package>
 						<UML:Package name="IRWG" xmi.id="EAPK_A09C8A79_DD7C_4379_96B7_D4D586CCBA85" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.stereotype>
-								<UML:Stereotype xmi.idref="EAID_CF3DE0F6_C43F_4d95_AAD0_57E91B2D7011"/>
+								<UML:Stereotype xmi.idref="EAID_572AD93C_5728_4fd7_8C38_C716703D3C41"/>
 							</UML:ModelElement.stereotype>
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="created" value="2009-08-17 00:00:00"/>
@@ -8565,7 +8565,7 @@
 						</UML:Package>
 						<UML:Package name="PIR" xmi.id="EAPK_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.stereotype>
-								<UML:Stereotype xmi.idref="EAID_CF3DE0F6_C43F_4d95_AAD0_57E91B2D7011"/>
+								<UML:Stereotype xmi.idref="EAID_572AD93C_5728_4fd7_8C38_C716703D3C41"/>
 							</UML:ModelElement.stereotype>
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="created" value="2009-08-13 00:00:00"/>
@@ -8748,7 +8748,7 @@
 						</UML:Package>
 					</UML:Namespace.ownedElement>
 				</UML:Package>
-				<UML:Stereotype xmi.id="EAID_CF3DE0F6_C43F_4d95_AAD0_57E91B2D7011" name="XSDschema" isRoot="false" isLeaf="false" isAbstract="false">
+				<UML:Stereotype xmi.id="EAID_572AD93C_5728_4fd7_8C38_C716703D3C41" name="XSDschema" isRoot="false" isLeaf="false" isAbstract="false">
 					<UML:Stereotype.baseClass>Package</UML:Stereotype.baseClass>
 				</UML:Stereotype>
 				<UML:DataType xmi.id="eaxmiid5" name="String" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
