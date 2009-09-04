@@ -99,7 +99,7 @@
 			</xsd:enumeration>
 			<xsd:enumeration value="ScanRegExp">
 				<xsd:annotation>
-					<xsd:documentation>ScanRegExp program searches against the regular expressions in the PROSITE protein families and domains database. N.B. This tool is &lt;b&gt;deprecated &lt;/b&gt;and users should use PatternScan instead.</xsd:documentation>
+					<xsd:documentation>ScanRegExp program searches against the regular expressions in the PROSITE protein families and domains database. N.B. This tool is deprecated and users should use PatternScan instead.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:enumeration>
 			<xsd:enumeration value="SignalPHMM">
