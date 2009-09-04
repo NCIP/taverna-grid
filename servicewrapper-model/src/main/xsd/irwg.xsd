@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" elementFormDefault="qualified">
+	<xsd:element name="ProteinGenomicIdentifier" type="irwg:ProteinGenomicIdentifier"/>
+	<xsd:complexType name="ProteinGenomicIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>ID:2544901 A group of complex organic macromolecules composed of one or more chains (linear polymers) of alpha-L-amino acids linked by peptide bonds and ranging in size from a few thousand to over 1 million Daltons. Proteins are fundamental genetically encoded components of living cells with specific structures and functions dictated by amino acid sequence.:One or more characters and/or numbers that are used to identify, name, or characterize the nature, properties, or contents of genomic sequences, mRNA transcripts, protein products, or other class of entities that occurs throughout the genome.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="irwg:DatabaseCrossReference">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="NucleicAcidSequence" type="irwg:NucleicAcidSequence"/>
+	<xsd:complexType name="NucleicAcidSequence">
+		<xsd:annotation>
+			<xsd:documentation>ID:2223318 The sequence of nucleotide residues along an RNA or DNA chain.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="irwg:Sequence">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="GeneGenomicIdentifier" type="irwg:GeneGenomicIdentifier"/>
+	<xsd:complexType name="GeneGenomicIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>ID:2544899 A functional unit of heredity which occupies a specific position (locus) on a particular chromosome, is capable of reproducing itself exactly at each cell division, and directs the formation of a protein or other product. The gene as a functional unit consists of a discrete segment of a giant DNA molecule containing the purine (adenine and guanine) and pyrimidine (cytosine and thymine) bases in the ordered and correct sequence that encodes a specific functional product (i.e., a protein or RNA molecule).:One or more characters and/or numbers that are used to identify, name, or characterize the nature, properties, or contents of genomic sequences, mRNA transcripts, protein products, or other class of entities that occurs throughout the genome.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="irwg:DatabaseCrossReference">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="MessengerRNAGenomicIdentifier" type="irwg:MessengerRNAGenomicIdentifier"/>
+	<xsd:complexType name="MessengerRNAGenomicIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>ID:2544902 A class of RNA molecule containing protein-coding information in its nucleotide sequence that can be translated into the amino acid sequence of a protein.:One or more characters and/or numbers that are used to identify, name, or characterize the nature, properties, or contents of genomic sequences, mRNA transcripts, protein products, or other class of entities that occurs throughout the genome.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="irwg:DatabaseCrossReference">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="Sequence" type="irwg:Sequence"/>
+	<xsd:complexType name="Sequence">
+		<xsd:annotation>
+			<xsd:documentation>A serial arrangement of  organic molecules such as amino acid or nucleotide.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="valueInFastaFormat" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>A representation of a molecular sequence in FASTA format (a.k.a. Pearson format) which is a text-based format where base pairs or amino acids are represented using single-letter codes. The format also allows for sequence names and comments to precede the sequences in a form of a header.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="DatabaseCrossReference" type="irwg:DatabaseCrossReference"/>
+	<xsd:complexType name="DatabaseCrossReference">
+		<xsd:annotation>
+			<xsd:documentation>C15426:C43621(Primary) A database is an information set with a regular structure. Although it can be applied to any set of information the term was invented to refer to computerised data, and is used almost exclusively in computing. (from Wikipedia):A notation or direction at one place (as in a book or filing system) to pertinent information at another place
+(class ID 2228343)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="crossReferenceId" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>(Reuse CDE 2228351) </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="dataSourceName" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>(Reuse CDE 2228352)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
