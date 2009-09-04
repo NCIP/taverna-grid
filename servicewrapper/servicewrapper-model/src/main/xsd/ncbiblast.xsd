@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ncbiblast="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" elementFormDefault="qualified">
+<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ncbiblast="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" elementFormDefault="qualified">
 	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" schemaLocation="irwg.xsd"/>
 	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" schemaLocation="common.xsd"/>
 	<xsd:element name="Alignment" type="ncbiblast:Alignment"/>
 	<xsd:complexType name="Alignment">
@@ -58,18 +59,13 @@
 					<xsd:documentation>The description of the match sequence from the database.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>The id of the match sequence in the database.</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
 			<xsd:element name="sequenceLength" type="xsd:integer" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>The match sequence length.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
+			<xsd:element name="sequenceId" type="irwg:DatabaseCrossReference" minOccurs="1" maxOccurs="1"/>
 			<xsd:element name="alignments" type="ncbiblast:Alignment" minOccurs="1" maxOccurs="unbounded"/>
-			<xsd:element name="database" type="common:SequenceDatabase" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="SequenceFragment" type="ncbiblast:SequenceFragment"/>
@@ -83,16 +79,12 @@
 					<xsd:documentation>Represents the end of the fragment of the protein or nucleotide sequence.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="sequence" type="xsd:string" minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>The fragment's sequence string.</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
 			<xsd:element name="start" type="xsd:integer" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>Represents the start of the fragment of the protein or nucleotide sequence.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
+			<xsd:element name="sequence" type="irwg:Sequence" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="NCBIBlastOutput" type="ncbiblast:NCBIBlastOutput"/>
@@ -101,18 +93,13 @@
 			<xsd:documentation>This is an output from the Taverna-wrapped InterProScan service that Taverna will convert and pass back to caGrid client. Represents a sequence similary search result.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="dummy" type="xsd:string" minOccurs="0" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>Dummy attribute as classes with no attributes cannotbe uploaded to caDSR.</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
 			<xsd:element name="sequenceSimilarities" type="ncbiblast:SequenceSimilarity" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="NCBIBlastJob" type="ncbiblast:NCBIBlastJob"/>
 	<xsd:complexType name="NCBIBlastJob">
 		<xsd:sequence>
-			<xsd:element name="jobID" type="common:JobID" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="jobID" type="common:JobId" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="NCBIBlastService" type="ncbiblast:NCBIBlastService"/>
@@ -120,13 +107,7 @@
 		<xsd:annotation>
 			<xsd:documentation>Represents Taverbna-wrapping of the NCBI BLAST service to be used by caGrid clients.</xsd:documentation>
 		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="dummy" type="xsd:string" minOccurs="0" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>Dummy attribute as classes with no attributes cannot be uploaded to caDSR.</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-		</xsd:sequence>
+		<xsd:sequence/>
 	</xsd:complexType>
 	<xsd:element name="NCBIBlastInput" type="ncbiblast:NCBIBlastInput"/>
 	<xsd:complexType name="NCBIBlastInput">
@@ -134,13 +115,8 @@
 			<xsd:documentation>Represents an input to the Taverna-wrapped NCBI BLAST service that taverna will convert and actually invoke the service.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="dummy" type="xsd:string" minOccurs="0" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>Dummy attribute as classes with no attributes cannotbe uploaded to caDSR.</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
 			<xsd:element name="ncbiBLASTInputParameters" type="ncbiblast:NCBIBlastInputParameters" minOccurs="1" maxOccurs="1"/>
-			<xsd:element name="sequenceRepresentation" type="common:SequenceRepresentation" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="sequenceRepresentation" type="common:MolecularSequenceRepresentation" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="NCBIBlastInputParameters" type="ncbiblast:NCBIBlastInputParameters"/>
@@ -149,14 +125,14 @@
 			<xsd:documentation>Input parameters for the NCBI BLAST job.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="alignmentsToOutput" type="xsd:integer" minOccurs="0" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>Number of database sequences to output alignments for.</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
 			<xsd:element name="blastProgram" type="valuedomains:BLASTProgram" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>BLAST program to use. Valid values are: BLASTN, BLASTP and BLASTX. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="alignmentsToOutput" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Number of database sequences to output alignments for.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="dropoff" type="xsd:integer" minOccurs="0" maxOccurs="1">
@@ -214,7 +190,7 @@
 					<xsd:documentation>Penalty for the first residue in a gap, i.e. score taken away for the initiation of the gap in sequence or in structure. To make the match more significant one can try to make the gap penalty larger. It will decrease the number of gaps and if one has good alignment without many gaps, its Z-score will be higher.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="database" type="common:SequenceDatabase" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="queryDatabase" type="common:MolecularSequenceDatabase" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>
