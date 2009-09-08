@@ -20,6 +20,7 @@
  ******************************************************************************/
 package org.cagrid.transfer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,8 +128,29 @@ public class CaGridTransferActivity extends AbstractAsynchronousActivity<CaGridT
 						}
 						System.out.println("input port name: "+ inputName+"\t value: "+  (String)input);
 					}
-					//TODO execute the transfer code
+					//execute the transfer code
 					System.out.println("Doing the caGrid transfer....");
+					//upload
+					if(downloadOrUpload.equals("upload")){
+						String inputFileName = workingDir+ "/"+ fileNameToTransfer;
+						CaGridTransferUtil.uploadInput(epr, inputFileName);
+						
+					}
+					//download
+					//FIXME what if there is typo error in downloadOrUpload string
+					else{
+						
+							
+						String outputFilename = workingDir+ "/"+ fileNameToTransfer;
+						try {
+							CaGridTransferUtil.downloadResult(epr, outputFilename);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}	
+						
+					}
+					
+					
 					
 					transferredFileName = fileNameToTransfer;
 					//put output data

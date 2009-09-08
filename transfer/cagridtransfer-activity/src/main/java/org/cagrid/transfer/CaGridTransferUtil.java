@@ -37,8 +37,15 @@ public static EndpointReferenceType readEprFromString(String eprString) throws E
 		return ref;
 	}
 
-public static void uploadInput(EndpointReferenceType endpointReference ,String filePath){
+public static void uploadInput(String epr ,String filePath){
 		//create transfer is a method that staged some data and returned the Reference
+		EndpointReferenceType endpointReference = new EndpointReferenceType();
+		try {
+			endpointReference =  readEprFromString(epr);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		TransferServiceContextReference ref = new TransferServiceContextReference();
 		
 		ref.setEndpointReference(endpointReference);
@@ -68,7 +75,14 @@ public static void uploadInput(EndpointReferenceType endpointReference ,String f
 	}
 	//Downloads the result file from the server using the caGrid Transfer interface.
 	 
-	public static String downloadResult(EndpointReferenceType endpointReference, String filePath) throws Exception {
+	public static String downloadResult(String epr, String filePath) throws Exception {
+		EndpointReferenceType endpointReference = new EndpointReferenceType();
+		try {
+			endpointReference =  readEprFromString(epr);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println("START DOWNLOAD:"+ filePath);		
 		TransferServiceContextClient tclient = 
 			new TransferServiceContextClient(endpointReference);

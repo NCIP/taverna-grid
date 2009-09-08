@@ -10,6 +10,11 @@
 	<artifactId>cagridtransfer-activity</artifactId>
 	<name>caGrid Transfer Activity</name>
 	<repositories>
+	<repository>
+			<id>t2-cagrid</id>
+			<name>cagrid repository for t2 plug-ins</name>
+			<url>http://www.mcs.anl.gov/~wtan/t2/repository/</url>
+		</repository>
 		<repository>
 			<releases />
 			<snapshots>
@@ -68,19 +73,29 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
 			<artifactId>workflowmodel-api</artifactId>
+			 
+			<version>0.8</version>
+			
+			 <!-- need to update this number
 			<version>${t2.core.version}</version>
+			 -->
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
 			<artifactId>reference-api</artifactId>
+			<version>0.8</version>
+			<!-- 
 			<version>${t2.core.version}</version>
+			 -->
 		</dependency>
+		<!--  
 		<dependency>
 			<groupId>net.sf.taverna.t2.activities</groupId>
 			<artifactId>activity-test-utils</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.cagrid</groupId>
 			<artifactId>cagrid-globus-package</artifactId>
