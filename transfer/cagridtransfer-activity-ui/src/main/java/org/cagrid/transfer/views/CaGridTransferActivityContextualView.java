@@ -44,8 +44,16 @@ public class CaGridTransferActivityContextualView extends HTMLBasedActivityConte
     @Override
     protected String getRawTableRowsHtml() {
       
-        String html = "<tr><td>CaGrid Transfer Activity</td></tr>";
-        return html;
+    	String function;
+    	if(getConfigBean().getIsUpload()==true){
+    		function ="upload";
+    	}
+    	else{
+    		function = "download";
+    	}
+        String html1 = "<tr><td>CaGrid Transfer Activity</td></tr>";
+        String html2 = "<tr><td>Function</td><td>"+function +"</td></tr>";
+        return html1+html2;
     }
 
     @Override

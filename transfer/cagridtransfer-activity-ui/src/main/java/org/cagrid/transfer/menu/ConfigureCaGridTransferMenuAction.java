@@ -10,7 +10,7 @@ import net.sf.taverna.t2.workbench.activitytools.AbstractConfigureActivityMenuAc
 public class ConfigureCaGridTransferMenuAction extends
 		AbstractConfigureActivityMenuAction<CaGridTransferActivity> {
 
-	//private static final String CONFIGURE_STRINGCONSTANT = "Edit value";
+	private static final String CONFIGURE_STRINGCONSTANT = "Edit Function";
 
 	public ConfigureCaGridTransferMenuAction() {
 		super(CaGridTransferActivity.class);
@@ -20,7 +20,7 @@ public class ConfigureCaGridTransferMenuAction extends
 	protected Action createAction() {
 		CaGridTransferActivityConfigurationAction configAction = new CaGridTransferActivityConfigurationAction(
 				findActivity(), getParentFrame());
-		//configAction.putValue(Action.NAME, CONFIGURE_STRINGCONSTANT);
+		configAction.putValue(Action.NAME, CONFIGURE_STRINGCONSTANT);
 		addMenuDots(configAction);
 		return configAction;
 	}
