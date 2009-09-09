@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2009-09-04 12:34:39">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2009-09-09 13:24:18">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -48,7 +48,7 @@
 										<UML:TaggedValue tag="package" value="EAPK_6A1F7B6A_C113_44b4_85DC_AC4BBBA11077"/>
 										<UML:TaggedValue tag="date_created" value="2009-08-13 14:59:20"/>
 										<UML:TaggedValue tag="date_modified" value="2009-08-17 11:27:07"/>
-										<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\My Dropbox\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\pir.xsd"/>
+										<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\src\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\pir.xsd"/>
 										<UML:TaggedValue tag="gentype" value="Java"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package2" value="EAID_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5"/>
@@ -77,7 +77,7 @@
 										<UML:TaggedValue tag="package" value="EAPK_6A1F7B6A_C113_44b4_85DC_AC4BBBA11077"/>
 										<UML:TaggedValue tag="date_created" value="2009-08-17 11:40:33"/>
 										<UML:TaggedValue tag="date_modified" value="2009-08-17 12:06:25"/>
-										<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\My Dropbox\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\irwg.xsd"/>
+										<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\src\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\irwg.xsd"/>
 										<UML:TaggedValue tag="gentype" value="Java"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package2" value="EAID_A09C8A79_DD7C_4379_96B7_D4D586CCBA85"/>
@@ -352,7 +352,7 @@
 																		<UML:TaggedValue tag="package" value="EAPK_5A5AB418_F830_43ee_B023_C0EA8E20556B"/>
 																		<UML:TaggedValue tag="date_created" value="2009-02-25 16:47:57"/>
 																		<UML:TaggedValue tag="date_modified" value="2009-08-12 16:39:18"/>
-																		<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\My Dropbox\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\valuedomains.xsd"/>
+																		<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\src\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\valuedomains.xsd"/>
 																		<UML:TaggedValue tag="gentype" value="Java"/>
 																		<UML:TaggedValue tag="tagged" value="0"/>
 																		<UML:TaggedValue tag="package2" value="EAID_00F62BB7_5A0E_4d41_8AEB_FE03DA2E9943"/>
@@ -432,7 +432,7 @@
 																				<UML:TaggedValue tag="package" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
 																				<UML:TaggedValue tag="date_created" value="2009-01-21 18:26:56"/>
 																				<UML:TaggedValue tag="date_modified" value="2009-08-12 13:14:01"/>
-																				<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\My Dropbox\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\ncbiblast.xsd"/>
+																				<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\src\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\ncbiblast.xsd"/>
 																				<UML:TaggedValue tag="gentype" value="Java"/>
 																				<UML:TaggedValue tag="tagged" value="0"/>
 																				<UML:TaggedValue tag="package2" value="EAID_4CFBA0EB_7117_4387_85E0_7ABE20B1A989"/>
@@ -462,7 +462,7 @@
 																				<UML:TaggedValue tag="package" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
 																				<UML:TaggedValue tag="date_created" value="2009-01-21 12:11:40"/>
 																				<UML:TaggedValue tag="date_modified" value="2009-08-12 11:59:20"/>
-																				<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\My Dropbox\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\interproscan.xsd"/>
+																				<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\src\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\interproscan.xsd"/>
 																				<UML:TaggedValue tag="gentype" value="Java"/>
 																				<UML:TaggedValue tag="tagged" value="0"/>
 																				<UML:TaggedValue tag="package2" value="EAID_E6AB33C6_E45F_4bf9_AC41_8D477B28A3CF"/>
@@ -492,7 +492,7 @@
 																				<UML:TaggedValue tag="package" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
 																				<UML:TaggedValue tag="date_created" value="2009-01-22 10:48:08"/>
 																				<UML:TaggedValue tag="date_modified" value="2009-08-12 11:59:22"/>
-																				<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\My Dropbox\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\common.xsd"/>
+																				<UML:TaggedValue tag="genfile" value="C:\Users\stain\Data\Documents\src\cagrid-workspace\servicewrapper\servicewrapper-model\src\main\xsd\common.xsd"/>
 																				<UML:TaggedValue tag="gentype" value="Java"/>
 																				<UML:TaggedValue tag="tagged" value="0"/>
 																				<UML:TaggedValue tag="package2" value="EAID_ECA214ED_1EEA_42d5_BC83_506256C60D96"/>
@@ -514,7 +514,7 @@
 																</UML:Collaboration>
 																<UML:Package name="common" xmi.id="EAPK_ECA214ED_1EEA_42d5_BC83_506256C60D96" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_5ECBF6AB_A084_4242_B8D9_9B26C8285D21"/>
+																		<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="parent" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
@@ -1784,7 +1784,7 @@
 																</UML:Package>
 																<UML:Package name="interproscan" xmi.id="EAPK_E6AB33C6_E45F_4bf9_AC41_8D477B28A3CF" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_5ECBF6AB_A084_4242_B8D9_9B26C8285D21"/>
+																		<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="parent" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
@@ -3946,7 +3946,7 @@
 																</UML:Package>
 																<UML:Package name="ncbiblast" xmi.id="EAPK_4CFBA0EB_7117_4387_85E0_7ABE20B1A989" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_5ECBF6AB_A084_4242_B8D9_9B26C8285D21"/>
+																		<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="parent" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
@@ -6477,7 +6477,7 @@
 														</UML:Package>
 														<UML:Package name="valuedomains" xmi.id="EAPK_00F62BB7_5A0E_4d41_8AEB_FE03DA2E9943" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 															<UML:ModelElement.stereotype>
-																<UML:Stereotype xmi.idref="EAID_5ECBF6AB_A084_4242_B8D9_9B26C8285D21"/>
+																<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
 															</UML:ModelElement.stereotype>
 															<UML:ModelElement.taggedValue>
 																<UML:TaggedValue tag="parent" value="EAPK_5A5AB418_F830_43ee_B023_C0EA8E20556B"/>
@@ -7864,7 +7864,7 @@
 						</UML:Package>
 						<UML:Package name="IRWG" xmi.id="EAPK_A09C8A79_DD7C_4379_96B7_D4D586CCBA85" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.stereotype>
-								<UML:Stereotype xmi.idref="EAID_5ECBF6AB_A084_4242_B8D9_9B26C8285D21"/>
+								<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
 							</UML:ModelElement.stereotype>
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="parent" value="EAPK_6A1F7B6A_C113_44b4_85DC_AC4BBBA11077"/>
@@ -8428,7 +8428,7 @@
 						</UML:Package>
 						<UML:Package name="PIR" xmi.id="EAPK_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.stereotype>
-								<UML:Stereotype xmi.idref="EAID_5ECBF6AB_A084_4242_B8D9_9B26C8285D21"/>
+								<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
 							</UML:ModelElement.stereotype>
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="parent" value="EAPK_6A1F7B6A_C113_44b4_85DC_AC4BBBA11077"/>
@@ -8615,7 +8615,7 @@
 						</UML:Package>
 					</UML:Namespace.ownedElement>
 				</UML:Package>
-				<UML:Stereotype xmi.id="EAID_5ECBF6AB_A084_4242_B8D9_9B26C8285D21" name="XSDschema" isRoot="false" isLeaf="false" isAbstract="false">
+				<UML:Stereotype xmi.id="EAID_7C095777_547A_40d3_9AB2_00ACDF442399" name="XSDschema" isRoot="false" isLeaf="false" isAbstract="false">
 					<UML:Stereotype.baseClass>Package</UML:Stereotype.baseClass>
 				</UML:Stereotype>
 				<UML:DataType xmi.id="eaxmiid0" name="string" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
@@ -8627,12 +8627,12 @@
 		</UML:Model>
 		<UML:TaggedValue tag="elementFormDefault" xmi.id="EAID_CEDCE173_BAE1_4cd0_AE19_BA83A9962B26" value="qualified" modelElement="EAID_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5"/>
 		<UML:TaggedValue tag="schemaLocation" xmi.id="EAID_48289769_A8F3_434d_8EF9_534A30D1108F" value="pir.xsd" modelElement="EAID_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5"/>
-		<UML:TaggedValue tag="targetNamespace" xmi.id="EAID_BB280EA2_4436_436d_A6C6_A21401E8BC6D" value="gme://PIR 1.2.caBIG/1.2/edu.georgetown.pir.domain#NOTES#Description: URI to unique target namespace&#xA;" modelElement="EAID_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5"/>
+		<UML:TaggedValue tag="targetNamespace" xmi.id="EAID_BB280EA2_4436_436d_A6C6_A21401E8BC6D" value="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR#NOTES#Description: URI to unique target namespace&#xA;" modelElement="EAID_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5"/>
 		<UML:TaggedValue tag="targetNamespacePrefix" xmi.id="EAID_66AE5ACF_5100_4c37_AE00_D761504B6949" value="pir#NOTES#Description: Prefix associated with namespace&#xA;" modelElement="EAID_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5"/>
 		<UML:TaggedValue tag="xmlns" xmi.id="EAID_CD5B8B94_6AE2_4371_8A91_B2767D7E50D9" value="&lt;memo&gt;#NOTES#xmlns:xsd=http://www.w3.org/2001/XMLSchema" modelElement="EAID_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5"/>
 		<UML:TaggedValue tag="elementFormDefault" xmi.id="EAID_1AAAE930_C494_4229_A0D8_3B1CC5CFEDAF" value="qualified" modelElement="EAID_A09C8A79_DD7C_4379_96B7_D4D586CCBA85"/>
 		<UML:TaggedValue tag="schemaLocation" xmi.id="EAID_02FBF3FF_5E99_479b_BB82_D13BF8CB34EB" value="irwg.xsd" modelElement="EAID_A09C8A79_DD7C_4379_96B7_D4D586CCBA85"/>
-		<UML:TaggedValue tag="targetNamespace" xmi.id="EAID_DA40A622_F954_479d_AA22_D985C6B89828" value="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG#NOTES#Description: URI to unique target namespace&#xA;" modelElement="EAID_A09C8A79_DD7C_4379_96B7_D4D586CCBA85"/>
+		<UML:TaggedValue tag="targetNamespace" xmi.id="EAID_DA40A622_F954_479d_AA22_D985C6B89828" value="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG#NOTES#Description: URI to unique target namespace&#xA;" modelElement="EAID_A09C8A79_DD7C_4379_96B7_D4D586CCBA85"/>
 		<UML:TaggedValue tag="targetNamespacePrefix" xmi.id="EAID_E42E50E0_11D9_4e15_9DCC_AADD25D2B324" value="irwg" modelElement="EAID_A09C8A79_DD7C_4379_96B7_D4D586CCBA85"/>
 		<UML:TaggedValue tag="xmlns" xmi.id="EAID_3008449A_AC6D_4f72_94F4_6FC13EAE848C" value="&lt;memo&gt;#NOTES#xmlns:xsd=http://www.w3.org/2001/XMLSchema" modelElement="EAID_A09C8A79_DD7C_4379_96B7_D4D586CCBA85"/>
 		<UML:Diagram name="InterProScanService" xmi.id="EAID_A0300DBB_88AD_45ea_9678_3A1099F16527" diagramType="ClassDiagram" owner="EAPK_CB699A04_2FDB_43de_9F15_2FBB5DA90527" toolName="Enterprise Architect 2.5">

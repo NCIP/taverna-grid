@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" xmlns:pir="gme://PIR 1.2.caBIG/1.2/edu.georgetown.pir.domain" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" elementFormDefault="qualified">
+<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" xmlns:pir="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" elementFormDefault="qualified">
 	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"/>
-	<xsd:import namespace="gme://PIR 1.2.caBIG/1.2/edu.georgetown.pir.domain" schemaLocation="pir.xsd"/>
-	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" schemaLocation="irwg.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" schemaLocation="pir.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" schemaLocation="irwg.xsd"/>
 	<xsd:element name="ProteinSequenceRepresentation" type="common:ProteinSequenceRepresentation"/>
 	<xsd:complexType name="ProteinSequenceRepresentation">
 		<xsd:annotation>
