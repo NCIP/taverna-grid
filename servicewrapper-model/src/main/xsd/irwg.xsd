@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" elementFormDefault="qualified">
+<xsd:schema targetNamespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" elementFormDefault="qualified">
 	<xsd:element name="ProteinGenomicIdentifier" type="irwg:ProteinGenomicIdentifier"/>
 	<xsd:complexType name="ProteinGenomicIdentifier">
 		<xsd:annotation>

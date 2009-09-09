@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ncbiblast="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" elementFormDefault="qualified">
+<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ncbiblast="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" elementFormDefault="qualified">
 	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"/>
-	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" schemaLocation="irwg.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" schemaLocation="irwg.xsd"/>
 	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" schemaLocation="common.xsd"/>
 	<xsd:element name="Alignment" type="ncbiblast:Alignment"/>
 	<xsd:complexType name="Alignment">

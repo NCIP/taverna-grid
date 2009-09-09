@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema targetNamespace="gme://PIR 1.2.caBIG/1.2/edu.georgetown.pir.domain" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pir="gme://PIR 1.2.caBIG/1.2/edu.georgetown.pir.domain" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" elementFormDefault="qualified">
-	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/IRWG" schemaLocation="irwg.xsd"/>
+<xsd:schema targetNamespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pir="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" elementFormDefault="qualified">
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" schemaLocation="irwg.xsd"/>
 	<xsd:element name="ProteinSequence" type="pir:ProteinSequence"/>
 	<xsd:complexType name="ProteinSequence">
 		<xsd:complexContent>
