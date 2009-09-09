@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (C) 2007 The University of Manchester   
+ * Copyright (C) 2009 The University of Chicago
  * 
  *  Modifications to the initial code base are copyright of their
  *  respective authors, or their employers as appropriate.
@@ -42,18 +43,16 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.AsynchronousActivityCa
 
 /**
  * <p>
- * An Activity that holds a constant string value. It is automatically configured to have no input ports
- * and only one output port named <em>value</em>.<br>
+ * An Activity that use http to transfer the files that are needed/produced by a caGrid service.
+ * 
  *
- * @author Stuart Owen
+ * @author Wei Tan
  *
  */
 public class CaGridTransferActivity extends AbstractAsynchronousActivity<CaGridTransferConfigurationBean>{
 
 	private static final Logger logger = Logger.getLogger(CaGridTransferActivity.class);
 			
-	private String value;
-	private String fileTransferred;
 	
 	private CaGridTransferConfigurationBean config=null;
 	
@@ -61,21 +60,18 @@ public class CaGridTransferActivity extends AbstractAsynchronousActivity<CaGridT
 	public void configure(CaGridTransferConfigurationBean conf)
 			throws ActivityConfigurationException {
 		this.config=conf;
-		
 		if (inputPorts.size() == 0) {
 			addInput("workingDir", 0, "text/plain");
 			addInput("epr", 0, "text/plain");
-			addInput("fileNameToTransfer", 0, "text/plain");
-			addInput("downloadOrUpload",0,"text/plain");
+			addInput("fileName", 0, "text/plain");
+			//addInput("downloadOrUpload",0,"text/plain");
 		}
 		if (outputPorts.size() == 0) {
-			addOutput("transferredFileName", 0, "text/plain");
+			addOutput("fileName", 0, "text/plain");
 		}
+		
 	}
 
-	public String getStringValue() {
-		return value;
-	}
 	
 	@Override
 	public CaGridTransferConfigurationBean getConfiguration() {
@@ -98,12 +94,10 @@ public class CaGridTransferActivity extends AbstractAsynchronousActivity<CaGridT
 			public void run() {
 				ReferenceService referenceService = callback.getContext().getReferenceService();
 				try {
-					String transferredFileName = "";
-					
+					String transferredFileName = "";					
 					String workingDir="";
 					String fileNameToTransfer="";					
 					String epr = "";
-					String downloadOrUpload = "";
 					
 					Map<String,T2Reference> outputData = new HashMap<String, T2Reference>();
 					//get input data
@@ -114,7 +108,7 @@ public class CaGridTransferActivity extends AbstractAsynchronousActivity<CaGridT
 								.getTranslatedElementClass(), callback
 								.getContext());
 						inputName = sanatisePortName(inputName);
-						if(inputName.equals("fileNameToTransfer")){
+						if(inputName.equals("fileName")){
 							fileNameToTransfer = (String) input;
 						}
 						else if(inputName.equals("workingDir")){
@@ -123,24 +117,32 @@ public class CaGridTransferActivity extends AbstractAsynchronousActivity<CaGridT
 						else if(inputName.equals("epr")){
 							epr = (String) input;
 						}
-						else{
-							downloadOrUpload = (String)input;
-						}
+						
 						System.out.println("input port name: "+ inputName+"\t value: "+  (String)input);
 					}
 					//execute the transfer code
 					System.out.println("Doing the caGrid transfer....");
+					//FIXME fileName contains path
 					//upload
-					if(downloadOrUpload.equals("upload")){
-						String inputFileName = workingDir+ "/"+ fileNameToTransfer;
+					if(getConfiguration().getIsUpload()==true){
+						//a full path is given, which is not a good practice 
+						//if the workflow is going to be running on a remote machine
+						String inputFileName;
+						if(fileNameToTransfer.contains("/")||fileNameToTransfer.contains("\\")){
+							inputFileName = fileNameToTransfer;
+							
+						}
+						else{
+							//the file to be uploaded is in the working directory
+							inputFileName = workingDir+ "/"+ fileNameToTransfer;
+							
+						}
+						
 						CaGridTransferUtil.uploadInput(epr, inputFileName);
 						
 					}
 					//download
-					//FIXME what if there is typo error in downloadOrUpload string
-					else{
-						
-							
+					else{	
 						String outputFilename = workingDir+ "/"+ fileNameToTransfer;
 						try {
 							CaGridTransferUtil.downloadResult(epr, outputFilename);
@@ -155,7 +157,7 @@ public class CaGridTransferActivity extends AbstractAsynchronousActivity<CaGridT
 					transferredFileName = fileNameToTransfer;
 					//put output data
 					T2Reference id = referenceService.register(transferredFileName, 0, true, callback.getContext());
-					outputData.put("transferredFileName", id);
+					outputData.put("fileName", id);
 					callback.receiveResult(outputData, new int[0]);
 				} catch (ReferenceServiceException e) {
 					callback.fail(e.getMessage(),e);

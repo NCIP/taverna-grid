@@ -22,13 +22,27 @@ package org.cagrid.transfer;
 
 
 /**
- * Configuration bean for setting up a StringConstantActivity.<br>
- * The only thing to be configured is the string value, since the ports are fixed.
+ * Configuration bean for setting up a CaGridTransferActivity.<br>
+ * The only thing to be configured is the function: upload/download.
  * 
- * @author Stuart Owen
+ * @author Wei Tan
  * @see CaGridTransferActivity
  */
 public class CaGridTransferConfigurationBean {
+	private boolean isUpload;
+	/**
+	 * @return the function of the activity: upload or download
+	 */
+	public boolean getIsUpload() {
+		return isUpload;
+	}
 
+	/**
+	 * @param isUpload: the function of the activity: upload or download
+	 */
+	public void setIsUpload(boolean function) {
+		this.isUpload = function;
+	}
+	
 
 }
