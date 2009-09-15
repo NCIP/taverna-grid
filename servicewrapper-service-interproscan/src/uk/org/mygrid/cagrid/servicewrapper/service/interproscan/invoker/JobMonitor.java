@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceKey;
 
-import uk.org.mygrid.cagrid.domain.common.JobStatus;
+import uk.org.mygrid.cagrid.valuedomains.JobStatus;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.resource.InterProScanJobResource;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.resource.InterProScanJobResourceHome;
 
@@ -167,7 +167,7 @@ public class JobMonitor implements Runnable {
 					logger.warn("Could not look up job resource for " + jobKey);
 					continue;
 				}
-				if (job.getJobID() == null) {
+				if (job.getJob() == null || job.getJob().getStatus() == null) {
 					logger.info("Ignoring job with no jobID yet: " + jobKey);
 					continue;
 				}
@@ -225,7 +225,7 @@ public class JobMonitor implements Runnable {
 
 	protected void checkStatus(InterProScanJobResource job)
 			throws RemoteException {
-		logger.info("Checking status for " + job.getJobID());
+		logger.info("Checking status for " + job.getJobId().getValue());
 		jobUtils.updateStatus(job);
 		jobUtils.updateOutputs(job);
 		jobUtils.updateFault(job);

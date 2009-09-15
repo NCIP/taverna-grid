@@ -10,7 +10,8 @@ import org.apache.log4j.Logger;
 import org.globus.wsrf.utils.XmlUtils;
 import org.jdom.Document;
 
-import uk.org.mygrid.cagrid.domain.common.JobStatus;
+import uk.org.mygrid.cagrid.valuedomains.JobStatus;
+import uk.org.mygrid.cagrid.domain.common.Job;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.converter.InterProScanConverter;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.service.globus.resource.InterProScanJobResource;
@@ -45,7 +46,7 @@ public class InterProScanJobUtils {
 			// fetched
 			return;
 		}
-		String jobID = job.getJobID();
+		String jobID = job.getJobId().getValue();
 		if (jobID == null || jobID.equals("")) {
 			// Too early, no job id set yet
 			return;
@@ -70,7 +71,7 @@ public class InterProScanJobUtils {
 			logger.warn("Unknown status type for " + jobID + ": " + status, ex);
 			throw new RemoteException("Unknown status type " + status);
 		}
-		job.setJobStatus(jobStatus);
+		job.setJob(new Job(job.getJobId(), jobStatus));
 	}
 
 	/**
@@ -83,12 +84,12 @@ public class InterProScanJobUtils {
 	 */
 	public void updateOutputs(InterProScanJobResource job)
 			throws RemoteException {
-		if (!job.getJobStatus().equals(JobStatus.done)
+		if (!job.getJob().getStatus().equals(JobStatus.done)
 				|| job.getInterProScanOutput() != null) {
 			// Too early/late
 			return;
 		}
-		String jobID = job.getJobID();
+		String jobID = job.getJobId().getValue();
 		if (jobID == null || jobID.equals("")) {
 			// Too early, no job id set yet
 			return;
@@ -121,7 +122,7 @@ public class InterProScanJobUtils {
 	 * @return <code>true</code> if the job is considered finished.
 	 */
 	public boolean isFinished(InterProScanJobResource job) {
-		JobStatus jobStatus = job.getJobStatus();
+		JobStatus jobStatus = job.getJob().getStatus();
 		if (jobStatus == null) {
 			return false;
 		}

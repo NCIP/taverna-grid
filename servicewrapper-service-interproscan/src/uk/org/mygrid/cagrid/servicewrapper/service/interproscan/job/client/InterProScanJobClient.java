@@ -125,12 +125,12 @@ public class InterProScanJobClient extends InterProScanJobClientBase implements
     }
   }
 
-  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.common.Job getStatus() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getStatus");
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusRequest();
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusResponse boxedResult = portType.getStatus(params);
-    return boxedResult.getJobStatus();
+    return boxedResult.getJob();
     }
   }
 

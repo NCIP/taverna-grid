@@ -20,7 +20,7 @@ import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotification
 import org.globus.wsrf.utils.XmlUtils;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 
-import uk.org.mygrid.cagrid.domain.common.JobStatus;
+import uk.org.mygrid.cagrid.valuedomains.JobStatus;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.client.InterProScanJobClient;
@@ -73,7 +73,7 @@ public class InterProScanClientUtils {
 		}
 		JobStatus status = JobStatus.pending;
 		while (timeout.after(Calendar.getInstance())) {
-			status = jobClient.getStatus();
+			status = jobClient.getStatus().getStatus();
 			if (!(status.equals(JobStatus.pending) || status
 					.equals(JobStatus.running))) {
 				break;
@@ -85,7 +85,7 @@ public class InterProScanClientUtils {
 				break;
 			}
 		}
-		status = jobClient.getStatus();
+		status = jobClient.getStatus().getStatus();
 		if (status.equals(JobStatus.pending)
 				|| status.equals(JobStatus.running)) {
 			throw new TimeOutException("Timed out, status is still " + status,
@@ -122,7 +122,7 @@ public class InterProScanClientUtils {
 			try {
 				jobClient.subscribe(InterProScanJobConstants.INTERPROSCANOUTPUT,
 						callBackProxy);
-				jobClient.subscribe(InterProScanJobConstants.JOBSTATUS,
+				jobClient.subscribe(InterProScanJobConstants.JOB,
 						callBackProxy);
 				jobClient.subscribe(InterProScanJobConstants.FAULT,
 						callBackProxy);
@@ -157,7 +157,7 @@ public class InterProScanClientUtils {
 			}
 			QName topic = (QName) topicPath.get(0);
 			Class<?> valueClass;
-			if (topic.equals(InterProScanJobConstants.JOBSTATUS)) {
+			if (topic.equals(InterProScanJobConstants.JOB)) {
 				valueClass = JobStatus.class;
 			} else if (topic
 					.equals(InterProScanJobConstants.INTERPROSCANOUTPUT)) {

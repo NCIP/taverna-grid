@@ -37,10 +37,10 @@ public class InterProScanJobImpl extends InterProScanJobImplBase {
 		return job.getInterProScanOutput();	
 	}
 
-  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.common.Job getStatus() throws RemoteException {
 		InterProScanJobResource job = getJob();
 		jobUtils.updateStatus(job);
-		return job.getJobStatus();
+		return job.getJob();
 	}
 	
 	protected InterProScanJobResource getJob() throws RemoteException {

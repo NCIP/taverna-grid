@@ -34,7 +34,7 @@ public class InterProScanJobProviderImpl{
 
     public uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusResponse getStatus(uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusRequest params) throws RemoteException {
     uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusResponse boxedResult = new uk.org.mygrid.cagrid.servicewrapper.service.interproscan.job.stubs.GetStatusResponse();
-    boxedResult.setJobStatus(impl.getStatus());
+    boxedResult.setJob(impl.getStatus());
     return boxedResult;
   }
 
