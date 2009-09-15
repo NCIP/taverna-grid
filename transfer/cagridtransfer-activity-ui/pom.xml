@@ -2,13 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>net.sf.taverna.t2</groupId>
-		<artifactId>ui-activities</artifactId>
-		<version>0.13-SNAPSHOT</version>
-	</parent>
+        <groupId>net.sf.taverna</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.1.2009-02-12</version>
+    </parent>
 	<groupId>org.cagrid.transfer</groupId>
 	<artifactId>cagridtransfer-activity-ui</artifactId>
 	<name>caGrid Transfer Activity UI</name>
+	<version>0.9-SNAPSHOT</version>
+	<properties>
+		<t2.activities.version>0.8</t2.activities.version>
+		<t2.ui.api.version>0.6</t2.ui.api.version>
+		<t2.ui.impl.version>0.8</t2.ui.impl.version>
+		<t2.ui.components.version>0.9</t2.ui.components.version>
+	</properties>
 	<repositories>
 		<repository>
 			<releases />
@@ -30,53 +37,21 @@
 				http://www.mygrid.org.uk/maven/snapshot-repository
 			</url>
 		</repository>
-		<!--<repository>
-			<id>mobycentral</id>
-			<name>MobyCentral Repository</name>
-			<url>http://moby.ucalgary.ca/moby_maven/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>-->
-	    <repository>
-	        <id>biomoby</id>
-	        <name>Biomoby.org Repository</name>
-	        <url>http://biomoby.org/m2repo/</url>
-	        <snapshots>
-	            <enabled>false</enabled>
-	        </snapshots>
-	        <releases>
-	            <enabled>true</enabled>
-	        </releases>
-   		</repository>
-        <repository>
-            <id>jboss</id>
-            <name>JBoss repository</name>
-            <url>http://repository.jboss.org/maven2/</url>
-            <snapshots>
-	            <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>javanet</id>
-            <name>java.net</name>
-            <url>http://download.java.net/maven/2/</url>
-            <snapshots>
-	            <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
+		
 	</repositories>
 	<dependencies>
+	
+	
 		<dependency>
+			<groupId>org.cagrid.transfer</groupId>
+			<artifactId>cagridtransfer-activity</artifactId>
+			<version>0.9-SNAPSHOT</version>
+			<!--  
+			<version>${t2.activities.version}</version>
+			-->
+		</dependency>
+		
+			<dependency>
 			<groupId>net.sf.taverna.t2.ui-api</groupId>
 			<artifactId>activity-icons-api</artifactId>
 			<version>${t2.ui.api.version}</version>
@@ -87,12 +62,9 @@
 			<version>${t2.ui.api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.cagrid.transfer</groupId>
-			<artifactId>cagridtransfer-activity</artifactId>
-			<version>0.9-SNAPSHOT</version>
-			<!--  
+			<groupId>net.sf.taverna.t2.activities</groupId>
+			<artifactId>stringconstant-activity</artifactId>
 			<version>${t2.activities.version}</version>
-			-->
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
@@ -104,6 +76,7 @@
 			<artifactId>contextual-views-api</artifactId>
 			<version>${t2.ui.api.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-components</groupId>
 			<artifactId>workflow-view</artifactId>
@@ -113,6 +86,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -126,6 +100,8 @@
 			<artifactId>activity-tools</artifactId>
 			<version>${t2.ui.impl.version}</version>
 		</dependency>
+		
+		
 		
 	</dependencies>
 </project>
