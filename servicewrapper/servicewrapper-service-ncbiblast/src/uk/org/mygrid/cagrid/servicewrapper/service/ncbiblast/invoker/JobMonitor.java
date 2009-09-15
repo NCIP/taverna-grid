@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceKey;
 
-import uk.org.mygrid.cagrid.domain.common.JobStatus;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.service.globus.resource.NCBIBlastJobResource;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.service.globus.resource.NCBIBlastJobResourceHome;
 
@@ -168,7 +167,7 @@ public class JobMonitor implements Runnable {
 					stopMonitoring(jobKey);
 					continue;
 				}
-				if (job.getJobID() == null) {
+				if (job.getJobId() == null || job.getJobId().getValue() == null) {
 					logger.info("Ignoring job with no jobID yet: " + jobKey);
 					continue;
 				}
@@ -226,7 +225,7 @@ public class JobMonitor implements Runnable {
 
 	protected void checkStatus(NCBIBlastJobResource job)
 			throws RemoteException {
-		logger.info("Checking status for " + job.getJobID());
+		logger.info("Checking status for " + job.getJobId().getValue());
 		jobUtils.updateStatus(job);
 		jobUtils.updateOutputs(job);
 		jobUtils.updateFault(job);

@@ -1,427 +1,196 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-   	elementFormDefault="qualified"
-	targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"
-	xmlns:ncbiblast="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"
-	xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains"
-	xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common">
-	<xsd:import
-		namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
-		schemaLocation="common.xsd">
-	</xsd:import>
-	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"></xsd:import>
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ncbiblast="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" elementFormDefault="qualified">
+	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" schemaLocation="irwg.xsd"/>
+	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" schemaLocation="common.xsd"/>
+	<xsd:element name="Alignment" type="ncbiblast:Alignment"/>
 	<xsd:complexType name="Alignment">
 		<xsd:annotation>
-			<xsd:documentation>
-				An alignment between the query sequence and match
-				sequence.
-			</xsd:documentation>
+			<xsd:documentation>An alignment between the query sequence and match sequence.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="bits" type="xsd:double" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="bits" type="xsd:double" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						The raw score is converted to bits of
-						information by multiplying by lambda.
-					</xsd:documentation>
+					<xsd:documentation>The raw score is converted to bits of information by multiplying by lambda.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="eValue" type="xsd:double" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="eValue" type="xsd:double" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>E-value.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="identity" type="xsd:integer"
-				minOccurs="1" maxOccurs="1">
+			<xsd:element name="identity" type="xsd:integer" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Represents the number and fraction of total
-						residues in the High-scoring Segment Pair (HSP)
-						that are identical.
-					</xsd:documentation>
+					<xsd:documentation>Represents the number and fraction of total residues in the High-scoring Segment Pair (HSP) that are identical.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="positives" type="xsd:integer"
-				minOccurs="1" maxOccurs="1">
+			<xsd:element name="positives" type="xsd:integer" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Represents the number and fraction of residues
-						for which the alignment scores have positive
-						values.
-					</xsd:documentation>
+					<xsd:documentation>Represents the number and fraction of residues for which the alignment scores have positive values.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="score" type="xsd:double" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="score" type="xsd:double" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Represents the sum of the scoring matrix values
-						in the segment pair being displayed.
-					</xsd:documentation>
+					<xsd:documentation>Represents the sum of the scoring matrix values in the segment pair being displayed.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="sequenceSimilarityPattern"
-				type="xsd:string" minOccurs="1" maxOccurs="1">
+			<xsd:element name="sequenceSimilarityPattern" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Represents a sequence pattern highlighting the
-						similarity fragment between the query sequence
-						and match sequence.
-					</xsd:documentation>
+					<xsd:documentation>Represents a sequence pattern highlighting the similarity fragment between the query sequence and match sequence. </xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="matchSequenceFragment"
-				type="ncbiblast:SequenceFragment" minOccurs="1" maxOccurs="1" />
-			<xsd:element name="querySequenceFragment"
-				type="ncbiblast:SequenceFragment" minOccurs="1" maxOccurs="1" />
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SequenceSimilarity">
-		<xsd:annotation>
-			<xsd:documentation>
-				Represents a similarity match in the sequence database.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="accessionNumber" type="xsd:string"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						The accession number of the match sequence in
-						the database.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="database" type="common:SequenceDatabase"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						The database the match was found in for the
-						given protein or nucleotide.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="description" type="xsd:string"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						The description of the match sequence from the
-						database.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="id" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						The id of the match sequence in the database.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="sequenceLength" type="xsd:integer"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						The match sequence length.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="Alignments" type="ncbiblast:Alignment"
-				minOccurs="1" maxOccurs="unbounded" />
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="SequenceFragment">
-		<xsd:annotation>
-			<xsd:documentation>
-				A protein or nucleotide sequence fragment (where the
-				similarity was found in).
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="end" type="xsd:integer" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Represents the end of the fragment of the
-						protein or nucleotide sequence.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="sequence" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						The fragment's sequence string.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="start" type="xsd:integer" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Represents the start of the fragment of the
-						protein or nucleotide sequence.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="NCBIBLASTOutput">
-		<xsd:annotation>
-			<xsd:documentation>
-				This is an output from the Taverna-wrapped InterProScan
-				service that Taverna will convert and pass back to
-				caGrid client. Represents a sequence similary search
-				result.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Dummy attribute as classes with no attributes
-						cannotbe uploaded to caDSR.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="SequenceSimilarities"
-				type="ncbiblast:SequenceSimilarity" minOccurs="0"
-				maxOccurs="unbounded" />
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="NCBIBLASTInput">
-		<xsd:annotation>
-			<xsd:documentation>
-				Represents an input to the Taverna-wrapped NCBI BLAST
-				service that taverna will convert and actually invoke
-				the service.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Dummy attribute as classes with no attributes
-						cannotbe uploaded to caDSR.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="NCBIBLASTInputParameters"
-				type="ncbiblast:NCBIBLASTInputParameters" minOccurs="1"
-				maxOccurs="1" />
-			<xsd:element
-				name="ProteinOrNucleotideSequenceRepresentation"
-				type="common:SequenceRepresentation" minOccurs="1" maxOccurs="1" />
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="NCBIBLASTInputParameters">
-		<xsd:annotation>
-			<xsd:documentation>
-				Input parameters for the NCBI BLAST job.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="alignmentsToOutput" type="xsd:integer"
-				minOccurs="0" maxOccurs="1" default="50">
-				<xsd:annotation>
-					<xsd:documentation>
-						Number of database sequences to output
-						alignments for.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="blastProgram" type="valuedomains:BLASTProgram"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-	BLAST program to use. Valid values are: BLASTN,
-	BLASTP and BLASTX. If the program is BLASTN, the database must be a
-	NucleotideSequenceDatabase, otherwise a ProteinSequenceDatabase.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="database" type="common:SequenceDatabase"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-	Database to search. If the program is BLASTN, the database must be a
-	NucleotideSequenceDatabase, otherwise a ProteinSequenceDatabase.
-	Available databases can be found from the getDatabases() method.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="dropoff" type="xsd:integer" minOccurs="0"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Amount a score must drop before extension of
-						word hits is halted.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="email" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						E-mail address of the user submitting this job. Used by EBI 
-						to keep statistics.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="expectedThreshold" type="xsd:double"
-				minOccurs="0" maxOccurs="1" default="10">
-				<xsd:annotation>
-					<xsd:documentation>
-						The expected threshold establishes a statistical
-						significance threshold for reporting database
-						sequence matches. The default value is 10,
-						meaning that 10 matches are expected to be found
-						merely by chance. Lower expected thresholds are
-						more stringent, leading to fewer chance matches
-						being reported. Increasing the expected
-						threshold shows less stringent matches and is
-						recommended when one is performing searches with
-						short sequences as a short query is more likely
-						to occur by chance in the database than a longer
-						one, so even a perfect match (no gaps) can have
-						low statistical significance and may not be
-						reported. Increasing the expected threshold
-						allows you to look further down in the hit list
-						and see matches that would normally be discarded
-						because of low statistical significance.
-						Generally a value of up to 1000 is enough to see
-						results.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="extendGap" type="xsd:integer"
-				minOccurs="0" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Gap extension penalty that is added to the
-						standard gap open penalty for each base or
-						residue in the gap. This is how long gaps are
-						penalised - if you don't want long gaps,
-						increase the extension gap penalty. Usually one
-						can expect a few long gaps rather than many
-						short gaps, so the gap extension penalty should
-						be lower than the gap penalty. An exception is
-						where one or both sequences are single reads
-						with possible sequencing errors in which case
-						one would expect many single base gaps. One can
-						get this result by setting the gap open penalty
-						to zero (or very low) and using the gap
-						extension penalty to control gap scoring.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="filter" type="xsd:boolean" minOccurs="0"
-				maxOccurs="1" default="false">
-				<xsd:annotation>
-					<xsd:documentation>
-						The filter allows one to mask out various
-						segments of the query sequence for regions which
-						are non-specific for sequence similarity
-						searches. Filtering can eliminate statistically
-						significant but biologically uninteresting
-						reports from the output, for example hits
-						against common acidic-, basic- or proline-rich
-						regions, leaving the more biologically
-						interesting regions of the query sequence
-						available for specific matching against database
-						sequences. Filtering is only applied to the
-						query sequence, not to database sequences. The
-						program used for this, with nucleotide query
-						sequences is known as DUST. The SEG program is
-						used for filtering low complexity regions in
-						amino acid sequences from one's protein query
-						sequence. The default is false for protein
-						searches and true for nucleotide searches.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="gapAlignment" type="xsd:boolean"
-				minOccurs="0" maxOccurs="1" default="true">
-				<xsd:annotation>
-					<xsd:documentation>
-						Whether to perform optimised alignments within
-						regions involving gaps. If set to true, the
-						program will perform an alignment using gaps.
-						Otherwise, it will report only individual HSP
-						(High-Scoring Segment Pair) where two sequence
-						match each other, and thus will not produce
-						alignments with gaps.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="match" type="xsd:integer" minOccurs="0"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Reward for a nucleotide match. Only when program
-						is set to BLASTN.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="matrix" type="valuedomains:Matrix" minOccurs="0"
-				maxOccurs="1" default="BLOSUM62">
-				<xsd:annotation>
-					<xsd:documentation>
-						Scoring (comparison) matrix to use when
-						searching the database. Supported matrices
-						includes: BLOSUM45, BLOSUM50, BLOSUM62,
-						BLOSUM80, BLOSUM90, PAM30, PAM70, PAM250.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="maxScores" type="xsd:integer"
-				minOccurs="0" maxOccurs="1" default="100">
-				<xsd:annotation>
-					<xsd:documentation>
-						Maximum number of scores to output.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="mismatch" type="xsd:integer"
-				minOccurs="0" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Penalty for a nucleotide mismatch. Only when
-						program is set to BLASTN.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="openGap" type="xsd:integer" minOccurs="0"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Penalty for the first residue in a gap, i.e.
-						score taken away for the initiation of the gap
-						in sequence or in structure. To make the match
-						more significant one can try to make the gap
-						penalty larger. It will decrease the number of
-						gaps and if one has good alignment without many
-						gaps, its Z-score will be higher.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
+			<xsd:element name="matchSequenceFragment" type="ncbiblast:SequenceFragment" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="querySequenceFragment" type="ncbiblast:SequenceFragment" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
-
-	<xsd:element name="NCBIBlastInput"
-		type="ncbiblast:NCBIBLASTInput">
-	</xsd:element>
-	
-    <xsd:element name="NCBIBlastOutput"
-    	type="ncbiblast:NCBIBLASTOutput">
-    </xsd:element>
-    
-   
-    
-    
-    
+	<xsd:element name="SequenceSimilarity" type="ncbiblast:SequenceSimilarity"/>
+	<xsd:complexType name="SequenceSimilarity">
+		<xsd:annotation>
+			<xsd:documentation>Represents a similarity match in the sequence database. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="accessionNumber" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The accession number of the match sequence in the database.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The description of the match sequence from the database.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sequenceLength" type="xsd:integer" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The match sequence length.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sequenceId" type="irwg:DatabaseCrossReference" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="alignments" type="ncbiblast:Alignment" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="SequenceFragment" type="ncbiblast:SequenceFragment"/>
+	<xsd:complexType name="SequenceFragment">
+		<xsd:annotation>
+			<xsd:documentation>A protein or nucleotide sequence fragment (where the similarity was found in).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="end" type="xsd:integer" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Represents the end of the fragment of the protein or nucleotide sequence.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="start" type="xsd:integer" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Represents the start of the fragment of the protein or nucleotide sequence.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sequence" type="irwg:Sequence" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="NCBIBlastOutput" type="ncbiblast:NCBIBlastOutput"/>
+	<xsd:complexType name="NCBIBlastOutput">
+		<xsd:annotation>
+			<xsd:documentation>This is an output from the Taverna-wrapped InterProScan service that Taverna will convert and pass back to caGrid client. Represents a sequence similary search result.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sequenceSimilarities" type="ncbiblast:SequenceSimilarity" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="NCBIBlastJob" type="ncbiblast:NCBIBlastJob"/>
+	<xsd:complexType name="NCBIBlastJob">
+		<xsd:sequence>
+			<xsd:element name="jobID" type="common:JobId" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="NCBIBlastService" type="ncbiblast:NCBIBlastService"/>
+	<xsd:complexType name="NCBIBlastService">
+		<xsd:annotation>
+			<xsd:documentation>Represents Taverbna-wrapping of the NCBI BLAST service to be used by caGrid clients.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence/>
+	</xsd:complexType>
+	<xsd:element name="NCBIBlastInput" type="ncbiblast:NCBIBlastInput"/>
+	<xsd:complexType name="NCBIBlastInput">
+		<xsd:annotation>
+			<xsd:documentation>Represents an input to the Taverna-wrapped NCBI BLAST service that taverna will convert and actually invoke the service.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ncbiBLASTInputParameters" type="ncbiblast:NCBIBlastInputParameters" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="sequenceRepresentation" type="common:MolecularSequenceRepresentation" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="NCBIBlastInputParameters" type="ncbiblast:NCBIBlastInputParameters"/>
+	<xsd:complexType name="NCBIBlastInputParameters">
+		<xsd:annotation>
+			<xsd:documentation>Input parameters for the NCBI BLAST job.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="blastProgram" type="valuedomains:BLASTProgram" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>BLAST program to use. Valid values are: BLASTN, BLASTP and BLASTX. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="alignmentsToOutput" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Number of database sequences to output alignments for.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="dropoff" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Amount a score must drop before extension of word hits is halted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="email" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>E-mail address of the user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="expectedThreshold" type="xsd:double" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The expected threshold establishes a statistical significance threshold for reporting database sequence matches. The default value is 10, meaning that 10 matches are expected to be found merely by chance. Lower expected thresholds are more stringent, leading to fewer chance matches being reported. Increasing the expected threshold shows less stringent matches and is recommended when one is performing searches with short sequences as a short query is more likely to occur by chance in the database than a longer one, so even a perfect match (no gaps) can have low statistical significance and may not be reported. Increasing the expected threshold allows you to look further down in the hit list and see matches that would normally be discarded because of low statistical significance. Generally a value of up to 1000 is enough to see results.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="extendGap" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Gap extension penalty that is added to the standard gap open penalty for each base or residue in the gap. This is how long gaps are penalised - if you don't want long gaps, increase the extension gap penalty. Usually one can expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case one would expect many single base gaps. One can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="filter" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The filter allows one to mask out various segments of the query sequence for regions which are non-specific for sequence similarity searches. Filtering can eliminate statistically significant but biologically uninteresting reports from the output, for example hits against common acidic-, basic- or proline-rich regions, leaving the more biologically interesting regions of the query sequence available for specific matching against database sequences. Filtering is only applied to the query sequence, not to database sequences. The program used for this, with nucleotide query sequences is known as DUST. The SEG program is used for filtering low complexity regions in amino acid sequences from one's protein query sequence. The default is false for protein searches and true for nucleotide searches.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="gapAlignment" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Whether to perform optimised alignments within regions involving gaps. If set to true, the program will perform an alignment using gaps. Otherwise, it will report only individual HSP (High-Scoring Segment Pair) where two sequence match each other, and thus will not produce alignments with gaps.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="match" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Reward for a nucleotide match. Only when program is set to BLASTN.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="matrix" type="valuedomains:Matrix" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Scoring (comparison) matrix to use when searching the database. Supported matrices inludes: BLOSUM45, BLOSUM50, BLOSUM62, BLOSUM80, BLOSUM90, PAM30, PAM70, PAM250. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="maxScores" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Maximum number of scores to output.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="mismatch" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Penalty for a nucleotide mismatch. Only when program is set to BLASTN.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="openGap" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Penalty for the first residue in a gap, i.e. score taken away for the initiation of the gap in sequence or in structure. To make the match more significant one can try to make the gap penalty larger. It will decrease the number of gaps and if one has good alignment without many gaps, its Z-score will be higher.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="queryDatabase" type="common:MolecularSequenceDatabase" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
 </xsd:schema>

@@ -12,13 +12,14 @@ import org.jdom.Document;
 import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
 
-import schema.EBIApplicationResult;
-import uk.org.mygrid.cagrid.domain.common.JobStatus;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
+import uk.ac.ebi.ncbiblast.EBIApplicationResult;
+import uk.org.mygrid.cagrid.domain.common.Job;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.converter.NCBIBlastConverter;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.service.globus.resource.NCBIBlastJobResource;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInvoker;
+import uk.org.mygrid.cagrid.valuedomains.JobStatus;
 
 /**
  * Utility methods for updating an NCBIBlast job resource.
@@ -51,7 +52,7 @@ public class NCBIBlastJobUtils {
 			// fetched
 			return;
 		}
-		String jobID = job.getJobID();
+		String jobID = job.getJobId().getValue();
 		if (jobID == null || jobID.equals("")) {
 			// Too early, no job id set yet
 			return;
@@ -76,7 +77,7 @@ public class NCBIBlastJobUtils {
 			logger.warn("Unknown status type for " + jobID + ": " + status, ex);
 			throw new RemoteException("Unknown status type " + status);
 		}
-		job.setJobStatus(jobStatus);
+		job.setJob(new Job(job.getJobId(), jobStatus));
 	}
 
 	/**
@@ -88,12 +89,13 @@ public class NCBIBlastJobUtils {
 	 * @throws RemoteException
 	 */
 	public void updateOutputs(NCBIBlastJobResource job) throws RemoteException {
-		if (!job.getJobStatus().equals(JobStatus.done)
+		
+		if (!job.getJob().getStatus().equals(JobStatus.done)
 				|| job.getNCBIBlastOutput() != null) {
 			// Too early/late
 			return;
 		}
-		String jobID = job.getJobID();
+		String jobID = job.getJob().getJobId().getValue();
 		if (jobID == null || jobID.equals("")) {
 			// Too early, no job id set yet
 			return;
@@ -131,7 +133,7 @@ public class NCBIBlastJobUtils {
 		}
 		
 		logger.info("Data returned for " + jobID + " is: \n" + dataString);
-		NCBIBLASTOutput output = converter.convertNCBIBlastOutput(data);
+		NCBIBlastOutput output = converter.convertNCBIBlastOutput(data);
 		job.setNCBIBlastOutput(output);
 	}
 
@@ -146,7 +148,7 @@ public class NCBIBlastJobUtils {
 	 * @return <code>true</code> if the job is considered finished.
 	 */
 	public boolean isFinished(NCBIBlastJobResource job) {
-		JobStatus jobStatus = job.getJobStatus();
+		JobStatus jobStatus = job.getJob().getStatus();
 		if (jobStatus == null) {
 			return false;
 		}

@@ -23,13 +23,13 @@ public interface NCBIBlastI {
    *
    * @param nCBIBlastInput
    */
-  public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCBIBlastJobReference ncbiBlast(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput nCBIBlastInput) throws RemoteException ;
+  public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCBIBlastJobReference ncbiBlast(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput nCBIBlastInput) throws RemoteException ;
 
   /**
    * Get supported databases
    *
    */
-  public uk.org.mygrid.cagrid.domain.common.SequenceDatabase[] getDatabases() throws RemoteException ;
+  public uk.org.mygrid.cagrid.domain.common.MolecularSequenceDatabase[] getDatabases() throws RemoteException ;
 
 }
 

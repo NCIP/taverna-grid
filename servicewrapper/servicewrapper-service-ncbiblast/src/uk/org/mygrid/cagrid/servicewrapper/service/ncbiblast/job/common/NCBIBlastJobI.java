@@ -22,19 +22,19 @@ public interface NCBIBlastJobI {
    * Get inputs used to submit this job
    *
    */
-  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput getInputs() throws RemoteException ;
+  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput getInputs() throws RemoteException ;
 
   /**
    * Get outputs returned for this job, if any
    *
    */
-  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput getOutputs() throws RemoteException ;
+  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput getOutputs() throws RemoteException ;
 
   /**
    * Get the current job status
    *
    */
-  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException ;
+  public uk.org.mygrid.cagrid.domain.common.Job getStatus() throws RemoteException ;
 
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
 
