@@ -26,7 +26,7 @@ public interface InterProScanJobI {
 
   public uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput getInputs() throws RemoteException ;
 
-  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException ;
+  public uk.org.mygrid.cagrid.domain.common.Job getStatus() throws RemoteException ;
 
   public uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput getOutputs() throws RemoteException ;
 
