@@ -23,13 +23,13 @@ import org.globus.wsrf.utils.XmlUtils;
 import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 
-import schema.EBIApplicationResult;
-import uk.org.mygrid.cagrid.domain.common.JobStatus;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
+import uk.ac.ebi.ncbiblast.EBIApplicationResult;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.client.NCBIBlastJobClient;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.common.NCBIBlastJobConstants;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCBIBlastJobReference;
+import uk.org.mygrid.cagrid.valuedomains.JobStatus;
 
 public class NCBIBlastClientUtils {
 
@@ -39,7 +39,7 @@ public class NCBIBlastClientUtils {
 
 	protected final NCBIBlastClient client;
 
-	private Map<NCBIBLASTInput, NCBIBlastJobClient> jobClients = new HashMap<NCBIBLASTInput, NCBIBlastJobClient>();
+	private Map<NCBIBlastInput, NCBIBlastJobClient> jobClients = new HashMap<NCBIBlastInput, NCBIBlastJobClient>();
 
 	/**
 	 * Construct a NCBIBlastClientUtils.
@@ -54,18 +54,18 @@ public class NCBIBlastClientUtils {
 		this.client = client;
 	}
 
-	public NCBIBlastJobClient getJobClientForInput(NCBIBLASTInput input) {
+	public NCBIBlastJobClient getJobClientForInput(NCBIBlastInput input) {
 		synchronized (jobClients) {
 			return jobClients.get(input);
 		}
 	}
 
-	public NCBIBLASTOutput ncbiBlastSync(NCBIBLASTInput nCBIBlastInput,
+	public NCBIBlastOutput ncbiBlastSync(NCBIBlastInput nCBIBlastInput,
 			int timeoutMs) throws RemoteException, ClientException {
 		return ncbiBlastSync(nCBIBlastInput, timeoutMs, DEFAULT_REFRESH_MS);
 	}
 
-	public NCBIBLASTOutput ncbiBlastSync(NCBIBLASTInput nCBIBlastInput,
+	public NCBIBlastOutput ncbiBlastSync(NCBIBlastInput nCBIBlastInput,
 			int timeoutMs, int refreshMs) throws RemoteException,
 			ClientException {
 		Calendar timeout = Calendar.getInstance();
@@ -85,7 +85,7 @@ public class NCBIBlastClientUtils {
 		}
 		JobStatus status = JobStatus.pending;
 		while (timeout.after(Calendar.getInstance())) {
-			status = jobClient.getStatus();
+			status = jobClient.getStatus().getStatus();
 			if (!(status.equals(JobStatus.pending) || status
 					.equals(JobStatus.running))) {
 				break;
@@ -97,7 +97,7 @@ public class NCBIBlastClientUtils {
 				break;
 			}
 		}
-		status = jobClient.getStatus();
+		status = jobClient.getStatus().getStatus();
 		if (status.equals(JobStatus.pending)
 				|| status.equals(JobStatus.running)) {
 			throw new TimeOutException("Timed out, status is still " + status,
@@ -128,7 +128,7 @@ public class NCBIBlastClientUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void ncbiBlastAsync(NCBIBLASTInput nCBIBlastInput,
+	public void ncbiBlastAsync(NCBIBlastInput nCBIBlastInput,
 			JobCallBack callback) {
 		NCBIBlastJobReference job;
 		try {
@@ -155,7 +155,7 @@ public class NCBIBlastClientUtils {
 			try {
 				jobClient.subscribe(NCBIBlastJobConstants.NCBIBLASTOUTPUT,
 						callBackProxy);
-				jobClient.subscribe(NCBIBlastJobConstants.JOBSTATUS,
+				jobClient.subscribe(NCBIBlastJobConstants.JOB,
 						callBackProxy);
 				jobClient.subscribe(NCBIBlastJobConstants.FAULT, callBackProxy);
 			} catch (RemoteException e) {
@@ -173,9 +173,9 @@ public class NCBIBlastClientUtils {
 	}
 
 	protected static class CallbackProxy implements NotifyCallback {
-		private final JobCallBack<NCBIBLASTOutput> callback;
+		private final JobCallBack<NCBIBlastOutput> callback;
 
-		public CallbackProxy(JobCallBack<NCBIBLASTOutput> callback) {
+		public CallbackProxy(JobCallBack<NCBIBlastOutput> callback) {
 			this.callback = callback;
 		}
 
@@ -189,10 +189,10 @@ public class NCBIBlastClientUtils {
 			}
 			QName topic = (QName) topicPath.get(0);
 			Class<?> valueClass;
-			if (topic.equals(NCBIBlastJobConstants.JOBSTATUS)) {
+			if (topic.equals(NCBIBlastJobConstants.JOB)) {
 				valueClass = JobStatus.class;
 			} else if (topic.equals(NCBIBlastJobConstants.NCBIBLASTOUTPUT)) {
-				valueClass = NCBIBLASTOutput.class;
+				valueClass = NCBIBlastOutput.class;
 			} else if (topic.equals(NCBIBlastJobConstants.FAULT)) {
 				valueClass = Fault.class;
 			} else {
@@ -230,8 +230,8 @@ public class NCBIBlastClientUtils {
 			if (valueClass == JobStatus.class) {
 				callback.jobStatusChanged((JobStatus) oldValue,
 						(JobStatus) newValue);
-			} else if (valueClass == NCBIBLASTOutput.class) {
-				callback.jobOutputReceived((NCBIBLASTOutput) newValue);
+			} else if (valueClass == NCBIBlastOutput.class) {
+				callback.jobOutputReceived((NCBIBlastOutput) newValue);
 			} else {
 				callback.jobError((Fault) newValue);
 			}

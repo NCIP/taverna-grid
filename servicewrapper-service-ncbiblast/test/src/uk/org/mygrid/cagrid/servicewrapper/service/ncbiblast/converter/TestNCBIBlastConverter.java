@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.mygrid.cagrid.domain.ncbiblast.Alignment;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceFragment;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.DummyNCBIBlastInvoker;
@@ -18,7 +18,7 @@ public class TestNCBIBlastConverter {
 	
 	private Document original;
 	private NCBIBlastConverter converter;
-	private NCBIBLASTOutput converted;
+	private NCBIBlastOutput converted;
 
 
 	@Before
@@ -39,8 +39,8 @@ public class TestNCBIBlastConverter {
 		// <hit number="1" database="uniprot" id="WAP_RAT" ac="P01174" length="137" 
 		// description="Whey acidic protein OS=Rattus norvegicus GN=Wap PE=1 SV=2">
 		SequenceSimilarity hit1 = converted.getSequenceSimilarities()[0];
-		assertEquals("Invalid database name", "uniprot", hit1.getDatabase().getDatabaseId());
-		assertEquals("Invalid identifier", "WAP_RAT", hit1.getId());
+		assertEquals("Invalid database name", "uniprot", hit1.getSequenceId().getDataSourceName());
+		assertEquals("Invalid identifier", "WAP_RAT", hit1.getSequenceId().getCrossReferenceId());
 		assertEquals("Invalid accession number", "P01174", hit1.getAccessionNumber());
 		assertEquals("Invalid sequence length", BigInteger.valueOf(137), hit1.getSequenceLength());
 		assertEquals("Invalid description", "Whey acidic protein OS=Rattus norvegicus GN=Wap PE=1 SV=2",hit1.getDescription());
@@ -65,7 +65,7 @@ public class TestNCBIBlastConverter {
 //	</hit>
 		
 		SequenceSimilarity hit2 = converted.getSequenceSimilarities(1);
-		assertEquals("Invalid identifier", "Q3UQ94_MOUSE", hit2.getId());
+		assertEquals("Invalid identifier", "Q3UQ94_MOUSE", hit2.getSequenceId().getCrossReferenceId());
 		Alignment alignment = hit2.getAlignments(0);
 		assertEquals("Invalid score", 465, alignment.getScore(), 0.1);
 		assertEquals("Invalid bits", 183, alignment.getBits(), 0.1);
@@ -111,7 +111,7 @@ public class TestNCBIBlastConverter {
 		
 		
 		SequenceSimilarity hit8 = converted.getSequenceSimilarities(7);
-		assertEquals("Invalid identifier", "Q8JIP6_TRIHK", hit8.getId());
+		assertEquals("Invalid identifier", "Q8JIP6_TRIHK", hit8.getSequenceId().getCrossReferenceId());
 		assertEquals("Unexpected number of alignments", 5, hit8.getAlignments().length);
 
 		Alignment alignment2 = hit8.getAlignments(1);

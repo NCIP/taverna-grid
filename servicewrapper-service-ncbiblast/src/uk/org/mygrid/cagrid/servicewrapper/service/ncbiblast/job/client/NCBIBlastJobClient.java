@@ -85,7 +85,7 @@ public class NCBIBlastJobClient extends NCBIBlastJobClientBase implements NCBIBl
     }
   }
 
-  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput getInputs() throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput getInputs() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getInputs");
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetInputsRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetInputsRequest();
@@ -94,7 +94,7 @@ public class NCBIBlastJobClient extends NCBIBlastJobClientBase implements NCBIBl
     }
   }
 
-  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput getOutputs() throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput getOutputs() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getOutputs");
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetOutputsRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetOutputsRequest();
@@ -103,12 +103,12 @@ public class NCBIBlastJobClient extends NCBIBlastJobClientBase implements NCBIBl
     }
   }
 
-  public uk.org.mygrid.cagrid.domain.common.JobStatus getStatus() throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.common.Job getStatus() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getStatus");
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetStatusRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetStatusRequest();
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetStatusResponse boxedResult = portType.getStatus(params);
-    return boxedResult.getJobStatus();
+    return boxedResult.getJob();
     }
   }
 
