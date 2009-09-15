@@ -1,13 +1,12 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.integration;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
+import uk.org.mygrid.cagrid.domain.common.MolecularSequenceDatabase;
 import uk.org.mygrid.cagrid.domain.ncbiblast.Alignment;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
 
 /**
@@ -25,8 +24,8 @@ import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
 public class TestBlst15Comparison extends CommonTest {
 	@Test
 	public void findPatterns() throws Exception {
-		params.setDatabase(new SequenceDatabase("uniprot", null));
-		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		params.setQueryDatabase(new MolecularSequenceDatabase(null, "uniprot"));
+		NCBIBlastOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("No similarities found", similarities.length > 0);
 		System.out.println("Patterns found:");

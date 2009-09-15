@@ -1,12 +1,10 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.integration;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.math.BigInteger;
 
 import org.apache.axis.AxisFault;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.org.mygrid.cagrid.domain.common.MolecularSequenceRepresentation;
@@ -251,47 +249,59 @@ public class TestBlst14Sequence extends CommonTest {
 
 	@Test(expected = AxisFault.class)
 	public void emptyNucleotideFails() throws Exception {
-		input.setSequenceRepresentation(new NucleicAcidSequenceRepresentation()));
+		input.setSequenceRepresentation(new NucleicAcidSequenceRepresentation());
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 	}
 
 	
 	@Test(expected = AxisFault.class)
 	public void invalidFastaNucleotideSyntax() throws Exception {
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new FASTANucleotideSequence(
-						">__123"));
+		NucleicAcidSequence invalidFasta = new NucleicAcidSequence();
+		invalidFasta.setValueInFastaFormat(">__123");
+		NucleicAcidSequenceRepresentation sequenceRepresentation = new NucleicAcidSequenceRepresentation();
+		sequenceRepresentation.setNucleicAcidSequence(invalidFasta);
+		input.setSequenceRepresentation(sequenceRepresentation);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 	}
 
 	@Test(expected = AxisFault.class)
 	public void invalidFastaProteinSyntax() throws Exception {
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new FASTAProteinSequence(
-						">__123"));
+		
+		ProteinSequence invalidFasta = new ProteinSequence();
+		invalidFasta.setValueInFastaFormat(">__123");
+		ProteinSequenceRepresentation sequenceRepresentation = new ProteinSequenceRepresentation();
+		sequenceRepresentation.setProteinSequence(invalidFasta);
+		input.setSequenceRepresentation(sequenceRepresentation);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 	}
 
 	@Test(expected = AxisFault.class)
 	public void invalidNucleotideSeqIdSyntax() throws Exception {
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new NucleotideSequenceIdentifier(
-						"invalid:Syntax"));
+		
+		NucleicAcidSequenceRepresentation sequenceRepresentation = new NucleicAcidSequenceRepresentation();
+		GeneGenomicIdentifier nucleicDNAId = new GeneGenomicIdentifier();
+		nucleicDNAId.setDataSourceName("invalid");
+		nucleicDNAId.setCrossReferenceId("Syntax");
+		sequenceRepresentation.setNucleicDNAId(nucleicDNAId );
+		input.setSequenceRepresentation(sequenceRepresentation);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 	}
 
 	@Test(expected = AxisFault.class)
 	public void invalidProteinSeqIdSyntax() throws Exception {
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new ProteinSequenceIdentifier(
-						"invalid:Syntax"));
+		ProteinGenomicIdentifier proteinId = new ProteinGenomicIdentifier();
+		proteinId.setDataSourceName("invalid");
+		proteinId.setCrossReferenceId("Syntax");
+		ProteinSequenceRepresentation sequenceRepresentation = new ProteinSequenceRepresentation();
+		sequenceRepresentation.setProteinId(proteinId );
+		input.setSequenceRepresentation(sequenceRepresentation);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 	}
 	@Test(expected = AxisFault.class)
 	public void invalidValue() throws Exception {
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new SequenceRepresentation() {
-				});
+		MolecularSequenceRepresentation sequenceRepresentation = new MolecularSequenceRepresentation() {
+		};;;
+		input.setSequenceRepresentation(sequenceRepresentation );
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 	}
 
