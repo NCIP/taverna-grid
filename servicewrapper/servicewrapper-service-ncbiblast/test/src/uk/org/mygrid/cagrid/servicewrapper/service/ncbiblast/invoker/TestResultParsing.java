@@ -9,7 +9,7 @@ import java.io.Reader;
 
 import org.junit.Test;
 
-import schema.EBIApplicationResult;
+import uk.ac.ebi.ncbiblast.EBIApplicationResult;
 
 public class TestResultParsing {
 	@Test
