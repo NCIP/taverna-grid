@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2009-09-09 13:24:18">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2009-09-15 15:43:56">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -514,7 +514,7 @@
 																</UML:Collaboration>
 																<UML:Package name="common" xmi.id="EAPK_ECA214ED_1EEA_42d5_BC83_506256C60D96" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
+																		<UML:Stereotype xmi.idref="EAID_1CD85728_B92C_4eff_9244_EC56E9FE9379"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="parent" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
@@ -1784,7 +1784,7 @@
 																</UML:Package>
 																<UML:Package name="interproscan" xmi.id="EAPK_E6AB33C6_E45F_4bf9_AC41_8D477B28A3CF" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
+																		<UML:Stereotype xmi.idref="EAID_1CD85728_B92C_4eff_9244_EC56E9FE9379"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="parent" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
@@ -3946,7 +3946,7 @@
 																</UML:Package>
 																<UML:Package name="ncbiblast" xmi.id="EAPK_4CFBA0EB_7117_4387_85E0_7ABE20B1A989" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																	<UML:ModelElement.stereotype>
-																		<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
+																		<UML:Stereotype xmi.idref="EAID_1CD85728_B92C_4eff_9244_EC56E9FE9379"/>
 																	</UML:ModelElement.stereotype>
 																	<UML:ModelElement.taggedValue>
 																		<UML:TaggedValue tag="parent" value="EAPK_F4B2B53B_E091_429e_AC47_A52EA0D1A6F3"/>
@@ -6477,7 +6477,7 @@
 														</UML:Package>
 														<UML:Package name="valuedomains" xmi.id="EAPK_00F62BB7_5A0E_4d41_8AEB_FE03DA2E9943" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 															<UML:ModelElement.stereotype>
-																<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
+																<UML:Stereotype xmi.idref="EAID_1CD85728_B92C_4eff_9244_EC56E9FE9379"/>
 															</UML:ModelElement.stereotype>
 															<UML:ModelElement.taggedValue>
 																<UML:TaggedValue tag="parent" value="EAPK_5A5AB418_F830_43ee_B023_C0EA8E20556B"/>
@@ -7864,7 +7864,7 @@
 						</UML:Package>
 						<UML:Package name="IRWG" xmi.id="EAPK_A09C8A79_DD7C_4379_96B7_D4D586CCBA85" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.stereotype>
-								<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
+								<UML:Stereotype xmi.idref="EAID_1CD85728_B92C_4eff_9244_EC56E9FE9379"/>
 							</UML:ModelElement.stereotype>
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="parent" value="EAPK_6A1F7B6A_C113_44b4_85DC_AC4BBBA11077"/>
@@ -8201,7 +8201,7 @@
 												<UML:TaggedValue tag="stereotype" value="XSDelement"/>
 												<UML:TaggedValue tag="collection" value="false"/>
 												<UML:TaggedValue tag="position" value="0"/>
-												<UML:TaggedValue tag="lowerBound" value="1"/>
+												<UML:TaggedValue tag="lowerBound" value="0"/>
 												<UML:TaggedValue tag="upperBound" value="1"/>
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{39212DD0-E522-43fa-AD83-67581030DA5A}"/>
@@ -8211,12 +8211,32 @@
 												<UML:TaggedValue tag="PropertyConceptCode" value="C49100" xmi.id="EAID_11ABF06B_C63C_4A3A_8575_4EEE032F9815"/>
 												<UML:TaggedValue tag="PropertyConceptPreferredName" value="Value" xmi.id="EAID_37A47F15_1359_47EF_AEAF_D657500021A1"/>
 												<UML:TaggedValue tag="PropertyConceptDefinition" value="The information contained in a data field.  It may represent a numeric quantity, a textual characterization, a date or time measurement, or some other state, depending on the nature of the attribute." xmi.id="EAID_471EBEE8_F8AF_4A6C_BA3A_007CE1F1D0E1"/>
+												<UML:TaggedValue tag="form" xmi.id="EAID_5961A373_D557_4dd7_AE11_9B533A309E8A">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Values: qualified | unqualified&#xA;Description: Overrides the elementFormDefault for this schema&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
 												<UML:TaggedValue tag="CURATOR_REVIEWED" value="1" xmi.id="EAID_7D68C546_55DE_4D6D_8F6D_131764B40558"/>
 												<UML:TaggedValue tag="CADSR_Description" value="A representation of the molecular sequence, usually in abbreviated form and expressed according to conventional practices.  For example, DNA sequences are usually expressed as a string of A, C, G, and T characters starting from the 5' end of the sequence," xmi.id="EAID_8170C6CD_ABEA_4D4E_B906_5E444A925466"/>
-												<UML:TaggedValue tag="CADSR_Description2" value="sequence, while protein sequences are usually given as a string of single character amino acid codes starting at the N-terminus.  In both cases IUPAC codes are generally used to represent the sequence." xmi.id="EAID_81C04A2B_D949_46bd_A9E0_CC0AC0FD1346"/>
+												<UML:TaggedValue tag="CADSR_Description2" value=" while protein sequences are usually given as a string of single character amino acid codes starting at the N-terminus.  In both cases IUPAC codes are generally used to represent the sequence." xmi.id="EAID_81C04A2B_D949_46bd_A9E0_CC0AC0FD1346"/>
 												<UML:TaggedValue tag="CADSR_Description2" value=" while protein sequences are usually given as a string of single character amino acid codes starting at the N-terminus.  In both cases IUPAC codes are generally used to represent the sequence." xmi.id="EAID_A2A6713B_AE4B_4216_8E30_49F14A06CFBD"/>
 												<UML:TaggedValue tag="PropertyConceptDefinitionSource" value="NCI" xmi.id="EAID_AA41C45D_405B_487A_A4E1_E202ADEEBA42"/>
+												<UML:TaggedValue tag="fixed" xmi.id="EAID_B3567857_F429_40af_ADB4_7030EED219B0">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Description: As defined in XML Schema sepecification&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
 												<UML:TaggedValue tag="OWNER_REVIEWED" value="1" xmi.id="EAID_CF33FD48_1BA2_4ADF_88D6_EC765CE115A3"/>
+												<UML:TaggedValue tag="default" xmi.id="EAID_D9F2A991_ADD4_48a3_BE39_E9C1548012EF">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Description: As defined in XML Schema sepecification&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
+												<UML:TaggedValue tag="anonymousRole" value="false" xmi.id="EAID_DE26A032_9CD1_4a6e_A531_610C50DC24F0">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Values: true | false&#xA;Default: false&#xA;Description: The class type will be directly embedded within the complexType definition. Omit attribute or role type wrapper&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="valueInFastaFormat" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
@@ -8241,7 +8261,7 @@
 												<UML:TaggedValue tag="stereotype" value="XSDelement"/>
 												<UML:TaggedValue tag="collection" value="false"/>
 												<UML:TaggedValue tag="position" value="1"/>
-												<UML:TaggedValue tag="lowerBound" value="1"/>
+												<UML:TaggedValue tag="lowerBound" value="0"/>
 												<UML:TaggedValue tag="upperBound" value="1"/>
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{56D92584-6D74-47c6-9D92-C75C15317555}"/>
@@ -8428,7 +8448,7 @@
 						</UML:Package>
 						<UML:Package name="PIR" xmi.id="EAPK_9AE3A7EF_DB9F_4acd_A42F_FFA82A47B2A5" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 							<UML:ModelElement.stereotype>
-								<UML:Stereotype xmi.idref="EAID_7C095777_547A_40d3_9AB2_00ACDF442399"/>
+								<UML:Stereotype xmi.idref="EAID_1CD85728_B92C_4eff_9244_EC56E9FE9379"/>
 							</UML:ModelElement.stereotype>
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="parent" value="EAPK_6A1F7B6A_C113_44b4_85DC_AC4BBBA11077"/>
@@ -8500,7 +8520,7 @@
 												<UML:TaggedValue tag="stereotype" value="XSDelement"/>
 												<UML:TaggedValue tag="collection" value="false"/>
 												<UML:TaggedValue tag="position" value="0"/>
-												<UML:TaggedValue tag="lowerBound" value="1"/>
+												<UML:TaggedValue tag="lowerBound" value="0"/>
 												<UML:TaggedValue tag="upperBound" value="1"/>
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{41B283F3-A244-4748-82FD-25E6A71DB502}"/>
@@ -8556,7 +8576,7 @@
 												<UML:TaggedValue tag="stereotype" value="XSDelement"/>
 												<UML:TaggedValue tag="collection" value="false"/>
 												<UML:TaggedValue tag="position" value="2"/>
-												<UML:TaggedValue tag="lowerBound" value="1"/>
+												<UML:TaggedValue tag="lowerBound" value="0"/>
 												<UML:TaggedValue tag="upperBound" value="1"/>
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="genoption" value="PROPERTY=length;"/>
@@ -8565,8 +8585,28 @@
 												<UML:TaggedValue tag="styleex" value="volatile=0;IsLiteral=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={8109DEC7-1AEB-441b-9953-FA116B9A6347}$XID;$NAM=Stereotypes$NAM;$TYP=attribute property$TYP;$VIS=Public$VIS;$DES=@STEREO;Name=XSDelement;GUID={CC89F5C1-98B1-43fe-9116-3E1E3B66CFBE};@ENDSTEREO;$DES;$CLT={DFEACE7A-B70E-472f-BC4C-3F10ED6828CB}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 												<UML:TaggedValue tag="Description" value="Length of the protein sequence." xmi.id="EAID_13C5A789_85D6_451a_83E1_37125647E140"/>
+												<UML:TaggedValue tag="fixed" xmi.id="EAID_23C7A58F_D0CC_4ebe_9E98_5DD74970ED0A">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Description: As defined in XML Schema sepecification&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
+												<UML:TaggedValue tag="anonymousRole" value="false" xmi.id="EAID_438E8A02_57BC_4bcc_A694_F30A46DB3CA5">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Values: true | false&#xA;Default: false&#xA;Description: The class type will be directly embedded within the complexType definition. Omit attribute or role type wrapper&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
 												<UML:TaggedValue tag="CADSR_DE_ID" value="2342472" xmi.id="EAID_6594FC31_7B39_4604_9D79_7694BB33EEF1"/>
 												<UML:TaggedValue tag="CADSR_Description" value="Length of the protein sequence." xmi.id="EAID_6EB88290_C305_4D8B_B257_E12DC1AD9E9F"/>
+												<UML:TaggedValue tag="default" xmi.id="EAID_726A3C44_CE6B_4a98_A900_B1F47C44E398">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Description: As defined in XML Schema sepecification&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
+												<UML:TaggedValue tag="form" xmi.id="EAID_8DF0E62F_9F6A_4c89_9E36_F2D83A5E968A">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Values: qualified | unqualified&#xA;Description: Overrides the elementFormDefault for this schema&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
 												<UML:TaggedValue tag="CURATOR_REVIEWED" value="1" xmi.id="EAID_B7B5D68D_2FBA_4959_A331_ED93B6AF65DB"/>
 												<UML:TaggedValue tag="CADSR_DE_VERSION" value="1.0" xmi.id="EAID_C020CCCE_E154_4DB5_A10B_F0E926FC7A91"/>
 												<UML:TaggedValue tag="OWNER_REVIEWED" value="1" xmi.id="EAID_D5A7C46E_8E44_43F1_9674_C45F025511A2"/>
@@ -8593,7 +8633,7 @@
 												<UML:TaggedValue tag="stereotype" value="XSDelement"/>
 												<UML:TaggedValue tag="collection" value="false"/>
 												<UML:TaggedValue tag="position" value="3"/>
-												<UML:TaggedValue tag="lowerBound" value="1"/>
+												<UML:TaggedValue tag="lowerBound" value="0"/>
 												<UML:TaggedValue tag="upperBound" value="1"/>
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="genoption" value="PROPERTY=checksum;"/>
@@ -8601,12 +8641,32 @@
 												<UML:TaggedValue tag="ea_localid" value="2025"/>
 												<UML:TaggedValue tag="styleex" value="volatile=0;IsLiteral=0;"/>
 												<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={EBD9D989-1B35-470d-B6C7-6672C4E3E167}$XID;$NAM=Stereotypes$NAM;$TYP=attribute property$TYP;$VIS=Public$VIS;$DES=@STEREO;Name=XSDelement;GUID={CC89F5C1-98B1-43fe-9116-3E1E3B66CFBE};@ENDSTEREO;$DES;$CLT={62EF52F7-1AD7-4193-BC82-FC525ECD2E23}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+												<UML:TaggedValue tag="anonymousRole" value="false" xmi.id="EAID_0ED45519_C705_414e_8CB3_6E20F4089036">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Values: true | false&#xA;Default: false&#xA;Description: The class type will be directly embedded within the complexType definition. Omit attribute or role type wrapper&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
+												<UML:TaggedValue tag="default" xmi.id="EAID_20113AF3_45DE_49c2_83C3_CA5657E46B5A">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Description: As defined in XML Schema sepecification&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
 												<UML:TaggedValue tag="CURATOR_REVIEWED" value="1" xmi.id="EAID_2FEF2834_943B_4A4A_A2FA_C86F751601EE"/>
 												<UML:TaggedValue tag="OWNER_REVIEWED" value="1" xmi.id="EAID_738B6E6B_AFB9_433B_A472_8D6A4AB7A833"/>
 												<UML:TaggedValue tag="Description" value="64-bit CRC (Cyclic Redundancy Check) value for the protein sequence." xmi.id="EAID_82C9D83B_F882_4b2d_876C_89D1F251C398"/>
+												<UML:TaggedValue tag="form" xmi.id="EAID_B9DBC412_1B72_4121_AC84_24BAED203D4E">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Values: qualified | unqualified&#xA;Description: Overrides the elementFormDefault for this schema&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
 												<UML:TaggedValue tag="CADSR_DE_ID" value="2223885" xmi.id="EAID_CE04D371_C25B_486F_89CC_0073F004D58D"/>
 												<UML:TaggedValue tag="CADSR_DE_VERSION" value="3.0" xmi.id="EAID_D46003EA_12BE_4B3A_9238_2AD3A7F40DC5"/>
 												<UML:TaggedValue tag="CADSR_Description" value="64-bit CRC (Cyclic Redundancy Check) value for the protein sequence." xmi.id="EAID_DFD0C3AB_57FE_400D_A515_FF77E35BBF76"/>
+												<UML:TaggedValue tag="fixed" xmi.id="EAID_F4BDC24D_084F_49b3_BB02_8BE07141AA95">
+													<XMI.extension xmi.extender="Enterprise Architect 2.5">
+														<UML:Comment name="Description: As defined in XML Schema sepecification&#xA;"/>
+													</XMI.extension>
+												</UML:TaggedValue>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 									</UML:Classifier.feature>
@@ -8615,7 +8675,7 @@
 						</UML:Package>
 					</UML:Namespace.ownedElement>
 				</UML:Package>
-				<UML:Stereotype xmi.id="EAID_7C095777_547A_40d3_9AB2_00ACDF442399" name="XSDschema" isRoot="false" isLeaf="false" isAbstract="false">
+				<UML:Stereotype xmi.id="EAID_1CD85728_B92C_4eff_9244_EC56E9FE9379" name="XSDschema" isRoot="false" isLeaf="false" isAbstract="false">
 					<UML:Stereotype.baseClass>Package</UML:Stereotype.baseClass>
 				</UML:Stereotype>
 				<UML:DataType xmi.id="eaxmiid0" name="string" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>

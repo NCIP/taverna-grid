@@ -50,8 +50,8 @@
 			<xsd:documentation>A serial arrangement of  organic molecules such as amino acid or nucleotide.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="value" type="xsd:string" minOccurs="1" maxOccurs="1"/>
-			<xsd:element name="valueInFastaFormat" type="xsd:string" minOccurs="1" maxOccurs="1">
+			<xsd:element name="value" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="valueInFastaFormat" type="xsd:string" minOccurs="0" maxOccurs="1">
 				<xsd:annotation>
 					<xsd:documentation>A representation of a molecular sequence in FASTA format (a.k.a. Pearson format) which is a text-based format where base pairs or amino acids are represented using single-letter codes. The format also allows for sequence names and comments to precede the sequences in a form of a header.</xsd:documentation>
 				</xsd:annotation>
