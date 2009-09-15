@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>net.sf.taverna.t2</groupId>
-		<artifactId>activities</artifactId>
-		<version>0.9-SNAPSHOT</version>
-	</parent>
+	<modelVersion>4.0.0</modelVersion>	
+	 <parent>
+        <groupId>net.sf.taverna</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.1.2009-02-12</version>
+    </parent>  
 	<groupId>org.cagrid.transfer</groupId>
 	<artifactId>cagridtransfer-activity</artifactId>
 	<name>caGrid Transfer Activity</name>
+	<version>0.9-SNAPSHOT</version>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<t2.activities.version>0.8</t2.activities.version>
+		<t2.core.version>0.8</t2.core.version>
+		<t2.ui.api.version>0.6</t2.ui.api.version>
+        <t2.ui.impl.version>0.8</t2.ui.impl.version>
+	</properties>	
 	<repositories>
 	<repository>
 			<id>t2-cagrid</id>
 			<name>cagrid repository for t2 plug-ins</name>
 			<url>http://www.mcs.anl.gov/~wtan/t2/repository/</url>
 		</repository>
-		<repository>
+			<repository>
 			<releases />
 			<snapshots>
 				<enabled>false</enabled>
@@ -23,70 +42,27 @@
 			<id>mygrid-repository</id>
 			<name>myGrid Repository</name>
 			<url>http://www.mygrid.org.uk/maven/repository</url>
-		</repository>	
-		<!--<repository>
-			<id>mobycentral</id>
-			<name>MobyCentral Repository</name>
-			<url>http://moby.ucalgary.ca/moby_maven/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+		</repository>
+		<repository>
 			<releases>
-				<enabled>true</enabled>
+				<enabled>false</enabled>
 			</releases>
-		</repository>-->
-	    <repository>
-	        <id>biomoby</id>
-	        <name>Biomoby.org Repository</name>
-	        <url>http://biomoby.org/m2repo/</url>
-	        <snapshots>
-	            <enabled>false</enabled>
-	        </snapshots>
-	        <releases>
-	            <enabled>true</enabled>
-	        </releases>
-   		</repository>
-        <repository>
-            <id>jboss</id>
-            <name>JBoss repository</name>
-            <url>http://repository.jboss.org/maven2/</url>
-            <snapshots>
-	            <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>javanet</id>
-            <name>java.net</name>
-            <url>http://download.java.net/maven/2/</url>
-            <snapshots>
-	            <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
+			<snapshots />
+			<id>mygrid-snapshot-repository</id>
+			<name>myGrid Snapshot Repository</name>
+			<url>http://www.mygrid.org.uk/maven/snapshot-repository</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
-			<artifactId>workflowmodel-api</artifactId>
-			 
-			<version>0.8</version>
-			
-			 <!-- need to update this number
+			<artifactId>workflowmodel-api</artifactId>		
 			<version>${t2.core.version}</version>
-			 -->
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
-			<artifactId>reference-api</artifactId>
-			<version>0.8</version>
-			<!-- 
-			<version>${t2.core.version}</version>
-			 -->
+			<artifactId>reference-api</artifactId>		
+			<version>${t2.core.version}</version>			
 		</dependency>
 		<!--  
 		<dependency>
@@ -119,6 +95,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+				<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
