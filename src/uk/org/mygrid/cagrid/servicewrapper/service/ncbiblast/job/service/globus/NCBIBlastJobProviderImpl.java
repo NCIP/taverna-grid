@@ -46,7 +46,7 @@ public class NCBIBlastJobProviderImpl{
 
     public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetStatusResponse getStatus(uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetStatusRequest params) throws RemoteException {
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetStatusResponse boxedResult = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.GetStatusResponse();
-    boxedResult.setJobStatus(impl.getStatus());
+    boxedResult.setJob(impl.getStatus());
     return boxedResult;
   }
 

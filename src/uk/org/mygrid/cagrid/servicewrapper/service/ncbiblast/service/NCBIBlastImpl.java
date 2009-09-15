@@ -1,14 +1,14 @@
 package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.service;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.globus.wsrf.ResourceKey;
 
-import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
+import uk.org.mygrid.cagrid.domain.common.JobId;
+import uk.org.mygrid.cagrid.domain.common.MolecularSequenceDatabase;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.converter.NCBIBlastConverter;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.invoker.InvokerFactory;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.service.globus.resource.NCBIBlastJobResource;
@@ -17,6 +17,7 @@ import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCB
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInput;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInvoker;
+import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.SequenceDatabase;
 
 /**
  * TODO:I am the service side implementation class. IMPLEMENT AND DOCUMENT ME
@@ -37,7 +38,7 @@ public class NCBIBlastImpl extends NCBIBlastImplBase {
 		super();
 	}
 
-  public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCBIBlastJobReference ncbiBlast(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput nCBIBlastInput) throws RemoteException {
+  public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCBIBlastJobReference ncbiBlast(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput nCBIBlastInput) throws RemoteException {
 		NCBIBlastInput input = converter.convertNCBIBlastInput(nCBIBlastInput);
 
 		final NCBIBlastJobResource resource;
@@ -64,20 +65,20 @@ public class NCBIBlastImpl extends NCBIBlastImplBase {
 			throw new RemoteException("Can't submit job", e1);
 		}
 		logger.info("Submitted interproscan job " + jobID);
-		resource.setJobID(jobID);
+		resource.setJobId(new JobId(jobID));
 		resource.store();
 		return jobResourceRef;
 	}
 
-  public uk.org.mygrid.cagrid.domain.common.SequenceDatabase[] getDatabases() throws RemoteException {
-		List<uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.SequenceDatabase> sequenceDBs;
+  public MolecularSequenceDatabase[] getDatabases() throws RemoteException {
+		List<SequenceDatabase> sequenceDBs;
 		try {
 			sequenceDBs = invoker.getDatabases();
 		} catch (InvokerException e) {
 			throw new RemoteException("Can't get databases from EBI", e);
 		}
-		List<SequenceDatabase> databases = converter.convertDatabases(sequenceDBs);
-		return databases.toArray(new SequenceDatabase[databases.size()]);
+		List<MolecularSequenceDatabase> databases = converter.convertDatabases(sequenceDBs);
+		return databases.toArray(new MolecularSequenceDatabase[databases.size()]);
 	}
 
 }

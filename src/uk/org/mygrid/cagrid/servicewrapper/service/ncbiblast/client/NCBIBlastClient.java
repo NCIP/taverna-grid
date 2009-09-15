@@ -85,7 +85,7 @@ public class NCBIBlastClient extends NCBIBlastClientBase implements NCBIBlastI {
     }
   }
 
-  public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCBIBlastJobReference ncbiBlast(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput nCBIBlastInput) throws RemoteException {
+  public uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.stubs.types.NCBIBlastJobReference ncbiBlast(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput nCBIBlastInput) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"ncbiBlast");
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.NcbiBlastRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.NcbiBlastRequest();
@@ -97,12 +97,12 @@ public class NCBIBlastClient extends NCBIBlastClientBase implements NCBIBlastI {
     }
   }
 
-  public uk.org.mygrid.cagrid.domain.common.SequenceDatabase[] getDatabases() throws RemoteException {
+  public uk.org.mygrid.cagrid.domain.common.MolecularSequenceDatabase[] getDatabases() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getDatabases");
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesRequest params = new uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesRequest();
     uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.stubs.GetDatabasesResponse boxedResult = portType.getDatabases(params);
-    return boxedResult.getSequenceDatabase();
+    return boxedResult.getMolecularSequenceDatabase();
     }
   }
 

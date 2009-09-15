@@ -191,11 +191,11 @@ public abstract class NCBIBlastJobResourceBase extends ReflectionResource implem
 	    //Getters/Setters for ResourceProperties
 	
 	
-	public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput getNCBIBlastInput(){
+	public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput getNCBIBlastInput(){
 		return ((NCBIBlastJobResourceProperties) getResourceBean()).getNCBIBlastInput();
 	}
 	
-	public void setNCBIBlastInput(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput nCBIBlastInput ) throws ResourceException {
+	public void setNCBIBlastInput(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput nCBIBlastInput ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.NCBIBLASTINPUT);
 		prop.set(0, nCBIBlastInput);
         //call the first store to persist the resource
@@ -204,26 +204,13 @@ public abstract class NCBIBlastJobResourceBase extends ReflectionResource implem
 	
 	
 	
-	public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput getNCBIBlastOutput(){
+	public uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput getNCBIBlastOutput(){
 		return ((NCBIBlastJobResourceProperties) getResourceBean()).getNCBIBlastOutput();
 	}
 	
-	public void setNCBIBlastOutput(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput nCBIBlastOutput ) throws ResourceException {
+	public void setNCBIBlastOutput(uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput nCBIBlastOutput ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.NCBIBLASTOUTPUT);
 		prop.set(0, nCBIBlastOutput);
-        //call the first store to persist the resource
-        store();
-	}
-	
-	
-	
-	public uk.org.mygrid.cagrid.domain.common.JobStatus getJobStatus(){
-		return ((NCBIBlastJobResourceProperties) getResourceBean()).getJobStatus();
-	}
-	
-	public void setJobStatus(uk.org.mygrid.cagrid.domain.common.JobStatus jobStatus ) throws ResourceException {
-        ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.JOBSTATUS);
-		prop.set(0, jobStatus);
         //call the first store to persist the resource
         store();
 	}
@@ -243,24 +230,11 @@ public abstract class NCBIBlastJobResourceBase extends ReflectionResource implem
 	
 	
 	
-	public java.lang.String getJobID(){
-		return ((NCBIBlastJobResourceProperties) getResourceBean()).getJobID();
-	}
-	
-	public void setJobID(java.lang.String jobID ) throws ResourceException {
-        ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.JOBID);
-		prop.set(0, jobID);
-        //call the first store to persist the resource
-        store();
-	}
-	
-	
-	
-	public schema.EBIApplicationResult getEBIApplicationResult(){
+	public uk.ac.ebi.ncbiblast.EBIApplicationResult getEBIApplicationResult(){
 		return ((NCBIBlastJobResourceProperties) getResourceBean()).getEBIApplicationResult();
 	}
 	
-	public void setEBIApplicationResult(schema.EBIApplicationResult eBIApplicationResult ) throws ResourceException {
+	public void setEBIApplicationResult(uk.ac.ebi.ncbiblast.EBIApplicationResult eBIApplicationResult ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.EBIAPPLICATIONRESULT);
 		prop.set(0, eBIApplicationResult);
         //call the first store to persist the resource
@@ -276,6 +250,32 @@ public abstract class NCBIBlastJobResourceBase extends ReflectionResource implem
 	public void setEBIApplicationError(java.lang.String eBIApplicationError ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.EBIAPPLICATIONERROR);
 		prop.set(0, eBIApplicationError);
+        //call the first store to persist the resource
+        store();
+	}
+	
+	
+	
+	public uk.org.mygrid.cagrid.domain.common.Job getJob(){
+		return ((NCBIBlastJobResourceProperties) getResourceBean()).getJob();
+	}
+	
+	public void setJob(uk.org.mygrid.cagrid.domain.common.Job job ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.JOB);
+		prop.set(0, job);
+        //call the first store to persist the resource
+        store();
+	}
+	
+	
+	
+	public uk.org.mygrid.cagrid.domain.common.JobId getJobId(){
+		return ((NCBIBlastJobResourceProperties) getResourceBean()).getJobId();
+	}
+	
+	public void setJobId(uk.org.mygrid.cagrid.domain.common.JobId jobId ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(NCBIBlastJobConstants.JOBID);
+		prop.set(0, jobId);
         //call the first store to persist the resource
         store();
 	}

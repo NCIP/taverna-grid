@@ -18,13 +18,15 @@ import uk.ac.ebi.schema.THit;
 import uk.ac.ebi.schema.TMatchSeq;
 import uk.ac.ebi.schema.TQuerySeq;
 import uk.ac.ebi.schema.TSSSR;
-import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceDatabase;
+import uk.org.mygrid.cagrid.domain.common.MolecularSequenceDatabase;
+import uk.org.mygrid.cagrid.domain.common.NucleicAcidSequenceDatabase;
 import uk.org.mygrid.cagrid.domain.common.ProteinSequenceDatabase;
-import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
 import uk.org.mygrid.cagrid.domain.ncbiblast.Alignment;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceFragment;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.DatabaseCrossReference;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.Sequence;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.InvokerException;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.NCBIBlastInvoker;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.SequenceDatabase.SequenceType;
@@ -34,9 +36,9 @@ public class NCBIBlastImporter {
 	private static Logger logger = Logger.getLogger(NCBIBlastImporter.class);
 
 	private NCBIBlastInvoker invoker;
-	private static Map<String, SequenceDatabase> databaseMap = new HashMap<String, SequenceDatabase>();
+	private static Map<String, MolecularSequenceDatabase> databaseMap = new HashMap<String, MolecularSequenceDatabase>();
 
-	public NCBIBLASTOutput importNCBIBlastOutput(Document data)
+	public NCBIBlastOutput importNCBIBlastOutput(Document data)
 			throws XmlException, JDOMException {
 		DOMOutputter domOutputter = new DOMOutputter();
 		EBIApplicationResultDocument appResults = EBIApplicationResultDocument.Factory
@@ -45,7 +47,7 @@ public class NCBIBlastImporter {
 		TSSSR searchResult = appResults.getEBIApplicationResult()
 				.getSequenceSimilaritySearchResult();
 
-		NCBIBLASTOutput ncbiblastOutput = new NCBIBLASTOutput();
+		NCBIBlastOutput ncbiblastOutput = new NCBIBlastOutput();
 		SequenceSimilarity[] sequenceSimilarities = importSequenceSimilarities(searchResult);
 		ncbiblastOutput.setSequenceSimilarities(sequenceSimilarities);
 		return ncbiblastOutput;
@@ -56,16 +58,19 @@ public class NCBIBlastImporter {
 		for (THit hit : searchResult.getHits().getHitArray()) {
 			SequenceSimilarity sequenceSimilarity = new SequenceSimilarity();
 			similarities.add(sequenceSimilarity);
-			sequenceSimilarity.setId(hit.getId());
-			SequenceDatabase db;
+			DatabaseCrossReference sequenceId = new DatabaseCrossReference();
+			sequenceId.setDataSourceName(hit.getDatabase());
+			sequenceId.setCrossReferenceId(hit.getId());
+			
+			sequenceSimilarity.setSequenceId(sequenceId);
+			MolecularSequenceDatabase db;
 			synchronized (databaseMap) {
 				db = databaseMap.get(hit.getDatabase());
 			}
 			if (db == null) {
-				db = new SequenceDatabase(hit.getDatabase(),
+				db = new MolecularSequenceDatabase(hit.getDatabase(),
 						"Unknown database: " + db);
 			}
-			sequenceSimilarity.setDatabase(db);
 			sequenceSimilarity.setAccessionNumber(hit.getAc());
 			sequenceSimilarity.setSequenceLength(BigInteger.valueOf(hit
 					.getLength()));
@@ -112,7 +117,8 @@ public class NCBIBlastImporter {
 		SequenceFragment sequenceFragment = new SequenceFragment();
 		sequenceFragment.setStart(BigInteger.valueOf(matchSeq.getStart()));
 		sequenceFragment.setEnd(BigInteger.valueOf(matchSeq.getEnd()));
-		sequenceFragment.setSequence(matchSeq.getStringValue());
+		Sequence sequence = new Sequence(matchSeq.getStringValue(), null);
+		sequenceFragment.setSequence(sequence);
 		return sequenceFragment;
 	}
 
@@ -120,26 +126,27 @@ public class NCBIBlastImporter {
 		SequenceFragment sequenceFragment = new SequenceFragment();
 		sequenceFragment.setStart(BigInteger.valueOf(querySeq.getStart()));
 		sequenceFragment.setEnd(BigInteger.valueOf(querySeq.getEnd()));
-		sequenceFragment.setSequence(querySeq.getStringValue());
+		Sequence sequence = new Sequence(querySeq.getStringValue(), null);
+		sequenceFragment.setSequence(sequence);
 		return sequenceFragment;
 	}
 
-	public List<SequenceDatabase> importDatabases(
+	public List<MolecularSequenceDatabase> importDatabases(
 			List<uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.SequenceDatabase> origSeqDBs) {
-		List<SequenceDatabase> databases = new ArrayList<SequenceDatabase>();
+		List<MolecularSequenceDatabase> databases = new ArrayList<MolecularSequenceDatabase>();
 		for (uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.ncbiblast.SequenceDatabase origSeqDb : origSeqDBs) {
-			SequenceDatabase database;
+			MolecularSequenceDatabase database;
 			SequenceType sequenceType = origSeqDb.getSequenceType();
 			if (SequenceType.nucleotide.equals(sequenceType)) {
-				database = new NucleotideSequenceDatabase();
+				database = new NucleicAcidSequenceDatabase();
 			} else if (SequenceType.protein.equals(sequenceType)) {
 				database = new ProteinSequenceDatabase();
 			} else {
 				logger.warn("Unknown sequence type for database "
 						+ origSeqDb.getName() + ": " + sequenceType);
-				database = new SequenceDatabase();
+				database = new MolecularSequenceDatabase();
 			}
-			database.setDatabaseId(origSeqDb.getName());
+			database.setName(origSeqDb.getName());
 			database.setDescription(origSeqDb.getDisplayName());
 			databases.add(database);
 		}
@@ -164,15 +171,15 @@ public class NCBIBlastImporter {
 				// No need to update it again
 				return;
 			}
-			List<SequenceDatabase> databases;
+			List<MolecularSequenceDatabase> databases;
 			try {
 				databases = importDatabases(invoker.getDatabases());
 			} catch (InvokerException e) {
 				logger.warn("Can't update databases");
 				return;
 			}
-			for (SequenceDatabase db : databases) {
-				databaseMap.put(db.getDatabaseId(), db);
+			for (MolecularSequenceDatabase db : databases) {
+				databaseMap.put(db.getName(), db);
 			}
 		}
 	}
