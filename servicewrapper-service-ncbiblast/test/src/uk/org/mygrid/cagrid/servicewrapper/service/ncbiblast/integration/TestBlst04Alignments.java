@@ -7,7 +7,7 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
 
 /**
@@ -34,8 +34,8 @@ public class TestBlst04Alignments extends CommonTest {
 	@Test
 	public void invalidAlignmentUsesMinimum() throws Exception {
 		params.setAlignmentsToOutput(BigInteger.valueOf(INVALID_ALIGNMENTS));
-		input.setProteinOrNucleotideSequenceRepresentation(SIMPLE_PROT_SEQUENCE);
-		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		input.setSequenceRepresentation(protSeqRepSequence);
+		NCBIBlastOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		String commandLine = getCommandLine();
 		assertTrue("Wrong alignments on command line: " +commandLine, 
 				commandLine.contains(" -b 5 "));
@@ -50,8 +50,8 @@ public class TestBlst04Alignments extends CommonTest {
 	@Test
 	public void tinyAlignment() throws Exception {
 		params.setAlignmentsToOutput(BigInteger.valueOf(TINY_ALIGNMENTS));
-		input.setProteinOrNucleotideSequenceRepresentation(SIMPLE_PROT_SEQUENCE);
-		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		input.setSequenceRepresentation(protSeqRepSequence);
+		NCBIBlastOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		String commandLine = getCommandLine();
 		assertTrue("Wrong alignments on command line: " +commandLine, 
@@ -63,8 +63,8 @@ public class TestBlst04Alignments extends CommonTest {
 	@Test
 	public void emptyAlignmentUsesDefault() throws Exception {
 		params.setAlignmentsToOutput(null);
-		input.setProteinOrNucleotideSequenceRepresentation(SIMPLE_PROT_SEQUENCE);
-		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		input.setSequenceRepresentation(protSeqRepSequence);
+		NCBIBlastOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		String commandLine = getCommandLine();
 		assertTrue("Wrong alignments on command line: " +commandLine, 
 				commandLine.contains(" -b 50 "));

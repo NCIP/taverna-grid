@@ -9,13 +9,16 @@ import org.apache.axis.AxisFault;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
-import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
-import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier;
-import uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier;
-import uk.org.mygrid.cagrid.domain.common.SequenceRepresentation;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
+import uk.org.mygrid.cagrid.domain.common.MolecularSequenceRepresentation;
+import uk.org.mygrid.cagrid.domain.common.NucleicAcidSequenceRepresentation;
+import uk.org.mygrid.cagrid.domain.common.ProteinSequenceRepresentation;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.GeneGenomicIdentifier;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.NucleicAcidSequence;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.ProteinGenomicIdentifier;
+import uk.org.mygrid.cagrid.servicewrapper.imported.pir.ProteinSequence;
+import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
 
 /**
  * BLST14: protein or nucleotide sequence parameter or its 'database:identifier'
@@ -64,6 +67,8 @@ import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
  */
 public class TestBlst14Sequence extends CommonTest {
 
+	private static final String NUCLEOTIDE_DB = "EM_HUM";
+	private static final String NUCLEOTIDE_CROSSREF = "M10051";
 	String NUCLEOTIDE_FASTA = ""
 			+ ">embl|M10051|M10051 Human insulin receptor mRNA, complete cds. "
 			+ "ggggggctgcgcggccgggtcggtgcgcacacgagaaggacgcgcggcccccagcgctct"
@@ -146,20 +151,28 @@ public class TestBlst14Sequence extends CommonTest {
 			+ "cttttttttttttttttttttttttttttgctggtgtctgagcttcagtataaaagacaa"
 			+ "aacttcctgtttgtggaacaaaatttcgaaagaaaaaaccaaa";
 
-	String NUCLEOTIDE_ID = "EM_HUM:M10051";
-
 	@Test
 	public void compareIdFastaM10051() throws Exception {
-		setNucleotideParams();
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new ProteinSequenceIdentifier(
-						NUCLEOTIDE_ID));
-		NCBIBLASTOutput idOut = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		params.setBlastProgram(BLASTProgram.BLASTN);
+		params.setQueryDatabase(NUCLEOTIDE_DATABASE);
+		params.setAlignmentsToOutput(BigInteger.ONE);
+		
+		GeneGenomicIdentifier nucleicDNAId = new GeneGenomicIdentifier();
+		NucleicAcidSequenceRepresentation sequenceRepresentation = new NucleicAcidSequenceRepresentation();
+		nucleicDNAId.setDataSourceName(NUCLEOTIDE_DB);
+		nucleicDNAId.setCrossReferenceId(NUCLEOTIDE_CROSSREF);
+		sequenceRepresentation.setNucleicDNAId(nucleicDNAId);
+		input.setSequenceRepresentation(sequenceRepresentation);
+		
+		NCBIBlastOutput idOut = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new FASTAProteinSequence(
-						NUCLEOTIDE_FASTA));
-		NCBIBLASTOutput fastaOut = clientUtils.ncbiBlastSync(input,
+		NucleicAcidSequence nucleicAcidSequence = new NucleicAcidSequence();
+		nucleicAcidSequence.setValueInFastaFormat(NUCLEOTIDE_FASTA);
+		sequenceRepresentation = new NucleicAcidSequenceRepresentation();
+		sequenceRepresentation.setNucleicAcidSequence(nucleicAcidSequence);
+		input.setSequenceRepresentation(sequenceRepresentation);
+		
+		NCBIBlastOutput fastaOut = clientUtils.ncbiBlastSync(input,
 				LONG_TIMEOUT);
 
 		SequenceSimilarity[] idSims = idOut.getSequenceSimilarities();
@@ -183,17 +196,26 @@ public class TestBlst14Sequence extends CommonTest {
 
 	@Test
 	public void compareIdFastaWapRat() throws Exception {
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new ProteinSequenceIdentifier(
-						"uniprot:WAP_RAT"));
-		NCBIBLASTOutput idOut = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
-		input
-				.setProteinOrNucleotideSequenceRepresentation(new FASTAProteinSequence(
+		
+		ProteinSequenceRepresentation sequenceRepresentation = new ProteinSequenceRepresentation();
+		ProteinGenomicIdentifier proteinId = new ProteinGenomicIdentifier();
+		proteinId.setDataSourceName("uniprot");
+		proteinId.setCrossReferenceId("WAP_RAT");
+		sequenceRepresentation.setProteinId(proteinId);
+		input.setSequenceRepresentation(sequenceRepresentation );
+		NCBIBlastOutput idOut = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		
+		sequenceRepresentation = new ProteinSequenceRepresentation();
+		ProteinSequence proteinSequence = new ProteinSequence();
+		sequenceRepresentation.setProteinSequence(proteinSequence);
+		proteinSequence.setValueInFastaFormat(
 						">sp|P01174|WAP_RAT Whey acidic protein;\n"
 								+ "MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECINCQTNEECAQNDMC\n"
 								+ "CPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAAGPCPKDNPCSIDSDCSGTMKCCKNGCI\n"
-								+ "MSCMDPEPKSPTVISFQ"));
-		NCBIBLASTOutput fastaOut = clientUtils.ncbiBlastSync(input,
+								+ "MSCMDPEPKSPTVISFQ");
+		input.setSequenceRepresentation(sequenceRepresentation);
+		
+		NCBIBlastOutput fastaOut = clientUtils.ncbiBlastSync(input,
 				LONG_TIMEOUT);
 
 		SequenceSimilarity[] idSims = idOut.getSequenceSimilarities();
@@ -216,10 +238,24 @@ public class TestBlst14Sequence extends CommonTest {
 
 	@Test(expected = AxisFault.class)
 	public void defaultFails() throws Exception {
-		input.setProteinOrNucleotideSequenceRepresentation(null);
+		input.setSequenceRepresentation(null);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 	}
 
+	@Test(expected = AxisFault.class)
+	public void emptyProteinFails() throws Exception {
+		input.setSequenceRepresentation(new ProteinSequenceRepresentation());
+		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+	}
+	
+
+	@Test(expected = AxisFault.class)
+	public void emptyNucleotideFails() throws Exception {
+		input.setSequenceRepresentation(new NucleicAcidSequenceRepresentation()));
+		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+	}
+
+	
 	@Test(expected = AxisFault.class)
 	public void invalidFastaNucleotideSyntax() throws Exception {
 		input
