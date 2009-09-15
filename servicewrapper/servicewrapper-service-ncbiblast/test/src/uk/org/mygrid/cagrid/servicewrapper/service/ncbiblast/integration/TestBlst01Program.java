@@ -51,8 +51,7 @@ public class TestBlst01Program extends CommonTest {
 	@Test(expected = AxisFault.class)
 	public void failsWrongProgramBlastP() throws Exception {
 		// Our input is a nucleotide sequence and can't be run against BLASTP
-		input.setProteinOrNucleotideSequenceRepresentation(
-				FAKE_NUCLEOTIDE_SEQUENCE);
+		input.setSequenceRepresentation(nucleotideSeqRep);
 		params.setBlastProgram(BLASTProgram.BLASTP);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		String commandLine = getCommandLine();
@@ -71,8 +70,7 @@ public class TestBlst01Program extends CommonTest {
 	@Test
 	public void blastX() throws Exception {
 		params.setBlastProgram(BLASTProgram.BLASTX);
-		input.setProteinOrNucleotideSequenceRepresentation(
-						FAKE_NUCLEOTIDE_SEQUENCE);
+		input.setSequenceRepresentation(nucleotideSeqRep);
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		String commandLine = getCommandLine();
 		assertTrue("Wrong program on command line: " +commandLine, commandLine.contains(" -p blastx "));
@@ -82,9 +80,8 @@ public class TestBlst01Program extends CommonTest {
 	@Test
 	public void blastN() throws Exception {
 		params.setBlastProgram(BLASTProgram.BLASTN);
-		params.setDatabase(NUCLEOTIDE_DATABASE);
-		input.setProteinOrNucleotideSequenceRepresentation(
-						FAKE_NUCLEOTIDE_SEQUENCE);
+		params.setQueryDatabase(NUCLEOTIDE_DATABASE);
+		input.setSequenceRepresentation(nucleotideSeqRep);
 		// Takes a bit longer to run
 		clientUtils.ncbiBlastSync(input, 5*LONG_TIMEOUT);
 		String commandLine = getCommandLine();

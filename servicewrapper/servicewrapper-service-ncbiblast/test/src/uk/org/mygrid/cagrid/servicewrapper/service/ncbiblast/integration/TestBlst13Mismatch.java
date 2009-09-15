@@ -4,12 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
 
-import org.junit.Ignore;
 import org.junit.Test;
-
-import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
-import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
 
 /**
 BLST13: mismatch parameter
