@@ -230,39 +230,39 @@ public abstract class InterProScanJobResourceBase extends ReflectionResource imp
 	
 	
 	
-	public uk.org.mygrid.cagrid.domain.common.JobStatus getJobStatus(){
-		return ((InterProScanJobResourceProperties) getResourceBean()).getJobStatus();
-	}
-	
-	public void setJobStatus(uk.org.mygrid.cagrid.domain.common.JobStatus jobStatus ) throws ResourceException {
-        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBSTATUS);
-		prop.set(0, jobStatus);
-        //call the first store to persist the resource
-        store();
-	}
-	
-	
-	
-	public java.lang.String getJobID(){
-		return ((InterProScanJobResourceProperties) getResourceBean()).getJobID();
-	}
-	
-	public void setJobID(java.lang.String jobID ) throws ResourceException {
-        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBID);
-		prop.set(0, jobID);
-        //call the first store to persist the resource
-        store();
-	}
-	
-	
-	
-	public schema.EBIInterProScanResults getEBIInterProScanResults(){
+	public uk.ac.ebi.interproscan.EBIInterProScanResults getEBIInterProScanResults(){
 		return ((InterProScanJobResourceProperties) getResourceBean()).getEBIInterProScanResults();
 	}
 	
-	public void setEBIInterProScanResults(schema.EBIInterProScanResults eBIInterProScanResults ) throws ResourceException {
+	public void setEBIInterProScanResults(uk.ac.ebi.interproscan.EBIInterProScanResults eBIInterProScanResults ) throws ResourceException {
         ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.EBIINTERPROSCANRESULTS);
 		prop.set(0, eBIInterProScanResults);
+        //call the first store to persist the resource
+        store();
+	}
+	
+	
+	
+	public uk.org.mygrid.cagrid.domain.common.Job getJob(){
+		return ((InterProScanJobResourceProperties) getResourceBean()).getJob();
+	}
+	
+	public void setJob(uk.org.mygrid.cagrid.domain.common.Job job ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOB);
+		prop.set(0, job);
+        //call the first store to persist the resource
+        store();
+	}
+	
+	
+	
+	public uk.org.mygrid.cagrid.domain.common.JobId getJobId(){
+		return ((InterProScanJobResourceProperties) getResourceBean()).getJobId();
+	}
+	
+	public void setJobId(uk.org.mygrid.cagrid.domain.common.JobId jobId ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(InterProScanJobConstants.JOBID);
+		prop.set(0, jobId);
         //call the first store to persist the resource
         store();
 	}

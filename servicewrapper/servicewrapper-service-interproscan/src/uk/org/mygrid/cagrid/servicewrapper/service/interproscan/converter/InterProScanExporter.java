@@ -4,14 +4,17 @@ import org.apache.log4j.Logger;
 
 import uk.ac.ebi.www.wsinterproscan.Data;
 import uk.ac.ebi.www.wsinterproscan.InputParams;
-import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
-import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
-import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier;
-import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceRepresentation;
-import uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier;
+import uk.org.mygrid.cagrid.domain.common.MolecularSequenceRepresentation;
+import uk.org.mygrid.cagrid.domain.common.NucleicAcidSequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.common.ProteinSequenceRepresentation;
-import uk.org.mygrid.cagrid.domain.common.SequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInputParameters;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.DatabaseCrossReference;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.GeneGenomicIdentifier;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.MessengerRNAGenomicIdentifier;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.NucleicAcidSequence;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.ProteinGenomicIdentifier;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.Sequence;
+import uk.org.mygrid.cagrid.servicewrapper.imported.pir.ProteinSequence;
 import uk.org.mygrid.cagrid.servicewrapper.serviceinvoker.interproscan.InterProScanInput;
 import uk.org.mygrid.cagrid.valuedomains.SignatureMethod;
 
@@ -34,43 +37,48 @@ public class InterProScanExporter {
 		return input;
 	}
 
-	public Data[] exportContent(SequenceRepresentation seqRep,
-			InputParams params) {
+	public Data[] exportContent(MolecularSequenceRepresentation seqRep,
+			InputParams params) throws ConverterException {
 		if (seqRep == null) {
 			logger.warn("Sequence representation required");
 			throw new ConverterException("Sequence representation required");
 		}
-		if (seqRep instanceof ProteinSequenceRepresentation) {
-			params.setSeqtype("P");
-		} else if (seqRep instanceof NucleotideSequenceRepresentation) {
-			params.setSeqtype("N");
-		} else {
-			logger.warn("Unsupported sequence representation type "
-					+ seqRep.getClass());
-			throw new ConverterException(
-					"Unsupported sequence representation type "
-							+ seqRep.getClass());
-		}
 
 		Data[] content = new Data[1];
 		content[0] = Data.Factory.newInstance();
+		content[0].setType("sequence"); // Always 'sequence' for some reason
 
-		if (seqRep instanceof FASTANucleotideSequence) {
-			content[0].setContent(((FASTANucleotideSequence) seqRep)
-					.getSequence());
-			content[0].setType("sequence");
-		} else if (seqRep instanceof FASTAProteinSequence) {
-			content[0]
-					.setContent(((FASTAProteinSequence) seqRep).getSequence());
-			content[0].setType("sequence");
-		} else if (seqRep instanceof ProteinSequenceIdentifier) {
-			content[0].setContent(((ProteinSequenceIdentifier) seqRep)
-					.getSequenceId());
-			content[0].setType("sequence"); // oddly enough..
-		} else if (seqRep instanceof NucleotideSequenceIdentifier) {
-			content[0].setContent(((NucleotideSequenceIdentifier) seqRep)
-					.getSequenceId());
-			content[0].setType("sequence"); // oddly enough..
+		if (seqRep instanceof ProteinSequenceRepresentation) {
+			ProteinSequenceRepresentation proteinSeqRep = (ProteinSequenceRepresentation) seqRep;
+			params.setSeqtype("P");
+			if (proteinSeqRep.getProteinSequence() != null) {
+				ProteinSequence sequence = proteinSeqRep.getProteinSequence();
+				content[0].setContent(exportSequence(sequence));
+
+			} else if (proteinSeqRep.getProteinId() != null) {
+				ProteinGenomicIdentifier proteinId = proteinSeqRep
+						.getProteinId();
+				content[0].setContent(exportSequenceIdentifier(proteinId));
+			}
+		} else if (seqRep instanceof NucleicAcidSequenceRepresentation) {
+			NucleicAcidSequenceRepresentation nucleicSeqRep = (NucleicAcidSequenceRepresentation) seqRep;
+			params.setSeqtype("N");
+			if (nucleicSeqRep != null
+					&& nucleicSeqRep.getNucleicAcidSequence() != null) {
+				NucleicAcidSequence sequence = nucleicSeqRep
+						.getNucleicAcidSequence();
+				content[0].setContent(exportSequence(sequence));
+			} else if (nucleicSeqRep != null
+					&& nucleicSeqRep.getNucleicDNAId() != null) {
+				GeneGenomicIdentifier nucleicDNAId = nucleicSeqRep
+						.getNucleicDNAId();
+				content[0].setContent(exportSequenceIdentifier(nucleicDNAId));
+			} else if (nucleicSeqRep != null
+					&& nucleicSeqRep.getNucleicRNAId() != null) {
+				MessengerRNAGenomicIdentifier nucleicRNAId = nucleicSeqRep
+						.getNucleicRNAId();
+				content[0].setContent(exportSequenceIdentifier(nucleicRNAId));
+			}
 		} else {
 			logger.warn("Unsupported sequence representation type "
 					+ seqRep.getClass());
@@ -78,7 +86,35 @@ public class InterProScanExporter {
 					"Unsupported sequence representation type "
 							+ seqRep.getClass());
 		}
+
+		if (content[0].getContent() == null
+				|| content[0].getContent().length() == 0) {
+			logger.warn("Unsupported sequence representation "
+					+ seqRep.getClass());
+			throw new ConverterException("Unsupported sequence representation "
+					+ seqRep.getClass());
+		}
+
 		return content;
+	}
+
+	private String exportSequence(Sequence sequence) throws ConverterException {
+		String fastaFormat = sequence.getValueInFastaFormat();
+		String value = sequence.getValue();
+		if (fastaFormat != null && fastaFormat.length() > 0) {
+			return fastaFormat;
+		} else if (value != null && value.length() > 0) {
+			return value;
+		} else {
+			throw new ConverterException("No sequence value");
+		}
+
+	}
+
+	private String exportSequenceIdentifier(DatabaseCrossReference sequenceId) {
+		String id = sequenceId.getDataSourceName() + ":"
+				+ sequenceId.getCrossReferenceId();
+		return id;
 	}
 
 	public InputParams exportParameters(InterProScanInputParameters origParams) {
@@ -97,9 +133,9 @@ public class InterProScanExporter {
 			params.setCrc(origParams.getUseCRC());
 		}
 		StringBuffer apps = new StringBuffer();
-		if (origParams.getSignatureMethod() != null) {
+		if (origParams.getSignatureMethods() != null) {
 			for (SignatureMethod signatureMethod : origParams
-					.getSignatureMethod()) {
+					.getSignatureMethods()) {
 				if (apps.length() > 0) {
 					apps.append(' ');
 				}

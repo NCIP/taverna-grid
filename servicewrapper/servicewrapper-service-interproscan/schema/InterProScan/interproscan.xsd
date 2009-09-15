@@ -1,323 +1,180 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	elementFormDefault="qualified"
-	targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"
-	xmlns:interproscan="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan"
-	xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains"
-	xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common">
-	<xsd:import
-		namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"
-		schemaLocation="common.xsd">
-	</xsd:import>
-	<xsd:import
-		namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains"
-		schemaLocation="valuedomains.xsd"></xsd:import>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:interproscan="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.interproscan" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" xmlns:pir="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" elementFormDefault="qualified">
+	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" schemaLocation="pir.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" schemaLocation="irwg.xsd"/>
+	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" schemaLocation="common.xsd"/>
+	<xsd:element name="InterProScanInputParameters" type="interproscan:InterProScanInputParameters"/>
 	<xsd:complexType name="InterProScanInputParameters">
 		<xsd:annotation>
-			<xsd:documentation>
-				Input parameters for the InterProScan job.
-			</xsd:documentation>
+			<xsd:documentation>Input parameters for the InterProScan job.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="email" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="signatureMethods" type="valuedomains:SignatureMethod" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="useCRC" type="xsd:boolean" minOccurs="0" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						E-mail address of the user.
-					</xsd:documentation>
+					<xsd:documentation>Whether to use a CRC-based lookup to get results from InterPro Matches if the sequence is known.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="useCRC" type="xsd:boolean" minOccurs="0"
-				maxOccurs="1" default="false">
+			<xsd:element name="email" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Whether to use a CRC-based lookup to get results
-						from InterPro Matches if the sequence is known.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="signatureMethod" type="valuedomains:SignatureMethod"
-				minOccurs="0" maxOccurs="unbounded">
-				<xsd:annotation>
-					<xsd:documentation>A list of InterPro signature methods to run.
-						The
-						default is all methods.</xsd:documentation>
+					<xsd:documentation>E-mail address of the user.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
-
+	<xsd:element name="InterProScanJob" type="interproscan:InterProScanJob"/>
+	<xsd:complexType name="InterProScanJob">
+		<xsd:sequence>
+			<xsd:element name="jobId" type="common:JobId" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="InterProScanService" type="interproscan:InterProScanService"/>
+	<xsd:complexType name="InterProScanService">
+		<xsd:annotation>
+			<xsd:documentation>Represents Taverna-wrapping of the InterProScan service to be deployed on caGrid and used by caGrid clients. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence/>
+	</xsd:complexType>
+	<xsd:element name="InterProScanInput" type="interproscan:InterProScanInput"/>
 	<xsd:complexType name="InterProScanInput">
 		<xsd:annotation>
-			<xsd:documentation>
-				Represents an input to the Taverna-wrapped
-				InterProScan
-				service that Taverna will convert and actually invoke
-				the service.
-			</xsd:documentation>
+			<xsd:documentation>Represents an input to the Taverna-wrapped InterProScan service that Taverna will convert and actually invoke the service.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="InterProScanInputParameters"
-				type="interproscan:InterProScanInputParameters" minOccurs="1"
-				maxOccurs="1" />
-			<xsd:element name="SequenceRepresentation" type="common:SequenceRepresentation"
-				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="interProScanInputParameters" type="interproscan:InterProScanInputParameters" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="sequenceRepresentation" type="common:ProteinSequenceRepresentation" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:complexType name="ProteinSignatureLocation">
+	<xsd:element name="ProteinDomainLocationStatistics" type="interproscan:ProteinDomainLocationStatistics"/>
+	<xsd:complexType name="ProteinDomainLocationStatistics">
+		<xsd:sequence>
+			<xsd:element name="signatureMethod" type="valuedomains:SignatureMethod" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Signature method used to find the domain match (from a list of passed methods to be used - see the value of the app parameter in InterProScanInputParams)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="eValue" type="xsd:double" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>E-value of the match.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="valuedomains:SignatureStatus" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Status of the feature; 'T' (as in true) for a known feature,  '?' for an unknown feature.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="ProteinDomainLocation" type="interproscan:ProteinDomainLocation"/>
+	<xsd:complexType name="ProteinDomainLocation">
 		<xsd:annotation>
-			<xsd:documentation>
-				Represents the location of the signature in the
-				protein
-				sequence. Note that the same signature can be found in
-				different locations inside the same protein sequence.
-			</xsd:documentation>
+			<xsd:documentation>Represents the location of the found domain in the protein sequence. Note that the same domain can be found in different locations inside the same protein sequence.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="end" type="xsd:integer" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="start" type="xsd:integer" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						End position of the feature's sequence inside
-						the protein's sequence.
-					</xsd:documentation>
+					<xsd:documentation>Start position of the feature's sequence inside the protein's sequence.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="eValue" type="xsd:double" minOccurs="0"
-				maxOccurs="1">
+			<xsd:element name="end" type="xsd:integer" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						E-value of the match.
-					</xsd:documentation>
+					<xsd:documentation>End position of the feature's sequence inside the protein's sequence.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="signatureMethod" type="valuedomains:SignatureMethod"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Signature method actually used to find the
-						feature match (from a list of passed methods to
-						be used - see the
-						value of the app parameter in
-						InterProScanInputParams)
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="start" type="xsd:integer" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Start position of the feature's sequence inside
-						the protein's sequence.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="status" type="valuedomains:SignatureStatus"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Status of the feature; KNOWN for a
-						known feature,
-						UNKNOWN for an unknown feature.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
+			<xsd:element name="proteinDomainLocationStatistics" type="interproscan:ProteinDomainLocationStatistics" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
+	<xsd:element name="InterProScanOutput" type="interproscan:InterProScanOutput"/>
 	<xsd:complexType name="InterProScanOutput">
 		<xsd:annotation>
-			<xsd:documentation>
-				This is the output of the Taverna-wrapping of the
-				InterProScan service; contains the protein the
-				InterProScan was run
-				for and a collection of found
-				features for the given protein in
-				various databases in
-				InterPro warehouse. Represents the found
-				features inside
-				the given protein sequence.
-			</xsd:documentation>
+			<xsd:documentation>This is the output of the Taverna-wrapping of the InterProScan service; contains the protein the InterProScan was run for and a collection of found features for the given protein in various databases in InterPro warehouse. Represents the found features inside the given protein sequence.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="ProteinSignatureMatches" type="interproscan:ProteinSignatureMatch"
-				minOccurs="0" maxOccurs="unbounded" />
-			<xsd:element name="Protein" type="interproscan:Protein"
-				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="proteinId" type="irwg:ProteinGenomicIdentifier" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="proteinDomainMatches" type="interproscan:ProteinDomainMatch" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="proteinSequence" type="pir:ProteinSequence" minOccurs="1" maxOccurs="1"/>
 		</xsd:sequence>
 	</xsd:complexType>
-
-	<xsd:complexType name="DatabaseMatch">
+	<xsd:element name="ProteinDomain" type="interproscan:ProteinDomain"/>
+	<xsd:complexType name="ProteinDomain">
 		<xsd:annotation>
-			<xsd:documentation>
-				Represents a record (of the signature) in the
-				database
-				where the signature was found in.
-			</xsd:documentation>
+			<xsd:documentation>Represents a record of the protein domain in the database where it was found in.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="database" type="common:SequenceDatabase"
-				minOccurs="1" maxOccurs="1">
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Database name the feature match was found in.
-					</xsd:documentation>
+					<xsd:documentation>Protein domain name</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="id" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Id of the feature inside this database.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="signatureName" type="xsd:string"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Name of the found signature (feature) in this
-						database.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="ProteinSignatureLocations" type="interproscan:ProteinSignatureLocation"
-				minOccurs="1" maxOccurs="unbounded" />
+			<xsd:element name="proteinDomainId" type="interproscan:ProteinDomainIdentifier" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="proteinDomainLocations" type="interproscan:ProteinDomainLocation" minOccurs="1" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:complexType name="Protein">
-		<xsd:annotation>
-			<xsd:documentation>
-				Represents the protein for which the InterProScan
-				job
-				was run for, i.e. the job was looking for the known
-				features in
-				the given protein sequence.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="crc64" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						CRC64 checksum of the sequence.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="id" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Id of the protein from a protein database (such
-						as uniprot or swissprot).
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element name="sequenceLength" type="xsd:integer"
-				minOccurs="1" maxOccurs="1">
-				<xsd:annotation>
-					<xsd:documentation>
-						Protein sequence length.
-					</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-		</xsd:sequence>
+	<xsd:element name="ProteinDomainIdentifier" type="interproscan:ProteinDomainIdentifier"/>
+	<xsd:complexType name="ProteinDomainIdentifier">
+		<xsd:complexContent>
+			<xsd:extension base="irwg:DatabaseCrossReference">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
 	</xsd:complexType>
+	<xsd:element name="Classification" type="interproscan:Classification"/>
 	<xsd:complexType name="Classification">
 		<xsd:annotation>
-			<xsd:documentation>
-				Gene Ontology (GO) classification of the found
-				feature.
-			</xsd:documentation>
+			<xsd:documentation>Classification the found feature is classified in. Typically this will be a Gene Ontology (GO).</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="category" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Category of the feature in the classification.
-					</xsd:documentation>
+					<xsd:documentation>Classification id.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="classificationType" type="xsd:string"
-				minOccurs="1" maxOccurs="1">
+			<xsd:element name="classificationType" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Classification type.
-					</xsd:documentation>
+					<xsd:documentation>Classification type.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="description" type="xsd:string"
-				minOccurs="1" maxOccurs="1">
+			<xsd:element name="category" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Description of the feature from classification.
-					</xsd:documentation>
+					<xsd:documentation>Category of the feature in the classification.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="id" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Classification id.
-					</xsd:documentation>
+					<xsd:documentation>Description of the feature from classification.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:complexType name="ProteinSignatureMatch">
+	<xsd:element name="ProteinDomainMatch" type="interproscan:ProteinDomainMatch"/>
+	<xsd:complexType name="ProteinDomainMatch">
 		<xsd:annotation>
-			<xsd:documentation>
-				Represents a found signature in the given protein
-				sequence.
-			</xsd:documentation>
+			<xsd:documentation>Represents a found signature in the given protein sequence.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="id" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Feature id in the InterPro warehouse.
-					</xsd:documentation>
+					<xsd:documentation>Protein domain id in the InterPro warehouse.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="name" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Feature name in the InterPro warehouse.
-					</xsd:documentation>
+					<xsd:documentation>Protein domain name in the InterPro warehouse.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="parentId" type="xsd:string" minOccurs="0"
-				maxOccurs="1">
+			<xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Id of the parent feature, if any.
-					</xsd:documentation>
+					<xsd:documentation>Protein domain type from the InterPro warehouse.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="type" type="xsd:string" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element name="parentId" type="xsd:string" minOccurs="1" maxOccurs="1">
 				<xsd:annotation>
-					<xsd:documentation>
-						Feature type from the InterPro warehouse.
-					</xsd:documentation>
+					<xsd:documentation>Id of the parent protein domain, if any.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="Classification" type="interproscan:Classification"
-				minOccurs="0" maxOccurs="1" />
-			<xsd:element name="DatabaseMatches" type="interproscan:DatabaseMatch"
-				minOccurs="1" maxOccurs="unbounded" />
+			<xsd:element name="classifications" type="interproscan:Classification" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="proteinDomainPerDatabaseMatches" type="interproscan:ProteinDomain" minOccurs="1" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
-
-
-	<xsd:element name="InterProScanInput" type="interproscan:InterProScanInput">
-	</xsd:element>
-
-	<xsd:element name="InterProScanOutput" type="interproscan:InterProScanOutput">
-	</xsd:element>
-
-
 </xsd:schema>

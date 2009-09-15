@@ -8,13 +8,8 @@ import org.globus.wsrf.ResourceKey;
 
 import uk.ac.ebi.www.wsinterproscan.Data;
 import uk.ac.ebi.www.wsinterproscan.InputParams;
-import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
-import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
-import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceIdentifier;
-import uk.org.mygrid.cagrid.domain.common.NucleotideSequenceRepresentation;
-import uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier;
+import uk.org.mygrid.cagrid.domain.common.JobId;
 import uk.org.mygrid.cagrid.domain.common.ProteinSequenceRepresentation;
-import uk.org.mygrid.cagrid.domain.common.SequenceRepresentation;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInputParameters;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.converter.InterProScanConverter;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.invoker.InvokerFactory;
@@ -75,8 +70,8 @@ public class InterProScanImpl extends InterProScanImplBase {
 		} catch (InvokerException e1) {
 			logger.warn("Can't submit job", e1);
 			throw new RemoteException("Can't submit job", e1);
-		}
-		resource.setJobID(jobID);
+		}		
+		resource.setJobId(new JobId(jobID));
 		logger.info("Submitted interproscan job " + jobID);
 		return jobResourceRef;
 	}
