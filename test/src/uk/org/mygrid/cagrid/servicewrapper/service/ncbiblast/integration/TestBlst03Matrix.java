@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.apache.axis.AxisFault;
 import org.junit.Test;
 
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTOutput;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastOutput;
 import uk.org.mygrid.cagrid.domain.ncbiblast.SequenceSimilarity;
 import uk.org.mygrid.cagrid.valuedomains.Matrix;
 
@@ -35,7 +35,7 @@ public class TestBlst03Matrix extends CommonTest {
 	@Test()
 	public void emptyUsesDefault() throws Exception {
 		params.setMatrix(null);
-		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		NCBIBlastOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("No similarities found", similarities.length > 0);
 		
@@ -48,7 +48,7 @@ public class TestBlst03Matrix extends CommonTest {
 	@Test
 	public void matrixPAM30() throws Exception {
 		params.setMatrix(Matrix.PAM30);
-		NCBIBLASTOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		NCBIBlastOutput out = clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		SequenceSimilarity[] similarities = out.getSequenceSimilarities();
 		assertTrue("No similarities found", similarities.length > 0);
 

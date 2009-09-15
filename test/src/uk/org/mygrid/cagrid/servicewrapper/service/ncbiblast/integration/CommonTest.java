@@ -7,12 +7,16 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.junit.After;
 import org.junit.Before;
 
-import schema.EBIApplicationResult;
-import uk.org.mygrid.cagrid.domain.common.SequenceDatabase;
-import uk.org.mygrid.cagrid.domain.common.FASTANucleotideSequence;
-import uk.org.mygrid.cagrid.domain.common.FASTAProteinSequence;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInput;
-import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBLASTInputParameters;
+import uk.ac.ebi.ncbiblast.EBIApplicationResult;
+import uk.org.mygrid.cagrid.domain.common.NucleicAcidSequenceDatabase;
+import uk.org.mygrid.cagrid.domain.common.NucleicAcidSequenceRepresentation;
+import uk.org.mygrid.cagrid.domain.common.ProteinSequenceDatabase;
+import uk.org.mygrid.cagrid.domain.common.ProteinSequenceRepresentation;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInput;
+import uk.org.mygrid.cagrid.domain.ncbiblast.NCBIBlastInputParameters;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.NucleicAcidSequence;
+import uk.org.mygrid.cagrid.servicewrapper.imported.irwg.ProteinGenomicIdentifier;
+import uk.org.mygrid.cagrid.servicewrapper.imported.pir.ProteinSequence;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.client.NCBIBlastClient;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.client.NCBIBlastClientUtils;
 import uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.job.client.NCBIBlastJobClient;
@@ -20,36 +24,68 @@ import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
 
 public class CommonTest {
 
-	public static final SequenceDatabase PROTEIN_DATABASE = new SequenceDatabase("uniprot", null);
-	public static final SequenceDatabase NUCLEOTIDE_DATABASE = new SequenceDatabase("em_rel_std_syn", null);
-	public static final FASTAProteinSequence PROT_SEQUENCE_ID = new FASTAProteinSequence(
-			"uniprot:wap_rat");
+	protected ProteinGenomicIdentifier PROT_SEQUENCE_ID;
+	protected ProteinSequence SIMPLE_PROT_SEQUENCE;
+	protected NucleicAcidSequence FAKE_NUCLEOTIDE_SEQUENCE;
+	protected NCBIBlastClient client;
+	protected NCBIBlastClientUtils clientUtils;
+	protected NCBIBlastInputParameters params;
+	protected NCBIBlastInput input;
+	protected ProteinSequenceDatabase PROTEIN_DATABASE;
+	protected NucleicAcidSequenceDatabase NUCLEOTIDE_DATABASE;
+
+	protected ProteinSequenceRepresentation protSeqRepId;
+	protected NucleicAcidSequenceRepresentation nucleotideSeqRep;
+	protected ProteinSequenceRepresentation protSeqRepSequence;
+	
+
+	@Before
+	public void makeInputs() {
+		
+		PROTEIN_DATABASE = new ProteinSequenceDatabase();
+		PROTEIN_DATABASE.setName("uniprot");
+		NUCLEOTIDE_DATABASE = new NucleicAcidSequenceDatabase(); 
+		NUCLEOTIDE_DATABASE.setName("em_rel_std_syn");
+		
+		PROT_SEQUENCE_ID = new ProteinGenomicIdentifier();
+		PROT_SEQUENCE_ID.setDataSourceName("uniprot");
+		PROT_SEQUENCE_ID.setCrossReferenceId("WAP_RAT");
+		protSeqRepId = new ProteinSequenceRepresentation();
+		protSeqRepId.setProteinId(PROT_SEQUENCE_ID);
+		
+		SIMPLE_PROT_SEQUENCE = new ProteinSequence();
+		SIMPLE_PROT_SEQUENCE.setValue("CQTNEECAQNDMCCPSSCGRSCKTPVNIE");
+		protSeqRepSequence = new ProteinSequenceRepresentation();
+		protSeqRepSequence.setProteinSequence(SIMPLE_PROT_SEQUENCE);
+
+		FAKE_NUCLEOTIDE_SEQUENCE = new NucleicAcidSequence();
+		FAKE_NUCLEOTIDE_SEQUENCE.setValue("TAGGAGAGAGAGAGAGACCCCCCCCCCCCCCAGAGAGAGACAGGCAGCAGATTACGATGGTGGTGTGTGAC");
+		nucleotideSeqRep = new NucleicAcidSequenceRepresentation();
+		nucleotideSeqRep.setNucleicAcidSequence(FAKE_NUCLEOTIDE_SEQUENCE);
+		
+		input = new NCBIBlastInput();
+		
+		input.setSequenceRepresentation(protSeqRepId);
+
+		params = new NCBIBlastInputParameters();
+		params.setEmail("mannen@soiland-reyes.com");
+		params.setQueryDatabase(PROTEIN_DATABASE);
+		params.setBlastProgram(BLASTProgram.BLASTP);
+		input.setNcbiBLASTInputParameters(params);
+	}
+	
+	
 	// 100 ms
 	public static final int SHORT_TIMEOUT = 100;
 	// 1 minute
 	public static final int LONG_TIMEOUT = 1 * 60 * 1000;
 
-	public static final FASTAProteinSequence SIMPLE_PROT_SEQUENCE = new FASTAProteinSequence(
-			"CQTNEECAQNDMCCPSSCGRSCKTPVNIE");
 	
-	public static final FASTANucleotideSequence FAKE_NUCLEOTIDE_SEQUENCE = new FASTANucleotideSequence("TAGGAGAGAGAGAGAGACCCCCCCCCCCCCCAGAGAGAGACAGGCAGCAGATTACGATGGTGGTGTGTGAC");
-	
-	protected NCBIBlastClient client;
-	protected NCBIBlastClientUtils clientUtils;
-	protected NCBIBLASTInputParameters params;
-	protected NCBIBLASTInput input;
 
 	@Before
 	public void makeClient() throws MalformedURIException, RemoteException {
 		client = new NCBIBlastClient(
 				"http://127.0.0.1:8080/wsrf/services/cagrid/NCBIBlast");
-		input = new NCBIBLASTInput();
-		input.setProteinOrNucleotideSequenceRepresentation(PROT_SEQUENCE_ID);
-		params = new NCBIBLASTInputParameters();
-		params.setEmail("mannen@soiland-reyes.com");
-		params.setDatabase(PROTEIN_DATABASE);
-		params.setBlastProgram(BLASTProgram.BLASTP);
-		input.setNCBIBLASTInputParameters(params);
 		clientUtils = new NCBIBlastClientUtils(client);	
 	}
 
@@ -73,10 +109,9 @@ public class CommonTest {
 
 	public void setNucleotideParams() {
 		params.setBlastProgram(BLASTProgram.BLASTN);
-		params.setDatabase(NUCLEOTIDE_DATABASE);		
-		params.setAlignmentsToOutput(BigInteger.ONE);
-		input.setProteinOrNucleotideSequenceRepresentation(
-						FAKE_NUCLEOTIDE_SEQUENCE);
+		params.setQueryDatabase(NUCLEOTIDE_DATABASE);
+		params.setAlignmentsToOutput(BigInteger.ONE);		
+		input.setSequenceRepresentation(nucleotideSeqRep);
 	}
 
 }
