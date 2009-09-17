@@ -7,13 +7,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.org.mygrid.cagrid.domain.common.ProteinSequenceIdentifier;
-import uk.org.mygrid.cagrid.domain.interproscan.DatabaseMatch;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInput;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanInputParameters;
 import uk.org.mygrid.cagrid.domain.interproscan.InterProScanOutput;
-import uk.org.mygrid.cagrid.domain.interproscan.ProteinSignatureLocation;
-import uk.org.mygrid.cagrid.domain.interproscan.ProteinSignatureMatch;
+import uk.org.mygrid.cagrid.domain.interproscan.ProteinDomain;
+import uk.org.mygrid.cagrid.domain.interproscan.ProteinDomainLocation;
+import uk.org.mygrid.cagrid.domain.interproscan.ProteinDomainMatch;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProScanClient;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProScanClientUtils;
 import uk.org.mygrid.cagrid.valuedomains.SignatureMethod;
@@ -28,32 +27,17 @@ import uk.org.mygrid.cagrid.valuedomains.SignatureMethod;
  * Additional tests: Verify that the hits returned only come from the signature methods that were provided in the input parameters of the call.
 */
 
-public class InterProScanSignatureMethodParameterTest{
+public class InterProScanSignatureMethodParameterTest extends SequenceTools {
 
-	private static final int TIMEOUT_SECONDS = 60;
-	private InterProScanClientUtils clientUtils  = null;
-
-	@Before
-	public void init(){
-		InterProScanClient interproscan = null;
-		clientUtils  = null;
-		try {
-			interproscan = new InterProScanClient("https://localhost:8443/wsrf/services/cagrid/InterProScan");
-			clientUtils = new InterProScanClientUtils(interproscan);
-		} catch (Exception e) {
-			System.exit(1);
-		}
-	}
-	
 	// Test that passing a null value for signature parameter results in the default (i.e. all signature methods) being used
 	@Test
 	public void testDefaultSignatureMethod() throws Exception {
 		InterProScanInput input = new InterProScanInput();
-		input.setSequenceRepresentation(new ProteinSequenceIdentifier("uniprot:wap_rat"));
+		input.setSequenceRepresentation(makeSequenceRepr());
 		InterProScanInputParameters params = new InterProScanInputParameters();
 		// Set the email, but do not set the signature method parameter - test the default value
-		params.setEmail("mannen@soiland-reyes.com");
-		params.setSignatureMethod(null);
+		params.setEmail(EMAIL);
+		params.setSignatureMethods(null);
 		input.setInterProScanInputParameters(params);
 		
 		// List of databases that should contain the matches for "uniprot:wap_rat" when all possible 
@@ -96,11 +80,11 @@ public class InterProScanSignatureMethodParameterTest{
 	@Test(expected=org.apache.axis.AxisFault.class)
 	public void failsInvalidSignatureMethod() throws Exception{
 		InterProScanInput input = new InterProScanInput();
-		input.setSequenceRepresentation(new ProteinSequenceIdentifier("uniprot:wap_rat"));
+		input.setSequenceRepresentation(makeSequenceRepr());
 		InterProScanInputParameters params = new InterProScanInputParameters();
 		// Set the email, but do not set the signature method parameter - test the default value
-		params.setEmail("mannen@soiland-reyes.com");
-		params.setSignatureMethod(new SignatureMethod[] { new SignatureMethod("Dummy"){} });
+		params.setEmail(EMAIL);
+		params.setSignatureMethods(new SignatureMethod[] { new SignatureMethod("Dummy"){} });
 		input.setInterProScanInputParameters(params);
 		
 		// Should fail
@@ -111,12 +95,11 @@ public class InterProScanSignatureMethodParameterTest{
 	@Test
 	public void testPassedSignatureMethod() throws Exception {
 		InterProScanInput input = new InterProScanInput();
-		input.setSequenceRepresentation(new ProteinSequenceIdentifier("uniprot:wap_rat"));
+		input.setSequenceRepresentation(makeSequenceRepr());
 		InterProScanInputParameters params = new InterProScanInputParameters();
 		// Set the email, but do not set the signature method parameter - test the default value
-		params.setEmail("mannen@soiland-reyes.com");
-		params.setSignatureMethod(null);
-		params.setSignatureMethod(new SignatureMethod[] { SignatureMethod.SuperFamily, SignatureMethod.HMMPfam });
+		params.setEmail(EMAIL);
+		params.setSignatureMethods(new SignatureMethod[] { SignatureMethod.SuperFamily, SignatureMethod.HMMPfam });
 		input.setInterProScanInputParameters(params);
 
 		// List of signature methods that were used to find the hits should contain only SuperFamily and HMMPfam
@@ -144,13 +127,13 @@ public class InterProScanSignatureMethodParameterTest{
 	}
 	
 	private void parseResults(InterProScanOutput output, Set<String> foundDatabases, Set<String> foundSignatureMethods){
-		for (ProteinSignatureMatch proteinSignatureMatch : output.getProteinSignatureMatches()){
-			DatabaseMatch[] databaseMatches = proteinSignatureMatch.getDatabaseMatches();
-			for (DatabaseMatch databaseMatch : databaseMatches){
-				foundDatabases.add(databaseMatch.getDatabase().getName().toLowerCase());
-				ProteinSignatureLocation[] proteinSignatureLocations = databaseMatch.getProteinSignatureLocations();
-				for (ProteinSignatureLocation location : proteinSignatureLocations) {
-					foundSignatureMethods.add(location.getSignatureMethod().getValue().toLowerCase());
+		for (ProteinDomainMatch proteinSignatureMatch : output.getProteinDomainMatches()){
+			ProteinDomain[] databaseMatches = proteinSignatureMatch.getProteinDomainPerDatabaseMatches();
+			for (ProteinDomain databaseMatch : databaseMatches){
+				foundDatabases.add(databaseMatch.getProteinDomainId().getDataSourceName().toLowerCase());
+				ProteinDomainLocation[] proteinSignatureLocations = databaseMatch.getProteinDomainLocations();
+				for (ProteinDomainLocation location : proteinSignatureLocations) {
+					foundSignatureMethods.add(location.getProteinDomainLocationStatistics().getSignatureMethod().getValue().toLowerCase());
 				}
 			}
 		}
