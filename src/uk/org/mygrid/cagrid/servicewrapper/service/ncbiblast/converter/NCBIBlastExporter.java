@@ -139,7 +139,7 @@ public class NCBIBlastExporter {
 		params.setDatabase(database.getName());
 
 		String email = ncbiBlastInputParameters.getEmail();
-		if (email == null || email.isEmpty()) {
+		if (email == null || email.length() < 1) {
 			throw new ConverterException("Parameter 'email' is required");
 		}
 		params.setEmail(email);
