@@ -41,7 +41,7 @@
   <typeMapping xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" qname="irwg:NucleicAcidSequence" type="java:uk.org.mygrid.cagrid.servicewrapper.imported.irwg.NucleicAcidSequence" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
   <typeMapping xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" qname="irwg:ProteinGenomicIdentifier" type="java:uk.org.mygrid.cagrid.servicewrapper.imported.irwg.ProteinGenomicIdentifier" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
   
-  <typeMapping xmlns:pir="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" qname="irwg:ProteinSequence" type="java:uk.org.mygrid.cagrid.servicewrapper.imported.pir.ProteinSequence" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+  <typeMapping xmlns:pir="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" qname="pir:ProteinSequence" type="java:uk.org.mygrid.cagrid.servicewrapper.imported.pir.ProteinSequence" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
   
 </deployment>
 
