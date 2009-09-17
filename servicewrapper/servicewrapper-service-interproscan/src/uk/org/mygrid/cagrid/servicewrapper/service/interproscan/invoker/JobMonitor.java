@@ -167,7 +167,7 @@ public class JobMonitor implements Runnable {
 					logger.warn("Could not look up job resource for " + jobKey);
 					continue;
 				}
-				if (job.getJob() == null || job.getJob().getStatus() == null) {
+				if (job.getJobId() == null || job.getJobId().getValue() == null) {
 					logger.info("Ignoring job with no jobID yet: " + jobKey);
 					continue;
 				}
