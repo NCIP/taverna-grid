@@ -118,11 +118,15 @@ public class InterProScanJobUtils {
 	 * also need to have a
 	 * {@link InterProScanJobResource#getInterProScanOutput()}.
 	 * 
-	 * @param job
+	 * @param jobResource
 	 * @return <code>true</code> if the job is considered finished.
 	 */
-	public boolean isFinished(InterProScanJobResource job) {
-		JobStatus jobStatus = job.getJob().getStatus();
+	public boolean isFinished(InterProScanJobResource jobResource) {
+		Job job = jobResource.getJob();
+		if (job ==  null) {
+			return false;
+		}
+		JobStatus jobStatus = job.getStatus();
 		if (jobStatus == null) {
 			return false;
 		}
@@ -131,7 +135,7 @@ public class InterProScanJobUtils {
 			return true;
 		}
 		if (jobStatus.equals(JobStatus.done)
-				&& job.getInterProScanOutput() != null) {
+				&& jobResource.getInterProScanOutput() != null) {
 			return true;
 		}
 		return false;
