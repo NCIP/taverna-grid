@@ -76,14 +76,14 @@ public class TestNCBIBlastConverter {
 		SequenceFragment querySequenceFragment = alignment.getQuerySequenceFragment();
 		assertEquals(BigInteger.valueOf(1), querySequenceFragment.getStart());
 		assertEquals(BigInteger.valueOf(134), querySequenceFragment.getEnd());
-		assertEquals("MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAA-GPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTVI", querySequenceFragment.getSequence());
+		assertEquals("MRCSISLVLGLLALEVALARNLQEHVFNSVQSMCSDDSFSEDTECINCQTNEECAQNDMCCPSSCGRSCKTPVNIEVQKAGRCPWNPIQMIAA-GPCPKDNPCSIDSDCSGTMKCCKNGCIMSCMDPEPKSPTVI", querySequenceFragment.getSequence().getValue());
 
 		assertEquals("MRC ISLVLGLLALEVALA+NL+E VFNSVQSM    S  E TECI CQTNEECAQN MCCP SCGR+ KTPVNI V KAG CPWN +QMI++ GPCP    CS D +CSG MKCC   C+M+C  P P+  ++I", alignment.getSequenceSimilarityPattern());
 		
 		SequenceFragment matchSequenceFragment = alignment.getMatchSequenceFragment();
 		assertEquals(BigInteger.valueOf(1), matchSequenceFragment.getStart());
 		assertEquals(BigInteger.valueOf(135), matchSequenceFragment.getEnd());
-		assertEquals("MRCLISLVLGLLALEVALAQNLEEQVFNSVQSMFPKASPIEGTECIICQTNEECAQNAMCCPGSCGRTRKTPVNIGVPKAGFCPWNLLQMISSTGPCPMKIECSSDRECSGNMKCCNVDCVMTCTPPVPEVWSII", matchSequenceFragment.getSequence());
+		assertEquals("MRCLISLVLGLLALEVALAQNLEEQVFNSVQSMFPKASPIEGTECIICQTNEECAQNAMCCPGSCGRTRKTPVNIGVPKAGFCPWNLLQMISSTGPCPMKIECSSDRECSGNMKCCNVDCVMTCTPPVPEVWSII", matchSequenceFragment.getSequence().getValue());
 	}
 	@Test
 	
