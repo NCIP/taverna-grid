@@ -274,7 +274,7 @@ public class NCBIBlastInvokerImpl implements NCBIBlastInvoker {
 			}
 			String name = data.getName();
 			SequenceDatabase db = new SequenceDatabase();
-			if (name == null || name.isEmpty()) {
+			if (name == null || name.length() < 1) {
 				logger.warn("Invalid database:\n" + data);
 				continue;
 			}
