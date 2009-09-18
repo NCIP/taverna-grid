@@ -23,11 +23,8 @@ import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProS
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProScanClientUtils;
 import uk.org.mygrid.cagrid.valuedomains.SignatureMethod;
 
-public class InterProScanTest {
-
-	private static final String EMAIL = "mannen@soiland-reyes.com";
-	private static final int TIMEOUT_SECONDS = 60;
-
+public class InterProScanTest extends SequenceTools {
+	
 	public static void main(String[] args) throws Exception {
 
 		InterProScanTest interProScanTest = new InterProScanTest();
@@ -60,7 +57,7 @@ public class InterProScanTest {
 				.println("///////////////////////////////////////////////////////////////");
 
 		InterProScanClient interproscan = new InterProScanClient(
-				"https://localhost:8443/wsrf/services/cagrid/InterProScan");
+				URL);
 		InterProScanClientUtils clientUtils = new InterProScanClientUtils(
 				interproscan);
 
@@ -261,20 +258,6 @@ public class InterProScanTest {
 
 	}
 
-	protected ProteinSequenceRepresentation makeSequenceRepr() {
-		return makeSequenceRepr("uniprot", "wap_rat");
-	}
-
-	protected ProteinSequenceRepresentation makeSequenceRepr(
-			String dataSourceName, String crossReferenceId) {
-		ProteinSequenceRepresentation sequenceRepresentation = new ProteinSequenceRepresentation();
-		ProteinGenomicIdentifier proteinId = new ProteinGenomicIdentifier();
-		proteinId.setDataSourceName(dataSourceName);
-		proteinId.setCrossReferenceId(crossReferenceId);
-		sequenceRepresentation.setProteinId(proteinId);
-		return sequenceRepresentation;
-	}
-
 	/**
 	 * Test IPS2 (see {@link http
 	 * ://www.mygrid.org.uk/dev/wiki/display/caGrid/Task+3.4+-+Test+Plan}). that
@@ -300,7 +283,7 @@ public class InterProScanTest {
 				.println("/////////////////////////////////////////////////////");
 
 		InterProScanClient interproscan = new InterProScanClient(
-				"https://localhost:8443/wsrf/services/cagrid/InterProScan");
+				URL);
 		InterProScanClientUtils clientUtils = new InterProScanClientUtils(
 				interproscan);
 
@@ -337,8 +320,7 @@ public class InterProScanTest {
 				.println("IPS2 Service invocation 2: testing incorrect value for protein.");
 
 		InterProScanInput input2 = new InterProScanInput();
-		ProteinSequenceRepresentation sequenceRepresentation = new ProteinSequenceRepresentation();
-		input1.setSequenceRepresentation(makeSequenceRepr("uniprot",
+		input2.setSequenceRepresentation(makeSequenceRepr("uniprot",
 				"wap_rat_BLALBLA"));
 		InterProScanInputParameters params2 = new InterProScanInputParameters();
 		params2.setEmail(EMAIL);
@@ -419,14 +401,6 @@ public class InterProScanTest {
 		}
 	}
 
-	private ProteinSequenceRepresentation makeProteinSequence(String fasta) {
-		ProteinSequenceRepresentation proteinSequenceRepresentation = new ProteinSequenceRepresentation();
-		ProteinSequence proteinSequence = new ProteinSequence();
-		proteinSequence.setValueInFastaFormat(fasta);
-		proteinSequenceRepresentation.setProteinSequence(proteinSequence);
-		return proteinSequenceRepresentation;
-	}
-
 	public void ips3() throws Exception {
 
 		Thread.sleep(500); // back off a bit
@@ -440,7 +414,7 @@ public class InterProScanTest {
 				.println("/////////////////////////////////////////////////////////////////////////////////////////");
 
 		InterProScanClient interproscan = new InterProScanClient(
-				"https://localhost:8443/wsrf/services/cagrid/InterProScan");
+				URL);
 		InterProScanClientUtils clientUtils = new InterProScanClientUtils(
 				interproscan);
 

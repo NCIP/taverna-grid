@@ -70,7 +70,7 @@ public class InterProScanImpl extends InterProScanImplBase {
 		} catch (InvokerException e1) {
 			logger.warn("Can't submit job", e1);
 			throw new RemoteException("Can't submit job", e1);
-		}		
+		}
 		resource.setJobId(new JobId(jobID));
 		logger.info("Submitted interproscan job " + jobID);
 		return jobResourceRef;

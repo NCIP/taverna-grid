@@ -87,7 +87,7 @@ public class InterProScanImporter {
 	private ProteinGenomicIdentifier importProteinId(String id) {
 		// sp|P01174|WAP_RAT --> dataSource=sp crossRef=WAP_RAT
 		ProteinGenomicIdentifier proteinGenomicIdentifier = new ProteinGenomicIdentifier();
-		String[] idSplit = id.split("|");
+		String[] idSplit = id.split("\\|");
 		if (idSplit.length > 3 || idSplit.length < 2) {
 			throw new ConverterException("Can't parse protein ID: " + id);
 		}
