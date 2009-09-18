@@ -3,7 +3,6 @@ package uk.org.mygrid.cagrid.servicewrapper.service.ncbiblast.integration;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.axis.AxisFault;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
@@ -24,7 +23,6 @@ import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
  * @author Stian Soiland-Reyes
  * 
  */
-@Ignore
 public class TestBlst01Program extends CommonTest {
 
 	@Test(expected = AxisFault.class)
