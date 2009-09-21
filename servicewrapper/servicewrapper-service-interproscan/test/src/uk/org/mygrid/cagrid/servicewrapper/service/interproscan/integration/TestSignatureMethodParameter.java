@@ -27,7 +27,7 @@ import uk.org.mygrid.cagrid.valuedomains.SignatureMethod;
  * Additional tests: Verify that the hits returned only come from the signature methods that were provided in the input parameters of the call.
 */
 
-public class InterProScanSignatureMethodParameterTest extends SequenceTools {
+public class TestSignatureMethodParameter extends AbstractInterProScanTest {
 
 	// Test that passing a null value for signature parameter results in the default (i.e. all signature methods) being used
 	@Test

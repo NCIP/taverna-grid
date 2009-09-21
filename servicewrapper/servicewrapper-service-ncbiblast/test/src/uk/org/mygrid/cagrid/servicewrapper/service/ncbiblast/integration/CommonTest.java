@@ -24,6 +24,7 @@ import uk.org.mygrid.cagrid.valuedomains.BLASTProgram;
 
 public class CommonTest {
 
+	private static final String URL = "http://cagrid.taverna.org.uk:8080/wsrf/services/cagrid/NCBIBlast";
 	protected ProteinGenomicIdentifier PROT_SEQUENCE_ID;
 	protected ProteinSequence SIMPLE_PROT_SEQUENCE;
 	protected NucleicAcidSequence FAKE_NUCLEOTIDE_SEQUENCE;
@@ -85,7 +86,7 @@ public class CommonTest {
 	@Before
 	public void makeClient() throws MalformedURIException, RemoteException {
 		client = new NCBIBlastClient(
-				"http://127.0.0.1:8080/wsrf/services/cagrid/NCBIBlast");
+				URL);
 		clientUtils = new NCBIBlastClientUtils(client);	
 	}
 

@@ -8,9 +8,9 @@ import uk.org.mygrid.cagrid.servicewrapper.imported.pir.ProteinSequence;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProScanClient;
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProScanClientUtils;
 
-public class SequenceTools {
+public abstract class AbstractInterProScanTest {
 
-	protected static final String URL = "http://localhost:8080/wsrf/services/cagrid/InterProScan";
+	protected static final String URL = "http://cagrid.taverna.org.uk:8080/wsrf/services/cagrid/InterProScan";
 	protected static final String EMAIL = "mannen@soiland-reyes.com";
 	protected static final int TIMEOUT_SECONDS = 60;
 

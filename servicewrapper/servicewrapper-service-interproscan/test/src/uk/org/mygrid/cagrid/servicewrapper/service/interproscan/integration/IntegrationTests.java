@@ -23,11 +23,11 @@ import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProS
 import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProScanClientUtils;
 import uk.org.mygrid.cagrid.valuedomains.SignatureMethod;
 
-public class InterProScanTest extends SequenceTools {
+public class IntegrationTests extends AbstractInterProScanTest {
 	
 	public static void main(String[] args) throws Exception {
 
-		InterProScanTest interProScanTest = new InterProScanTest();
+		IntegrationTests interProScanTest = new IntegrationTests();
 
 		interProScanTest.ips1();
 		interProScanTest.ips2();

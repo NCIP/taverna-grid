@@ -18,7 +18,7 @@ import uk.org.mygrid.cagrid.servicewrapper.service.interproscan.client.InterProS
  * Test invalid value: Should produce error
  *
  */
-public class InterProScanProteinParameterTest extends SequenceTools {
+public class TestProteinParameter extends AbstractInterProScanTest {
 	
 	
 	// Test that passing null for the protein parameter produces an error

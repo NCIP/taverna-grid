@@ -34,13 +34,13 @@ public class TestBlst10DropOff extends CommonTest {
 	}
 
 	@Test
-	public void dropOff14() throws Exception {
-		params.setDropoff(BigInteger.valueOf(14));
+	public void dropOff5() throws Exception {
+		params.setDropoff(BigInteger.valueOf(5));
 		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
 		String cmdLine = getCommandLine();
 		assertTrue(
 				"Command Line did not contain right expected drop off, but: "
-						+ cmdLine, cmdLine.contains(" -X 14 "));
+						+ cmdLine, cmdLine.contains(" -X 5 "));
 	}
 
 	@Test

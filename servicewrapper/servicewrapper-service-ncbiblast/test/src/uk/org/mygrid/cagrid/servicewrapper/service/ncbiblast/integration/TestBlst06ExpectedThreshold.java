@@ -41,7 +41,7 @@ public class TestBlst06ExpectedThreshold extends CommonTest {
 	@Test
 	public void expectedThreshold5() throws Exception {
 		params.setExpectedThreshold(5.0);
-		clientUtils.ncbiBlastSync(input, LONG_TIMEOUT);
+		clientUtils.ncbiBlastSync(input, 2*LONG_TIMEOUT);
 
 		String cmdLine = getCommandLine();
 		assertTrue(
