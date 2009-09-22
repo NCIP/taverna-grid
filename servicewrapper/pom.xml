@@ -14,7 +14,6 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>servicewrapper-prototype</module>
 		<module>servicewrapper-invoker-api</module>
 		<module>servicewrapper-invoker-interproscan</module>
 		<module>servicewrapper-invoker-ncbiblast</module>
