@@ -1,0 +1,154 @@
+<ns1:ServiceMetadata xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
+ <ns1:serviceDescription>
+  <ns2:Service description="" name="NCBIBlast" version="1.3" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+   <ns2:pointOfContactCollection>
+    <ns3:PointOfContact affiliation="Software engineer" email="soiland-reyes@cs.manchester.ac.uk" firstName="Stian" lastName="Soiland Reyes" phoneNumber="+44 161 275 0689" role="Developer" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   </ns2:pointOfContactCollection>
+   <ns2:serviceContextCollection>
+    <ns2:ServiceContext description="" name="NCBIBlast">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="GetMultipleResourceProperties">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="GetResourceProperty">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="QueryResourceProperties">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="739A970C-8B2F-4D7E-E040-BB89AD437395" packageName="gov.nih.nci.cagrid.metadata.security" projectName="Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns5:umlAttributeCollection/>
+         <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns5:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns5:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Invoke NCBI Blast" name="ncbiBlast">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns6:NCBIBlastInput" dimensionality="1" index="0" isArray="false" isRequired="false" name="nCBIBlastInput" xmlns:ns6="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns7:NCBIBlastJobReference" dimensionality="1" isArray="false" xmlns:ns7="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/service/NCBIBlast/Job/types"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Get supported databases" name="getDatabases">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns8:MolecularSequenceDatabase" dimensionality="1" isArray="true" xmlns:ns8="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="NCBIBlastJob">
+     <ns2:operationCollection>
+      <ns2:Operation description="Get the last error - if any" name="getError">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns2:Fault" dimensionality="1" isArray="false">
+        <ns9:UMLClass className="Fault" description="WSRF fault; an exception." id="739A970C-8758-4D7E-E040-BB89AD437395" packageName="gov.nih.nci.cagrid.metadata.service" projectName="Metadata_Models" projectVersion="1" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns9:umlAttributeCollection>
+          <ns9:UMLAttribute dataTypeName="java.lang.String" description="A description of the service fault." name="description" publicID="2927764" version="1.0">
+           <ns9:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description" order="0"/>
+           <ns9:ValueDomain longName="java.lang.String">
+            <ns9:enumerationCollection/>
+           </ns9:ValueDomain>
+          </ns9:UMLAttribute>
+          <ns9:UMLAttribute dataTypeName="java.lang.String" description="The name of the service fault." name="name" publicID="2535408" version="1.0">
+           <ns9:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns9:ValueDomain longName="java.lang.String">
+            <ns9:enumerationCollection/>
+           </ns9:ValueDomain>
+          </ns9:UMLAttribute>
+         </ns9:umlAttributeCollection>
+         <ns9:SemanticMetadata conceptCode="C43369" conceptDefinition="A discrepancy between a computed, observed, or measured value or condition and the true, specified, or theoretically correct value or condition. (http://foldoc.doc.ic.ac.uk/foldoc/foldoc.cgi?error)" conceptName="Error" order="0"/>
+        </ns9:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Get inputs used to submit this job" name="getInputs">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns10:NCBIBlastInput" dimensionality="1" isArray="false" xmlns:ns10="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Get outputs returned for this job, if any" name="getOutputs">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns11:NCBIBlastOutput" dimensionality="1" isArray="false" xmlns:ns11="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Get the current job status" name="getStatus">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns12:Job" dimensionality="1" isArray="false" xmlns:ns12="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns13:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns14:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="739A970C-8B2F-4D7E-E040-BB89AD437395" packageName="gov.nih.nci.cagrid.metadata.security" projectName="Metadata_Models" projectVersion="1" xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns14:umlAttributeCollection/>
+         <ns14:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns14:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns14:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns14:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Subscribe">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="GetMultipleResourceProperties">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="GetResourceProperty">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="QueryResourceProperties">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast}NCBIBlastInput"/>
+      <ns2:ContextProperty description="" name="{gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.ncbiblast}NCBIBlastOutput"/>
+      <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service}Fault"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+      <ns2:ContextProperty description="" name="{http://www.ebi.ac.uk/schema}EBIApplicationResult"/>
+      <ns2:ContextProperty description="" name="{http://www.ebi.ac.uk/schema}EBIApplicationError"/>
+      <ns2:ContextProperty description="" name="{gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common}Job"/>
+      <ns2:ContextProperty description="" name="{gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common}JobId"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+   </ns2:serviceContextCollection>
+   <ns15:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns16:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns2:Service>
+ </ns1:serviceDescription>
+ <ns1:hostingResearchCenter>
+  <ns17:ResearchCenter displayName="University of Manchester, Computer Science, myGrid test services" shortName="myGridTest" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns17:Address country="United Kingdom" locality="Manchester" postalCode="M13 9PL" stateProvince="" street1="University of Manchester" street2=""/>
+   <ns17:ResearchCenterDescription description="" homepageURL="http://www.mygrid.org.uk/dev/wiki/display/caGrid" imageURL="" rssNewsURL=""/>
+   <ns17:pointOfContactCollection>
+    <ns17:PointOfContact affiliation="Software engineer" email="soiland-reyes@cs.manchester.ac.uk" firstName="Stian" lastName="Soiland Reyes" phoneNumber="+44-161-275-50689" role="Developer"/>
+   </ns17:pointOfContactCollection>
+  </ns17:ResearchCenter>
+ </ns1:hostingResearchCenter>
+</ns1:ServiceMetadata>

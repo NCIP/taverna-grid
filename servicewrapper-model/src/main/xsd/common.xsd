@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:common="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.domain.common" xmlns:irwg="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" xmlns:pir="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" xmlns:valuedomains="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" elementFormDefault="qualified">
+	<xsd:import namespace="gme://Taverna-caGrid.caBIG/1.0/uk.org.mygrid.cagrid.valuedomains" schemaLocation="valuedomains.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/PIR" schemaLocation="pir.xsd"/>
+	<xsd:import namespace="http://www.mygrid.org.uk/2009/cagrid/servicewrapper/imported/IRWG" schemaLocation="irwg.xsd"/>
+	<xsd:element name="ProteinSequenceRepresentation" type="common:ProteinSequenceRepresentation"/>
+	<xsd:complexType name="ProteinSequenceRepresentation">
+		<xsd:annotation>
+			<xsd:documentation>An abstract class that represents a protein. It has two concrete subclasses: (1) FASTAProteinSequence to represent the case where the actual protein sequence is known and being passed, and (2) ProteinSequenceIdentifier (in format db:id) to represent the case where the sequence identified in a certain database is given and the sequence has first to be fetched from a protein database (such as uniprot) before the InterProScan or BLAST search can be performed on that sequence. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:MolecularSequenceRepresentation">
+				<xsd:choice>
+					<xsd:element name="proteinSequence" type="pir:ProteinSequence" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="proteinId" type="irwg:ProteinGenomicIdentifier" minOccurs="0" maxOccurs="1"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="Job" type="common:Job"/>
+	<xsd:complexType name="Job">
+		<xsd:sequence>
+			<xsd:element name="status" type="valuedomains:JobStatus" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="jobId" type="common:JobId" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="MolecularSequenceDatabase" type="common:MolecularSequenceDatabase"/>
+	<xsd:complexType name="MolecularSequenceDatabase">
+		<xsd:annotation>
+			<xsd:documentation>Name of a molecular sequence database</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Database name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="ProteinSequenceDatabase" type="common:ProteinSequenceDatabase"/>
+	<xsd:complexType name="ProteinSequenceDatabase">
+		<xsd:annotation>
+			<xsd:documentation>Database containing protein sequences.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:MolecularSequenceDatabase">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="JobId" type="common:JobId"/>
+	<xsd:complexType name="JobId">
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="NucleicAcidSequenceRepresentation" type="common:NucleicAcidSequenceRepresentation"/>
+	<xsd:complexType name="NucleicAcidSequenceRepresentation">
+		<xsd:annotation>
+			<xsd:documentation>An abstract class that represents a nucleotide. It has two concrete subclasses: (1) FASTANucleotideSequence to represent the case where the actual protein sequence is known and being passed, and (2) NucleotideSequenceIdentifier (in format db:id) to represent the case where the sequence identified in a certain database is given and the sequence has first to be fetched from a nucleotide database (such as ncbi) before the BLAST search can be performed on that sequence. </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:MolecularSequenceRepresentation">
+				<xsd:choice>
+					<xsd:element name="nucleicDNAId" type="irwg:GeneGenomicIdentifier" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="nucleicRNAId" type="irwg:MessengerRNAGenomicIdentifier" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="nucleicAcidSequence" type="irwg:NucleicAcidSequence" minOccurs="0" maxOccurs="1"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="MolecularSequenceRepresentation" type="common:MolecularSequenceRepresentation"/>
+	<xsd:complexType name="MolecularSequenceRepresentation" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>Molecular (protein or nucleotide) sequence.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence/>
+	</xsd:complexType>
+	<xsd:element name="NucleicAcidSequenceDatabase" type="common:NucleicAcidSequenceDatabase"/>
+	<xsd:complexType name="NucleicAcidSequenceDatabase">
+		<xsd:annotation>
+			<xsd:documentation>Database containing nucleic acid sequences.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="common:MolecularSequenceDatabase">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<EBIInterProScanResults xmlns="http://www.ebi.ac.uk/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.ebi.ac.uk/schema/InterProScanResult.xsd">
+        <Header>
+                <program name="InterProScan" version="4.0" citation="PMID:11590104" />
+                <parameters>
+                        <sequences total="1" />
+                        <databases total="14">
+                                <database number="1" name="PRODOM" type="sequences" />
+                                <database number="2" name="PANTHER" type="model" />
+                                <database number="3" name="GENE3D" type="model" />
+                                <database number="4" name="PIR" type="model" />
+                                <database number="5" name="PFAM" type="model" />
+                                <database number="6" name="SMART" type="model" />
+                                <database number="7" name="TIGRFAMs" type="model" />
+                                <database number="8" name="PRINTS" type="matrix" />
+                                <database number="9" name="PROSITE" type="strings" />
+                                <database number="10" name="PROSITE" type="strings" />
+                                <database number="11" name="PROFILE" type="strings" />
+                                <database number="12" name="SUPERFAMILY" type="model" />
+                                <database number="13" name="SIGNALP" type="model" />
+                                <database number="14" name="TMHMM" type="model" />
+                        </databases>
+                </parameters>
+        </Header>
+<interpro_matches>
+
+   <protein id="sp|P01174|WAP_RAT" length="137" crc64="1C2E8ADA9FD97949" >
+        <interpro id="IPR008197" name="Whey acidic protein, 4-disulphide core" type="Domain" parent_id="IPR015874">
+          <contains>
+            <rel_ref ipr_ref="IPR018069"/>
+          </contains>
+          <match id="G3DSA:4.10.75.10" name="no description" dbname="GENE3D">
+            <location start="77" end="128" score="9.5e-05" status="T" evidence="Gene3D" />
+          </match>
+          <match id="PF00095" name="WAP" dbname="PFAM">
+            <location start="30" end="72" score="7.4e-05" status="T" evidence="HMMPfam" />
+            <location start="79" end="126" score="1.1e-12" status="T" evidence="HMMPfam" />
+          </match>
+          <match id="SM00217" name="WAP" dbname="SMART">
+            <location start="79" end="127" score="2.4e-22" status="T" evidence="HMMSmart" />
+          </match>
+          <match id="SSF57256" name="Elafin-like" dbname="SUPERFAMILY">
+            <location start="77" end="128" score="1.8e-10" status="T" evidence="superfamily" />
+            <location start="47" end="74" score="0.004" status="T" evidence="superfamily" />
+          </match>
+        </interpro>
+        <interpro id="IPR015874" name="4-disulphide core" type="Domain">
+          <child_list>
+            <rel_ref ipr_ref="IPR008197"/>
+          </child_list>
+          <contains>
+            <rel_ref ipr_ref="IPR018069"/>
+          </contains>
+          <match id="PR00003" name="4DISULPHCORE" dbname="PRINTS">
+            <location start="76" end="85" score="1.2e-07" status="T" evidence="FPrintScan" />
+            <location start="101" end="108" score="1.2e-07" status="T" evidence="FPrintScan" />
+            <location start="108" end="117" score="1.2e-07" status="T" evidence="FPrintScan" />
+            <location start="118" end="126" score="1.2e-07" status="T" evidence="FPrintScan" />
+          </match>
+        </interpro>
+        <interpro id="IPR018069" name="Whey acidic protein, 4-disulphide core, conserved site" type="Conserved_site">
+          <found_in>
+            <rel_ref ipr_ref="IPR008197"/>
+            <rel_ref ipr_ref="IPR015874"/>
+         </found_in>
+          <match id="PS00317" name="4_DISULFIDE_CORE" dbname="PROSITE">
+            <location start="48" end="61" score="NA" status="T" evidence="PatternScan" />
+            <location start="102" end="115" score="NA" status="T" evidence="PatternScan" />
+          </match>
+          <match id="PS00317" name="4_DISULFIDE_CORE" dbname="PROSITE">
+            <location start="48" end="61" score="NA" status="?" evidence="ScanRegExp" />
+            <location start="102" end="115" score="8e-5" status="T" evidence="ScanRegExp" />
+          </match>
+        </interpro>
+        <interpro id="noIPR" name="unintegrated" type="unintegrated">
+          <match id="PTHR19441" name="WHEY ACDIC PROTEIN (WAP)" dbname="PANTHER">
+            <location start="4" end="133" score="3.5e-34" status="T" evidence="HMMPanther" />
+          </match>
+          <match id="SignalP" name="signal-peptide" dbname="SIGNALP">
+            <location start="1" end="19" score="NA" status="?" evidence="SignalPHMM" />
+          </match>
+        </interpro>
+   </protein>
+
+</interpro_matches>
+</EBIInterProScanResults>
