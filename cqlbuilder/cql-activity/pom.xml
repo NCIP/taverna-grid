@@ -9,7 +9,7 @@
 	<groupId>org.cagrid.cql</groupId>
 	<artifactId>cql-activity</artifactId>
 	<name>caGrid CQL Activity</name>
-	<version>0.9-SNAPSHOT</version>
+	<version>1.0</version>
 	<properties>
 		<t2.activities.version>0.8</t2.activities.version>
 		<t2.core.version>0.8</t2.core.version>
@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.activities</groupId>
 			<artifactId>activity-test-utils</artifactId>
-			<version>${project.version}</version>
+			<version>${t2.core.version}</version>
 			<scope>test</scope>
 		</dependency>
 		 
