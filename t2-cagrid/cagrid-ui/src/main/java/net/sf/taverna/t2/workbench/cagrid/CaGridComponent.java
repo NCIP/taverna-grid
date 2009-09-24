@@ -439,11 +439,12 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 				    Object value = entry.getValue();
 				    inputArgs[i++] =  (String) value;
 				}
-			}
+			
 			
 			for(int k=0;k<inputArgs.length;k++){
 				System.out.println("\ninput sent to execution service ..\n");
 				System.out.println("No. "+k+" " + inputArgs[k]);
+			}
 			}
 			System.out.println("\n2. Now starting the workflow ..");
 

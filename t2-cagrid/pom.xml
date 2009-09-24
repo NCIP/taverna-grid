@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.sf.taverna.t2</groupId>
-	<artifactId>t2-cagrid</artifactId>
+	<groupId>org.cagrid.taverna-service-client</groupId>
+	<artifactId>service-client</artifactId>
 	<packaging>pom</packaging>
-	<name>Taverna 2 caGrid integration</name>
+	<name>caGrid WorkflowService Client</name>
 	<version>0.9</version>
-	<description>The caGrid integration plug-in for Taverna 2.1 Beta 2</description>
+	<description>The caGrid WorkflowService Client plug-in</description>
 	<licenses>
 		
 	</licenses>
