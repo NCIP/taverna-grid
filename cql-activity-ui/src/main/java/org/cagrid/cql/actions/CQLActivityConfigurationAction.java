@@ -92,7 +92,7 @@ public class CQLActivityConfigurationAction extends ActivityConfigurationAction<
              
             ////////////////////////////////
             bean.setInputPortDefinitions(inputBeanList);
-            System.out.println("there is a input port: "+bean.getInputPortDefinitions().get(0).getName());
+            //System.out.println("there is a input port: "+bean.getInputPortDefinitions().get(0).getName());
             configureActivity(bean);
         }
     }
