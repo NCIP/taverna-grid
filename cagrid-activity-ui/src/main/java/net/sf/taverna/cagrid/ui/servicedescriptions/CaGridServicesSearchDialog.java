@@ -220,7 +220,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 					public void run() {
 						
    					 	updatingMetadata.setIcon(WorkbenchIcons.workingIcon);
-						updatingMetadata.setText("Updating metadata...");
+						updatingMetadata.setText("Updating metadata ...");
 						
 						// Update the value of classNameArray
                     	 ArrayList<String> classNameList = new ArrayList<String>();
