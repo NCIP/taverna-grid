@@ -112,12 +112,26 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 			return;
 		}
 		
-		//Element endpointRefElem = wsrfDoc.getRootElement();
-		Element endpointRefElem = wsrfDoc.getRootElement().getChild(ENDPOINT_REFERENCE, wsaNS);
-		if (endpointRefElem == null) {
-			logger.warn("Could not find " + ENDPOINT_REFERENCE);
-			return;
+		
+		Element endpointRefElem = null;
+		Element wsrfRoot = wsrfDoc.getRootElement();
+		if (wsrfRoot.getNamespace().equals(wsaNS)
+				&& wsrfRoot.getName().equals(ENDPOINT_REFERENCE)) {
+			endpointRefElem = wsrfRoot;
+		} else {
+			// Only look for child if the parent is not an EPR
+			Element childEndpoint = wsrfRoot.getChild(
+					ENDPOINT_REFERENCE, wsaNS);
+			if (childEndpoint != null) {
+				// Support wrapped endpoint reference for backward compatibility 
+				// and convenience (T2-677)
+				endpointRefElem = childEndpoint;
+			} else {
+				logger.warn("Unexpected element name for endpoint reference, but inserting anyway: " + wsrfRoot.getQualifiedName());
+				endpointRefElem = wsrfRoot;
+			}
 		}
+
 		Element refPropsElem = endpointRefElem.getChild(REFERENCE_PROPERTIES, wsaNS);
 		if (refPropsElem == null) {
 			logger.warn("Could not find " + REFERENCE_PROPERTIES);
