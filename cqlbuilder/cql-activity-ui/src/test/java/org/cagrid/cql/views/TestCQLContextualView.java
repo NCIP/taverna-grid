@@ -48,12 +48,6 @@ public class TestCQLContextualView {
 		((CQLActivity)activity).configure(b);
 	}
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testDisovery() throws Exception {ContextualViewFactory factory = ContextualViewFactoryRegistry.getInstance().getViewFactoryForObject(activity);
-		assertTrue("Factory should be CQLActivityViewFactory",factory instanceof CQLActivityViewFactory);
-		ContextualView view = factory.getView(activity);
-		assertTrue("The view should be CQLActivityContextualView",view instanceof CQLActivityContextualView);
-	}
 	
 	@Test
 	public void testGetConfigureAction() throws Exception {

@@ -20,8 +20,12 @@
  ******************************************************************************/
 package org.cagrid.cql.views;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.cagrid.cql.CQLActivity;
 import net.sf.taverna.t2.workbench.ui.actions.activity.ActivityContextualView;
+import net.sf.taverna.t2.workbench.ui.views.contextualviews.ContextualView;
 import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ContextualViewFactory;
 
 public class CQLActivityViewFactory implements ContextualViewFactory<CQLActivity> {
@@ -33,6 +37,9 @@ public class CQLActivityViewFactory implements ContextualViewFactory<CQLActivity
 
 	public ActivityContextualView<?> getView(CQLActivity activity) {
 		return new CQLActivityContextualView(activity);
+	}
+	public List<ContextualView> getViews(CQLActivity activity) {
+		return Arrays.asList(new ContextualView[] {new CQLActivityContextualView(activity)});
 	}
 
 }

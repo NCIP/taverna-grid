@@ -21,75 +21,71 @@
 package org.cagrid.cql.menu;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
-
-import org.apache.log4j.Logger;
+import javax.swing.KeyStroke;
 
 import org.cagrid.cql.CQLActivity;
-import org.cagrid.cql.CQLConfigurationBean;
 import org.cagrid.cql.servicedescriptions.CQLTemplateService;
-
-import net.sf.taverna.t2.ui.menu.AbstractContextualMenuAction;
+import net.sf.taverna.t2.ui.menu.AbstractMenuAction;
 import net.sf.taverna.t2.workbench.activityicons.ActivityIconManager;
-import net.sf.taverna.t2.workbench.edits.EditManager;
 import net.sf.taverna.t2.workbench.file.FileManager;
-import net.sf.taverna.t2.workflowmodel.CompoundEdit;
-import net.sf.taverna.t2.workflowmodel.Dataflow;
-import net.sf.taverna.t2.workflowmodel.Edit;
-import net.sf.taverna.t2.workflowmodel.EditException;
-import net.sf.taverna.t2.workflowmodel.EditsRegistry;
-import net.sf.taverna.t2.workflowmodel.Processor;
-import net.sf.taverna.t2.workflowmodel.processor.activity.ActivityConfigurationException;
-import net.sf.taverna.t2.workflowmodel.utils.Tools;
 import net.sf.taverna.t2.workbench.ui.workflowview.WorkflowView;
+import net.sf.taverna.t2.workbench.views.graph.actions.DesignOnlyAction;
+import net.sf.taverna.t2.workbench.views.graph.menu.GraphEditMenuSection;
+import net.sf.taverna.t2.workbench.views.graph.menu.InsertMenu;
+import net.sf.taverna.t2.workflowmodel.Dataflow;
+
+import org.apache.log4j.Logger;
 
 /**
  * An action to add a string constant activity + a wrapping processor to the workflow.
  * 
  * @author Alex Nenadic
+ * @author Alan R Williams
  *
  */
 @SuppressWarnings("serial")
-public class AddCQLTemplateAction extends AbstractContextualMenuAction {
+public class AddCQLTemplateMenuAction extends AbstractMenuAction {
 
-	private static final URI serviceTemplatesSection = URI
-	.create("http://taverna.sf.net/2009/contextMenu/serviceTemplates");
-	
-	private static Logger logger = Logger.getLogger(AddCQLTemplateAction.class);
+	private static final String ADD_CQL = "CQL Activity";
 
-	public AddCQLTemplateAction(){
-		super(serviceTemplatesSection, 10);
+	private static final URI ADD_CQL_URI = URI
+	.create("http://taverna.sf.net/2008/t2workbench/menu#graphMenuAddCQLActivity");
+		
+	private static Logger logger = Logger.getLogger(AddCQLTemplateMenuAction.class);
+
+	public AddCQLTemplateMenuAction(){
+		super(InsertMenu.INSERT, 25, ADD_CQL_URI);
 	}
 
-	@Override
-	public boolean isEnabled() {
-		return super.isEnabled()
-				&& getContextualSelection().getSelection() instanceof Dataflow;
-	}
-	
 	@Override
 	protected Action createAction() {
-		AbstractAction action = new AbstractAction("Add string constant", ActivityIconManager.getInstance()
-				.iconForActivity(new CQLActivity())){
-
-					public void actionPerformed(ActionEvent e) {
-						
-						Dataflow workflow = FileManager.getInstance().getCurrentDataflow();
-						
-						WorkflowView.importServiceDescription(CQLTemplateService.getServiceDescription(),false);
-						
-					
-					}
-			
-		};
-		return action;
+		return new AddCQLMenuAction();
 	}
 
+	protected class AddCQLMenuAction extends DesignOnlyAction {
+		AddCQLMenuAction() {
+			super();
+			putValue(SMALL_ICON, ActivityIconManager.getInstance()
+					.iconForActivity(new CQLActivity()));
+			putValue(NAME, ADD_CQL);	
+			putValue(SHORT_DESCRIPTION, ADD_CQL);	
+			putValue(Action.ACCELERATOR_KEY,
+					KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+			
+		}
+
+		public void actionPerformed(ActionEvent e) {
+
+			WorkflowView.importServiceDescription(CQLTemplateService.getServiceDescription(),
+					false);
+		
+		}
+	}
 }
 

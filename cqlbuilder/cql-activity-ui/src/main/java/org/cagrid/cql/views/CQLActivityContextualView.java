@@ -33,7 +33,7 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.Activity;
 
 public class CQLActivityContextualView extends HTMLBasedActivityContextualView<CQLConfigurationBean> {
 
-    private static final long serialVersionUID = -553974544001808511L;
+    private static final long serialVersionUID = -553974544001808517L;
 
     public CQLActivityContextualView(Activity<?> activity) {
         super(activity);
@@ -47,10 +47,8 @@ public class CQLActivityContextualView extends HTMLBasedActivityContextualView<C
     @Override
     protected String getRawTableRowsHtml() {
         //SavedQueryWindowState sq = getConfigBean().getSavedQuery();
-
         String targetServiceUrl = getConfigBean().getServicesUrl();
-        String html = "<tr><td>Target service's url:</td><td>"+targetServiceUrl+"</td></tr>";
-        
+        String html = "<tr><td>Target service's url:</td><td>"+targetServiceUrl+"</td></tr>";       
         String valueStr = getConfigBean().getValue();
         valueStr = valueStr.replace("<", "&lt;");
         valueStr = valueStr.replace(">", "&gt;");
@@ -67,6 +65,10 @@ public class CQLActivityContextualView extends HTMLBasedActivityContextualView<C
     public Action getConfigureAction(Frame owner) {
         return new CQLActivityConfigurationAction((CQLActivity) getActivity(), owner);
     }
+    @Override
+	public int getPreferredPosition() {
+		return 101;
+	}
 }
 
 

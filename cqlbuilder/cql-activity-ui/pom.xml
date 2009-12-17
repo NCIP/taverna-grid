@@ -9,20 +9,20 @@
 	<groupId>org.cagrid.cql</groupId>
 	<artifactId>cql-activity-ui</artifactId>
 	<name>caGrid CQL Activity UI</name>
-	<version>1.0</version>
+	<version>1.1</version>
 	<properties>
-		<t2.ui.activities.version>0.12</t2.ui.activities.version>
-		<t2.activities.version>0.8</t2.activities.version>
-		<t2.infrastructure.version>1.11</t2.infrastructure.version>
-		<t2.core.version>0.8</t2.core.version>
-		<t2.lang.version>0.5</t2.lang.version>
-		<t2.compatibility.version>0.8</t2.compatibility.version>
-		<t2.translators.version>0.8</t2.translators.version>
-		<t2.ui.api.version>0.6</t2.ui.api.version>
-		<t2.ui.impl.version>0.8</t2.ui.impl.version>
-		<t2.ui.components.version>0.9</t2.ui.components.version>
-		<t2.security.version>0.6</t2.security.version>
-		<taverna.version>1.7.2.0</taverna.version>
+		<t2.ui.activities.version>1.0</t2.ui.activities.version>
+<t2.activities.version>1.0</t2.activities.version>
+<t2.infrastructure.version>2.0</t2.infrastructure.version>
+<t2.core.version>1.0</t2.core.version>
+<t2.lang.version>1.0</t2.lang.version>
+<t2.compatibility.version>1.0</t2.compatibility.version>
+<t2.translators.version>1.0</t2.translators.version>
+<t2.ui.api.version>1.0</t2.ui.api.version>
+<t2.ui.impl.version>1.0</t2.ui.impl.version>
+<t2.ui.components.version>1.0</t2.ui.components.version>
+<t2.security.version>1.0</t2.security.version>
+<taverna.version>1.7.2.0</taverna.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>org.cagrid.cql</groupId>
 			<artifactId>cql-activity</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
@@ -78,6 +78,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>net.sf.taverna.t2.ui-components</groupId>
+			<artifactId>graph-view</artifactId>
+			<version>${t2.ui.components.version}</version>
+		</dependency>		
+		
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
@@ -93,8 +99,7 @@
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
 			<artifactId>activity-tools</artifactId>
 			<version>${t2.ui.impl.version}</version>
-		</dependency>
-		
+		</dependency>	
 	</dependencies>
 </project>
 

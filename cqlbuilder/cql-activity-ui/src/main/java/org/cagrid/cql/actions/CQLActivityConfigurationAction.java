@@ -32,7 +32,11 @@ import javax.swing.JOptionPane;
 import net.sf.taverna.t2.reference.ExternalReferenceSPI;
 import org.cagrid.cql.CQLActivity;
 import org.cagrid.cql.CQLConfigurationBean;
+
+import net.sf.taverna.t2.workbench.file.FileManager;
 import net.sf.taverna.t2.workbench.ui.actions.activity.ActivityConfigurationAction;
+import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ActivityConfigurationDialog;
+import net.sf.taverna.t2.workflowmodel.Dataflow;
 import net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean;
 import org.cagrid.cql.cqlbuilder.gui.CQLBuilderMAIN;
 import org.cagrid.cql.cqlbuilder.gui.SavedQueryWindowState;
@@ -53,7 +57,8 @@ public class CQLActivityConfigurationAction extends ActivityConfigurationAction<
     public void actionPerformed(ActionEvent e) {
         System.out.println("entering CQLAcitivtyConfigurationAction.actionPerformed(..)");
         CQLConfigurationBean bean = new CQLConfigurationBean();
-        
+    	Dataflow owningDataflow = FileManager.getInstance()
+		.getCurrentDataflow();
         String oldSavedQuery = getActivity().getConfiguration().getValue();
         String oldUrl = getActivity().getConfiguration().getServicesUrl();
         boolean oldIsManual = getActivity().getConfiguration().isIsQueryManual();
@@ -93,7 +98,8 @@ public class CQLActivityConfigurationAction extends ActivityConfigurationAction<
             ////////////////////////////////
             bean.setInputPortDefinitions(inputBeanList);
             //System.out.println("there is a input port: "+bean.getInputPortDefinitions().get(0).getName());
-            configureActivity(bean);
+            //configureActivity(bean);
+        	ActivityConfigurationDialog.configureActivity(owningDataflow, activity, bean);
         }
     }
 }
