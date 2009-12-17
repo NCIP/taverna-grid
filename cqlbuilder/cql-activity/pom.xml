@@ -9,13 +9,9 @@
 	<groupId>org.cagrid.cql</groupId>
 	<artifactId>cql-activity</artifactId>
 	<name>caGrid CQL Activity</name>
-	<version>1.0</version>
+	<version>1.1</version>
 	<properties>
-		<t2.activities.version>0.8</t2.activities.version>
-		<t2.core.version>0.8</t2.core.version>
-		<t2.ui.api.version>0.6</t2.ui.api.version>
-        <t2.ui.impl.version>0.8</t2.ui.impl.version>
-        <project.version>0.8</project.version>
+	<t2.core.version>1.0</t2.core.version>
 	</properties>	
 	<repositories>
 		<repository>
@@ -69,8 +65,6 @@
 			<artifactId>axis</artifactId>
 			<version>1.4</version>
 		</dependency>
-
-
 	</dependencies>
 </project>
 
