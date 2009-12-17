@@ -171,5 +171,8 @@ public class CQLActivity extends AbstractAsynchronousActivity<CQLConfigurationBe
 		}
 		inputPorts.add(port);
 	}
+        public String getExtraDescription() {
+    		return value;
+    	}
 
 }

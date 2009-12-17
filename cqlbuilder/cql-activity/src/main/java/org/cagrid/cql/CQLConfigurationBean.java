@@ -26,7 +26,7 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityPortsDe
  * Configuration bean for setting up a StringConstantActivity.<br>
  * The only thing to be configured is the string value, since the ports are fixed.
  * 
- * @author Stuart Owen
+ * @author Wei Tan
  * @see CQLActivity
  */
 public class CQLConfigurationBean extends ActivityPortsDefinitionBean {
