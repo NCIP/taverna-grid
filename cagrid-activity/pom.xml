@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>net.sf.taverna</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.1.2009-02-12</version>
+    </parent>
+
+	<groupId>net.sf.taverna.cagrid</groupId>
+	<artifactId>cagrid-activity</artifactId>
+	<version>0.6-SNAPSHOT</version>
+	<name>CaGrid Activity</name>
+	<description>Activity for invoking caGrid services. Based on Taverna's WSDL Activity.</description>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<t2.activities.version>0.8</t2.activities.version>
+		<t2.core.version>0.8</t2.core.version>
+		<t2.ui.api.version>0.6</t2.ui.api.version>
+        <t2.ui.impl.version>0.8</t2.ui.impl.version>
+	</properties>
+	<repositories>
+		<repository>
+			<releases />
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>mygrid-repository</id>
+			<name>myGrid Repository</name>
+			<url>http://www.mygrid.org.uk/maven/repository</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>net.sf.taverna.cagrid</groupId>
+			<artifactId>cagrid-wsdl-generic</artifactId>
+			<version>0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.t2.core</groupId>
+			<artifactId>workflowmodel-impl</artifactId>
+			<version>${t2.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.t2.ui-impl</groupId>
+			<artifactId>configuration-impl</artifactId>
+			<version>${t2.ui.impl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.t2.security</groupId>
+			<artifactId>credential-manager</artifactId>
+			<version>0.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.t2.activities</groupId>
+			<artifactId>activity-test-utils</artifactId>
+			<version>${t2.activities.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+  <scm>
+        <connection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity/</connection>
+        <developerConnection>scm:svn:https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity/</developerConnection>
+        <url>https://gforge.nci.nih.gov/svnroot/taverna-cagrid/trunk/cagrid-activity/</url>
+    </scm>
+</project>
