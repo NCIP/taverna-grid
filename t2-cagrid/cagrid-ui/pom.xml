@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.cagrid.taverna-service-client</groupId>
 		<artifactId>service-client</artifactId>
-		<version>0.9</version>
+		<version>1.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cagrid.taverna-service-client</groupId>
@@ -17,12 +17,13 @@
 			<artifactId>ui</artifactId>
 			<version>${t2.lang.version}</version>
 		</dependency>
-
+<!-- 
 		<dependency>
 			<groupId>net.sf.taverna.t2.infrastructure</groupId>
 			<artifactId>platform</artifactId>
 			<version>${t2.infrastructure.version}</version>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>net.sf.taverna.t2.core</groupId>
 			<artifactId>workflowmodel-api</artifactId>
@@ -64,11 +65,13 @@
 			<artifactId>workbench-api</artifactId>
 			<version>${t2.ui.api.version}</version>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
 			<artifactId>reference-config</artifactId>
 			<version>${t2.ui.impl.version}</version>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
 			<artifactId>httpproxy-config</artifactId>
@@ -79,11 +82,13 @@
 			<artifactId>monitor-view</artifactId>
 			<version>${t2.ui.components.version}</version>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-components</groupId>
 			<artifactId>provenance-config</artifactId>
 			<version>${t2.ui.components.version}</version>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-components</groupId>
 			<artifactId>results-view</artifactId>
@@ -108,22 +113,22 @@
 		</dependency>
 		-->
 		<dependency>
-			<groupId>org.taverna-cagrid</groupId>
+			<groupId>org.cagrid.taverna-service-client.library</groupId>
 			<artifactId>TavernaWorkflowService-client</artifactId>
 			<version>1.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.taverna-cagrid</groupId>
+			<groupId>org.cagrid.taverna-service-client.library</groupId>
 			<artifactId>TavernaWorkflowService-common</artifactId>
 			<version>1.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.taverna-cagrid</groupId>
+			<groupId>org.cagrid.taverna-service-client.library</groupId>
 			<artifactId>TavernaWorkflowService-service</artifactId>
 			<version>1.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.taverna-cagrid</groupId>
+			<groupId>org.cagrid.taverna-service-client.library</groupId>
 			<artifactId>TavernaWorkflowService-stubs</artifactId>
 			<version>1.3</version>
 		</dependency>

@@ -187,7 +187,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 						CaGridRun cr = (CaGridRun) runListModel.get(selected[i]);
 						
 						//TODO delete the EPR file
-						File file = new File(new File(System.getProperty("user.dir")),String.valueOf(cr.date.getTime())+".epr");
+						File file = new File(new File(System.getProperty("user.home")),String.valueOf(cr.date.getTime())+".epr");
 						file.delete();
 						System.out.println(String.valueOf(cr.date.getTime())+".epr deleted");
 						runListModel.remove(selected[i]);
