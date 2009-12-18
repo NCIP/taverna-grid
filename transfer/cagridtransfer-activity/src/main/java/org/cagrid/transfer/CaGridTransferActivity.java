@@ -40,6 +40,7 @@ import net.sf.taverna.t2.workflowmodel.processor.activity.AbstractAsynchronousAc
 import net.sf.taverna.t2.workflowmodel.processor.activity.ActivityConfigurationException;
 import net.sf.taverna.t2.workflowmodel.processor.activity.ActivityInputPort;
 import net.sf.taverna.t2.workflowmodel.processor.activity.AsynchronousActivityCallback;
+//import net.sf.taverna.t2.security.credentialmanager.CMException;
 
 /**
  * <p>
@@ -138,7 +139,12 @@ public class CaGridTransferActivity extends AbstractAsynchronousActivity<CaGridT
 							
 						}
 						
-						CaGridTransferUtil.uploadInput(epr, inputFileName);
+						try {
+							CaGridTransferUtil.uploadInput(epr, inputFileName);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						
 					}
 					//download
