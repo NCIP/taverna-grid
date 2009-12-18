@@ -20,8 +20,14 @@
  ******************************************************************************/
 package org.cagrid.transfer.views;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.cagrid.transfer.CaGridTransferActivity;
+import org.cagrid.transfer.views.CaGridTransferActivityContextualView;
 import org.cagrid.transfer.*;
 import net.sf.taverna.t2.workbench.ui.actions.activity.ActivityContextualView;
+import net.sf.taverna.t2.workbench.ui.views.contextualviews.ContextualView;
 import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ContextualViewFactory;
 
 public class CaGridTransferActivityViewFactory implements ContextualViewFactory<CaGridTransferActivity> {
@@ -33,6 +39,9 @@ public class CaGridTransferActivityViewFactory implements ContextualViewFactory<
 
 	public ActivityContextualView<?> getView(CaGridTransferActivity activity) {
 		return new CaGridTransferActivityContextualView(activity);
+	}
+	public List<ContextualView> getViews(CaGridTransferActivity activity) {
+		return Arrays.asList(new ContextualView[] {new CaGridTransferActivityContextualView(activity)});
 	}
 
 }

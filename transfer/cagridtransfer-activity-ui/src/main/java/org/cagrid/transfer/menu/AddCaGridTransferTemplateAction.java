@@ -71,17 +71,8 @@ public class AddCaGridTransferTemplateAction extends AbstractContextualMenuActio
 					public void actionPerformed(ActionEvent e) {
 						
 						Dataflow workflow = FileManager.getInstance().getCurrentDataflow();
+						WorkflowView.importServiceDescription(CaGridTransferTemplateService.getServiceDescription(), false);
 						
-						try {
-							WorkflowView.importServiceDescription(workflow, CaGridTransferTemplateService.getServiceDescription(),
-									(JComponent) e.getSource(), false);
-						} catch (InstantiationException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IllegalAccessException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
 					
 					}
 			

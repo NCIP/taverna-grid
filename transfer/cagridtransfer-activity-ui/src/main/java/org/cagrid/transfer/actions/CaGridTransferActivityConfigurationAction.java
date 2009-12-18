@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (C) 2007 The University of Manchester   
+ * Copyright (C) 2009 The University of Chicago   
  * 
  *  Modifications to the initial code base are copyright of their
  *  respective authors, or their employers as appropriate.
@@ -22,13 +23,13 @@ package org.cagrid.transfer.actions;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-
 import javax.swing.JOptionPane;
-
 import org.cagrid.transfer.*;
 import org.cagrid.transfer.servicedescriptions.CaGridTransferActivityIcon;
-
+import net.sf.taverna.t2.workbench.file.FileManager;
 import net.sf.taverna.t2.workbench.ui.actions.activity.ActivityConfigurationAction;
+import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ActivityConfigurationDialog;
+import net.sf.taverna.t2.workflowmodel.Dataflow;
 
 public class CaGridTransferActivityConfigurationAction extends ActivityConfigurationAction<CaGridTransferActivity, CaGridTransferConfigurationBean> {
 
@@ -41,9 +42,9 @@ public class CaGridTransferActivityConfigurationAction extends ActivityConfigura
     }
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println("entering CQLAcitivtyConfigurationAction.actionPerformed(..)");
+        System.out.println("entering CaGridTransferAcitivtyConfigurationAction.actionPerformed(..)");
         CaGridTransferConfigurationBean confBean = new CaGridTransferConfigurationBean();
-        
+        Dataflow owningDataflow = FileManager.getInstance().getCurrentDataflow();
         Object[] functions = {"upload", "download"};
         boolean upload = getActivity().getConfiguration().getIsUpload();
         String function;
@@ -70,7 +71,8 @@ public class CaGridTransferActivityConfigurationAction extends ActivityConfigura
         	else{
         		confBean.setIsUpload(false);		
         	}        	
-        	configureActivity(confBean);
+        	//configureActivity(confBean);
+        	ActivityConfigurationDialog.configureActivity(owningDataflow, activity, confBean);
             return;
         }
 

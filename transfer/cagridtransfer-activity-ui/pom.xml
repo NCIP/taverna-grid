@@ -9,12 +9,20 @@
 	<groupId>org.cagrid.transfer</groupId>
 	<artifactId>cagridtransfer-activity-ui</artifactId>
 	<name>caGrid Transfer Activity UI</name>
-	<version>0.9-SNAPSHOT</version>
+	<version>1.1</version>
 	<properties>
-		<t2.activities.version>0.8</t2.activities.version>
-		<t2.ui.api.version>0.6</t2.ui.api.version>
-		<t2.ui.impl.version>0.8</t2.ui.impl.version>
-		<t2.ui.components.version>0.9</t2.ui.components.version>
+			<t2.ui.activities.version>1.0</t2.ui.activities.version>
+<t2.activities.version>1.0</t2.activities.version>
+<t2.infrastructure.version>2.0</t2.infrastructure.version>
+<t2.core.version>1.0</t2.core.version>
+<t2.lang.version>1.0</t2.lang.version>
+<t2.compatibility.version>1.0</t2.compatibility.version>
+<t2.translators.version>1.0</t2.translators.version>
+<t2.ui.api.version>1.0</t2.ui.api.version>
+<t2.ui.impl.version>1.0</t2.ui.impl.version>
+<t2.ui.components.version>1.0</t2.ui.components.version>
+<t2.security.version>1.0</t2.security.version>
+<taverna.version>1.7.2.0</taverna.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -45,7 +53,7 @@
 		<dependency>
 			<groupId>org.cagrid.transfer</groupId>
 			<artifactId>cagridtransfer-activity</artifactId>
-			<version>0.9-SNAPSHOT</version>
+			<version>1.1</version>
 			<!--  
 			<version>${t2.activities.version}</version>
 			-->
@@ -100,7 +108,11 @@
 			<artifactId>activity-tools</artifactId>
 			<version>${t2.ui.impl.version}</version>
 		</dependency>
-		
+				<dependency>
+			<groupId>net.sf.taverna.t2.ui-components</groupId>
+			<artifactId>graph-view</artifactId>
+			<version>${t2.ui.components.version}</version>
+		</dependency>	
 		
 		
 	</dependencies>

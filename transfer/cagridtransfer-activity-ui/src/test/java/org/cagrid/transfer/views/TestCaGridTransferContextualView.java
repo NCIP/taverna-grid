@@ -48,12 +48,6 @@ public class TestCaGridTransferContextualView {
 		((CaGridTransferActivity)activity).configure(b);
 	}
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testDisovery() throws Exception {ContextualViewFactory factory = ContextualViewFactoryRegistry.getInstance().getViewFactoryForObject(activity);
-		assertTrue("Factory should be CaGridTransferActivityViewFactory",factory instanceof CaGridTransferActivityViewFactory);
-		ContextualView view = factory.getView(activity);
-		assertTrue("The view should be CaGridTransferActivityContextualView",view instanceof CaGridTransferActivityContextualView);
-	}
 	
 	@Test
 	public void testGetConfigureAction() throws Exception {

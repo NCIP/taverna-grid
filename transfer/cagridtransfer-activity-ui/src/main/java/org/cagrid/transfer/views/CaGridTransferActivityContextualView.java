@@ -60,6 +60,10 @@ public class CaGridTransferActivityContextualView extends HTMLBasedActivityConte
     public Action getConfigureAction(Frame owner) {
         return new CaGridTransferActivityConfigurationAction((CaGridTransferActivity) getActivity(), owner);
     }
+    @Override
+	public int getPreferredPosition() {
+		return 100;
+	}
 }
 
 
