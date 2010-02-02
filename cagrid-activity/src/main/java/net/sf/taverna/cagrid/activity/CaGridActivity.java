@@ -582,8 +582,15 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		} else if (credentialsAllowed) {
 			// Set that this operation requires proxy that will be fetched later by the
 			// CaGridWSDLInvoker from the Credential Manager
+			//TODO complex logic: FQP always needs credential if delegation is needed
 			secProperties.setRequiresProxy(true);			
 		}
+		//TODO delete these three lines; these are to enforce using credential for testing purpose
+		/*
+		secProperties.setGSIAnonymouos(Boolean.FALSE);
+		secProperties.setRequiresProxy(true);
+		secProperties.setGSIMode(GSIConstants.GSI_MODE_FULL_DELEG);
+		*/
 
 		if (authorizationAllowed) {
 			if (authorization == null) {
@@ -775,7 +782,9 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 
 			CredentialManager cm = null;
 			try {
+				//TODO something wrong here, needs correction
 				cm = CredentialManager.getInstance();
+				
 			} catch(CMException cmex){
 				// We are in deep trouble here - something's wrong with Credential Manager
 				String exMessage = "Failed to instantiate Credential Manager - cannot load caGrid CAs' certificates.";

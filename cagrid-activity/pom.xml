@@ -9,7 +9,7 @@
 
 	<groupId>net.sf.taverna.cagrid</groupId>
 	<artifactId>cagrid-activity</artifactId>
-	<version>0.6-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>CaGrid Activity</name>
 	<description>Activity for invoking caGrid services. Based on Taverna's WSDL Activity.</description>
 	<build>
@@ -25,10 +25,15 @@
 		</plugins>
 	</build>
 	<properties>
-		<t2.activities.version>0.8</t2.activities.version>
-		<t2.core.version>0.8</t2.core.version>
-		<t2.ui.api.version>0.6</t2.ui.api.version>
-        <t2.ui.impl.version>0.8</t2.ui.impl.version>
+		
+		<t2.core.version>1.0</t2.core.version>
+		<t2.lang.version>1.0</t2.lang.version>
+		<t2.security.version>1.0</t2.security.version>
+		<t2.core.refexts.version>1.0</t2.core.refexts.version>
+        <org.biomart.martservice.version>1.0</org.biomart.martservice.version>
+        <wsdl.generic.version>1.6</wsdl.generic.version>
+        <t2.ui.impl.version>1.0</t2.ui.impl.version>
+        <t2.ui.components.version>1.0</t2.ui.components.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -52,22 +57,31 @@
 			<artifactId>workflowmodel-impl</artifactId>
 			<version>${t2.core.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
 			<artifactId>configuration-impl</artifactId>
 			<version>${t2.ui.impl.version}</version>
 		</dependency>
+		 
 		<dependency>
 			<groupId>net.sf.taverna.t2.security</groupId>
 			<artifactId>credential-manager</artifactId>
-			<version>0.6.2</version>
+			<version>${t2.security.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.taverna.t2.ui-components</groupId>
+			<artifactId>credential-manager-ui</artifactId>
+			<version>${t2.ui.components.version}</version>
+		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>net.sf.taverna.t2.activities</groupId>
 			<artifactId>activity-test-utils</artifactId>
 			<version>${t2.activities.version}</version>
 			<scope>test</scope>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>jdom</groupId>
 			<artifactId>jdom</artifactId>

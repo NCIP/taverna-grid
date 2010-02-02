@@ -24,6 +24,7 @@ package net.sf.taverna.cagrid.activity;
  * A standard Java Bean that provides the details required to configure a CaGridActivity.
  *
  * @author Alex Nenadic
+ * Modified by Wei Tan on 1/26/2010, adding CDS URL in CaGridActivity configuration
  */
 public class CaGridActivityConfigurationBean {
 
@@ -40,7 +41,7 @@ public class CaGridActivityConfigurationBean {
     // Users can override the values from preferences for AuthN and Dorian services for this particular WSDL operation using this bean
 	private String authNServiceURL = null; // URL of the AuthN Service used or to be used to (re)authenticate the user
 	private String dorianServiceURL = null; // URL of the Dorian Service used or to be used to (re)issue proxy
-
+	private String cdsServiceURL = null; // URL of the CDS (credential Delegation) Service used or to be used to (re)issue proxy
 	/** Creates a new instance of CaGridActivityConfigurationBean */
     public CaGridActivityConfigurationBean() {
     }
@@ -91,6 +92,14 @@ public class CaGridActivityConfigurationBean {
 
 	public String getDorianServiceURL() {
 		return dorianServiceURL;
+	}
+
+	public void setCDSURL(String cdsServiceURL) {
+		this.cdsServiceURL = cdsServiceURL;
+	}
+
+	public String getCDSURL() {
+		return cdsServiceURL;
 	}
 
 }

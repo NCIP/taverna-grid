@@ -49,16 +49,15 @@ public class CaGridConfiguration extends AbstractConfigurable {
 	public static String PRODUCTION_INDEX_SERVICE_URL = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
 	public static String PRODUCTION_AUTHN_SERVICE_URL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
 	public static String PRODUCTION_DORIAN_SERVICE_URL = "https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
-	public static String PRODUCTION_PROXY_LIFETIME = "12"; // 12 hours is default and maximum
-	public static String PRODUCTION_CADSR_SERVICE_URL = "http://cadsr-dataservice.nci.nih.gov/wsrf/services/cagrid/CaDSRDataService";
+	public static String PRODUCTION_PROXY_LIFETIME = "12"; // 12 hours is default and maximum	
+	public static String PRODUCTION_CDS_SERVICE_URL = "https://cagrid-cds.nci.nih.gov:8443/wsrf/services/cagrid/CredentialDelegationService";
 	
 	public static String TRAINING_CAGRID_NAME =  "Training CaGrid 1.3";
 	public static String TRAINING_INDEX_SERVICE_URL = "http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService";
 	public static String TRAINING_AUTHN_SERVICE_URL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
 	public static String TRAINING_DORIAN_SERVICE_URL = "https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian";
 	public static String TRAINING_PROXY_LIFETIME = "12"; // 12 hours is default and maximum
-	public static String TRAINING_CADSR_SERVICE_URL = "http://cadsr-dataservice-sandbox.nci.nih.gov/wsrf/services/cagrid/CaDSRDataService";
-
+	public static String TRAINING_CDS_SERVICE_URL = "https://cds.training.cagrid.org:8443/wsrf/services/cagrid/CredentialDelegationService";
 	private Map<String, String> defaultPropertyMap;
 
 	private static CaGridConfiguration instance;
@@ -95,14 +94,14 @@ public class CaGridConfiguration extends AbstractConfigurable {
 							+ PRODUCTION_AUTHN_SERVICE_URL + ","
 							+ PRODUCTION_DORIAN_SERVICE_URL + ","
 							+ PRODUCTION_PROXY_LIFETIME + ","
-							+ PRODUCTION_CADSR_SERVICE_URL);
+							+ PRODUCTION_CDS_SERVICE_URL);
 
 			defaultPropertyMap.put(TRAINING_CAGRID_NAME,
 					TRAINING_INDEX_SERVICE_URL + ","
 							+ TRAINING_AUTHN_SERVICE_URL + ","
 							+ TRAINING_DORIAN_SERVICE_URL + ","
 							+ TRAINING_PROXY_LIFETIME + ","
-							+ TRAINING_CADSR_SERVICE_URL);	
+							+ TRAINING_CDS_SERVICE_URL);	
 		}			
 	}
 
@@ -139,6 +138,16 @@ public class CaGridConfiguration extends AbstractConfigurable {
 		CSVWriter csvWriter = new CSVWriter(writer);
 		csvWriter.writeNext(values.toArray(new String[]{}));
 		return writer.getBuffer().toString().trim();
+	}
+
+	public String getDisplayName() {
+		// TODO Auto-generated method stub
+		return new String("CaGrid Configuration");
+	}
+
+	public String getFilePrefix() {
+		// TODO Auto-generated method stub
+		return new String("CaGrid Configuration");
 	}
 
 }

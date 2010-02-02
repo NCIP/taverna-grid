@@ -351,7 +351,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 	        	logger.info("Proxy for the operation "+configurationBean.getOperation()+" not found by Credential Manager - getting a new one.");
 				try{
 					// User's username and password pair for the AuthN service
-					String unpassPair = null;
+					String [] unpassPair = null;
 					// Check first if we have a saved username/password pair for this Authentication Service
 					unpassPair = credManager.getUsernameAndPasswordForService(authNServiceURL);
 
@@ -359,8 +359,8 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 					String password = null;
 					boolean shouldSaveUsernameAndPassword = false;
 			        if (unpassPair != null){
-			        	username = unpassPair.substring(0, unpassPair.indexOf(' '));
-			        	password = unpassPair.substring(unpassPair.indexOf(' ')+1);
+			        	username = unpassPair[0];
+			        	password = unpassPair[1];
 			        }
 			        else{
 						GetCaGridPasswordDialog getPasswordDialog = new GetCaGridPasswordDialog(configurationBean.getCaGridName());
@@ -490,6 +490,7 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
         return (X509Certificate) cf.generateCertificate(bais);
 
     }
+	
 	
 	@Override
 	protected List<SOAPHeaderElement> makeSoapHeaders() {

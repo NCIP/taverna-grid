@@ -55,14 +55,14 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 	
 	private JTextField jtfCaGridName;
 	private JTextField jtfIndexServiceURL;
-	private JTextField jtfCaDSRServiceURL;
+	private JTextField jtfCDSServiceURL;
 	private JTextField jtfAuthNServiceURL;
 	private JTextField jtfDorianServiceURL;
 	private JComboBox jcbfProxyLifetime;
 	
 	private String caGridName;
 	private String indexServiceURL;
-	private String caDSRServiceURL;
+	private String cdsServiceURL;
 	private String authNServiceURL;
 	private String dorianServiceURL;
 	private String proxyLifetime;
@@ -78,7 +78,7 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 
 		this.caGridName = "";
 		this.indexServiceURL = "";
-		this.caDSRServiceURL = "";
+		this.cdsServiceURL = "";
 		this.authNServiceURL = "";
 		this.dorianServiceURL = "";
 		this.proxyLifetime = "";
@@ -89,7 +89,7 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 	}
 
 	public NewEditCaGridConfigurationDialog(String caGridName, String indexServiceURL,
-			String caDSRServiceURL, String authNServiceURL, String dorianServiceURL, String proxyLifetime) {
+			String cdsServiceURL, String authNServiceURL, String dorianServiceURL, String proxyLifetime) {
 		
 		super();
 		setTitle("Edit CaGrid configuration");
@@ -97,7 +97,7 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 		
 		this.caGridName = caGridName;
 		this.indexServiceURL = indexServiceURL;
-		this.caDSRServiceURL = caDSRServiceURL;
+		this.cdsServiceURL = cdsServiceURL;
 		this.authNServiceURL = authNServiceURL;
 		this.dorianServiceURL = dorianServiceURL;
 		this.proxyLifetime = proxyLifetime;
@@ -136,13 +136,12 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 			jtfIndexServiceURL.setEditable(false);
 		}
 		
-		jtfCaDSRServiceURL = new JTextField(35);
-		jtfCaDSRServiceURL.setText(caDSRServiceURL);
-		// If editing Production or Training predefined CaGrid configurations then
-		// user is not allowed to change their CaDSR Service URL
+		jtfCDSServiceURL = new JTextField(35);
+		jtfCDSServiceURL.setText(cdsServiceURL);
+		// Editing Production or Training predefined CaGrid configurations 
 		if (caGridName.equals(CaGridConfiguration.PRODUCTION_CAGRID_NAME)
 				|| caGridName.equals(CaGridConfiguration.TRAINING_CAGRID_NAME)){
-			jtfCaDSRServiceURL.setEditable(false);
+			
 		}
 		
 		jtfAuthNServiceURL = new JTextField(35);
@@ -195,14 +194,14 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 		c.anchor = GridBagConstraints.EAST;
 		c.weightx = 0.0;
 		c.fill = GridBagConstraints.NONE;
-		configurationPanel.add(new JLabel("CaDSR Service"), c);
+		configurationPanel.add(new JLabel("CDS Service"), c);
 		c.gridx = 1;
 		c.gridy = 2;
 		c.ipadx = 0;
 		c.anchor = GridBagConstraints.WEST;
 		c.weightx = 1.0;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		configurationPanel.add(jtfCaDSRServiceURL, c);
+		configurationPanel.add(jtfCDSServiceURL, c);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.ipadx = 5;
@@ -297,8 +296,8 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 		return indexServiceURL;
 	}
 
-	public String getCaDSRServiceURL() {
-		return caDSRServiceURL;
+	public String getCDSServiceURL() {
+		return cdsServiceURL;
 	}
 
 	public String getAuthNServiceURL() {
@@ -344,10 +343,11 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
 //	            return false;
 //	    	}
 	    	   	
-	    	caDSRServiceURL = jtfCaDSRServiceURL.getText();
+	    	cdsServiceURL = jtfCDSServiceURL.getText();
 	    	
 	    	authNServiceURL= jtfAuthNServiceURL.getText();
 	    	dorianServiceURL = jtfDorianServiceURL.getText();
+	    	cdsServiceURL = jtfCDSServiceURL.getText();
 
 	    	// If user configures AuthN Service then Dorian must be configured as well.
 	    	// And vice versa.
@@ -406,7 +406,7 @@ public class NewEditCaGridConfigurationDialog extends JDialog {
     	// Set all fields to null to indicate that cancel button was pressed
     	caGridName = null;
     	indexServiceURL = null;
-    	caDSRServiceURL = null;
+    	cdsServiceURL = null;
     	authNServiceURL = null;
     	dorianServiceURL = null;
     	proxyLifetime = null;

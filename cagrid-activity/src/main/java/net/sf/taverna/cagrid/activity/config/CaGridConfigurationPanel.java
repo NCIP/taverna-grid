@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (C) 2007 The University of Manchester   
+ * Copyright (C) 2007 The University of Manchester 
+ * Copyright (C) 2010 The University of Chicago   
  * 
  *  Modifications to the initial code base are copyright of their
  *  respective authors, or their employers as appropriate.
@@ -52,9 +53,10 @@ import net.sf.taverna.t2.workbench.configuration.ConfigurationManager;
  * 
  * Default caGrid configurations include Training and Production CaGrid. For 
  * these two, it is not possible to change the Index Service, but AuthN, Dorian
- * and CaDSR services can be modified.
+ * and CDS services can be modified.
  * 
  * @author Alex Nenadic
+ * @author Wei Tan
  *
  */
 @SuppressWarnings("serial")
@@ -69,15 +71,15 @@ public class CaGridConfigurationPanel extends JPanel{
 	private ArrayList<String> authNServicesURLs;
 	private ArrayList<String> dorianServicesURLs;
 	private ArrayList<String> proxyLifetimes;
-	private ArrayList<String> caDSRServicesURLs;
+	private ArrayList<String> credentialDelegationServicesURLs;
 		
 	private JComboBox caGridNamesComboBox;
 	private DefaultComboBoxModel caGridNamesComboBoxModel;
 
 	private JTextField jtfIndexServiceURL;
-	private JTextField jtfCaDSRServiceURL;
 	private JTextField jtfAuthNServiceURL;
 	private JTextField jtfDorianServiceURL;
+	private JTextField jtfCredentialDelegationServiceURL;
 	private JTextField jtfProxyLifetime;
 
 	private JButton addButton;
@@ -90,7 +92,7 @@ public class CaGridConfigurationPanel extends JPanel{
 		configuration = CaGridConfiguration.getInstance();
 		// Get default list of CaGridS - keys in the map contain CaGrid names and values contain 
 		// various properties set for the CaGrid (Index Service URL, AuthN service URL, Dorian Service URL, 
-		// proxy lifetime and CaDSR URL).
+		// proxy lifetime and CDS URL).
 		HashSet<String> caGridNamesSet = new HashSet<String>(configuration.getDefaultPropertyMap().keySet());
 		// Get all other caGridS that may have been configured though preferences (may include 
 		// the default ones as well if some of their values have been changed), 
@@ -106,8 +108,8 @@ public class CaGridConfigurationPanel extends JPanel{
 		dorianServicesURLs = new ArrayList<String>();
 		// Get default proxy lifetime for all CaGrids
 		proxyLifetimes = new ArrayList<String>();
-		// Get CaDSR Service URLs for all CaGrids, if defined
-		caDSRServicesURLs = new ArrayList<String>();
+		// Get CDS Service URLs for all CaGrids, if defined
+		credentialDelegationServicesURLs = new ArrayList<String>();
 		for (int i = 0; i < caGridNames.size(); i++){
 			List<String> propertyStringList = configuration.getPropertyStringList(caGridNames.get(i));
 			
@@ -115,7 +117,7 @@ public class CaGridConfigurationPanel extends JPanel{
 			authNServicesURLs.add(propertyStringList.get(1));
 			dorianServicesURLs.add(propertyStringList.get(2));
 			proxyLifetimes.add(propertyStringList.get(3));
-			caDSRServicesURLs.add(propertyStringList.get(4));
+			credentialDelegationServicesURLs.add(propertyStringList.get(4));
 		}
 
 		initComponents();
@@ -151,8 +153,8 @@ public class CaGridConfigurationPanel extends JPanel{
 
 		jtfIndexServiceURL = new JTextField();
 		jtfIndexServiceURL.setEditable(false);
-		jtfCaDSRServiceURL = new JTextField();
-		jtfCaDSRServiceURL.setEditable(false);
+		jtfCredentialDelegationServiceURL = new JTextField();
+		jtfCredentialDelegationServiceURL.setEditable(false);
 		jtfAuthNServiceURL = new JTextField();
 		jtfAuthNServiceURL.setEditable(false);
 		jtfDorianServiceURL = new JTextField();
@@ -183,14 +185,14 @@ public class CaGridConfigurationPanel extends JPanel{
 		c.anchor = GridBagConstraints.EAST;
 		c.weightx = 0.0;
 		c.fill = GridBagConstraints.NONE;
-		configurationPanel.add(new JLabel("CaDSR Service"), c);
+		configurationPanel.add(new JLabel("CDS Service"), c);
 		c.gridx = 1;
 		c.gridy = 2;
 		c.ipadx = 0;
 		c.anchor = GridBagConstraints.WEST;
 		c.weightx = 1.0;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		configurationPanel.add(jtfCaDSRServiceURL, c);
+		configurationPanel.add(jtfCredentialDelegationServiceURL, c);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.ipadx = 5;
@@ -249,7 +251,7 @@ public class CaGridConfigurationPanel extends JPanel{
 				int index =  caGridNamesComboBox.getSelectedIndex();
 				NewEditCaGridConfigurationDialog editCaGridConfigurationDialog = new NewEditCaGridConfigurationDialog(
 						(String) caGridNamesComboBox.getSelectedItem(),
-						indexServicesURLs.get(index), caDSRServicesURLs.get(index), 
+						indexServicesURLs.get(index), credentialDelegationServicesURLs.get(index), 
 						authNServicesURLs.get(index),dorianServicesURLs.get(index), 
 						proxyLifetimes.get(index));
 				editCaGridConfigurationDialog.setLocationRelativeTo(null);
@@ -262,7 +264,7 @@ public class CaGridConfigurationPanel extends JPanel{
 
 				// Update the configuration
 				updateConfiguration(caGridConfigurationName, editCaGridConfigurationDialog.getIndexServiceURL(),
-						editCaGridConfigurationDialog.getCaDSRServiceURL(), editCaGridConfigurationDialog.getAuthNServiceURL(),
+						editCaGridConfigurationDialog.getCDSServiceURL(), editCaGridConfigurationDialog.getAuthNServiceURL(),
 						editCaGridConfigurationDialog.getDorianServiceURL(), editCaGridConfigurationDialog.getProxyLifetime());			
 			}			
 		});
@@ -304,7 +306,7 @@ public class CaGridConfigurationPanel extends JPanel{
 					
 					proxyLifetimes.set(index, defaultConfigurationList.get(3));
 					
-					caDSRServicesURLs.set(index, defaultConfigurationList.get(4));
+					credentialDelegationServicesURLs.set(index, defaultConfigurationList.get(4));
 
 					loadConfigurationDetails();
 				}
@@ -328,7 +330,7 @@ public class CaGridConfigurationPanel extends JPanel{
 				}
 				
 				addConfiguration(newCaGridConfigurationName, newCaGridConfigurationDialog.getIndexServiceURL(),
-						newCaGridConfigurationDialog.getCaDSRServiceURL(), newCaGridConfigurationDialog.getAuthNServiceURL(),
+						newCaGridConfigurationDialog.getCDSServiceURL(), newCaGridConfigurationDialog.getAuthNServiceURL(),
 						newCaGridConfigurationDialog.getDorianServiceURL(), newCaGridConfigurationDialog.getProxyLifetime());
 			}
 			
@@ -407,7 +409,7 @@ public class CaGridConfigurationPanel extends JPanel{
 		
 		proxyLifetimes.remove(caGridNamesComboBox.getSelectedIndex());
 		
-		caDSRServicesURLs.remove(caGridNamesComboBox.getSelectedIndex());
+		credentialDelegationServicesURLs.remove(caGridNamesComboBox.getSelectedIndex());
 		
 		// Delete from configuration
 		String selectedCaGridConfigurationName = (String) caGridNamesComboBox.getSelectedItem();
@@ -434,7 +436,7 @@ public class CaGridConfigurationPanel extends JPanel{
 	 * Add new CaGrid configuration.
 	 */
 	protected void addConfiguration(String caGridConfigurationName, String indexServiceURL,
-			String caDSRServiceURL, String authNServiceURL,
+			String credentialDelegationServiceURL, String authNServiceURL,
 			String dorianServiceURL, String proxyLifetime) {
 
 		List<String> configurationList = new ArrayList<String>();
@@ -450,8 +452,8 @@ public class CaGridConfigurationPanel extends JPanel{
 		configurationList.add(proxyLifetime);
 		proxyLifetimes.add(proxyLifetime);
 		
-		configurationList.add(caDSRServiceURL);
-		caDSRServicesURLs.add(caDSRServiceURL);
+		configurationList.add(credentialDelegationServiceURL);
+		credentialDelegationServicesURLs.add(credentialDelegationServiceURL);
 		
 		// Add the new configuration
 		ConfigurationManager manager = ConfigurationManager.getInstance();
@@ -479,14 +481,14 @@ public class CaGridConfigurationPanel extends JPanel{
 	 * Update current CaGrid configuration.
 	 */
 	protected void updateConfiguration(String caGridConfigurationName, String indexServiceURL,
-			String caDSRServiceURL, String authNServiceURL,
+			String credentialDelegationServiceURL, String authNServiceURL,
 			String dorianServiceURL, String proxyLifetime) {
 
 		// Has CaGrid configuration's name been updated? If yes, we have to remove 
 		// the previous one and add a new one
 		if (!caGridConfigurationName.equals((String)caGridNamesComboBox.getSelectedItem())){
 			removeConfiguration();
-			addConfiguration(caGridConfigurationName, indexServiceURL, caDSRServiceURL, 
+			addConfiguration(caGridConfigurationName, indexServiceURL, credentialDelegationServiceURL, 
 					authNServiceURL, dorianServiceURL, proxyLifetime);
 			return;
 		}
@@ -508,8 +510,8 @@ public class CaGridConfigurationPanel extends JPanel{
 		configurationList.add(proxyLifetime);
 		proxyLifetimes.set(index, proxyLifetime);
 		
-		configurationList.add(caDSRServiceURL);
-		caDSRServicesURLs.set(index, caDSRServiceURL);
+		configurationList.add(credentialDelegationServiceURL);
+		credentialDelegationServicesURLs.set(index, credentialDelegationServiceURL);
 		
 		// Update the current configuration
 		ConfigurationManager manager = ConfigurationManager.getInstance();
@@ -533,7 +535,7 @@ public class CaGridConfigurationPanel extends JPanel{
 		int index = caGridNamesComboBox.getSelectedIndex();
 		
 		jtfIndexServiceURL.setText(indexServicesURLs.get(index));
-		jtfCaDSRServiceURL.setText(caDSRServicesURLs.get(index));
+		jtfCredentialDelegationServiceURL.setText(credentialDelegationServicesURLs.get(index));
 		jtfAuthNServiceURL.setText(authNServicesURLs.get(index));
 		jtfDorianServiceURL.setText(dorianServicesURLs.get(index));
 		if (proxyLifetimes.get(index).equals("")){
