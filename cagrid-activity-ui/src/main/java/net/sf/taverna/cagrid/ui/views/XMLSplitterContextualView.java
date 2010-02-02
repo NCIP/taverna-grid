@@ -78,4 +78,10 @@ public class XMLSplitterContextualView extends
 		return describePorts();
 	}
 
+	@Override
+	public int getPreferredPosition() {
+		// TODO Auto-generated method stub
+		return 100;
+	}
+
 }

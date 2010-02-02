@@ -66,7 +66,7 @@ public class CaGridServiceDescription extends
 		
 		// Set the CaGrid this service/operation belongs to so we
 		// can fetch various other properties for this CaGrid from the preferences,
-		// such as Index Service, CaDSR service, AuthN and Dorian services, etc. 
+		// such as Index Service,  AuthN and Dorian services, etc. 
 		bean.setCaGridName(caGridName);
 		
 		return bean;

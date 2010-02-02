@@ -173,6 +173,20 @@ public class CaGridActivityContextualView extends
 		    else{
 				summary+="<tr><td>Dorian Service URL</td><td>"+dorianServiceURL+ "</td></tr>";
 		    }
+		    
+		    String cdsServiceURL = getConfigBean().getCDSURL();
+			if (cdsServiceURL == null) {
+				CaGridConfiguration configuration = CaGridConfiguration
+						.getInstance();
+				cdsServiceURL = configuration.getPropertyStringList(
+						getConfigBean().getCaGridName()).get(4);
+			}
+		    if (cdsServiceURL == null){ // usually a secure service has a CDS URL, but not always
+				summary+="<tr><td>CDS Service URL</td><td>Not set</td></tr>";
+		    }
+		    else{
+				summary+="<tr><td>CDS Service URL</td><td>"+cdsServiceURL+ "</td></tr>";
+		    }
 
 			// GSI TRANSPORT
 			if (secProperties.getGSITransport() == null){
@@ -258,6 +272,12 @@ public class CaGridActivityContextualView extends
 	@Override
 	public Action getConfigureAction(Frame owner) {
 		return null;
+	}
+
+	@Override
+	public int getPreferredPosition() {
+		// TODO Auto-generated method stub
+		return 100;
 	}
 	
 }

@@ -45,6 +45,7 @@ import net.sf.taverna.cagrid.activity.CaGridActivityConfigurationBean;
  * Panel with options to configure CaGridActivity.
  * 
  * @author Alex Nenadic
+ * Modified by Wei Tan on 1/26/2010 to add CDS URL
  *
  */
 @SuppressWarnings("serial")
@@ -52,9 +53,12 @@ public class CaGridActivityConfigureDialog extends JDialog {
 
 	private String authNServiceURL;
 	private String dorianServiceURL;
+	private String cdsServiceURL;
+	
 
 	private JTextField jtfAuthNServiceURL;
 	private JTextField jtfDorianServiceURL;
+	private JTextField jtfCDSServiceURL;
 	
 	public CaGridActivityConfigureDialog(
 			CaGridActivityConfigurationBean configurationBean) {
@@ -65,6 +69,8 @@ public class CaGridActivityConfigureDialog extends JDialog {
 			this.authNServiceURL = new String(configurationBean.getAuthNServiceURL());
 		if (configurationBean.getDorianServiceURL() != null)
 			this.dorianServiceURL = new String(configurationBean.getDorianServiceURL());
+		if (configurationBean.getCDSURL() != null)
+			this.cdsServiceURL = new String(configurationBean.getCDSURL());
 		initComponents();
 	}
 
@@ -100,6 +106,9 @@ public class CaGridActivityConfigureDialog extends JDialog {
 		
 		jtfDorianServiceURL = new JTextField(35);
 		jtfDorianServiceURL.setText(dorianServiceURL);
+		
+		jtfCDSServiceURL = new JTextField(35);
+		jtfCDSServiceURL.setText(cdsServiceURL);
 			
 		c.gridx = 0;
 		c.gridy = 1;
@@ -137,9 +146,27 @@ public class CaGridActivityConfigureDialog extends JDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		configurationPanel.add(jtfDorianServiceURL, c);
 		
-		// Buttons
 		c.gridx = 0;
 		c.gridy = 3;
+		c.ipadx = 5;
+		c.anchor = GridBagConstraints.EAST;
+		c.weightx = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		JLabel jlCDSService = new JLabel("CDS Service");
+		jlAuthNService.setBorder(new EmptyBorder(5,5,5,5));
+		configurationPanel.add(jlCDSService, c);
+		
+		c.gridx = 1;
+		c.gridy = 3;
+		c.ipadx = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.weightx = 1.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		configurationPanel.add(jtfCDSServiceURL, c);
+		
+		// Buttons
+		c.gridx = 0;
+		c.gridy = 4;
 		c.gridwidth = 2;
 		c.weightx = 1.0;
 		c.anchor = GridBagConstraints.CENTER;
@@ -172,6 +199,9 @@ public class CaGridActivityConfigureDialog extends JDialog {
 
 	public String getDorianServiceURL() {
 		return dorianServiceURL;
+	}
+	public String getCDSServiceURL() {
+		return cdsServiceURL;
 	}
 	
     /**

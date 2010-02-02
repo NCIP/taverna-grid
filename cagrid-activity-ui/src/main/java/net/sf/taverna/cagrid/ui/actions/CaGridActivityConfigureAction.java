@@ -26,7 +26,10 @@ import javax.swing.JComponent;
 
 import net.sf.taverna.cagrid.activity.CaGridActivity;
 import net.sf.taverna.cagrid.activity.CaGridActivityConfigurationBean;
+import net.sf.taverna.t2.workbench.file.FileManager;
 import net.sf.taverna.t2.workbench.ui.actions.activity.ActivityConfigurationAction;
+import net.sf.taverna.t2.workbench.ui.views.contextualviews.activity.ActivityConfigurationDialog;
+import net.sf.taverna.t2.workflowmodel.Dataflow;
 
 import org.apache.log4j.Logger;
 
@@ -36,6 +39,8 @@ import org.apache.log4j.Logger;
  * caGrid service/operation only. They will be serialised and saved in the wf definition file.
  * 
  * @author Alex Nenadic
+ * 
+ * Modified by Wei Tan on 1/26/2010, adding CDS URL in CaGridActivity configuration
  *
  */
 @SuppressWarnings("serial")
@@ -56,7 +61,7 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 	public void actionPerformed(ActionEvent e) {
 
 		CaGridActivityConfigureDialog configurationDialog = new CaGridActivityConfigureDialog(configurationBean);
-		
+		Dataflow owningDataflow = FileManager.getInstance().getCurrentDataflow();
 		configurationDialog.setLocationRelativeTo(owner);
 		configurationDialog.pack();
 		configurationDialog.setModal(true);
@@ -64,6 +69,7 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 		
 		String authNServiceURL = configurationDialog.getAuthNServiceURL();
 		String dorianServiceURL = configurationDialog.getDorianServiceURL();
+		String cdsServiceURL = configurationDialog.getCDSServiceURL();
 		
 		if (authNServiceURL == null && dorianServiceURL == null){ // user cancelled
 			// Do nothing
@@ -108,15 +114,38 @@ public class CaGridActivityConfigureAction extends ActivityConfigurationAction<C
 			}
 		}
 		
+		// CDS service
+		if (configurationBean.getCDSURL()==null){
+			if (!cdsServiceURL.equals("")){
+				// CDS service has been changed - it has not been set before in the
+				// bean and has now been set in the config. dialog
+				configurationBean.setCDSURL(cdsServiceURL);
+				beanChanged = true;
+				logger.info("CaGridActivityConfiguration: CDS Service property changed");
+			}
+		}
+		else{
+			// CDS service has been set before in the bean - has it changed?
+			if (!configurationBean.getCDSURL().equals(cdsServiceURL)){
+				// Has been changed
+				beanChanged = true;
+				logger.info("CaGridActivityConfiguration: CDS Service property changed");
+			}
+		}
+		
     	// Has anything actually changed? 
 		if (beanChanged){
 			if (authNServiceURL.equals("")) // when empty we actually want to delete it
 				authNServiceURL = null;
 			if (dorianServiceURL.equals("")) // when empty we actually want to delete it
 				dorianServiceURL = null;
+			if (cdsServiceURL.equals("")) // when empty we actually want to delete it
+				cdsServiceURL = null;
 			configurationBean.setAuthNServiceURL(authNServiceURL);
 			configurationBean.setDorianServiceURL(dorianServiceURL);
-			configureActivity(configurationBean);
+			configurationBean.setCDSURL(cdsServiceURL);
+			//configureActivity(configurationBean);
+			ActivityConfigurationDialog.configureActivity(owningDataflow, activity, configurationBean);
 		}
 	}
 

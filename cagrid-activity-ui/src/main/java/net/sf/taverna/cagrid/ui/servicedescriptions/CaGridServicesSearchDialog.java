@@ -20,11 +20,6 @@
  ******************************************************************************/
 package net.sf.taverna.cagrid.ui.servicedescriptions;
 
-import gov.nih.nci.cadsr.umlproject.domain.Project;
-import gov.nih.nci.cadsr.umlproject.domain.UMLClassMetadata;
-import gov.nih.nci.cadsr.umlproject.domain.UMLPackageMetadata;
-import org.cagrid.cadsr.client.CaDSRUMLModelService;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -78,8 +73,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 	// Index Services (one per caGrid)
 	private String[] indexServicesURLs;
 	
-	// caDSR Service used to search for caGrid services
-	private String[] caDSRServicesURLs;	
+	
 	
 	// List of queries to be used when searching for caGrid services 
 	private CaGridServiceQuery[] serviceQueryList;
@@ -105,7 +99,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 		CaGridConfiguration configuration = CaGridConfiguration.getInstance();
 		// Get default list of CaGridS - keys in the map contain CaGrid names and values contain 
 		// various properties set for the CaGrid (Index Service URL, AuthN service URL, Dorian Service URL, 
-		// proxy lifetime and CaDSR URL).
+		// proxy lifetime and CDS URL).
 		HashSet<String> caGridNamesSet = new HashSet<String>(configuration.getDefaultPropertyMap().keySet());
 		// Get all other caGridS that may have been configured though preferences (may include 
 		// the default ones as well if some of their values have been changed), 
@@ -118,11 +112,7 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 		for (int i = 0; i < caGridNames.length; i++){
 			indexServicesURLs[i] = configuration.getPropertyStringList(caGridNames[i]).get(0);
 		}
-		// Get CaDSR Service URLs for all caGrids, if defined
-		caDSRServicesURLs = new String[caGridNames.length];
-		for (int i = 0; i < caGridNames.length; i++){
-			caDSRServicesURLs[i] = configuration.getPropertyStringList(caGridNames[i]).get(4);
-		}
+		
 		
 		this.getContentPane().setLayout(new BorderLayout());
         
@@ -211,113 +201,8 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
         updatingMetadata = new JLabel("");
         queryButtonsPanel.add(updatingMetadata, gbc);
         
-        final JButton updateCaDSRDataButton = new JButton("Update caDSR metadata");
-        updateCaDSRDataButton.setToolTipText("Get an updated UML class list from caDSR Service. \n" +
-		"This operation may take a few minutes depending on network status.");
-        updateCaDSRDataButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae) {
-				Thread updateCaDSRDataThread = new Thread("Updating caDSR metadata") {
-					public void run() {
-						
-   					 	updatingMetadata.setIcon(WorkbenchIcons.workingIcon);
-						updatingMetadata.setText("Updating metadata ...");
-						
-						// Update the value of classNameArray
-                    	 ArrayList<String> classNameList = new ArrayList<String>();
-    					 Project[] projs = null;
-
-    					 CaDSRUMLModelService cadsr  = null;
-    					 UMLPackageMetadata[] packs = null;
-    					 UMLClassMetadata[] classes = null;
-    					 logger.info("Updating caDSR Metadata: using caDSR Service " + caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()]);
-    					 
-    					 //Note: the try-catch module should be with fine granularity
-    					 try {
-    						 cadsr = new CaDSRUMLModelService(caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()]);		                					            
-    					     projs = cadsr.findAllProjects();
-    					 }
-    					 catch (Exception e) {
-    						 e.printStackTrace();
-    					 }
-    					 
-    					 if(projs !=null){
-    						 for (int i = 0; i<projs.length;i++){
-    							 Project project = projs[i];
-    							 logger.info("Project: "+ project.getLongName());
-    							 //the bridg and c3pr project always yield error -- don't know why. so simply bypass them
-    							 if(!project.getShortName().equals("BRIDG")&&!project.getShortName().equals("C3PR")){
-    								 try {
-    									 packs = cadsr.findPackagesInProject(project);
-    								 }
-    								 catch (Exception e) {
-    									 e.printStackTrace();
-    								 }
-    								 if(packs !=null){
-    									 for(int j= 0;j<packs.length;j++){
-    										 UMLPackageMetadata pack = packs[j];
-    										 logger.info("\t-" + pack.getName());
-    										 try {
-    											 classes = cadsr.findClassesInPackage(project, pack.getName());
-    										 }
-    										 catch (Exception e) {
-    											 e.printStackTrace();
-    										 }
-    										 if(classes !=null){
-    											 for (int k=0;k<classes.length;k++){
-    												 UMLClassMetadata clazz = classes [k];
-    												 logger.info("\t\t-"+clazz.getName());
-    												 if(!classNameList.contains(clazz.getName()))
-    													 //classNameList is updated here!
-    													 classNameList.add((String)clazz.getName());
-    												 else {
-    													 //logger.info("Duplicated class name found.");
-    												 }
-    											 }
-    										 }
-    									 }
-    								 }
-    								 else{
-										 logger.info("0 packages found in project " + project.getLongName()); 
-    								 }
-    							 }
-    						 }
-    					 }
-    					 updatingMetadata.setText("Finished updating metadata.");
-    					 updatingMetadata.setIcon(WorkbenchIcons.greentickIcon);
-    					 String [] clsNameArray;
-    					 // If the retrieved class name list is not empty, update the static datatype classNameArray
-    					 if(!classNameList.isEmpty()){
-    						 clsNameArray = (String[]) classNameList.toArray(new String[0]);
-    						 Arrays.sort(clsNameArray,String.CASE_INSENSITIVE_ORDER);		                					       
-    						 logger.info("=========Class Names Without Duplications=============");
-    						 for(int i=0;i<clsNameArray.length;i++){
-    							 logger.info(clsNameArray[i]);
-    						 }
-    						 classNameArray  = clsNameArray;
-    						 JOptionPane.showMessageDialog(null, "caDSR metadata has been updated.\nThere are " + classNameArray.length + " classes in the list.", null, JOptionPane.INFORMATION_MESSAGE);   
-    						 logger.info("caDSR metadata has been updated. There are " + classNameArray.length + " classes in the list.");
-    					 }
-    					 else{
-    						 //the current value of the GT4ScavengerHelper.classNameArray is not updated
-    						 JOptionPane.showMessageDialog(null,"Empty class list retrieved from the caDSR Service.\nUsing the default class names.", null, JOptionPane.INFORMATION_MESSAGE);
-    						 logger.info("Empty class name list retrieved from caDSR Service. Using the default class names.");
-    					 }	 
-                    }
-            	};
-            	updateCaDSRDataThread.start();
-            }
-		});
-        // Disable 'update caDSR metadata' button if there is no caDSR service URL defined
-        caGridNamesComboBox.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				if (caDSRServicesURLs[caGridNamesComboBox.getSelectedIndex()].equals("")){
-					updateCaDSRDataButton.setEnabled(false);
-				}
-				else{
-					updateCaDSRDataButton.setEnabled(true);
-				}
-			}
-        });
+      
+        
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -354,10 +239,9 @@ public abstract class CaGridServicesSearchDialog extends HelpEnabledDialog {
 		gbc.gridx = 1;
         queryButtonsPanel.add(okButton, gbc);
         
-		gbc.gridx = 2;
-        queryButtonsPanel.add(updateCaDSRDataButton, gbc);
+		
         
-		gbc.gridx = 3;
+		gbc.gridx = 2;
         queryButtonsPanel.add(cancelButton, gbc);   
         
         this.getContentPane().add(queryButtonsPanel, BorderLayout.SOUTH);

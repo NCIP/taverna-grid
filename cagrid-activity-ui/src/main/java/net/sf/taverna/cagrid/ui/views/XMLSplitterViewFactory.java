@@ -20,6 +20,10 @@
  ******************************************************************************/
 package net.sf.taverna.cagrid.ui.views;
 
+import java.util.Arrays;
+import java.util.List;
+
+import net.sf.taverna.cagrid.activity.CaGridActivity;
 import net.sf.taverna.cagrid.activity.xmlsplitter.XMLInputSplitterActivity;
 import net.sf.taverna.cagrid.activity.xmlsplitter.XMLOutputSplitterActivity;
 import net.sf.taverna.cagrid.activity.xmlsplitter.XMLSplitterConfigurationBean;
@@ -37,5 +41,10 @@ public class XMLSplitterViewFactory implements ContextualViewFactory<Activity<XM
 			Activity<XMLSplitterConfigurationBean> activity) {
 		return new XMLSplitterContextualView(activity);		
 	}
+	public List<ContextualView> getViews(
+			Activity<XMLSplitterConfigurationBean> activity) {
+		return Arrays.asList(new ContextualView[] {new XMLSplitterContextualView(activity)});
+	}
+
 
 }
