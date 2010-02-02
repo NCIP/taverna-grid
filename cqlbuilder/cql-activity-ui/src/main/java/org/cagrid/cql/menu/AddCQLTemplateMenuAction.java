@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (C) 2007-2009 The University of Manchester   
+ * Copyright (C) 2009 The University of Chicago   
  * 
  *  Modifications to the initial code base are copyright of their
  *  respective authors, or their employers as appropriate.
@@ -43,11 +44,10 @@ import net.sf.taverna.t2.workflowmodel.Dataflow;
 import org.apache.log4j.Logger;
 
 /**
- * An action to add a string constant activity + a wrapping processor to the workflow.
+ * An action to add a CQL Builder activity + a wrapping processor to the workflow.
  * 
- * @author Alex Nenadic
- * @author Alan R Williams
- *
+ * @author Wei Tan 
+ * 
  */
 @SuppressWarnings("serial")
 public class AddCQLTemplateMenuAction extends AbstractMenuAction {
