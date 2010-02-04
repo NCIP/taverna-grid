@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" skipped="0" tests="2" time="5.244" failures="0" name="org.cagrid.cds.views.TestCDSContextualView">
+  <properties>
+    <property value="Sun Microsystems Inc." name="java.vendor"/>
+    <property value="C:\Users\Administrator\.m2\repository" name="localRepository"/>
+    <property value="C:\ProgramData\McAfee\DesktopProtection" name="env.DEFLOGDIR"/>
+    <property value="C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\" name="env.VS90COMNTOOLS"/>
+    <property value="SUN_STANDARD" name="sun.java.launcher"/>
+    <property value="\\NTREL202.ntdev.corp.microsoft.com\4F18C3A5-CA09-4DBD-B6FC-219FDD4C6BE0\TraceFormat" name="env.TRACE_FORMAT_SEARCH_PATH"/>
+    <property value="HotSpot Client Compiler" name="sun.management.compiler"/>
+    <property value="$P$G" name="env.PROMPT"/>
+    <property value="Windows Vista" name="os.name"/>
+    <property value="NO" name="env.FP_NO_HOST_CHECK"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_16\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_16\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_16\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_16\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_16\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_16\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_16\jre\classes" name="sun.boot.class.path"/>
+    <property value="WEITAN" name="env.COMPUTERNAME"/>
+    <property value="C:\ProgramData" name="env.ALLUSERSPROFILE"/>
+    <property value="windows" name="sun.desktop"/>
+    <property value="Sun Microsystems Inc." name="java.vm.specification.vendor"/>
+    <property value="1.5.0_16-b02" name="java.runtime.version"/>
+    <property value="D:\caGrid13\ws-core-4.0.3" name="env.GLOBUS_LOCATION"/>
+    <property value="\Users\Administrator" name="env.HOMEPATH"/>
+    <property value="Administrator" name="user.name"/>
+    <property value="C:\Program Files\Java\jre6\lib\ext\QTJava.zip" name="env.QTJAVA"/>
+    <property value="en" name="user.language"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_16\jre\bin" name="sun.boot.library.path"/>
+    <property value="D:\new workspace\.metadata\.plugins\org.maven.ide.eclipse\launches\m2conf35312.tmp" name="classworlds.conf"/>
+    <property value="1.5.0_16" name="java.version"/>
+    <property value="x86 Family 6 Model 23 Stepping 6, GenuineIntel" name="env.PROCESSOR_IDENTIFIER"/>
+    <property value="America/Chicago" name="user.timezone"/>
+    <property value="C:\Users\ADMINI~1\AppData\Local\Temp" name="env.TEMP"/>
+    <property value="32" name="sun.arch.data.model"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_16\jre\lib\endorsed" name="java.endorsed.dirs"/>
+    <property value="C:\ProgramData\McAfee\DesktopProtection" name="env.VSEDEFLOGDIR"/>
+    <property value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" name="sun.cpu.isalist"/>
+    <property value="C:" name="env.HOMEDRIVE"/>
+    <property value="GBK" name="sun.jnu.encoding"/>
+    <property value="sun.io" name="file.encoding.pkg"/>
+    <property value="\" name="file.separator"/>
+    <property value="Java Platform API Specification" name="java.specification.name"/>
+    <property value="49.0" name="java.class.version"/>
+    <property value="US" name="user.country"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_16\jre" name="java.home"/>
+    <property value="C:\Users\Administrator\AppData\Roaming" name="env.APPDATA"/>
+    <property value="C:\Users\Public" name="env.PUBLIC"/>
+    <property value="mixed mode, sharing" name="java.vm.info"/>
+    <property value="C:\Program Files\Apache Software Foundation\Tomcat 6.0" name="env.CATALINA_HOME"/>
+    <property value="C:\Windows\system32\cmd.exe" name="env.ComSpec"/>
+    <property value="Windows_NT" name="env.OS"/>
+    <property value="C:\Program Files\Common Files" name="env.CommonProgramFiles"/>
+    <property value="6.0" name="os.version"/>
+    <property value="C:\Windows\ConfigSetRoot" name="env.configsetroot"/>
+    <property value="true" name="raven.eclipse"/>
+    <property value=";" name="path.separator"/>
+    <property value="1.5.0_16-b02" name="java.vm.version"/>
+    <property value="C:\Users\Administrator" name="env.USERPROFILE"/>
+    <property value="" name="user.variant"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_16" name="env.JAVA_HOME"/>
+    <property value="sun.awt.windows.WPrinterJob" name="java.awt.printerjob"/>
+    <property value="C:\Users\ADMINI~1\AppData\Local\Temp" name="env.TMP"/>
+    <property value="UnicodeLittle" name="sun.io.unicode.encoding"/>
+    <property value="sun.awt.windows.WToolkit" name="awt.toolkit"/>
+    <property value="C:\Users\Administrator" name="user.home"/>
+    <property value="C:\ProgramData" name="env.ProgramData"/>
+    <property value="Console" name="env.SESSIONNAME"/>
+    <property value="Sun Microsystems Inc." name="java.specification.vendor"/>
+    <property value=".;C:\Program Files\Java\jre6\lib\ext\QTJava.zip" name="env.CLASSPATH"/>
+    <property value="2" name="env.NUMBER_OF_PROCESSORS"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_16\bin;.;C:\Windows\system32;C:\Windows;C:\Perl\site\bin;C:\Perl\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;D:\caGrid13\apache-ant-1.7.0\bin;C:\Program Files\Java\jdk1.5.0_16\bin;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\MathWorks\MATLAB Component Runtime\v71\runtime\win32;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Rational\common;C:\Program Files\StormII\Codec\QTSystem\;C:\Program Files\StormII\Codec;C:\Program Files\StormII" name="java.library.path"/>
+    <property value="http://java.sun.com/" name="java.vendor.url"/>
+    <property value="weitan" name="env.GLOBUS_HOSTNAME"/>
+    <property value="Sun Microsystems Inc." name="java.vm.vendor"/>
+    <property value="EMBEDDED" name="maven.home"/>
+    <property value="Java(TM) 2 Runtime Environment, Standard Edition" name="java.runtime.name"/>
+    <property value="/D:/eclipse/plugins/org.maven.ide.components.maven_embedder_2.1.0.20080530-2300/jars/plexus-classworlds-1.2-alpha-12.jar" name="java.class.path"/>
+    <property value="FALSE" name="env.DFSTRACINGON"/>
+    <property value="Java Virtual Machine Specification" name="java.vm.specification.name"/>
+    <property value="C:\Windows" name="env.windir"/>
+    <property value="\\WEITAN" name="env.LOGONSERVER"/>
+    <property value="1.0" name="java.vm.specification.version"/>
+    <property value="x86" name="env.PROCESSOR_ARCHITECTURE"/>
+    <property value="Service Pack 2" name="sun.os.patch.level"/>
+    <property value="little" name="sun.cpu.endian"/>
+    <property value="true" name="java.awt.headless"/>
+    <property value="C:\Program Files" name="env.ProgramFiles"/>
+    <property value="D:\caGrid13\apache-ant-1.7.0" name="env.ANT_HOME"/>
+    <property value="D:\new workspace\cds-activity-ui\target\test-classes;D:\new workspace\cds-activity-ui\target\classes;C:\Users\Administrator\.m2\repository\org\cagrid\cds\cds-activity\1.1-SNAPSHOT\cds-activity-1.1-SNAPSHOT.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\core\workflowmodel-api\1.0\workflowmodel-api-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\core\reference-api\1.0\reference-api-1.0.jar;C:\Users\Administrator\.m2\repository\org\springframework\spring-tx\2.5.4\spring-tx-2.5.4.jar;C:\Users\Administrator\.m2\repository\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar;C:\Users\Administrator\.m2\repository\org\springframework\spring-beans\2.5.4\spring-beans-2.5.4.jar;C:\Users\Administrator\.m2\repository\org\springframework\spring-core\2.5.4\spring-core-2.5.4.jar;C:\Users\Administrator\.m2\repository\org\springframework\spring-context\2.5.4\spring-context-2.5.4.jar;C:\Users\Administrator\.m2\repository\aopalliance\aopalliance\1.0\aopalliance-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\infrastructure\spi-discovery-api\2.0\spi-discovery-api-2.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\lang\observer\1.0\observer-1.0.jar;C:\Users\Administrator\.m2\repository\log4j\log4j\1.2.13\log4j-1.2.13.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\infrastructure\raven\2.0\raven-2.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\infrastructure\raven-log4j\2.0\raven-log4j-2.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\infrastructure\appconfig\2.0\appconfig-2.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\infrastructure\launcher-api\2.0\launcher-api-2.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\infrastructure\prelauncher\2.0\prelauncher-2.0.jar;C:\Users\Administrator\.m2\repository\jdom\jdom\1.0\jdom-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\security\credential-manager\1.0\credential-manager-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\lang\ui\1.0\ui-1.0.jar;C:\Users\Administrator\.m2\repository\bouncycastle\bcprov-jdk15\140\bcprov-jdk15-140.jar;C:\Users\Administrator\.m2\repository\commons-io\commons-io\1.3.1\commons-io-1.3.1.jar;C:\Users\Administrator\.m2\repository\BrowserLauncher2\BrowserLauncher2\1.3\BrowserLauncher2-1.3.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\cagrid\cagrid-activity\1.0-SNAPSHOT\cagrid-activity-1.0-SNAPSHOT.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\cagrid\cagrid-wsdl-generic\0.3\cagrid-wsdl-generic-0.3.jar;C:\Users\Administrator\.m2\repository\javax\activation\activation\1.1\activation-1.1.jar;C:\Users\Administrator\.m2\repository\org\cagrid\cagrid-globus-package\1.3.0-2\cagrid-globus-package-1.3.0-2.jar;C:\Users\Administrator\.m2\repository\antlr\antlr\2.7.5\antlr-2.7.5.jar;C:\Users\Administrator\.m2\repository\wsdl4j\wsdl4j\1.5.1\wsdl4j-1.5.1.jar;C:\Users\Administrator\.m2\repository\xerces\xmlParserAPIs\2.2.1\xmlParserAPIs-2.2.1.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\core\workflowmodel-impl\1.0\workflowmodel-impl-1.0.jar;C:\Users\Administrator\.m2\repository\com\thoughtworks\xstream\xstream\1.2.1\xstream-1.2.1.jar;C:\Users\Administrator\.m2\repository\xpp3\xpp3_min\1.1.3.4.O\xpp3_min-1.1.3.4.O.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\configuration-impl\1.0\configuration-impl-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\configuration-api\1.0\configuration-api-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\opencsv\opencsv\1.8\opencsv-1.8.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\menu-api\1.0\menu-api-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\common-icons\1.0\common-icons-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\helper\1.0\helper-1.0.jar;C:\Users\Administrator\.m2\repository\javax\help\javahelp\2.0.02\javahelp-2.0.02.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-components\credential-manager-ui\1.0\credential-manager-ui-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\workbench-api\1.0\workbench-api-1.0.jar;C:\Users\Administrator\.m2\repository\org\cagrid\cds\cagrid-cds-client\1.3\cagrid-cds-client-1.3.jar;C:\Users\Administrator\.m2\repository\org\cagrid\cds\cagrid-cds-common\1.3\cagrid-cds-common-1.3.jar;C:\Users\Administrator\.m2\repository\org\cagrid\cds\cagrid-cds-stubs\1.3\cagrid-cds-stubs-1.3.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\activity-icons-api\1.0\activity-icons-api-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\activity-palette-api\1.0\activity-palette-api-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\lang\partition\1.0\partition-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\lang\beans\1.0\beans-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\activities\stringconstant-activity\1.0\stringconstant-activity-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\contextual-views-impl\1.0\contextual-views-impl-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\contextual-views-api\1.0\contextual-views-api-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\file-api\1.0\file-api-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\edits-api\1.0\edits-api-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\workbench-impl\1.0\workbench-impl-1.0.jar;C:\Users\Administrator\.m2\repository\uk\org\mygrid\taverna\osxapplication\1.5.1\osxapplication-1.5.1.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-api\perspective-core\1.0\perspective-core-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\file-impl\1.0\file-impl-1.0.jar;C:\Users\Administrator\.m2\repository\commons-collections\commons-collections\3.2\commons-collections-3.2.jar;C:\Users\Administrator\.m2\repository\commons-lang\commons-lang\2.2\commons-lang-2.2.jar;C:\Users\Administrator\.m2\repository\commons-codec\commons-codec\1.3\commons-codec-1.3.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\zaria\1.0\zaria-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\edits-impl\1.0\edits-impl-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-components\workflow-view\1.0\workflow-view-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\lang\io\1.0\io-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\activity-tools\1.0\activity-tools-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\menu-impl\1.0\menu-impl-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\activities\dataflow-activity\1.0\dataflow-activity-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-components\design-ui\1.0\design-ui-1.0.jar;C:\Users\Administrator\.m2\repository\junit\junit\4.4\junit-4.4.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-impl\activity-palette-impl\1.0\activity-palette-impl-1.0.jar;C:\Users\Administrator\.m2\repository\commons-beanutils\commons-beanutils\1.8.0\commons-beanutils-1.8.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-components\graph-view\1.0\graph-view-1.0.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-components\graph-model\1.0\graph-model-1.0.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-svg-dom\1.7\batik-svg-dom-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-anim\1.7\batik-anim-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-awt-util\1.7\batik-awt-util-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-util\1.7\batik-util-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-dom\1.7\batik-dom-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-css\1.7\batik-css-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-ext\1.7\batik-ext-1.7.jar;C:\Users\Administrator\.m2\repository\xml-apis\xml-apis\1.3.04\xml-apis-1.3.04.jar;C:\Users\Administrator\.m2\repository\xml-apis\xml-apis-ext\1.3.04\xml-apis-ext-1.3.04.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-xml\1.7\batik-xml-1.7.jar;C:\Users\Administrator\.m2\repository\xalan\xalan\2.6.0\xalan-2.6.0.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-parser\1.7\batik-parser-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-swing\1.7\batik-swing-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-bridge\1.7\batik-bridge-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-gvt\1.7\batik-gvt-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-script\1.7\batik-script-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-gui-util\1.7\batik-gui-util-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-transcoder\1.7\batik-transcoder-1.7.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\fop\0.94\fop-0.94.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\xmlgraphics-commons\1.2\xmlgraphics-commons-1.2.jar;C:\Users\Administrator\.m2\repository\org\apache\avalon\framework\avalon-framework-api\4.3.1\avalon-framework-api-4.3.1.jar;C:\Users\Administrator\.m2\repository\org\apache\avalon\framework\avalon-framework-impl\4.3.1\avalon-framework-impl-4.3.1.jar;C:\Users\Administrator\.m2\repository\org\apache\xmlgraphics\batik-svggen\1.7\batik-svggen-1.7.jar;C:\Users\Administrator\.m2\repository\net\sf\taverna\t2\ui-components\perspective-results\1.0\perspective-results-1.0.jar;" name="surefire.test.class.path"/>
+    <property value="C:\Users\ADMINI~1\AppData\Local\Temp\" name="java.io.tmpdir"/>
+    <property value="1706" name="env.PROCESSOR_REVISION"/>
+    <property value="http://java.sun.com/cgi-bin/bugreport.cgi" name="java.vendor.url.bug"/>
+    <property value="C:\Windows" name="env.SystemRoot"/>
+    <property value="sun.awt.Win32GraphicsEnvironment" name="java.awt.graphicsenv"/>
+    <property value="x86" name="os.arch"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_16\jre\lib\ext" name="java.ext.dirs"/>
+    <property value="D:\new workspace\cds-activity-ui" name="user.dir"/>
+    <property value="C:\Users\Administrator\AppData\Local" name="env.LOCALAPPDATA"/>
+    <property value="
+" name="line.separator"/>
+    <property value="Java HotSpot(TM) Client VM" name="java.vm.name"/>
+    <property value=".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC" name="env.PATHEXT"/>
+    <property value="C:\Perl\site\bin;C:\Perl\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;D:\caGrid13\apache-ant-1.7.0\bin;C:\Program Files\Java\jdk1.5.0_16\bin;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\MathWorks\MATLAB Component Runtime\v71\runtime\win32;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Rational\common;C:\Program Files\StormII\Codec\QTSystem\;C:\Program Files\StormII\Codec;C:\Program Files\StormII" name="env.Path"/>
+    <property value="D:\new workspace\cds-activity-ui" name="basedir"/>
+    <property value="true" name="maven.mode.standalone"/>
+    <property value="Administrator" name="env.USERNAME"/>
+    <property value="D:\caGrid13\caGrid\repository" name="env.CAGRID_LOCATION"/>
+    <property value="C:" name="env.SystemDrive"/>
+    <property value="Cp1252" name="file.encoding"/>
+    <property value="WEITAN" name="env.USERDOMAIN"/>
+    <property value="1.5" name="java.specification.version"/>
+    <property value="6" name="env.PROCESSOR_LEVEL"/>
+  </properties>
+  <testcase classname="org.cagrid.cds.views.TestCDSContextualView" time="3.916" name="testDisovery"/>
+  <testcase classname="org.cagrid.cds.views.TestCDSContextualView" time="1.217" name="testGetConfigureAction"/>
+</testsuite>
