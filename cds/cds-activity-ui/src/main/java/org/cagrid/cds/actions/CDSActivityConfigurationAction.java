@@ -51,8 +51,9 @@ public class CDSActivityConfigurationAction extends ActivityConfigurationAction<
 		configurationDialog.pack();
 		configurationDialog.setModal(true);
 		configurationDialog.setVisible(true);
-        confBean.setCaGridName(configurationDialog.getCaGridName());
-		confBean.setParty(configurationDialog.getParty());
+		//trim the leading and ending whitespaces
+        confBean.setCaGridName(configurationDialog.getCaGridName().trim());
+		confBean.setParty(configurationDialog.getParty().trim());
 		confBean.setDelegationLifetime(configurationDialog.getDelegationLifetime());
 		confBean.setDelegationPathLength(configurationDialog.getDelegationPathLength());
 		confBean.setIssuedCredentialLifetime(configurationDialog.getIssuedCredentialLifetime());
