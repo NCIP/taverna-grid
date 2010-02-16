@@ -245,6 +245,32 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
 	 */	
 	public GSSCredential getGSSCredential() throws Exception{
 		
+		
+		// If the cagrid-activity is accessed inside Taverna Workflow Service(TWS), and requires a user's proxy,
+		// then TWS_USER_PROXY should be set -- pointing to the delegated credential. This following
+		// if loop will avoid an GUI pop-ups.
+		// TO-DO: Create a subclass that will handle this.
+		String cred = System.getenv("TWS_USER_PROXY");
+		if(cred != null)
+		{
+			GlobusCredential proxy3 = new GlobusCredential(cred); 
+			GSSCredential gss = null;
+	        try {
+				gss = new org.globus.gsi.gssapi.GlobusGSSCredentialImpl(proxy3,GSSCredential.INITIATE_AND_ACCEPT);
+				logger.info("Created GSSCredential from the proxy for operation " + configurationBean.getOperation());
+			} catch (org.ietf.jgss.GSSException ex) {
+				logger
+				.error("Error occured while creating GSSCredential from the user's proxy for invoking operation "
+						+ configurationBean.getOperation() + " of service " + configurationBean.getWsdl());
+				ex.printStackTrace();
+				throw new Exception("Error occured while creating GSSCredential from the user's proxy for invoking operation "
+						+ configurationBean.getOperation() + " of service " + configurationBean.getWsdl(), ex);
+			}
+			return gss;
+		}
+		// Custom code for TWS support ends here. 
+		
+		
 		// Get the proxy certificate - proxy should be created only once
 		// for all services belonging to the same caGrid until it expires
 		GlobusCredential proxy = null;

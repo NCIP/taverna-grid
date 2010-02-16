@@ -769,8 +769,13 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 		// Get the file which existence implies that caGrid trusted CAs have been loaded
 		File caCertsLoadedFile = new File(caGridSecConfigDirectory,"trustedCAsLoaded.txt"); 
 
-		if (!caCertsLoadedFile.exists()){			
-			JOptionPane.showMessageDialog(null, "caGrid plugin is loading trusted certificates \n of caGrid CAs into Credential Manager.", "CaGrid plugin message", JOptionPane.INFORMATION_MESSAGE);   			
+		if (!caCertsLoadedFile.exists() || System.getenv("TWS_USER_PROXY")!= null){
+			logger.info("caGrid plugin is loading trusted certificates \n of caGrid CAs into Credential Manager.");
+			
+			if(System.getenv("TWS_USER_PROXY") == null)
+			{
+				JOptionPane.showMessageDialog(null, "caGrid plugin is loading trusted certificates \n of caGrid CAs into Credential Manager.", "CaGrid plugin message", JOptionPane.INFORMATION_MESSAGE);   			
+			}
 			List<String> certificateResources = new ArrayList<String>();
 			certificateResources.add("1c3f2ca8.0");
 			certificateResources.add("62f4fd66.0");
