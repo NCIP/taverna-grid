@@ -23,29 +23,40 @@
 package net.sf.taverna.t2.workbench.cagrid;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
+import net.sf.taverna.t2.annotation.annotationbeans.DescriptiveTitle;
+import net.sf.taverna.t2.annotation.annotationbeans.ExampleValue;
+import net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription;
 import net.sf.taverna.t2.facade.WorkflowInstanceFacade;
 import net.sf.taverna.t2.invocation.InvocationContext;
-//import net.sf.taverna.t2.lang.ui.ModelMap;
+import net.sf.taverna.t2.invocation.impl.InvocationContextImpl;
+import net.sf.taverna.t2.lang.ui.ModelMap;
+import net.sf.taverna.t2.provenance.ProvenanceConnectorFactory;
+import net.sf.taverna.t2.provenance.ProvenanceConnectorFactoryRegistry;
 import net.sf.taverna.t2.provenance.ProvenanceConnectorRegistry;
 import net.sf.taverna.t2.provenance.connector.ProvenanceConnector;
 import net.sf.taverna.t2.provenance.reporter.ProvenanceReporter;
 import net.sf.taverna.t2.reference.ReferenceContext;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
+import net.sf.taverna.t2.reference.ui.InvalidDataflowReport;
 import net.sf.taverna.t2.reference.ui.WorkflowLaunchPanel;
-//import net.sf.taverna.t2.workbench.ModelMapConstants;
+import net.sf.taverna.t2.workbench.ModelMapConstants;
 import net.sf.taverna.t2.workbench.icons.WorkbenchIcons;
-import net.sf.taverna.t2.workbench.provenance.ProvenanceConfiguration;
-//import net.sf.taverna.t2.workbench.run.DataflowRunsComponent;
-//import net.sf.taverna.t2.workbench.ui.impl.Workbench;
-//import net.sf.taverna.t2.workbench.ui.zaria.PerspectiveSPI;
+import net.sf.taverna.t2.workbench.reference.config.DataManagementConfiguration;
+import net.sf.taverna.t2.workbench.cagrid.CaGridComponent;
+import net.sf.taverna.t2.workbench.ui.impl.Workbench;
+import net.sf.taverna.t2.workbench.ui.zaria.PerspectiveSPI;
 import net.sf.taverna.t2.workflowmodel.Dataflow;
 import net.sf.taverna.t2.workflowmodel.DataflowInputPort;
 import net.sf.taverna.t2.workflowmodel.DataflowOutputPort;
@@ -60,210 +71,184 @@ import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLDeserializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLDeserializerImpl;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializerImpl;
+import net.sf.taverna.t2.workflowmodel.utils.AnnotationTools;
+import net.sf.taverna.t2.workflowmodel.utils.PortComparator;
 import net.sf.taverna.t2.workbench.file.FileManager;
 
 import org.apache.log4j.Logger;
 
 public class RunAsCaGridServiceAction extends AbstractAction {
 
-	private final class InvocationContextImplementation implements
-			InvocationContext {
-		private final ReferenceService referenceService;
-		
-		private final ProvenanceReporter provenanceReporter;
-
-		private InvocationContextImplementation(
-				ReferenceService referenceService, ProvenanceReporter provenanceReporter) {
-			this.referenceService = referenceService;
-			this.provenanceReporter = provenanceReporter;
-		}
-
-		public ReferenceService getReferenceService() {
-			return referenceService;
-		}
-
-		public <T> List<? extends T> getEntities(Class<T> entityType) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public ProvenanceReporter getProvenanceReporter() {
-			return provenanceReporter;
-		}
-
-		
-	}
+	
 
 	private static final long serialVersionUID = 1L;
-
 	private static Logger logger = Logger.getLogger(RunAsCaGridServiceAction.class);
-
 	private CaGridComponent runComponent;
-
-	//private PerspectiveSPI resultsPerspective;
+	private PerspectiveSPI resultsPerspective;
 
 	public RunAsCaGridServiceAction() {
 		
 		putValue(SMALL_ICON, WorkbenchIcons.runIcon);
 		putValue(NAME, "Run workflow...");
 		putValue(SHORT_DESCRIPTION, "Run the current workflow");
+		
 
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		runComponent = CaGridComponent.getInstance();
-		//when the run button is pushed down
-		//1: retrieve workflow definition from workbench
-		/*
 		Object model = ModelMap.getInstance().getModel(
 				ModelMapConstants.CURRENT_DATAFLOW);
-		//if (model instanceof Dataflow) {
-		Dataflow dataflow =null;
-		if(model!=null){
-			System.out.println(model.toString());
-			dataflow = (Dataflow) model;
-			System.out.println(dataflow.getLocalName());
-			
+		if (!(model instanceof Dataflow)) {
+			return;
 		}
-		else {
-			System.out.println("model got from workbench is null");
-		}
-		*/
-		Dataflow dataflow = FileManager.getInstance().getCurrentDataflow();
-		if(dataflow==null){
-			System.out.println("model got from workbench is null");
-		}
-		
-		
-			
-			XMLSerializer serialiser = new XMLSerializerImpl();
-			XMLDeserializer deserialiser = new XMLDeserializerImpl();
-			Dataflow dataflowCopy = null;
-			try {
-				dataflowCopy = deserialiser.deserializeDataflow(serialiser
-						.serializeDataflow(dataflow));
-			} catch (SerializationException e1) {
-				logger.error("Unable to copy dataflow", e1);
-			} catch (DeserializationException e1) {
-				logger.error("Unable to copy dataflow", e1);
-			} catch (EditException e1) {
-				logger.error("Unable to copy dataflow", e1);
-			}
-
-			if (dataflowCopy != null) {
-				//always turn off provenance 
-				final ReferenceService referenceService = runComponent.getReferenceService();
-				ReferenceContext referenceContext = null;
-				ProvenanceConnector provenanceConnector = null;
-				/*
-				if (ProvenanceConfiguration.getInstance().getProperty("enabled").equalsIgnoreCase("yes")) {
-					//TODO find out the type of ProvenanceConnector and return it
-					String connectorType = ProvenanceConfiguration.getInstance().getProperty("connector");
-
-					for (ProvenanceConnector connector:ProvenanceConnectorRegistry.getInstance().getInstances()) {
-						if (connectorType.equalsIgnoreCase(connector.getName())) {
-							provenanceConnector = connector;
-						}
-					}
+		final Dataflow dataflow = (Dataflow) model;
+		Thread t = new Thread("Preparing to run caGridworkflow "
+				+ dataflow.getLocalName()) {
+			public void run() {
+				try {
+					runDataflow(dataflow);
+				} catch (Exception ex) {
+					String message = "Could not run caGrid workflow "
+							+ dataflow.getLocalName();
+					logger.warn(message);
+					InvalidDataflowReport.showErrorDialog(ex.getMessage(), message);			
 				}
-				*/
+			};
+		};
+		t.setDaemon(true);
+		t.start();		
+	}
+	
+	protected void runDataflow(Dataflow dataflow) {
+		XMLSerializer serialiser = new XMLSerializerImpl();
+		XMLDeserializer deserialiser = new XMLDeserializerImpl();
+		Dataflow dataflowCopy = null;
+		try {
+			dataflowCopy = deserialiser.deserializeDataflow(serialiser
+					.serializeDataflow(dataflow));
+		} catch (SerializationException e1) {
+			logger.error("Unable to copy workflow", e1);
+		} catch (DeserializationException e1) {
+			logger.error("Unable to copy workflow", e1);
+		} catch (EditException e1) {
+			logger.error("Unable to copy workflow", e1);
+		}
+
+		if (dataflowCopy != null) {
+			WorkflowLaunchPanel.getDataflowCopyMap()
+					.put(dataflowCopy, dataflow);
+			
+			if (dataflowCopy.getInputPorts().isEmpty()){// No input ports - we can run immediately
+				// TODO check if the database has been created and create if needed
+				// if provenance turned on then add an IntermediateProvLayer to each
+				// Processor
+				final ReferenceService referenceService = runComponent
+						.getReferenceService();
+				//no provenance for now
+				ProvenanceConnector provenanceConnector = null;
+		
+				final InvocationContextImpl context = new InvocationContextImpl(
+						referenceService, provenanceConnector);
 				
-				//2: create instance facade
 				
-				WorkflowInstanceFacade facade;
+				final WorkflowInstanceFacade facade;
 				try {
 					facade = new EditsImpl().createWorkflowInstanceFacade(
-							dataflowCopy, new InvocationContextImplementation(
-									referenceService, provenanceConnector), "");
+							dataflowCopy, context, "");
 				} catch (InvalidDataflowException ex) {
-					invalidDataflow(ex.getDataflowValidationReport());
+					InvalidDataflowReport.invalidDataflow(ex.getDataflowValidationReport());
 					return;
-				}
-
-				//3: pop up workflow launch panel to get input
-				List<? extends DataflowInputPort> inputPorts = dataflowCopy
-						.getInputPorts();
-				if (!inputPorts.isEmpty()) {
-					//TODO retrieve Map<String, T2Reference>
-					showInputDialog(facade, referenceContext);
-				} else {
-					//no input ports
-					
-					runComponent.runWorkflow(facade, (Map) null);
-				}
-
-			} else {
-				showErrorDialog("Unable to make a copy of the workflow to run",
-						"Workflow copy failed");
+				}		
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						//switchToResultsPerspective();
+						runComponent.runWorkflow(facade, (Map) null);
+					}
+				});			
 			}
-		//}
+			else{
+				final Dataflow copy = dataflowCopy;
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						showInputDialog(copy);
+					}
+				});	
+			}
+		} else {
+			InvalidDataflowReport.showErrorDialog("Unable to make a copy of the workflow to run",
+					"Workflow copy failed");
+		}
+	}
+	
 
+	private void switchToResultsPerspective() {
+		if (resultsPerspective == null) {
+			for (PerspectiveSPI perspective : Workbench.getInstance()
+					.getPerspectives().getPerspectives()) {
+				if (perspective.getText().equalsIgnoreCase("results")) {
+					resultsPerspective = perspective;
+					break;
+				}
+			}
+		}
+		if (resultsPerspective != null) {
+			ModelMap.getInstance().setModel(
+					ModelMapConstants.CURRENT_PERSPECTIVE, resultsPerspective);
+		}
 	}
 
-	private void invalidDataflow(DataflowValidationReport report) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Unable to validate workflow due to:");
-		List<? extends TokenProcessingEntity> unsatisfiedEntities = report
-				.getUnsatisfiedEntities();
-		if (unsatisfiedEntities.size() > 0) {
-			sb.append("\n Missing inputs or cyclic dependencies:");
-			for (TokenProcessingEntity entity : unsatisfiedEntities) {
-				sb.append("\n  " + entity.getLocalName());
-			}
-		}
-		List<? extends DataflowOutputPort> unresolvedOutputs = report
-				.getUnresolvedOutputs();
-		if (unresolvedOutputs.size() > 0) {
-			sb.append("\n Invalid or unconnected outputs:");
-			for (DataflowOutputPort dataflowOutputPort : unresolvedOutputs) {
-				sb.append("\n  " + dataflowOutputPort.getName());
-			}
-		}
-		List<? extends TokenProcessingEntity> failedEntities = report
-				.getFailedEntities();
-		if (failedEntities.size() > 0) {
-			sb.append("\n Type check failure:");
-			for (TokenProcessingEntity entity : failedEntities) {
-				sb.append("\n  " + entity.getLocalName());
-			}
-		}
-		showErrorDialog(sb.toString(), "Workflow validation failed");
+	private AnnotationTools annotationTools = new AnnotationTools();
 
-	}
-
-
-	private void showInputDialog(final WorkflowInstanceFacade facade, ReferenceContext refContext) {
+	@SuppressWarnings("serial")
+	private void showInputDialog(Dataflow dataflow) {
 		// Create and set up the window.
-		final JFrame frame = new JFrame("Workflow input builder");
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		WorkflowLaunchPanel wlp = new WorkflowLaunchPanel(facade, refContext) {
+		String title = annotationTools.getAnnotationString(dataflow, DescriptiveTitle.class, "");
+		String dialogTitle = "Workflow ";
+		if ((title != null) && (!title.equals(""))) {
+			dialogTitle = title + ": ";
+		}
+		dialogTitle += "input values";
+		final JDialog dialog = new JDialog((JFrame) null, dialogTitle, true);
+		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		WorkflowLaunchPanel wlp = new WorkflowLaunchPanel(dataflow, runComponent.getReferenceService()) {
 			@Override
 			public void handleLaunch(Map<String, T2Reference> workflowInputs) {
 				//switchToResultsPerspective();
 				runComponent = CaGridComponent.getInstance();
-				System.out.println("workflow is being invoked.");
-				runComponent.runWorkflow(facade, workflowInputs);
+				runComponent.runWorkflow(getFacade(), workflowInputs);
 				
-			
+			}
+
+			@Override
+			public void handleCancel() {
+				dialog.dispose();
 			}
 		};
 		wlp.setOpaque(true); // content panes must be opaque
 
-		for (DataflowInputPort input : facade.getDataflow().getInputPorts()) {
-			wlp.addInput(input.getName(), input.getDepth());
+		List<DataflowInputPort> inputPorts = new ArrayList<DataflowInputPort>(
+				dataflow.getInputPorts());
+		Collections.sort(inputPorts, new PortComparator());
+		for (DataflowInputPort input : inputPorts) {
+			// input.getAnnotations();
+
+			String portDescription = annotationTools.getAnnotationString(input,
+					FreeTextDescription.class, null);
+			String portExample = annotationTools.getAnnotationString(input,
+					ExampleValue.class, null);
+
+			wlp.addInput(input.getName(), input.getDepth(), portDescription,
+					portExample);
 		}
 
-		frame.setContentPane(wlp);
+		dialog.setContentPane(wlp);
 
 		// Display the window.
-		frame.pack();
-		frame.setVisible(true);
+		dialog.pack();
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
 	}
-
-	private void showErrorDialog(String message, String title) {
-		JOptionPane.showMessageDialog(null, message, title,
-				JOptionPane.ERROR_MESSAGE);
-	}
-
 }

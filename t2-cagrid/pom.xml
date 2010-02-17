@@ -6,23 +6,23 @@
 	<artifactId>service-client</artifactId>
 	<packaging>pom</packaging>
 	<name>caGrid WorkflowService Client</name>
-	<version>1.0</version>
+	<version>1.0.1</version>
 	<description>The caGrid WorkflowService Client plug-in</description>
 	<licenses>
 	</licenses>
 	<properties>
-	<t2.ui.components.version>${project.version}</t2.ui.components.version>
-<t2.activities.version>1.0</t2.activities.version>
-<t2.infrastructure.version>2.0</t2.infrastructure.version>
-<t2.core.version>1.0</t2.core.version>
-<t2.reference-core-extensions.version>1.0</t2.reference-core-extensions.version>
-<t2.lang.version>1.0</t2.lang.version>
-<t2.compatibility.version>1.0</t2.compatibility.version>
-<t2.translators.version>1.0</t2.translators.version>
-<t2.ui.api.version>1.0</t2.ui.api.version>
-<t2.ui.impl.version>1.0</t2.ui.impl.version>
-<t2.security.version>1.0</t2.security.version>
-<taverna.version>1.7.2.0</taverna.version>
+		<t2.ui.components.version>1.0.1</t2.ui.components.version>
+		<t2.activities.version>1.0</t2.activities.version>
+		<t2.infrastructure.version>2.0</t2.infrastructure.version>
+		<t2.core.version>1.0</t2.core.version>
+		<t2.reference-core-extensions.version>1.0</t2.reference-core-extensions.version>
+		<t2.lang.version>1.0</t2.lang.version>
+		<t2.compatibility.version>1.0</t2.compatibility.version>
+		<t2.translators.version>1.0</t2.translators.version>
+		<t2.ui.api.version>1.0</t2.ui.api.version>
+		<t2.ui.impl.version>1.0</t2.ui.impl.version>
+		<t2.security.version>1.0.1</t2.security.version>
+		<taverna.version>1.7.2.0</taverna.version>
 	</properties>
 	<pluginRepositories>
 		<pluginRepository>
@@ -45,10 +45,7 @@
 			</url>
 		</pluginRepository>
 		<pluginRepository>
-			<releases />
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+			
 			<id>mygrid-repository</id>
 			<name>myGrid Repository</name>
 			<url>http://www.mygrid.org.uk/maven/repository</url>
@@ -56,13 +53,20 @@
 	</pluginRepositories>
 	<build>
 		<plugins>
+		
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
+				
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>2.0.2</version>
+    <configuration>
+        <source>1.5</source>
+        <target>1.5</target>
+    </configuration>
+</plugin>
+ 
+
+			  
 		</plugins>
 	</build>
 	<modules>
@@ -120,52 +124,7 @@
 	</dependencies>
 	<reporting>
 		<plugins>
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<configLocation>
-						${basedir}/../checkstyle.xml
-					</configLocation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-clover-plugin</artifactId>
-				<configuration>
-					<generatePdf>true</generatePdf>
-					<generateXml>true</generateXml>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<minmemory>128m</minmemory>
-					<maxmemory>512</maxmemory>
-					<aggregate>true</aggregate>
-					<links>
-						<link>
-							http://www.mygrid.org.uk/taverna/api/
-						</link>
-						<link>
-							http://java.sun.com/j2se/1.5.0/docs/api/
-						</link>
-					</links>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<systemProperties>
-						<property>
-							<name>java.awt.headless</name>
-							<value>true</value>
-						</property>
-					</systemProperties>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jxr-maven-plugin</artifactId>
-			</plugin>
+			
 		</plugins>
 	</reporting>
 	<dependencyManagement>

@@ -85,10 +85,7 @@ import net.sf.taverna.platform.spring.RavenAwareClassPathXmlApplicationContext;
 import net.sf.taverna.t2.facade.WorkflowInstanceFacade;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
-import net.sf.taverna.t2.workbench.reference.config.ReferenceConfiguration;
-//import net.sf.taverna.t2.workbench.run.DataflowRun;
-import net.sf.taverna.t2.workbench.run.DataflowRunsComponent;
-
+import net.sf.taverna.t2.workbench.reference.config.DataManagementConfiguration;
 import net.sf.taverna.t2.workbench.ui.zaria.UIComponentSPI;
 import net.sf.taverna.t2.workflowmodel.Dataflow;
 import net.sf.taverna.t2.workflowmodel.DataflowInputPort;
@@ -408,6 +405,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			
 			String workflowDefString = outputter.outputString(workflowDef);
 			//write this string into a file to be consumed by Dina's service
+			//TODO move the file into user directory
 			 File file = new File(dataflow.getLocalName());
 		      FileUtils.writeStringToFile(file, workflowDefString);	
 		      System.out.println("File name: " + file.getAbsolutePath());
@@ -532,30 +530,26 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		}
 		*/
 	 public ReferenceService getReferenceService() {
-		 /*
-			String context = ReferenceConfiguration.getInstance().getProperty(
-					ReferenceConfiguration.REFERENCE_SERVICE_CONTEXT);
-			if (!context.equals(referenceContext)) {
-				referenceContext = context;
-				ApplicationContext appContext = new RavenAwareClassPathXmlApplicationContext(context);
-				
-				referenceService = (ReferenceService) appContext
-						.getBean("t2reference.service.referenceService");
-				
-				try {
-					WriteQueueAspect cache = (WriteQueueAspect) appContext
+		 String context = DataManagementConfiguration.getInstance()
+			.getDatabaseContext();
+	if (!context.equals(referenceContext)) {
+		referenceContext = context;
+		ApplicationContext appContext = new RavenAwareClassPathXmlApplicationContext(
+				context);
+		referenceService = (ReferenceService) appContext
+				.getBean("t2reference.service.referenceService");
+		try {
+			WriteQueueAspect cache = (WriteQueueAspect) appContext
 					.getBean("t2reference.cache.cacheAspect");
-					ReferenceServiceShutdown.setReferenceServiceCache(cache);
-				} catch (NoSuchBeanDefinitionException e) {
-//					ReferenceServiceShutdown.setReferenceServiceCache(null);
-				} catch (ClassCastException e) {
-//					ReferenceServiceShutdown.setReferenceServiceCache(null);
-				}
-			}
-			*/
-			final ReferenceService referenceService =
-				DataflowRunsComponent.getInstance().getReferenceService();
-			return referenceService;
+			//TODO what ?
+			//ReferenceServiceShutdownHook.setReferenceServiceCache(cache);
+		} catch (NoSuchBeanDefinitionException e) {
+			// ReferenceServiceShutdown.setReferenceServiceCache(null);
+		} catch (ClassCastException e) {
+			// ReferenceServiceShutdown.setReferenceServiceCache(null);
+		}
+	}
+	return referenceService;
 
 		}
 
