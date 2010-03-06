@@ -217,8 +217,10 @@ public class RunAsCaGridServiceAction extends AbstractAction {
 			@Override
 			public void handleLaunch(Map<String, T2Reference> workflowInputs) {
 				//switchToResultsPerspective();
+				//TODO add another dialog to configure security and fileupload
 				runComponent = CaGridComponent.getInstance();
 				runComponent.runWorkflow(getFacade(), workflowInputs);
+				
 				
 			}
 

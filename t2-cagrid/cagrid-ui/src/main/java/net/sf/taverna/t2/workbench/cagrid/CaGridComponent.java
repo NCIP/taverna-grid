@@ -35,12 +35,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.StringReader;
 //import java.util.Date;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -70,12 +72,19 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
+import org.cagrid.cds.CDSUtil;
+import org.globus.gsi.GlobusCredential;
 import org.jdom.Element;
+import org.jdom.output.DOMOutputter;
 import org.jdom.output.XMLOutputter;
 
 import org.springframework.context.ApplicationContext;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 import workflowmanagementfactoryservice.WorkflowOutputType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
@@ -84,6 +93,7 @@ import net.sf.taverna.platform.spring.RavenAwareClassPathXmlApplicationContext;
 
 import net.sf.taverna.t2.facade.WorkflowInstanceFacade;
 import net.sf.taverna.t2.reference.ReferenceService;
+import net.sf.taverna.t2.reference.ReferenceServiceException;
 import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.workbench.reference.config.DataManagementConfiguration;
 import net.sf.taverna.t2.workbench.ui.zaria.UIComponentSPI;
@@ -96,6 +106,7 @@ import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLSerializerImpl;
 import net.sf.taverna.t2.workbench.icons.WorkbenchIcons;
 import net.sf.taverna.t2.reference.impl.WriteQueueAspect;
+import net.sf.taverna.t2.security.credentialmanager.CMUtil;
 
 public class CaGridComponent extends JPanel implements UIComponentSPI, ActionListener {
 
@@ -378,9 +389,17 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			DataflowInputPort ip = facade.getDataflow().getInputPorts().get(i);
 			T2Reference inputRef = (T2Reference) inputs.get(ip.getName());
 			//System.out.println(inputRef.toString());
+			//TODO what if the input is NOT given
 			//get a string from a T2Reference
-			String inputString = (String) facade.getContext().getReferenceService().renderIdentifier(inputRef,
+			String inputString = "";
+			try{
+			inputString = (String) facade.getContext().getReferenceService().renderIdentifier(inputRef,
 					String.class, null);
+			}
+			catch(ReferenceServiceException ex){
+				  System.err.println("Reference ServiceException: " + ex.getMessage());
+				  System.out.println("A possible reason is some input value are NOT given -- we use empty string instead");				
+			}
 			inputMap.put(ip.getName(),inputString);
 			
 		}
@@ -394,26 +413,66 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		}
 		System.out.println("Input of the workflow is: " + inputDisplayString);
         
-         Dataflow dataflow = facade.getDataflow();
+        Dataflow dataflow = facade.getDataflow();
 		XMLSerializer serialiser = new XMLSerializerImpl();
 		String[] outputs = null;
 		String resultDisplayString = "";
 		try {
 			Element workflowDef = serialiser.serializeDataflow(dataflow);
 			XMLOutputter outputter = new XMLOutputter();
-			//outputter.output(workflowDef, System.out);
 			
 			String workflowDefString = outputter.outputString(workflowDef);
+			//org.w3c.dom.Element 
+			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+			docBuilderFactory.setNamespaceAware(true);
+		    DocumentBuilder docBuilder;
+			docBuilder = docBuilderFactory.newDocumentBuilder();
+			Document wfDoc = docBuilder.parse( new InputSource(new StringReader(workflowDefString)));
+			
 			//write this string into a file to be consumed by Dina's service
 			//TODO move the file into user directory
-			 File file = new File(dataflow.getLocalName());
-		      FileUtils.writeStringToFile(file, workflowDefString);	
-		      System.out.println("File name: " + file.getAbsolutePath());
+			File file = new File(System.getProperty("user.home") + System.getProperty("file.separator")  +dataflow.getLocalName());
+		    FileUtils.writeStringToFile(file, workflowDefString);	
+		    System.out.println("File name: " + file.getAbsolutePath());
 		    //System.out.println("----------------Workflow Definition----------------------");
 			//System.out.println(workflowDefString);
 			//System.out.println("----------------End of Workflow Definition---------------");
 			//String url = "http://128.135.125.17:51000/wsrf/services/cagrid/TavernaWorkflowService";
 			//String url =  (String) services.getSelectedItem();
+	      //TODO add the additional CDS+Transfer configuration dialog
+	      WFProperties wfp = T2Util.parseWorkflow(wfDoc.getDocumentElement());
+	      CDSAndTransferConfDialog cDialog = new CDSAndTransferConfDialog(wfp.needSecurity,wfp.needTransfer==wfp.TRANSFER_UPLOAD_ONLY||wfp.needTransfer==wfp.TRANSFER_BOTH);
+	      cDialog.pack();
+	      cDialog.setLocationRelativeTo(null);
+	      cDialog.setVisible(true);
+	      if(wfp.needSecurity){
+	    	//TODO get EPR from CDS
+		    //get users Globus credential in a certain caGrid, like NCI_Prod or CVRG
+			//System.out.println("Get user's Globus Credential in "+ config.getCaGridName());
+			File secConfigDirectory = CMUtil.getSecurityConfigurationDirectory();
+			String path = secConfigDirectory.getAbsolutePath()+"/cagrid/trusted-certificates";
+			System.setProperty("X509_CERT_DIR",path);					
+			GlobusCredential proxy = CDSUtil.getGlobusCredential(cDialog.getCaGridName());
+	      
+			System.out.println("Delegate Credential\n" +
+					"caGrid:"+cDialog.getCaGridName()+"\n"+
+					"party:"+cDialog.getParty()+"\n"+
+					"delegationLifeTime:"+cDialog.getDelegationLifetime()+"\n"+
+					"delegationPathLength:"+cDialog.getDelegationPathLength()+"\n"+
+					"issuedCredentialLifeTime:"+cDialog.getIssuedCredentialLifetime()+"\n"+
+					"issuedCredentialPathLength:"+cDialog.getIssuedCredentialPathLength()+"\n"
+			);
+			String epr = CDSUtil.delegateCredential(cDialog.getCaGridName(),proxy, 
+					cDialog.getParty(),cDialog.getDelegationLifetime(),cDialog.getDelegationPathLength(),
+					cDialog.getIssuedCredentialLifetime(),cDialog.getIssuedCredentialPathLength());					
+			System.out.println(epr);
+	      }  
+	      
+	      //TODO upload the input file
+	      if(wfp.needTransfer==wfp.TRANSFER_UPLOAD_ONLY||wfp.needTransfer==wfp.TRANSFER_BOTH){
+	    	  
+	      }
+	      		  
 			TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
 			Date date = new Date();
 			String workflowName = String.valueOf(runComponent.workflowid);

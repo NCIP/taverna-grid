@@ -1,0 +1,541 @@
+<workflow xmlns="http://taverna.sf.net/2008/xml/t2flow" version="1" producedBy="taverna-2.1-beta-2"><dataflow id="ac60ce47-0beb-4659-baa6-f0b070771a03" role="top"><name>Workflow1</name><inputPorts><port><name>workingDir</name><depth>0</depth><granularDepth>0</granularDepth><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.ExampleValue">
+        <text>C:\Users\Administrator\taverna\10000\</text>
+      </annotationBean>
+      <date>2009-11-23 15:51:50.72 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>The working directory used by the workflow to store all input, output and intermediate files. Make sure that the user who run the workflow have access to this directory.</text>
+      </annotationBean>
+      <date>2009-11-23 16:07:43.239 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></port><port><name>gctFileName</name><depth>0</depth><granularDepth>0</granularDepth><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.ExampleValue">
+        <text>cms_test.gct</text>
+      </annotationBean>
+      <date>2009-11-23 15:52:20.62 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>the gct fileName to be preprocessed. If fileName does not contain full path, the workflow assumes that it is under /workingDir. Download an example gct from http://www.mcs.anl.gov/~wtan/t2-workflow-repo/caintgrator2/pca_test_gct.gct and save it in your workingDir.</text>
+      </annotationBean>
+      <date>2009-11-23 16:02:58.638 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>the gct fileName to be preprocessed. If fileName does not contain full path, the workflow assumes that it is under /workingDir. Download an example gct from http://www.mcs.anl.gov/~wtan/t2-workflow-repo/caintgrator2/cms_test.cls and save it in your workingDir.</text>
+      </annotationBean>
+      <date>2009-11-23 16:06:11.623 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>the gct fileName to be preprocessed. If fileName does not contain full path, the workflow assumes that it is under /workingDir. Download an example gct from http://www.mcs.anl.gov/~wtan/t2-workflow-repo/caintgrator2/cms_test.gct and save it in your workingDir.</text>
+      </annotationBean>
+      <date>2009-11-23 16:06:34.619 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></port><port><name>clsFileName</name><depth>0</depth><granularDepth>0</granularDepth><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.ExampleValue">
+        <text>cms_test.cls</text>
+      </annotationBean>
+      <date>2009-11-23 15:52:35.47 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>the gct fileName to be preprocessed. If fileName does not contain full path, the workflow assumes that it is under /workingDir. Download an example gct from http://www.mcs.anl.gov/~wtan/t2-workflow-repo/caintgrator2/cms_test.cls and save it in your workingDir.</text>
+      </annotationBean>
+      <date>2009-11-23 16:21:22.898 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></port><port><name>cmsResultFileName</name><depth>0</depth><granularDepth>0</granularDepth><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>give a name of the result zip file. The result of CMS will then be stored in the workingDir with given file name.</text>
+      </annotationBean>
+      <date>2009-11-23 16:07:18.495 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.ExampleValue">
+        <text>CMSResult.zip</text>
+      </annotationBean>
+      <date>2009-11-23 15:52:07.799 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></port></inputPorts><outputPorts><port><name>cmsResultFileName</name></port></outputPorts><processors><processor><name>zip_file</name><inputPorts><port><name>dir</name><depth>0</depth></port><port><name>gctFileName</name><depth>0</depth></port><port><name>clsFileName</name><depth>0</depth></port></inputPorts><outputPorts><port><name>zipFileName</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>beanshell-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.beanshell.BeanshellActivity</class><inputMap><map from="clsFileName" to="clsFileName" /><map from="dir" to="dir" /><map from="gctFileName" to="gctFileName" /></inputMap><outputMap><map from="zipFileName" to="zipFileName" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.beanshell.BeanshellActivityConfigurationBean xmlns="">
+  <script>import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.rmi.RemoteException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import javax.xml.namespace.QName;
+
+/*
+	 * Writes a set of files to a zip file, and returns the name of
+	 * the zip file.
+	 */
+	private String writeZipFile(Set tempFiles) throws IOException {
+		System.out.println("entering writeZipFile with: " + tempFiles.size() + " to write");
+		ZipOutputStream zos = null;
+		byte[] buffer = new byte[1024];
+		int bytesRead;
+		File zipFile = File.createTempFile("temp", ".zip");			
+
+		try {
+
+			zos = new ZipOutputStream(new FileOutputStream(zipFile));
+			int i = 1;
+			for (File file : tempFiles) {
+				ZipEntry entry = new ZipEntry(file.getName());
+				zos.putNextEntry(entry);
+				BufferedInputStream bis = null;
+				System.out.println("writing zip entry for: " + i + " out of " + tempFiles.size());
+				System.out.println("writing zip entry for: " + file.getName());
+				i++;
+				try {
+					bis = new BufferedInputStream(new FileInputStream(file));
+					while ((bytesRead = bis.read(buffer)) != -1) {
+						zos.write(buffer, 0, bytesRead);
+					}
+				} finally {
+					if (null != bis) bis.close();
+				}
+				System.out.println("wrote zip entry for: " + file.getName());				
+
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("Error creating zip file: " + zipFile.getName());
+			throw e;
+		} catch (IOException e) {
+			System.out.println("Error writing entry to zip file: " + zipFile.getName());
+			throw e;
+		} finally {
+			if (null != zos) try {zos.close();} catch (IOException e) { }
+		}
+		return zipFile.getCanonicalPath();
+	}
+
+
+
+//////////////////////////////////////////////////////////////////////
+
+	
+		Set fileSet = new HashSet();
+		fileSet.add(new File(dir+"/"+clsFileName));
+		fileSet.add(new File(dir+ "/" + gctFileName));
+			
+		try {
+			zipName = writeZipFile(fileSet);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	zipFileName = zipName;</script>
+  <dependencies />
+  <classLoaderSharing>workflow</classLoaderSharing>
+  <localDependencies />
+  <artifactDependencies />
+  <inputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <handledReferenceSchemes />
+      <translatedElementType>java.lang.String</translatedElementType>
+      <allowsLiteralValues>true</allowsLiteralValues>
+      <name>dir</name>
+      <depth>0</depth>
+      <mimeTypes>
+        <string>text/plain</string>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <handledReferenceSchemes />
+      <translatedElementType>java.lang.String</translatedElementType>
+      <allowsLiteralValues>true</allowsLiteralValues>
+      <name>gctFileName</name>
+      <depth>0</depth>
+      <mimeTypes>
+        <string>text/plain</string>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <handledReferenceSchemes />
+      <translatedElementType>java.lang.String</translatedElementType>
+      <allowsLiteralValues>true</allowsLiteralValues>
+      <name>clsFileName</name>
+      <depth>0</depth>
+      <mimeTypes>
+        <string>text/plain</string>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+  </inputs>
+  <outputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+      <granularDepth>0</granularDepth>
+      <name>zipFileName</name>
+      <depth>0</depth>
+      <mimeTypes>
+        <string>text/plain</string>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+  </outputs>
+</net.sf.taverna.t2.activities.beanshell.BeanshellActivityConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="dir" depth="0" /><port name="gctFileName" depth="0" /><port name="clsFileName" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>createAnalysis2</name><inputPorts /><outputPorts><port><name>parameters</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.WSDLActivity</class><inputMap /><outputMap><map from="parameters" to="parameters" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean xmlns="">
+  <wsdl>http://node255.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvc?wsdl</wsdl>
+  <operation>createAnalysis</operation>
+</net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy /></iteration></iterationStrategyStack></processor><processor><name>createAnalysis2_output</name><inputPorts><port><name>input</name><depth>0</depth></port></inputPorts><outputPorts><port><name>ComparativeMarkerSelMAGESvcContextReference</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLOutputSplitterActivity</class><inputMap><map from="input" to="input" /></inputMap><outputMap><map from="ComparativeMarkerSelMAGESvcContextReference" to="ComparativeMarkerSelMAGESvcContextReference" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean xmlns="">
+  <wrappedTypeXML>&lt;s:extensions xmlns:s="http://org.embl.ebi.escience/xscufl/0.1alpha"&gt;&lt;s:complextype optional="false" unbounded="false" typename="CreateAnalysisResponse" name="parameters" qname="{http://org.genepattern.cagrid.service/ComparativeMarkerSelMAGESvc}CreateAnalysisResponse"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="ComparativeMarkerSelMAGESvcContextReference" name="ComparativeMarkerSelMAGESvcContextReference" qname="{http://org.genepattern.cagrid.service/ComparativeMarkerSelMAGESvc/Context/types}&amp;gt;CreateAnalysisResponse&amp;gt;ComparativeMarkerSelMAGESvcContextReference"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="EndpointReference" name="EndpointReference" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}&amp;gt;ComparativeMarkerSelMAGESvcContextReference&amp;gt;EndpointReference"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="anyURI" name="Address" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;Address" /&gt;&lt;s:complextype optional="true" unbounded="false" typename="ReferencePropertiesType" name="ReferenceProperties" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ReferenceProperties"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="PortType" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;PortType" /&gt;&lt;s:basetype optional="true" unbounded="false" typename="NCName" name="ServiceName" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ServiceName" /&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:extensions&gt;</wrappedTypeXML>
+  <inputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <handledReferenceSchemes />
+      <translatedElementType>java.lang.String</translatedElementType>
+      <allowsLiteralValues>false</allowsLiteralValues>
+      <name>input</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+  </inputs>
+  <outputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+      <granularDepth>0</granularDepth>
+      <name>ComparativeMarkerSelMAGESvcContextReference</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+  </outputs>
+</net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="input" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>submitData2</name><inputPorts><port><name>EndpointReference</name><depth>0</depth></port><port><name>parameters</name><depth>0</depth></port></inputPorts><outputPorts><port><name>parameters</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.WSDLActivity</class><inputMap><map from="parameters" to="parameters" /><map from="EndpointReference" to="EndpointReference" /></inputMap><outputMap><map from="parameters" to="parameters" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean xmlns="">
+  <wsdl>http://node255.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvcContext?wsdl</wsdl>
+  <operation>submitData</operation>
+</net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="EndpointReference" depth="0" /><port name="parameters" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>submitData2_output</name><inputPorts><port><name>input</name><depth>0</depth></port></inputPorts><outputPorts><port><name>TransferServiceContextReference</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLOutputSplitterActivity</class><inputMap><map from="input" to="input" /></inputMap><outputMap><map from="TransferServiceContextReference" to="TransferServiceContextReference" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean xmlns="">
+  <wrappedTypeXML>&lt;s:extensions xmlns:s="http://org.embl.ebi.escience/xscufl/0.1alpha"&gt;&lt;s:complextype optional="false" unbounded="false" typename="SubmitDataResponse" name="parameters" qname="{http://org.genepattern.cagrid.service/ComparativeMarkerSelMAGESvc/Context}SubmitDataResponse"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="TransferServiceContextReference" name="TransferServiceContextReference" qname="{http://transfer.cagrid.org/TransferService/Context/types}&amp;gt;SubmitDataResponse&amp;gt;TransferServiceContextReference"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="EndpointReference" name="EndpointReference" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}&amp;gt;TransferServiceContextReference&amp;gt;EndpointReference"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="anyURI" name="Address" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;Address" /&gt;&lt;s:complextype optional="true" unbounded="false" typename="ReferencePropertiesType" name="ReferenceProperties" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ReferenceProperties"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="PortType" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;PortType" /&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="ServiceName" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ServiceName" /&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:extensions&gt;</wrappedTypeXML>
+  <inputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <handledReferenceSchemes />
+      <translatedElementType>java.lang.String</translatedElementType>
+      <allowsLiteralValues>false</allowsLiteralValues>
+      <name>input</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+  </inputs>
+  <outputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+      <granularDepth>0</granularDepth>
+      <name>TransferServiceContextReference</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+  </outputs>
+</net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="input" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>submitData2_TransferServiceContextReference</name><inputPorts><port><name>input</name><depth>0</depth></port></inputPorts><outputPorts><port><name>EndpointReference</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLOutputSplitterActivity</class><inputMap><map from="input" to="input" /></inputMap><outputMap><map from="EndpointReference" to="EndpointReference" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean xmlns="">
+  <wrappedTypeXML>&lt;s:extensions xmlns:s="http://org.embl.ebi.escience/xscufl/0.1alpha"&gt;&lt;s:complextype optional="false" unbounded="false" typename="TransferServiceContextReference" name="TransferServiceContextReference" qname="{http://transfer.cagrid.org/TransferService/Context/types}&amp;gt;SubmitDataResponse&amp;gt;TransferServiceContextReference"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="EndpointReference" name="EndpointReference" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}&amp;gt;TransferServiceContextReference&amp;gt;EndpointReference"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="anyURI" name="Address" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;Address" /&gt;&lt;s:complextype optional="true" unbounded="false" typename="ReferencePropertiesType" name="ReferenceProperties" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ReferenceProperties"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="PortType" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;PortType" /&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="ServiceName" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ServiceName" /&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:extensions&gt;</wrappedTypeXML>
+  <inputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <handledReferenceSchemes />
+      <translatedElementType>java.lang.String</translatedElementType>
+      <allowsLiteralValues>false</allowsLiteralValues>
+      <name>input</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+  </inputs>
+  <outputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+      <granularDepth>0</granularDepth>
+      <name>EndpointReference</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+  </outputs>
+</net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="input" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>getResult3</name><inputPorts><port><name>EndpointReference</name><depth>0</depth></port></inputPorts><outputPorts><port><name>parameters</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.WSDLActivity</class><inputMap><map from="EndpointReference" to="EndpointReference" /></inputMap><outputMap><map from="parameters" to="parameters" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean xmlns="">
+  <wsdl>http://node255.broadinstitute.org:11010/wsrf/services/cagrid/ComparativeMarkerSelMAGESvcContext?wsdl</wsdl>
+  <operation>getResult</operation>
+</net.sf.taverna.t2.activities.wsdl.WSDLActivityConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>60000</initialDelay>
+  <maxDelay>60000</maxDelay>
+  <maxRetries>40</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="EndpointReference" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>getResult3_output</name><inputPorts><port><name>input</name><depth>0</depth></port></inputPorts><outputPorts><port><name>TransferServiceContextReference</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLOutputSplitterActivity</class><inputMap><map from="input" to="input" /></inputMap><outputMap><map from="TransferServiceContextReference" to="TransferServiceContextReference" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean xmlns="">
+  <wrappedTypeXML>&lt;s:extensions xmlns:s="http://org.embl.ebi.escience/xscufl/0.1alpha"&gt;&lt;s:complextype optional="false" unbounded="false" typename="GetResultResponse" name="parameters" qname="{http://org.genepattern.cagrid.service/ComparativeMarkerSelMAGESvc/Context}GetResultResponse"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="TransferServiceContextReference" name="TransferServiceContextReference" qname="{http://transfer.cagrid.org/TransferService/Context/types}&amp;gt;GetResultResponse&amp;gt;TransferServiceContextReference"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="EndpointReference" name="EndpointReference" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}&amp;gt;TransferServiceContextReference&amp;gt;EndpointReference"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="anyURI" name="Address" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;Address" /&gt;&lt;s:complextype optional="true" unbounded="false" typename="ReferencePropertiesType" name="ReferenceProperties" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ReferenceProperties"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="PortType" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;PortType" /&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="ServiceName" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ServiceName" /&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:extensions&gt;</wrappedTypeXML>
+  <inputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <handledReferenceSchemes />
+      <translatedElementType>java.lang.String</translatedElementType>
+      <allowsLiteralValues>false</allowsLiteralValues>
+      <name>input</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+  </inputs>
+  <outputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+      <granularDepth>0</granularDepth>
+      <name>TransferServiceContextReference</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+  </outputs>
+</net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="input" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>getResult3_TransferServiceContextReference</name><inputPorts><port><name>input</name><depth>0</depth></port></inputPorts><outputPorts><port><name>EndpointReference</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLOutputSplitterActivity</class><inputMap><map from="input" to="input" /></inputMap><outputMap><map from="EndpointReference" to="EndpointReference" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean xmlns="">
+  <wrappedTypeXML>&lt;s:extensions xmlns:s="http://org.embl.ebi.escience/xscufl/0.1alpha"&gt;&lt;s:complextype optional="false" unbounded="false" typename="TransferServiceContextReference" name="TransferServiceContextReference" qname="{http://transfer.cagrid.org/TransferService/Context/types}&amp;gt;GetResultResponse&amp;gt;TransferServiceContextReference"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="EndpointReference" name="EndpointReference" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}&amp;gt;TransferServiceContextReference&amp;gt;EndpointReference"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="anyURI" name="Address" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;Address" /&gt;&lt;s:complextype optional="true" unbounded="false" typename="ReferencePropertiesType" name="ReferenceProperties" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ReferenceProperties"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="PortType" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;PortType" /&gt;&lt;s:basetype optional="true" unbounded="false" typename="QName" name="ServiceName" qname="{http://schemas.xmlsoap.org/ws/2004/03/addressing}EndpointReferenceType&amp;gt;ServiceName" /&gt;&lt;s:basetype optional="false" unbounded="false" typename="any" name="any" qname="any" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:extensions&gt;</wrappedTypeXML>
+  <inputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <handledReferenceSchemes />
+      <translatedElementType>java.lang.String</translatedElementType>
+      <allowsLiteralValues>false</allowsLiteralValues>
+      <name>input</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+  </inputs>
+  <outputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+      <granularDepth>0</granularDepth>
+      <name>EndpointReference</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+  </outputs>
+</net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="input" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>submitData2_input</name><inputPorts><port><name>parameterList</name><depth>0</depth></port></inputPorts><outputPorts><port><name>output</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>wsdl-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLInputSplitterActivity</class><inputMap><map from="parameterList" to="parameterList" /></inputMap><outputMap><map from="output" to="output" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean xmlns="">
+  <wrappedTypeXML>&lt;s:extensions xmlns:s="http://org.embl.ebi.escience/xscufl/0.1alpha"&gt;&lt;s:complextype optional="false" unbounded="false" typename="SubmitDataRequest" name="parameters" qname="{http://org.genepattern.cagrid.service/ComparativeMarkerSelMAGESvc/Context}SubmitDataRequest"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="&amp;gt;&amp;gt;SubmitDataRequest&amp;gt;parameterList" name="parameterList" qname="{http://org.genepattern.cagrid.service/ComparativeMarkerSelMAGESvc/Context}&amp;gt;SubmitDataRequest&amp;gt;parameterList"&gt;&lt;s:elements&gt;&lt;s:complextype optional="false" unbounded="false" typename="ParameterList" name="ParameterList" qname="{gme://parameter.asbp/1/org.cabig.icr.asbp.parameter}&amp;gt;&amp;gt;SubmitDataRequest&amp;gt;parameterList&amp;gt;ParameterList"&gt;&lt;s:elements&gt;&lt;s:arraytype optional="true" unbounded="true" wrapped="false" typename="Parameter" name="parameterCollection" qname="ParameterList&amp;gt;parameterCollection"&gt;&lt;s:elementtype&gt;&lt;s:complextype optional="false" unbounded="false" typename="Parameter" name="" qname="{gme://parameter.asbp/1/org.cabig.icr.asbp.parameter}Parameter"&gt;&lt;s:elements&gt;&lt;s:basetype optional="false" unbounded="false" typename="string" name="name" qname="Parameter&amp;gt;name" /&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elementtype&gt;&lt;/s:arraytype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:elements&gt;&lt;/s:complextype&gt;&lt;/s:extensions&gt;</wrappedTypeXML>
+  <inputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+      <allowsLiteralValues>false</allowsLiteralValues>
+      <name>parameterList</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityInputPortDefinitionBean>
+  </inputs>
+  <outputs>
+    <net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+      <granularDepth>0</granularDepth>
+      <name>output</name>
+      <depth>0</depth>
+      <mimeTypes class="java.util.Collections$SingletonList">
+        <element class="string">'text/xml'</element>
+      </mimeTypes>
+    </net.sf.taverna.t2.workflowmodel.processor.activity.config.ActivityOutputPortDefinitionBean>
+  </outputs>
+</net.sf.taverna.t2.activities.wsdl.xmlsplitter.XMLSplitterConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="parameterList" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>CMS_Parameterslist</name><inputPorts /><outputPorts><port><name>value</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>net.sf.taverna.t2.activities</group><artifact>stringconstant-activity</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.activities.stringconstant.StringConstantActivity</class><inputMap /><outputMap><map from="value" to="value" /></outputMap><configBean encoding="xstream"><net.sf.taverna.t2.activities.stringconstant.StringConstantConfigurationBean xmlns="">
+  <value>&lt;parameterList  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;&lt;ns1:ParameterList xmlns:ns1="gme://parameter.asbp/1/org.cabig.icr.asbp.parameter"&gt;&lt;parameterCollection xsi:type="ns1:StringParameter" xmlns=""&gt;&lt;name&gt;test.direction&lt;/name&gt;&lt;value&gt;2&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns1:StringParameter" xmlns=""&gt;&lt;name&gt;test.statistic&lt;/name&gt;&lt;value&gt;0&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns1:StringParameter" xmlns=""&gt;&lt;name&gt;min.std&lt;/name&gt;&lt;value&gt;1&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns1:StringParameter" xmlns=""&gt;&lt;name&gt;number.of.permutations&lt;/name&gt;&lt;value&gt;1000&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns1:StringParameter" xmlns=""&gt;&lt;name&gt;complete&lt;/name&gt;&lt;value&gt;false&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns1:StringParameter" xmlns=""&gt;&lt;name&gt;balanced&lt;/name&gt;&lt;value&gt;false&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns1:StringParameter" xmlns=""&gt;&lt;name&gt;random.seed&lt;/name&gt;&lt;value&gt;779948241&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns1:StringParameter" xmlns=""&gt;&lt;name&gt;smooth.p.values&lt;/name&gt;&lt;value&gt;false&lt;/value&gt;&lt;/parameterCollection&gt;&lt;/ns1:ParameterList&gt;&lt;/parameterList&gt;</value>
+</net.sf.taverna.t2.activities.stringconstant.StringConstantConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy /></iteration></iterationStrategyStack></processor><processor><name>upload</name><inputPorts><port><name>workingDir</name><depth>0</depth></port><port><name>epr</name><depth>0</depth></port><port><name>fileName</name><depth>0</depth></port></inputPorts><outputPorts /><annotations /><activities><activity><raven><group>org.cagrid.transfer</group><artifact>cagridtransfer-activity</artifact><version>1.0</version></raven><class>org.cagrid.transfer.CaGridTransferActivity</class><inputMap><map from="fileName" to="fileName" /><map from="workingDir" to="workingDir" /><map from="epr" to="epr" /></inputMap><outputMap /><configBean encoding="xstream"><org.cagrid.transfer.CaGridTransferConfigurationBean xmlns="">
+  <isUpload>true</isUpload>
+</org.cagrid.transfer.CaGridTransferConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="workingDir" depth="0" /><port name="epr" depth="0" /><port name="fileName" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor><processor><name>download</name><inputPorts><port><name>workingDir</name><depth>0</depth></port><port><name>epr</name><depth>0</depth></port><port><name>fileName</name><depth>0</depth></port></inputPorts><outputPorts><port><name>fileName</name><depth>0</depth><granularDepth>0</granularDepth></port></outputPorts><annotations /><activities><activity><raven><group>org.cagrid.transfer</group><artifact>cagridtransfer-activity</artifact><version>1.0</version></raven><class>org.cagrid.transfer.CaGridTransferActivity</class><inputMap><map from="fileName" to="fileName" /><map from="workingDir" to="workingDir" /><map from="epr" to="epr" /></inputMap><outputMap><map from="fileName" to="fileName" /></outputMap><configBean encoding="xstream"><org.cagrid.transfer.CaGridTransferConfigurationBean xmlns="">
+  <isUpload>false</isUpload>
+</org.cagrid.transfer.CaGridTransferConfigurationBean></configBean><annotations /></activity></activities><dispatchStack><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Parallelize</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig xmlns="">
+  <maxJobs>1</maxJobs>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ParallelizeConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.ErrorBounce</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Failover</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Retry</class><configBean encoding="xstream"><net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig xmlns="">
+  <backoffFactor>1.0</backoffFactor>
+  <initialDelay>1000</initialDelay>
+  <maxDelay>5000</maxDelay>
+  <maxRetries>0</maxRetries>
+</net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.RetryConfig></configBean></dispatchLayer><dispatchLayer><raven><group>net.sf.taverna.t2.core</group><artifact>workflowmodel-impl</artifact><version>0.8</version></raven><class>net.sf.taverna.t2.workflowmodel.processor.dispatch.layers.Invoke</class><configBean encoding="xstream"><null xmlns="" /></configBean></dispatchLayer></dispatchStack><iterationStrategyStack><iteration><strategy><cross><port name="workingDir" depth="0" /><port name="epr" depth="0" /><port name="fileName" depth="0" /></cross></strategy></iteration></iterationStrategyStack></processor></processors><conditions><condition control="upload" target="getResult3" /></conditions><datalinks><datalink><sink type="processor"><processor>zip_file</processor><port>dir</port></sink><source type="dataflow"><port>workingDir</port></source></datalink><datalink><sink type="processor"><processor>zip_file</processor><port>gctFileName</port></sink><source type="dataflow"><port>gctFileName</port></source></datalink><datalink><sink type="processor"><processor>zip_file</processor><port>clsFileName</port></sink><source type="dataflow"><port>clsFileName</port></source></datalink><datalink><sink type="processor"><processor>createAnalysis2_output</processor><port>input</port></sink><source type="processor"><processor>createAnalysis2</processor><port>parameters</port></source></datalink><datalink><sink type="processor"><processor>submitData2</processor><port>EndpointReference</port></sink><source type="processor"><processor>createAnalysis2_output</processor><port>ComparativeMarkerSelMAGESvcContextReference</port></source></datalink><datalink><sink type="processor"><processor>submitData2</processor><port>parameters</port></sink><source type="processor"><processor>submitData2_input</processor><port>output</port></source></datalink><datalink><sink type="processor"><processor>submitData2_output</processor><port>input</port></sink><source type="processor"><processor>submitData2</processor><port>parameters</port></source></datalink><datalink><sink type="processor"><processor>submitData2_TransferServiceContextReference</processor><port>input</port></sink><source type="processor"><processor>submitData2_output</processor><port>TransferServiceContextReference</port></source></datalink><datalink><sink type="processor"><processor>getResult3</processor><port>EndpointReference</port></sink><source type="processor"><processor>createAnalysis2_output</processor><port>ComparativeMarkerSelMAGESvcContextReference</port></source></datalink><datalink><sink type="processor"><processor>getResult3_output</processor><port>input</port></sink><source type="processor"><processor>getResult3</processor><port>parameters</port></source></datalink><datalink><sink type="processor"><processor>getResult3_TransferServiceContextReference</processor><port>input</port></sink><source type="processor"><processor>getResult3_output</processor><port>TransferServiceContextReference</port></source></datalink><datalink><sink type="processor"><processor>submitData2_input</processor><port>parameterList</port></sink><source type="processor"><processor>CMS_Parameterslist</processor><port>value</port></source></datalink><datalink><sink type="processor"><processor>upload</processor><port>workingDir</port></sink><source type="dataflow"><port>workingDir</port></source></datalink><datalink><sink type="processor"><processor>upload</processor><port>epr</port></sink><source type="processor"><processor>submitData2_TransferServiceContextReference</processor><port>EndpointReference</port></source></datalink><datalink><sink type="processor"><processor>upload</processor><port>fileName</port></sink><source type="processor"><processor>zip_file</processor><port>zipFileName</port></source></datalink><datalink><sink type="processor"><processor>download</processor><port>workingDir</port></sink><source type="dataflow"><port>workingDir</port></source></datalink><datalink><sink type="processor"><processor>download</processor><port>epr</port></sink><source type="processor"><processor>getResult3_TransferServiceContextReference</processor><port>EndpointReference</port></source></datalink><datalink><sink type="processor"><processor>download</processor><port>fileName</port></sink><source type="dataflow"><port>cmsResultFileName</port></source></datalink><datalink><sink type="dataflow"><port>cmsResultFileName</port></sink><source type="processor"><processor>download</processor><port>fileName</port></source></datalink></datalinks><annotations><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>do principle component analysis on input .gct file and caGrid transfer plug-in is needed for file transfer. Configuration parameters can be adjusted by changing the string constants.</text>
+      </annotationBean>
+      <date>2009-11-23 16:01:09.685 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.DescriptiveTitle">
+        <text>genePattern data CMS analysis using caGrid transfer</text>
+      </annotationBean>
+      <date>2009-11-23 16:00:19.701 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.FreeTextDescription">
+        <text>do Comparative Marker Selection analysis on input .gct file and .cls files. caGrid transfer plug-in is needed for file transfer. Configuration parameters can be adjusted by changing the string constants.</text>
+      </annotationBean>
+      <date>2009-11-23 16:02:03.720 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.Author">
+        <text>Wei Tan
+University of Chicago and Argonne National Lab
+http://www.mcs.anl.gov/~wtan/</text>
+      </annotationBean>
+      <date>2009-11-23 16:00:50.258 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain><annotation_chain encoding="xstream"><net.sf.taverna.t2.annotation.AnnotationChainImpl xmlns="">
+  <annotationAssertions>
+    <net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+      <annotationBean class="net.sf.taverna.t2.annotation.annotationbeans.Author">
+        <text>Wei Tan
+University of </text>
+      </annotationBean>
+      <date>2009-11-23 16:00:30.389 CST</date>
+      <creators />
+      <curationEventList />
+    </net.sf.taverna.t2.annotation.AnnotationAssertionImpl>
+  </annotationAssertions>
+</net.sf.taverna.t2.annotation.AnnotationChainImpl></annotation_chain></annotations></dataflow></workflow>

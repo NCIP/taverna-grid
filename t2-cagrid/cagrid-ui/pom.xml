@@ -118,6 +118,14 @@
 		</dependency>
 		-->
 		<dependency>
+			<groupId>org.cagrid.cds</groupId>
+			<artifactId>cds-activity</artifactId>
+			<version>1.1-SNAPSHOT</version>
+			<!--  
+			<version>${t2.activities.version}</version>
+			-->
+		</dependency>
+		<dependency>
 			<groupId>org.cagrid.taverna-service-client.library</groupId>
 			<artifactId>TavernaWorkflowService-client</artifactId>
 			<version>1.3</version>
@@ -136,6 +144,11 @@
 			<groupId>org.cagrid.taverna-service-client.library</groupId>
 			<artifactId>TavernaWorkflowService-stubs</artifactId>
 			<version>1.3</version>
+		</dependency>
+			<dependency>
+			<groupId>net.sf.taverna.cagrid</groupId>
+			<artifactId>cagrid-activity</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<!--  only service's client jars depends on cagrid-package
 		<dependency>
