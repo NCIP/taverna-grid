@@ -22,11 +22,9 @@
 package org.cagrid.cds;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import net.sf.taverna.t2.annotation.annotationbeans.MimeType;
 import net.sf.taverna.t2.reference.ErrorDocumentService;
