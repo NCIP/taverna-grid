@@ -321,7 +321,8 @@ public class CaGridWSDLSOAPInvoker extends WSDLSOAPInvoker {
         	logger.error(cme.getMessage());
         	throw cme;
         }
-        
+        logger.info("Dorian:"+dorianServiceURL+"\n"
+        		+"Auth:" + authNServiceURL +"\n");
         PrivateKey privateKey;
         X509Certificate[] x509CertChain;
 

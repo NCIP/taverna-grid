@@ -241,8 +241,10 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 					return false;
 				}
 				logger.info("Hostname verifier: host from url: " + hostName + " vs. host from certificate: "+ hostNameFromCertificate);
-				return (hostName.equals(hostNameFromCertificate) || ("host/"+hostName)
-						.equals(hostNameFromCertificate));
+				return (hostName.equals(hostNameFromCertificate) || ("host/"+hostName).equals(hostNameFromCertificate));
+				//force no-verification, dangerous!!!
+				//System.out.println(hostName + "\nis using a certificate issued to:\n "+hostNameFromCertificate);
+				//return true;
 			}
 		};
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
@@ -585,12 +587,18 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			//TODO complex logic: FQP always needs credential if delegation is needed
 			secProperties.setRequiresProxy(true);			
 		}
-		//TODO delete these three lines; these are to enforce using credential for testing purpose
-		/*
-		secProperties.setGSIAnonymouos(Boolean.FALSE);
-		secProperties.setRequiresProxy(true);
-		secProperties.setGSIMode(GSIConstants.GSI_MODE_FULL_DELEG);
-		*/
+		//TODO may need to change
+		// to enforce using credential for FQP with CDS
+		
+		if(configBean.getWsdl().contains("FederatedQueryProcessor")){
+			System.out.println("enforce security for FQP");
+			secProperties.setGSIAnonymouos(Boolean.FALSE);
+			secProperties.setRequiresProxy(true);
+			secProperties.setGSIMode(GSIConstants.GSI_MODE_FULL_DELEG);
+			
+		}
+		
+		
 
 		if (authorizationAllowed) {
 			if (authorization == null) {
