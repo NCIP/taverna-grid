@@ -19,6 +19,7 @@ import java.security.cert.X509Certificate;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
+//import org.cagrid.gaards.ui.common.CredentialManager;
 import org.cagrid.transfer.context.client.*;
 import org.cagrid.transfer.context.stubs.types.*;
 import org.cagrid.transfer.context.client.helper.*;
@@ -66,11 +67,11 @@ public static void uploadInput(String epr ,String filePath)throws Exception{
       try{
       	credManager = CredentialManager.getInstance();
       }
-      catch (CMException cme){
+      catch (Exception cme){
       	System.out.println(cme.getMessage());
       	throw cme;
       }
-      GlobusCredential proxy = null;
+      //GlobusCredential proxy = null;
       PrivateKey privateKey;
       X509Certificate[] x509CertChain;
       
@@ -136,7 +137,7 @@ public static void uploadInput(String epr ,String filePath)throws Exception{
         	System.out.println(cme.getMessage());
         	throw cme;
         }
-        GlobusCredential proxy = null;
+      
         PrivateKey privateKey;
         X509Certificate[] x509CertChain;
         
