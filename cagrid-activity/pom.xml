@@ -13,6 +13,7 @@
 	<name>CaGrid Activity</name>
 	<description>Activity for invoking caGrid services. Based on Taverna's WSDL Activity.</description>
 	<build>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -23,17 +24,18 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		 
 	</build>
 	<properties>
 		
 		<t2.core.version>1.0</t2.core.version>
 		<t2.lang.version>1.0</t2.lang.version>
-		<t2.security.version>1.0</t2.security.version>
+		<t2.security.version>1.0.1</t2.security.version>
 		<t2.core.refexts.version>1.0</t2.core.refexts.version>
         <org.biomart.martservice.version>1.0</org.biomart.martservice.version>
         <wsdl.generic.version>1.6</wsdl.generic.version>
         <t2.ui.impl.version>1.0</t2.ui.impl.version>
-        <t2.ui.components.version>1.0</t2.ui.components.version>
+        <t2.ui.components.version>1.0.1</t2.ui.components.version>
 	</properties>
 	<repositories>
 		<repository>
