@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.cagrid.taverna-service-client</groupId>
 		<artifactId>service-client</artifactId>
-		<version>1.0.1</version>
+		<version>1.2</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cagrid.taverna-service-client</groupId>
@@ -68,7 +68,7 @@
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-components</groupId>
 			<artifactId>reference-ui</artifactId>
-			<version>${project.version}</version>
+			<version>1.1</version>
 		</dependency>
 		<!-- 
 		<dependency>
@@ -120,7 +120,7 @@
 		<dependency>
 			<groupId>org.cagrid.cds</groupId>
 			<artifactId>cds-activity</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.2</version>
 			<!--  
 			<version>${t2.activities.version}</version>
 			-->
@@ -148,7 +148,7 @@
 			<dependency>
 			<groupId>net.sf.taverna.cagrid</groupId>
 			<artifactId>cagrid-activity</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.1</version>
 		</dependency>
 		<!--  only service's client jars depends on cagrid-package
 		<dependency>
