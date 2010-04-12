@@ -9,7 +9,7 @@
 	<groupId>org.cagrid.transfer</groupId>
 	<artifactId>cagridtransfer-activity</artifactId>
 	<name>caGrid Transfer Activity</name>
-	<version>1.1</version>
+	<version>1.2</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -23,8 +23,8 @@
 		</plugins>
 	</build>
 	<properties>
-		<t2.core.version>1.0</t2.core.version>
-		<t2.security.version>1.0.1</t2.security.version>
+		<t2.core.version>1.1</t2.core.version>
+		<t2.security.version>1.1</t2.security.version>
 	</properties>	
 	<repositories>
 	<repository>
