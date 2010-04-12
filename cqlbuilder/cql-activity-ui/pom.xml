@@ -9,19 +9,14 @@
 	<groupId>org.cagrid.cql</groupId>
 	<artifactId>cql-activity-ui</artifactId>
 	<name>caGrid CQL Activity UI</name>
-	<version>1.1.1</version>
+	<version>1.2</version>
 	<properties>
-		<t2.ui.components.version>1.0.1</t2.ui.components.version>
-		<t2.activities.version>1.0</t2.activities.version>
-		<t2.infrastructure.version>2.0</t2.infrastructure.version>
-		<t2.core.version>1.0</t2.core.version>
-		<t2.reference-core-extensions.version>1.0</t2.reference-core-extensions.version>
-		<t2.lang.version>1.0</t2.lang.version>
-		<t2.compatibility.version>1.0</t2.compatibility.version>
-		<t2.translators.version>1.0</t2.translators.version>
-		<t2.ui.api.version>1.0</t2.ui.api.version>
-		<t2.ui.impl.version>1.0</t2.ui.impl.version>
-		<t2.security.version>1.0.1</t2.security.version>
+		<t2.core.version>1.1</t2.core.version>
+		<t2.security.version>1.1</t2.security.version>
+		<t2.ui.activities.version>1.1</t2.ui.activities.version>
+		<t2.ui.api.version>1.1</t2.ui.api.version>
+		<t2.ui.impl.version>1.1</t2.ui.impl.version>
+		<t2.ui.components.version>1.1</t2.ui.components.version>
 		<taverna.version>1.7.2.0</taverna.version>
 	</properties>
 	<repositories>
@@ -59,7 +54,7 @@
 		<dependency>
 			<groupId>org.cagrid.cql</groupId>
 			<artifactId>cql-activity</artifactId>
-			<version>1.1</version>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.taverna.t2.ui-impl</groupId>
