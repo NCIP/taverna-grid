@@ -39,6 +39,7 @@ import java.io.StringReader;
 //import java.util.Date;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -77,6 +79,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
 import org.cagrid.cds.CDSUtil;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.globus.gsi.GlobusCredential;
 import org.jdom.Element;
 import org.jdom.output.DOMOutputter;
@@ -87,6 +90,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import workflowmanagementfactoryservice.WorkflowOutputType;
+import workflowmanagementfactoryservice.WorkflowPortType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
 
 import net.sf.taverna.platform.spring.RavenAwareClassPathXmlApplicationContext;
@@ -128,7 +132,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
       
       private JButton refreshButton;
         
-      private JButton serviceURLButton;
+      private JButton caGridTransferDownloadButton;
       
       private JButton removeCaGridRunsButton;
      
@@ -194,10 +198,10 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 					for (int i = selected.length - 1; i >=0; i--){
 						CaGridRun cr = (CaGridRun) runListModel.get(selected[i]);
 						
-						//TODO delete the EPR file
-						File file = new File(new File(System.getProperty("user.home")),String.valueOf(cr.date.getTime())+".epr");
+						//delete the EPR file
+						File file = new File(new File(System.getProperty("user.home")),cr.workflowid+".epr");
 						file.delete();
-						System.out.println(String.valueOf(cr.date.getTime())+".epr deleted");
+						System.out.println(cr.workflowid+".epr deleted");
 						runListModel.remove(selected[i]);
 					}
 					// Set the first item as selected - if there is one
@@ -217,8 +221,8 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			JScrollPane scrollPane = new JScrollPane(runList);
 			scrollPane.setBorder(null);
 			runListPanel.add(scrollPane, BorderLayout.CENTER);
-			//TODO loadWorkflowRunsFromStoredEPRFiles(): add CaGridRun to runList for each EPR
-			//TODO add two buttons: remove and refresh status
+			// loadWorkflowRunsFromStoredEPRFiles(): add CaGridRun to runList for each EPR
+			// add two buttons: remove and refresh status
 			runList.addListSelectionListener(new ListSelectionListener() {
 				public void valueChanged(ListSelectionEvent e) {
 					if (!e.getValueIsAdjusting()) {
@@ -245,7 +249,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 
 			resultPanel.setTopComponent(runListPanel);
 			
-			//TODO outputPanel should be a tabbed pane?
+			
 			//each output should be a (xml) string
 			outputPanel = new JScrollPane();
 			
@@ -259,7 +263,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			resultPanel.setBottomComponent(outputPanel);
 			add(resultPanel,c);
 			
-			//TODO loadEPR
+		
 			
 			//add runComponent to the GUI
 			ArrayList<CaGridRun> loadedRunList = loadWorkflowRunsFromStoredEPRFiles(null,(String)services.getSelectedItem());
@@ -299,7 +303,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
            c.gridx = GridBagConstraints.RELATIVE;
            
            services = new JComboBox();
-           services.addItem("http://128.135.125.17:51000/wsrf/services/cagrid/TavernaWorkflowService");
+           services.addItem("https://bridled.ci.uchicago.edu:5000/wsrf/services/cagrid/TavernaWorkflowService");
            services.addItem("http://test.cagrid.org//wsrf/services/cagrid/TavernaWorkflowService");
            services.setSelectedIndex(0);
            //set the list of available caGrid workflow services here
@@ -309,7 +313,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
            c.weightx = 0;
    
            //Action connectService = new ConnectServiceAction();
-           testButton = new JButton("Test Service", WorkbenchIcons.updateIcon);
+           testButton = new JButton("Test Service", WorkbenchIcons.configureIcon);
            testButton.setActionCommand("test");
            testButton.addActionListener(this);
            add(testButton,c);
@@ -356,8 +360,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
        refreshButton.setActionCommand("refresh");
        refreshButton.addActionListener(this);
        add(refreshButton, c);
-       //TODO add a tabbed dialog to configure the input?
-       //each input is either a file or a string
+       
 }
    
    private void addServiceURLButton() {
@@ -365,9 +368,11 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
            c.gridx = 2;
            c.gridy = row;
            c.anchor = GridBagConstraints.WEST;
-           serviceURLButton = new JButton("Add New caGrid Service URL", WorkbenchIcons.configureIcon);
-           serviceURLButton.setEnabled(false);     
-           add(serviceURLButton, c);
+           caGridTransferDownloadButton = new JButton("Download Result File", WorkbenchIcons.updateIcon);
+           caGridTransferDownloadButton.setEnabled(true);   
+           caGridTransferDownloadButton.setActionCommand("download");
+           caGridTransferDownloadButton.addActionListener(this);
+           add(caGridTransferDownloadButton, c);
            
           
    }
@@ -375,7 +380,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
    
  //TODO: should be executed in a new thread
    public void runWorkflow(WorkflowInstanceFacade facade, Map<String, T2Reference> inputs) {
-	   //TODO invoke caGrid workflow execution service
+	   //invoke caGrid workflow execution service
 	   String url = (String) services.getSelectedItem();
 		CaGridRun runComponent = new CaGridRun(url,facade.getDataflow().getLocalName());
 		System.out.println("caGridRun initiated with url:"+url);
@@ -430,7 +435,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			Document wfDoc = docBuilder.parse( new InputSource(new StringReader(workflowDefString)));
 			
 			//write this string into a file to be consumed by Dina's service
-			//TODO move the file into user directory
+			//move the file into user directory
 			File file = new File(System.getProperty("user.home") + System.getProperty("file.separator")  +dataflow.getLocalName());
 		    FileUtils.writeStringToFile(file, workflowDefString);	
 		    System.out.println("File name: " + file.getAbsolutePath());
@@ -439,68 +444,84 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			//System.out.println("----------------End of Workflow Definition---------------");
 			//String url = "http://128.135.125.17:51000/wsrf/services/cagrid/TavernaWorkflowService";
 			//String url =  (String) services.getSelectedItem();
-	      //TODO add the additional CDS+Transfer configuration dialog
+	      //add the additional CDS+Transfer configuration dialog
 	      WFProperties wfp = T2Util.parseWorkflow(wfDoc.getDocumentElement());
-	      CDSAndTransferConfDialog cDialog = new CDSAndTransferConfDialog(wfp.needSecurity,wfp.needTransfer==wfp.TRANSFER_UPLOAD_ONLY||wfp.needTransfer==wfp.TRANSFER_BOTH);
+	      runComponent.wfp = wfp;
+	      CDSAndTransferConfDialog cDialog = new CDSAndTransferConfDialog(wfp);
 	      cDialog.pack();
 	      cDialog.setLocationRelativeTo(null);
 	      cDialog.setVisible(true);
-	      if(wfp.needSecurity){
-	    	//TODO get EPR from CDS
+	      GlobusCredential proxy = null;
+	      if(wfp.needSecurity||(wfp.needTransfer!=wfp.TRANSFER_NONE)){
+	    	//get EPR from CDS
 		    //get users Globus credential in a certain caGrid, like NCI_Prod or CVRG
 			//System.out.println("Get user's Globus Credential in "+ config.getCaGridName());
 			File secConfigDirectory = CMUtil.getSecurityConfigurationDirectory();
 			String path = secConfigDirectory.getAbsolutePath()+"/cagrid/trusted-certificates";
 			System.setProperty("X509_CERT_DIR",path);					
-			GlobusCredential proxy = CDSUtil.getGlobusCredential(cDialog.getCaGridName());
-	      
-			System.out.println("Delegate Credential\n" +
-					"caGrid:"+cDialog.getCaGridName()+"\n"+
-					"party:"+cDialog.getParty()+"\n"+
-					"delegationLifeTime:"+cDialog.getDelegationLifetime()+"\n"+
-					"delegationPathLength:"+cDialog.getDelegationPathLength()+"\n"+
-					"issuedCredentialLifeTime:"+cDialog.getIssuedCredentialLifetime()+"\n"+
-					"issuedCredentialPathLength:"+cDialog.getIssuedCredentialPathLength()+"\n"
-			);
-			String epr = CDSUtil.delegateCredential(cDialog.getCaGridName(),proxy, 
-					cDialog.getParty(),cDialog.getDelegationLifetime(),cDialog.getDelegationPathLength(),
-					cDialog.getIssuedCredentialLifetime(),cDialog.getIssuedCredentialPathLength());					
-			System.out.println(epr);
-	      }  
-	      
-	      //TODO upload the input file
-	      if(wfp.needTransfer==wfp.TRANSFER_UPLOAD_ONLY||wfp.needTransfer==wfp.TRANSFER_BOTH){
-	    	  
+			proxy = CDSUtil.getGlobusCredential(cDialog.getCaGridName());
+			runComponent.proxy = proxy;
+			//TODO save it to ${tempdir}/x509up_u_${user.name} to be picked up by Globus?
+			gov.nih.nci.cagrid.common.security.ProxyUtil.saveProxyAsDefault(proxy);
+			
+			if(wfp.needSecurity){
+				System.out.println("Delegate Credential\n" +
+						"caGrid:"+cDialog.getCaGridName()+"\n"+
+						"party:"+cDialog.getParty()+"\n"+
+						"delegationLifeTime:"+cDialog.getDelegationLifetime()+"\n"+
+						"delegationPathLength:"+cDialog.getDelegationPathLength()+"\n"+
+						"issuedCredentialLifeTime:"+cDialog.getIssuedCredentialLifetime()+"\n"+
+						"issuedCredentialPathLength:"+cDialog.getIssuedCredentialPathLength()+"\n"
+				);
+				String epr = CDSUtil.delegateCredential(cDialog.getCaGridName(),proxy, 
+						cDialog.getParty(),cDialog.getDelegationLifetime(),cDialog.getDelegationPathLength(),
+						cDialog.getIssuedCredentialLifetime(),cDialog.getIssuedCredentialPathLength());					
+				System.out.println(epr);
+		      }
 	      }
+	  
+	      
+	      
 	      		  
 			TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
 			Date date = new Date();
 			String workflowName = String.valueOf(runComponent.workflowid);
 			System.out.println("\n1. Running createWorkflow ..");
-
+			Calendar terminationTime = Calendar.getInstance();
+			terminationTime.add(Calendar.MINUTE, 60);
 			//WMSOutputType wMSOutputElement =  client.createWorkflow(input);
-			EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(url, file.getAbsolutePath(), workflowName);
+			System.out.println("workflow "+workflowName+ " at "+file.getAbsolutePath());
+			EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(url, file.getAbsolutePath(), workflowName,terminationTime);
 			//EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(url, "D:/03 T Workbench/Taverna Workbench 2.1.b2/caArray_SVM-090703.t2flow", workflowName);
 			runComponent.workflowEPR = resourceEPR;
 			// 2. Start Workflow Operations Invoked.
 			//
+			//TODO upload the input file; how do we know uploading is completed?
+		      if(wfp.needTransfer==wfp.TRANSFER_UPLOAD_ONLY||wfp.needTransfer==wfp.TRANSFER_BOTH){
+		    	 
+		    	  TransferServiceContextReference ref1 = 
+		    		  TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, cDialog.getFileToUpload(),proxy);
+		    	  Thread.sleep(20000);
+		    	  
+		      }
+			WorkflowPortType [] inputArgs = null;
 			
-			String[] inputArgs = null;
+			//String[] inputArgs = null;
 			if(inputMap.size()>0){
 				System.out.println("number of input ports: " + inputMap.size());
-				inputArgs = new String[inputMap.size()];		
+				inputArgs = new WorkflowPortType[inputMap.size()];		
 				int i = 0;
 				for(Iterator it = inputMap.entrySet().iterator(); it.hasNext();) {
 				    Map.Entry entry = (Map.Entry) it.next();
 				    Object key = entry.getKey();
 				    Object value = entry.getValue();
-				    inputArgs[i++] =  (String) value;
+				    inputArgs[i++] =  new WorkflowPortType((String)key,(String) value);
 				}
 			
 			
 			for(int k=0;k<inputArgs.length;k++){
 				System.out.println("\ninput sent to execution service ..\n");
-				System.out.println("No. "+k+" " + inputArgs[k]);
+				System.out.println("No. "+k+"\t" + inputArgs[k].getPort()+"\t"+inputArgs[k].getValue());
 			}
 			}
 			System.out.println("\n2. Now starting the workflow ..");
@@ -518,13 +539,13 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			runListModel.add(0, runComponent);
 			runList.setSelectedIndex(0);	
 		} catch (SerializationException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		resultDisplayString = "workflow submitted";	
@@ -571,6 +592,46 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 				}
 	        	
 	        }
+	        if(e.getActionCommand().equals("download")){
+	        	//TODO download the result file
+	        	Object selection = runList.getSelectedValue();
+				if (selection instanceof CaGridRun) {
+					CaGridRun dataflowRun = (CaGridRun) selection;
+					//download the output file
+					if(dataflowRun.wfp.needTransfer==dataflowRun.wfp.TRANSFER_DOWNLOAD_ONLY||dataflowRun.wfp.needTransfer==dataflowRun.wfp.TRANSFER_BOTH){
+				    	File outFile;
+						try {
+							outFile = TavernaWorkflowServiceClient.getOutputDataHelper(dataflowRun.workflowEPR, dataflowRun.proxy);
+							JOptionPane.showMessageDialog(null,
+								    "The workflow output file is downloaed to: "+outFile.getAbsolutePath(), 
+								    "Message",JOptionPane.PLAIN_MESSAGE);
+							System.out.println("caTransfer Output: " + outFile.getAbsolutePath());
+						} catch (MalformedURIException ex) {
+							
+							ex.printStackTrace();
+						} catch (RemoteException ex) {
+							
+							ex.printStackTrace();
+						} catch (IOException ex) {
+							
+							ex.printStackTrace();
+						} catch (Exception ex) {
+							
+							ex.printStackTrace();
+						}
+						
+				    	  
+				      }
+					else{
+						JOptionPane.showMessageDialog(null,
+							    "This workflow does not have any fileOutputs.", 
+							    "Message",JOptionPane.PLAIN_MESSAGE);
+
+						
+					}
+				}
+				
+	        }
 	    }
 	 //return the ReferenceService -- used to manipulate data
 	 /*
@@ -614,17 +675,17 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 
 	
 	public ImageIcon getIcon() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	public void onDisplay() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	public void onDispose() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	public String updateResultDisplayString(CaGridRun dataflowRun){
@@ -642,23 +703,24 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 				try {
 					workflowOutput = TavernaWorkflowServiceClient.getOutput(dataflowRun.workflowEPR);
 				} catch (MalformedURIException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
+				
 					e1.printStackTrace();
 				}
-				String [] outputs = null;
-				outputs = workflowOutput.getOutputFile();	
 				
-				//TODO get a list of xml strings,add to output panel
+				WorkflowPortType[] outputs = workflowOutput.getOutput();
+					
+				
+				//get a list of xml strings,add to output panel
 				Map<String, String> outputMap = new HashMap <String, String>();
 				for (int j=0;j<outputs.length;j++){
-					//TODO: without output port name?
 					System.out.println("output no."+ (j+1));
-					outputMap.put("OutputPort_"+j,outputs[j]);
+					outputMap.put(outputs[j].getPort(),outputs[j].getValue());
 						
 				}
+			
 				dataflowRun.outputMap = outputMap;
 			}
 			if(dataflowRun.outputMap!=null){
@@ -685,8 +747,8 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 	
 	
 	ArrayList<CaGridRun> loadWorkflowRunsFromStoredEPRFiles(File directory, String url) {	
-		File dir = new File(System.getProperty("user.dir"));
-		System.out.println("Reading EPR from dir "+ System.getProperty("user.dir"));
+		File dir = new File(System.getProperty("user.home"));
+		System.out.println("Reading EPR from dir "+ System.getProperty("user.home"));
 		 ArrayList<CaGridRun> caGridRunList = new ArrayList<CaGridRun>();
 		EndpointReferenceType workflowEPR = new EndpointReferenceType();
 		try {
@@ -710,7 +772,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		      caGridRunList.add(runComponent);		      
 		    }			   
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 		 return caGridRunList;

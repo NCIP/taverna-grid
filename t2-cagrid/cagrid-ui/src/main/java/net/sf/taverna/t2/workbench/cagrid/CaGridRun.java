@@ -23,22 +23,19 @@ package net.sf.taverna.t2.workbench.cagrid;
 
 //import java.awt.BorderLayout;
 import gov.nih.nci.cagrid.workflow.factory.client.TavernaWorkflowServiceClient;
-
 import java.rmi.RemoteException;
 import java.util.Date;
 //import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.JPanel;
 //import javax.swing.JTabbedPane;
 //import javax.swing.JTextArea;
 import java.io.File;
-
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.globus.gsi.GlobusCredential;
 
 import workflowmanagementfactoryservice.WorkflowStatusType;
-
 import net.sf.taverna.t2.reference.T2Reference;
 
 
@@ -49,6 +46,9 @@ public class CaGridRun {
 	public String workflowLocalName;
 	//workflow inputs
 	private Map<String, T2Reference> inputs;
+	//properties like security and transfer
+	public WFProperties wfp;
+	public GlobusCredential proxy;
 	//started time
 	public Date date;
 	//xml string that represent the execution results -- may be multiple results
@@ -61,7 +61,7 @@ public class CaGridRun {
 	String url;
 	
 	CaGridRun(String url, String workflowName){
-		
+		/*
 		try {
 			TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
 		} catch (MalformedURIException e) {
@@ -71,7 +71,7 @@ public class CaGridRun {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		*/
 		this.url = url;
 		workflowLocalName = workflowName;
 		inputs =null;
@@ -82,6 +82,7 @@ public class CaGridRun {
 		workflowStatusElement = WorkflowStatusType.Active;
 		outputMap = null;
 		workflowEPR =  null;
+		proxy = null;
 	}
 	public EndpointReferenceType readEPRFromFile(){
 		return null;

@@ -60,6 +60,7 @@ public class CDSAndTransferConfDialog extends JDialog {
 	
 	private boolean needCDS;
 	private boolean needUpload;
+	private boolean needTransfer;
 
 	private String caGridName;
 	private String party;
@@ -97,13 +98,13 @@ public class CDSAndTransferConfDialog extends JDialog {
 	public static String PARTY_STRING = "/O=caBIG/OU=caGrid/OU=Services/CN=cagrid-fqp.nci.nih.gov";
 	
 	
-	public CDSAndTransferConfDialog(boolean needCDS, boolean needUpload) {
+	public CDSAndTransferConfDialog(WFProperties wfp) {
 		
 		super((Frame)null, "Configuration for Credential Delegation and caGrid Transfer (if any)", true);
 		//are CDS and transfer needed?
-		this.needCDS = needCDS;
-		this.needUpload = needUpload;
-		
+		this.needCDS = wfp.needSecurity;
+		this.needUpload = wfp.needTransfer == wfp.TRANSFER_UPLOAD_ONLY|| wfp.needTransfer== wfp.TRANSFER_BOTH;
+		this.needTransfer = !(wfp.needTransfer == wfp.TRANSFER_NONE);
 		//get caGrid Name list from caGrid configuration
 		CaGridConfiguration configuration = CaGridConfiguration.getInstance();
 		HashSet<String> caGridNamesSet = new HashSet<String>(configuration.getDefaultPropertyMap().keySet());
@@ -163,7 +164,7 @@ public class CDSAndTransferConfDialog extends JDialog {
 		JLabel jlCaGrid = new JLabel("CaGrid Name");
 		jlCaGrid.setBorder(new EmptyBorder(5,5,5,5));
 		configurationPanel.add(jlCaGrid, c);
-		jlCaGrid.setEnabled(needCDS);
+		jlCaGrid.setEnabled(needCDS||needTransfer);
 		
 		c.gridx = 1;
 		c.gridy = 1;
@@ -172,7 +173,7 @@ public class CDSAndTransferConfDialog extends JDialog {
 		c.weightx = 1.0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		configurationPanel.add(caGridList, c);
-		caGridList.setEnabled(needCDS);
+		caGridList.setEnabled(needCDS||needTransfer);
 
 		
 			
