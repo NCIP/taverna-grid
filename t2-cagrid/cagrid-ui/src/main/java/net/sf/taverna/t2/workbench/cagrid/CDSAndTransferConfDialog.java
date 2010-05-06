@@ -95,7 +95,8 @@ public class CDSAndTransferConfDialog extends JDialog {
 	//TODO change it to 1.4
 	
 	public static String PRODUCTION_CAGRID_NAME =  "NCI Production CaGrid 1.3";
-	public static String PARTY_STRING = "/O=caBIG/OU=caGrid/OU=Services/CN=cagrid-fqp.nci.nih.gov";
+	public static String PARTY_STRING = "/O=caBIG/OU=caGrid/OU=LOA1/OU=Services/CN=bridled.ci.uchicago.edu";
+	//public static String PARTY_STRING = "/O=caBIG/OU=caGrid/OU=Services/CN=cagrid-fqp.nci.nih.gov";
 	
 	
 	public CDSAndTransferConfDialog(WFProperties wfp) {

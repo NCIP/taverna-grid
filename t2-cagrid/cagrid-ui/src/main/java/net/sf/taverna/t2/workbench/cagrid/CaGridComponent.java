@@ -33,6 +33,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -79,8 +80,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
 import org.cagrid.cds.CDSUtil;
+import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.globus.gsi.GlobusCredential;
+import org.globus.wsrf.encoding.ObjectDeserializer;
+import org.globus.wsrf.encoding.ObjectSerializer;
 import org.jdom.Element;
 import org.jdom.output.DOMOutputter;
 import org.jdom.output.XMLOutputter;
@@ -473,18 +477,18 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 						"issuedCredentialLifeTime:"+cDialog.getIssuedCredentialLifetime()+"\n"+
 						"issuedCredentialPathLength:"+cDialog.getIssuedCredentialPathLength()+"\n"
 				);
-				String epr = CDSUtil.delegateCredential(cDialog.getCaGridName(),proxy, 
+				DelegatedCredentialReference epr = CDSUtil.delegateCredential2(cDialog.getCaGridName(),proxy, 
 						cDialog.getParty(),cDialog.getDelegationLifetime(),cDialog.getDelegationPathLength(),
 						cDialog.getIssuedCredentialLifetime(),cDialog.getIssuedCredentialPathLength());					
 				System.out.println(epr);
+				
+				runComponent.cdsEPR = epr;
 		      }
 	      }
 	  
 	      
 	      
-	      		  
-			TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
-			Date date = new Date();
+	      	
 			String workflowName = String.valueOf(runComponent.workflowid);
 			System.out.println("\n1. Running createWorkflow ..");
 			Calendar terminationTime = Calendar.getInstance();
@@ -496,12 +500,18 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 			runComponent.workflowEPR = resourceEPR;
 			// 2. Start Workflow Operations Invoked.
 			//
+			if(wfp.needSecurity){
+				
+				
+				TavernaWorkflowServiceClient.setDelegatedCredential(resourceEPR, runComponent.cdsEPR, runComponent.proxy);
+
+			}
 			//TODO upload the input file; how do we know uploading is completed?
 		      if(wfp.needTransfer==wfp.TRANSFER_UPLOAD_ONLY||wfp.needTransfer==wfp.TRANSFER_BOTH){
 		    	 
 		    	  TransferServiceContextReference ref1 = 
 		    		  TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, cDialog.getFileToUpload(),proxy);
-		    	  Thread.sleep(20000);
+		    	  Thread.sleep(5000);
 		    	  
 		      }
 			WorkflowPortType [] inputArgs = null;
@@ -592,36 +602,51 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 				}
 	        	
 	        }
+	      //download the output file
 	        if(e.getActionCommand().equals("download")){
-	        	//TODO download the result file
 	        	Object selection = runList.getSelectedValue();
 				if (selection instanceof CaGridRun) {
 					CaGridRun dataflowRun = (CaGridRun) selection;
-					//download the output file
+					//if there is any output file
 					if(dataflowRun.wfp.needTransfer==dataflowRun.wfp.TRANSFER_DOWNLOAD_ONLY||dataflowRun.wfp.needTransfer==dataflowRun.wfp.TRANSFER_BOTH){
-				    	File outFile;
-						try {
-							outFile = TavernaWorkflowServiceClient.getOutputDataHelper(dataflowRun.workflowEPR, dataflowRun.proxy);
-							JOptionPane.showMessageDialog(null,
-								    "The workflow output file is downloaed to: "+outFile.getAbsolutePath(), 
+				    	// download only when workflow is finished
+						if(dataflowRun.workflowStatusElement.equals(WorkflowStatusType.Done)){
+				    		File outFile;
+							try {
+								outFile = TavernaWorkflowServiceClient.getOutputDataHelper(dataflowRun.workflowEPR, dataflowRun.proxy);
+								JOptionPane.showMessageDialog(null,
+									    "The workflow output file is downloaed to: "+outFile.getAbsolutePath(), 
+									    "Message",JOptionPane.PLAIN_MESSAGE);
+								System.out.println("caTransfer Output: " + outFile.getAbsolutePath());
+							} catch (MalformedURIException ex) {
+								
+								ex.printStackTrace();
+							} catch (RemoteException ex) {
+								
+								ex.printStackTrace();
+							} catch (IOException ex) {
+								
+								ex.printStackTrace();
+							} catch (Exception ex) {
+								
+								ex.printStackTrace();
+							}
+				    		
+				    	}
+				    	else if(dataflowRun.workflowStatusElement.equals(WorkflowStatusType.Failed)){
+				    		JOptionPane.showMessageDialog(null,
+								    "The workflow has failed.", 
 								    "Message",JOptionPane.PLAIN_MESSAGE);
-							System.out.println("caTransfer Output: " + outFile.getAbsolutePath());
-						} catch (MalformedURIException ex) {
-							
-							ex.printStackTrace();
-						} catch (RemoteException ex) {
-							
-							ex.printStackTrace();
-						} catch (IOException ex) {
-							
-							ex.printStackTrace();
-						} catch (Exception ex) {
-							
-							ex.printStackTrace();
-						}
-						
-				    	  
+				    		
+				    	}
+				    	else {
+				    		JOptionPane.showMessageDialog(null,
+								    "The workflow is running. Please check back later", 
+								    "Message",JOptionPane.PLAIN_MESSAGE);
+				    		
+				    	}				    	  
 				      }
+					//no output file through caGrid transfer
 					else{
 						JOptionPane.showMessageDialog(null,
 							    "This workflow does not have any fileOutputs.", 

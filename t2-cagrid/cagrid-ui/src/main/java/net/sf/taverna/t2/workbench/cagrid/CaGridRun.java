@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import java.io.File;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.globus.gsi.GlobusCredential;
 
 import workflowmanagementfactoryservice.WorkflowStatusType;
@@ -57,6 +58,7 @@ public class CaGridRun {
 	public JPanel resultPanel;
 	
 	EndpointReferenceType workflowEPR;
+	DelegatedCredentialReference cdsEPR;
 	WorkflowStatusType workflowStatusElement; //status
 	String url;
 	
@@ -83,6 +85,7 @@ public class CaGridRun {
 		outputMap = null;
 		workflowEPR =  null;
 		proxy = null;
+		cdsEPR = null;
 	}
 	public EndpointReferenceType readEPRFromFile(){
 		return null;
