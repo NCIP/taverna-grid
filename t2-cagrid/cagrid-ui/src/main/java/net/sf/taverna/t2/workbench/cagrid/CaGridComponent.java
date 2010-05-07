@@ -511,7 +511,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		    	 
 		    	  TransferServiceContextReference ref1 = 
 		    		  TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, cDialog.getFileToUpload(),proxy);
-		    	  Thread.sleep(5000);
+		    	  //Thread.sleep(5000);
 		    	  
 		      }
 			WorkflowPortType [] inputArgs = null;
@@ -613,7 +613,8 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 						if(dataflowRun.workflowStatusElement.equals(WorkflowStatusType.Done)){
 				    		File outFile;
 							try {
-								outFile = TavernaWorkflowServiceClient.getOutputDataHelper(dataflowRun.workflowEPR, dataflowRun.proxy);
+								outFile = TavernaWorkflowServiceClient
+								.getOutputDataHelper(dataflowRun.workflowEPR, dataflowRun.proxy,System.getProperty("user.home"));
 								JOptionPane.showMessageDialog(null,
 									    "The workflow output file is downloaed to: "+outFile.getAbsolutePath(), 
 									    "Message",JOptionPane.PLAIN_MESSAGE);

@@ -201,7 +201,7 @@ public class TavernaWorkflowServiceClientMain {
 
 			//EndpointReferenceType eprt = TavernaWorkflowServiceClient.readEprFromFile("Test.epr");
 			System.out.println(TavernaWorkflowServiceClient.getStatus(resourceEPR));
-			File outFile = TavernaWorkflowServiceClient.getOutputDataHelper(resourceEPR, credential);
+			File outFile = TavernaWorkflowServiceClient.getOutputDataHelper(resourceEPR, credential,System.getProperty("user.home"));
 
 			System.out.println(outFile.getAbsolutePath());
 

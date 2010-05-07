@@ -110,11 +110,13 @@ public class CaGridRun {
 		try {
 			workflowStatusElement = TavernaWorkflowServiceClient.getStatus(workflowEPR);
 		} catch (MalformedURIException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			workflowStatusElement = WorkflowStatusType.Failed;
+			return false;
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			workflowStatusElement = WorkflowStatusType.Failed;
+			return false;
 		}
 		return true;
 	}

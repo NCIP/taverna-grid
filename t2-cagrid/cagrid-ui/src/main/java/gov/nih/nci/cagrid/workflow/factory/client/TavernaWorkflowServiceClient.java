@@ -8,6 +8,8 @@ import gov.nih.nci.cagrid.workflow.service.impl.common.TavernaWorkflowServiceImp
 import gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +27,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.client.Stub;
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.gaards.cds.client.ClientConstants;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
@@ -34,16 +37,21 @@ import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.cagrid.transfer.context.client.TransferServiceContextClient;
 import org.cagrid.transfer.context.client.helper.TransferClientHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
+import org.cagrid.transfer.descriptor.DataDescriptor;
+import org.cagrid.transfer.descriptor.DataTransferDescriptor;
 import org.cagrid.transfer.descriptor.Status;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.GlobusCredentialException;
 import org.globus.wsrf.container.ContainerException;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.globus.wsrf.encoding.ObjectSerializer;
+import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.xml.sax.InputSource;
 
 import workflowmanagementfactoryservice.StartInputType;
 import workflowmanagementfactoryservice.WMSInputType;
 import workflowmanagementfactoryservice.WMSOutputType;
+import workflowmanagementfactoryservice.WSDLReferences;
 import workflowmanagementfactoryservice.WorkflowOutputType;
 import workflowmanagementfactoryservice.WorkflowPortType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
@@ -343,14 +351,14 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		return putInputDataHelper(epr, location, null);
 	}
 	
-	public static File getOutputDataHelper(EndpointReferenceType epr, GlobusCredential credential) throws MalformedURIException, RemoteException, IOException, Exception {
+	public static File getOutputDataHelper(EndpointReferenceType epr, GlobusCredential credential, String saveDir) throws MalformedURIException, RemoteException, IOException, Exception {
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
 		TransferServiceContextReference ref = serviceClient.getOutputData();
 		TransferServiceContextClient tclient = new TransferServiceContextClient(ref.getEndpointReference());
 
 		//File name of the output file set by the Service using DataDescriptor
 		String fileName = tclient.getDataTransferDescriptor().getDataDescriptor().getName();
-		File outputFile = new File(fileName);
+		File outputFile = new File(saveDir + File.separator + fileName);
 
 		//Get the data from the caTransfer service context using the Helper class.
 		InputStream stream = TransferClientHelper.getData(tclient.getDataTransferDescriptor(), credential);
@@ -365,8 +373,8 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		return outputFile;
 	}
 	
-	public static File getOutputDataHelper(EndpointReferenceType epr) throws MalformedURIException, RemoteException, IOException, Exception {
-		return getOutputDataHelper(epr, null);
+	public static File getOutputDataHelper(EndpointReferenceType epr, String saveDir) throws MalformedURIException, RemoteException, IOException, Exception {
+		return getOutputDataHelper(epr, null, saveDir);
 	}
 	public static void writeEprToFile(EndpointReferenceType epr,
 			String workflowName) throws Exception {
