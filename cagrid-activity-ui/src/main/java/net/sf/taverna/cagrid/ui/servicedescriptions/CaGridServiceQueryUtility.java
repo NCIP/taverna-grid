@@ -271,7 +271,7 @@ public class CaGridServiceQueryUtility {
 				logger.info("Searching by 'Search Sting' criteria.");
 				try {
 					servicesList = client
-							.discoverServicesBySearchString(sq.queryCriteria);
+							.discoverServicesBySearchString(sq.queryValue);
 				} catch (RemoteResourcePropertyRetrievalException e) {
 					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Search String'", e);
 					e.printStackTrace();
@@ -417,7 +417,7 @@ public class CaGridServiceQueryUtility {
 				logger.info("Searching by 'Concept Code' criteria.");
 				try {
 					servicesList = client
-							.discoverServicesByConceptCode(sq.queryValue);
+							.discoverDataServicesByModelConceptCode(sq.queryValue);
 				} catch (RemoteResourcePropertyRetrievalException e) {
 					logger.error("Error retrieving caGrid services from the Index Service using search criteria 'Concept Code'", e);
 					e.printStackTrace();
