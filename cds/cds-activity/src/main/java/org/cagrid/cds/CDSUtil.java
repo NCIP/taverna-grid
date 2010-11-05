@@ -135,6 +135,77 @@ public class CDSUtil {
         
 	return epr;
     }
+	
+	public static DelegatedCredentialReference delegateCredential2(String caGridName,GlobusCredential credential, String party, 
+			int dLifetime, int dPathLength, 
+			int iLifetime,int iPathLength) throws Exception 
+			{
+		CaGridConfiguration configuration = CaGridConfiguration.getInstance();
+		System.out.println(caGridName);
+		String cdsURL = configuration.getPropertyStringList(caGridName).get(4);
+		if (cdsURL == null || cdsURL.equals("")) { // if still empty - we are in trouble
+			logger.error("Credential Delegation Service has not been configured for caGrid instance with name "
+							+ caGridName);
+			throw new Exception(
+					"Credential Delegation Service has not been configured for caGrid instance with name "
+					+ caGridName);
+		}
+        // Specifies how long the delegation service can delegated this
+        // credential to other parties.
+
+        ProxyLifetime delegationLifetime = new ProxyLifetime();
+        delegationLifetime.setHours(dLifetime);
+        delegationLifetime.setMinutes(0);
+        delegationLifetime.setSeconds(0);
+
+        // Specifies the path length of the credential being delegate the
+        // minumum is 1.
+
+        int delegationPathLength = dPathLength;
+
+        // Specifies the how long credentials issued to allowed parties will
+        // be valid for. e.g., 1 hr
+
+        ProxyLifetime issuedCredentialLifetime = new ProxyLifetime();
+        issuedCredentialLifetime.setHours(iLifetime);
+        issuedCredentialLifetime.setMinutes(0);
+        issuedCredentialLifetime.setSeconds(0);
+
+        // Specifies the path length of the credentials issued to allowed
+        // parties. A path length of 0 means that
+        // the requesting party cannot further delegate the credential.
+
+        int issuedCredentialPathLength = iPathLength;
+
+        // Specifies the key length of the delegated credential
+
+        int keySize = ClientConstants.DEFAULT_KEY_SIZE;
+
+        // The policy stating which parties will be allowed to obtain a
+        // delegated credential. The CDS will only
+        // issue credentials to parties listed in this policy.
+
+        List parties = new ArrayList();
+        //TODO change to party
+        parties.add(party);
+        IdentityDelegationPolicy policy = Utils.createIdentityDelegationPolicy(parties);
+
+        // Create an instance of the delegation client, specifies the CDS
+        // Service URL and the credential
+        // to be delegated.
+
+        DelegationUserClient client = new DelegationUserClient(cdsURL, credential);
+       
+        // Delegates the credential and returns a reference which can later
+        // be
+        // used by allowed parties to
+        // obtain a credential.
+
+        DelegatedCredentialReference ref = client.delegateCredential(delegationLifetime, delegationPathLength, policy, issuedCredentialLifetime, issuedCredentialPathLength, keySize);
+       
+        
+	return ref;
+    }
 /**
  * Get proxy for the user (either from Credential Manager or by authenticating 
  * user with AuthN/Dorian) and use it to create GSSCredential

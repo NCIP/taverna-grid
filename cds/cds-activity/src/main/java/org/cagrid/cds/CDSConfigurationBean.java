@@ -30,7 +30,7 @@ package org.cagrid.cds;
  */
 public class CDSConfigurationBean {
 	
-	private String caGridName = "NCI Production CaGrid 1.3";
+	private String caGridName = "NCI Production CaGrid";
 	//which party to delegate
 	private String party = "/O=caBIG/OU=caGrid/OU=Services/CN=cagrid-fqp.nci.nih.gov";
 	//Specifies how many hours the delegation service can delegated this
