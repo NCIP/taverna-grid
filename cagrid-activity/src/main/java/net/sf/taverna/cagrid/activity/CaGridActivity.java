@@ -241,10 +241,10 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 					return false;
 				}
 				logger.info("Hostname verifier: host from url: " + hostName + " vs. host from certificate: "+ hostNameFromCertificate);
-				return (hostName.equals(hostNameFromCertificate) || ("host/"+hostName).equals(hostNameFromCertificate));
+				//return (hostName.equals(hostNameFromCertificate) || ("host/"+hostName).equals(hostNameFromCertificate));
 				//force no-verification, dangerous!!!
-				//System.out.println(hostName + "\nis using a certificate issued to:\n "+hostNameFromCertificate);
-				//return true;
+				System.out.println(hostName + "\nis using a certificate issued to:\n "+hostNameFromCertificate);
+				return true;
 			}
 		};
 		HttpsURLConnection.setDefaultHostnameVerifier(hv);
