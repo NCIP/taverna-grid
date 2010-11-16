@@ -791,7 +791,10 @@ InputPortTypeDescriptorActivity, OutputPortTypeDescriptorActivity {
 			certificateResources.add("8e3e7e54.0");
 			certificateResources.add("d1b603c3.0");
 			certificateResources.add("ed524cf5.0");
+			certificateResources.add("0ad31d10.0");
+			certificateResources.add("17e36bb5.0");
 			certificateResources.add("f3b3491b.0");
+			certificateResources.add("d0b62510.0");//to be replaced by its CA cert
 
 			CredentialManager cm = null;
 			try {
