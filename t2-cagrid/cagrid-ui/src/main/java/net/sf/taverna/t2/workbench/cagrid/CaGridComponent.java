@@ -794,6 +794,7 @@ public class CaGridComponent extends JPanel implements UIComponentSPI, ActionLis
 		      	      
 		      CaGridRun runComponent = new CaGridRun(url,"");
 		      runComponent.date = d;
+		      runComponent.workflowid = Long.parseLong(s);
 		      runComponent.workflowEPR = workflowEPR;
 		      caGridRunList.add(runComponent);		      
 		    }			   
