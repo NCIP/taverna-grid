@@ -1,5 +1,5 @@
-<PROJECTNAME>
-Copyright <INITIALYEAR> <COPYRIGHTHOLDERS>
+taverna-grid
+Copyright 2009 University of Manchester
 
 This project is distributed under the BSD 3-Clause License.
 Please see LICENSE file for details.
@@ -8,29 +8,12 @@ Please see LICENSE file for details.
 This project was developed as part of the NCI caBIG initiative.
 
 In 2013, as part of the National Cancer Informatics Program (NCIP) Open Development Initiative,
-the <PROJECT NAME> source code was migrated to GitHub to allow further development by the broader
+the taverna-grid source code was migrated to GitHub to allow further development by the broader
 community.
 
-[INSERT HERE Any historical notes about development teams, contributors and
-major changes to the project (no more than a few paragraphs).]
+Contributors:
 
-
---- [ OPTIONAL SECTION ] ----
-
-This project includes as sub-components other projects that are copyrighted by
-third parties and that distributed under various licenses. Please find a
-summary in the list below:
-
-1) Component #1:
-   Copyright Holder
-   License
-
-2) Component #2:
-   Copyright Holder
-   License
-
-3) Component #3:
-   Copyright Holder
-   License
-
-...
+University of Manchester
+ * Alexandra Nenadic <anenadic@cs.man.ac.uk>
+ * Shoaib Sufi <shoaib.sufi@manchester.ac.uk>
+ * Stian Soiland-Reyes <soiland-reyes@cs.manchester.ac.uk>
