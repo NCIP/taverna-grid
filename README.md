@@ -15,4 +15,4 @@ You will find more details about taverna-grid  in the following links:
     *  How-To Documentation: http://www.cagrid.org/display/knowledgebase/How+to+Create+CaGrid+Workflow+Using+Taverna
     *  https://github.com/NCIP/taverna-grid
 
-Please join us in further developing and improving taverna-grid.
+Please join us in further developing and improving taverna-grid. 
