@@ -13,6 +13,6 @@ You will find more details about taverna-grid  in the following links:
     *  Wiki: https://wiki.cagrid.org
     *  About Taverna and caGrid: http://www.taverna.org.uk/introduction/related-projects/cagrid/
     *  How-To Documentation: http://www.cagrid.org/display/knowledgebase/How+to+Create+CaGrid+Workflow+Using+Taverna
-    *  https://github.com/NCIP/taverna-grid
+    *  https://github.com/NCIP/taverna-grid 
 
 Please join us in further developing and improving taverna-grid. 
