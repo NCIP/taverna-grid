@@ -8,9 +8,9 @@ Please see the NOTICE and LICENSE files for details.
 
 You will find more details about taverna-grid in the following links:
 
-    *  Mailing List: https://list.nih.gov/cgi-bin/wa.exe?A0=cagrid_users-l
-    *  JIRA: https://tracker.nci.nih.gov/browse/CAGRID
-    *  Wiki: https://wiki.cagrid.org
-    *  https://github.com/NCIP/taverna-grid
+ * [caGrid.org Wiki] (https://wiki.cagrid.org)
+ * [Code Repository] (https://github.com/NCIP/taverna-grid)
+ * [Issue Tracker] (https://tracker.nci.nih.gov/browse/CAGRID)
+ * [Mailing List] (https://list.nih.gov/cgi-bin/wa.exe?A0=cagrid_users-l)
 
 Please join us in further developing and improving taverna-grid.
