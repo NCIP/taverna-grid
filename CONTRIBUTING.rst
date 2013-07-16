@@ -13,10 +13,11 @@ chance of keeping on top of things.
 Getting Started
 ---------------
 
-* Make sure you have a GitHub Account. If you don't, visit this URL
-  to obtain one: https://github.com/signup/free
+* Make sure you have a `GitHub Account`_.
 
 * Fork the repository on GitHub to publish any proposed changes
+
+.. _`GitHub Account`: https://github.com/signup/free
 
 --------------
 Making Changes
@@ -64,6 +65,6 @@ Submitting Changes
 Additional Resources
 --------------------
 
-For help learning Git and Github, see the `NCIP Learning Resources:
+For help learning Git and Github, see the `NCIP Learning Resources`_.
 
 .. _`NCIP Learning Resources`: https://github.com/NCIP/ncip.github.com/wiki/Learning-Resources
