@@ -1,5 +1,5 @@
 taverna-grid
-Copyright 2009 University of Manchester
+Copyright 2008 University of Manchester
 
 This project is distributed under the BSD 3-Clause License.
 Please see LICENSE file for details.
@@ -18,3 +18,11 @@ University of Manchester
  * Alexandra Nenadic
  * Shoaib Sufi
  * Stian Soiland-Reyes
+
+This project includes as sub-components other projects that are copyrighted by
+third parties and that distributed under various licenses. Please find a
+summary in the list below:
+
+1) The caGrid integration plug-in for Taverna 2
+   Copyright the University of Manchester
+   Distributed under the GNU Lesser General Public License
